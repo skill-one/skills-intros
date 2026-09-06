@@ -1,0 +1,32 @@
+[project]
+name = "skills-intros"
+version = "0.1.0"
+description = "Generate multi-angle Chinese introductions for agent skills collected by skills-sh-scraper"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "instructor>=1.16.0",
+    "jinja2>=3.1.6",
+    "openai>=2.54.0",
+    "pydantic>=2.13.5",
+    "pydantic-settings>=2.15.0",
+    "pyyaml>=6.0.3",
+    "typer>=0.27.2",
+]
+
+[project.scripts]
+skills-intros = "skills_intros.cli:app"
+
+[build-system]
+requires = ["uv_build>=0.11.21,<0.12.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+    "pytest-asyncio>=1.4.0",
+]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
