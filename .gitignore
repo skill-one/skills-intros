@@ -10,3 +10,6 @@ output/
 # Local config
 .env
 .zcode/
+
+# Local tooling dotfiles (e.g. .vscode/)
+.*
