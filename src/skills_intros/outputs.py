@@ -39,7 +39,13 @@ def _render_output(output: dict) -> list[str]:
     lines: list[str] = []
     for key, value in output.items():
         if isinstance(value, list):
-            lines += [f"- {item}" for item in value]
+            if value and isinstance(value[0], dict):
+                for item in value:
+                    lines.append(f"- {_render_dict(item)}")
+            else:
+                lines.extend(f"- {item}" for item in value)
+        elif isinstance(value, dict):
+            lines.append(_render_dict(value))
         elif len(output) > 1:
             if isinstance(value, str):
                 value = Domain.display(value)  # known domain values get their emoji
@@ -48,3 +54,8 @@ def _render_output(output: dict) -> list[str]:
             lines.append(str(value))
         lines.append("")
     return lines
+
+
+def _render_dict(d: dict) -> str:
+    """Render a dict as 'key: value, key: value'."""
+    return ", ".join(f"{k}: {v}" for k, v in d.items())
