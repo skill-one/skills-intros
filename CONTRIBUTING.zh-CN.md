@@ -10,16 +10,14 @@
 ```
 skills.jsonl (dist 分支) ──► 按安装量取 Top N ──► 每 skill 执行 prompt DAG
                                                 ──► output/results/skills/<id>/<prompt>.json
-                                                ──► output/results/skills/<id>/<prompt>.md
+                                                ──► output/results/skills/<id>/md/<prompt>.md
 ```
 
 Prompt DAG（边表示"依赖其输出"）:
 
 ```
-domain ──┬── dev_intro ──┐
-         ├── scenario_intro ──┼── comparison
-         │                    └── trigger_guide
-one_liner ── tagline
+scenario_intro ──┬── comparison
+                 └── trigger_guide
 ```
 
 关键设计决策:
@@ -28,8 +26,8 @@ one_liner ── tagline
   [`graphlib.TopologicalSorter`](https://docs.python.org/3/library/graphlib.html)。
 - **结构化输出。** 每个 prompt 在 frontmatter 的 `output:` 中声明一个 pydantic schema;
   LLM 调用通过 [instructor](https://python.useinstructor.com/) 走 OpenAI 兼容客户端。
-- **基于文件的断点续跑。** 每个 prompt 的输出是自己的 `<prompt_id>.json`, 生成后立即提交
-  (json+md)——既是产物也是缓存: 存在且通过 schema 校验即不调用 LLM。`results/hashes.json`
+- **基于文件的断点续跑。** 每个 prompt 的输出是自己的 `<prompt_id>.json` (另有 markdown 副本
+  放在 `md/` 下), 生成后立即提交——既是产物也是缓存: 存在且通过 schema 校验即不调用 LLM。`results/hashes.json`
   (skill id -> 上游 hash, 仅在本次 run 真正生成内容时写入) 是 `sync` 的清理索引(上游 hash
   变化或 skill 消失即删除), `run` 不再做 hash 比对。续跑粒度是 prompt 级, 中途崩溃已完成
   的 prompt 全部保留。
@@ -40,10 +38,13 @@ one_liner ── tagline
 
 ## 局部重跑的实现
 
-`run --prompts <id>` 会先计算目标 prompt 的依赖闭包。目标 prompt 总是重跑; 依赖属于输入,
-因此复用各自的 `<prompt_id>.json`, 仅在缺失或 schema 校验失败时重新生成。`--force` 只
-作用于显式指定的 prompt, 不会连带重算闭包带进来的依赖。闭包之外的 prompt 完全不动——
-因此选择之外的输出绝不会意外重算。
+`run --prompts <id>` 会先计算目标 prompt 的依赖闭包, 只生成闭包里缺失的部分。依赖属于输入,
+因此复用各自的 `<prompt_id>.json`, 仅在缺失或 schema 校验失败时重新生成。闭包之外的 prompt
+完全不动——因此选择之外的输出绝不会意外重算。
+
+重算从来不是 `run` 的参数: `invalidate` 删掉缓存的 json(以及它的 `md/` 副本), `run` 再把
+缺口补上。某 skill 若一个输出都不剩, 会从 `results/hashes.json` 中除名, 即重新视为全新 skill。
+`sync` 对上游 hash 变化的 skill 调用的也是同一个 `invalidate`, 手动与自动失效是同一条代码路径。
 
 ## 项目结构
 
@@ -51,9 +52,7 @@ one_liner ── tagline
 prompts/               # 每个 prompt 一个 md 文件（+ _system.md）
 ├── _system.md
 ├── domain.md
-├── one_liner.md
 ├── scenario_intro.md
-├── dev_intro.md
 ├── comparison.md
 ├── trigger_guide.md
 └── tagline.md
@@ -65,8 +64,8 @@ src/skills_intros/
 ├── prompts.py       # frontmatter 加载 + DAG 排序 + jinja2 渲染
 ├── llm.py           # instructor/openai client + 离线 FakeLLM
 ├── generate.py      # 异步 DAG 执行 + 文件断点续跑
-├── outputs.py       # 每 prompt 的 json+md 输出写入与渲染
-└── cli.py           # typer 命令（sync / run）
+├── outputs.py       # 每 prompt 的 json 输出 + md/ 渲染 + 缓存失效
+└── cli.py           # typer 命令（sync / invalidate / run）
 └── logging.py       # --verbose 日志配置
 ```
 

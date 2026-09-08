@@ -59,49 +59,44 @@ async def run_prompt(
 
 async def run_one(
     llm, settings: Settings, prompts: PromptSet, skill: SkillRecord,
-    force: bool = False, only: set[str] | None = None, debug: bool = False,
+    only: set[str] | None = None, debug: bool = False,
     hashes: dict[str, str] | None = None,
 ) -> tuple[dict, bool]:
     """Generate one skill's intros; returns (record, reused).
 
     Storage: each prompt's output is its own <prompt_id>.json under the skill's
-    results dir, committed (json+md) right after it is generated, so a crash
-    keeps every completed prompt. results/hashes.json maps skill id -> the
+    results dir, committed (json + md/ copy) right after it is generated, so a
+    crash keeps every completed prompt. results/hashes.json maps skill id -> the
     upstream hash the outputs were generated against; it is the index `sync`
     prunes against. The hash is registered only when this run actually
     generated something — a fully cached run leaves the disk untouched.
 
-    Cache rules are identical for full runs and `only` runs: an existing
-    per-prompt json is trusted as-is (sync prunes artifacts whose upstream
-    content changed), but every reused output must still validate against its
-    current schema — missing or invalid prompts are regenerated, and prompts
-    outside the selection are simply not touched.
-
-    force applies to the prompts the caller asked for (`only`, or every prompt
-    when it is None); dependencies pulled in by the closure are inputs, so they
-    keep the normal cache rules and are only computed when missing or invalid.
+    Cache rule: an existing per-prompt json is trusted as-is (invalidation is
+    `sync`'s and `invalidate`'s job), but every reused output must still
+    validate against its current schema — missing or invalid prompts are
+    regenerated, and prompts outside the selection (`only`, plus the closure of
+    their dependencies) are simply not touched.
     """
     targets = prompts.closure_ids(only) if only is not None else set(prompts.by_id)
-    forced = set(only) if only is not None else set(prompts.by_id)
     if hashes is None:
         hashes = load_hashes(settings)
     skill_dir = skill_result_dir(settings, skill.id)
 
     outputs: dict[str, Any] = {}
-    generated = False
+    generated: list[str] = []
     for spec_id in prompts.ordered_ids():
         if spec_id not in targets:
             continue
         spec = prompts.by_id[spec_id]
         deps = {d: outputs[d] for d in spec.depends_on}
         stored = _read_prompt_output(settings, skill.id, spec_id)
-        if not (force and spec_id in forced) and stored is not None:
+        if stored is not None:
             try:
                 outputs[spec_id] = spec.output_model.model_validate(stored)
                 continue
             except ValidationError:
                 pass  # schema-stale: treat as missing
-        generated = True
+        generated.append(spec_id)
         outputs[spec_id] = await run_prompt(llm, settings, prompts, spec, skill, deps, debug=debug)
         write_prompt_output(settings, skill.id, spec_id, outputs[spec_id].model_dump(mode="json"))
 
@@ -118,7 +113,7 @@ async def run_one(
     if legacy.exists():
         legacy.unlink()
 
-    return {"skill": skill.model_dump(), "intros": intros}, False
+    return {"skill": skill.model_dump(), "intros": intros, "generated": generated}, False
 
 
 async def run_all(
@@ -127,21 +122,20 @@ async def run_all(
     skills: list[SkillRecord],
     prompts: PromptSet,
     on_skill_done: Callable[[SkillRecord, dict, bool], None] | None = None,
-    force: bool = False,
     only: set[str] | None = None,
     debug: bool = False,
 ) -> list[dict]:
     """Generate intros for all skills concurrently, bounded by a semaphore.
 
-    Skills whose every requested prompt is already cached and valid are skipped
-    unless force is set; `only` narrows work to a subset of prompts (see run_one).
+    Skills whose every requested prompt is already cached and valid are
+    skipped; `only` narrows work to a subset of prompts (see run_one).
     """
     sem = asyncio.Semaphore(settings.concurrency)
     hashes = load_hashes(settings)
 
     async def _one(skill: SkillRecord) -> dict:
         async with sem:
-            record, reused = await run_one(llm, settings, prompts, skill, force, only, debug, hashes)
+            record, reused = await run_one(llm, settings, prompts, skill, only, debug, hashes)
         if on_skill_done:
             on_skill_done(skill, record, reused)
         return record

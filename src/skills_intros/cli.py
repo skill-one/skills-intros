@@ -1,4 +1,4 @@
-"""Typer CLI: sync / run."""
+"""Typer CLI: sync / invalidate / run."""
 
 import asyncio
 import logging
@@ -10,6 +10,8 @@ from .data import load_skills, sync_data
 from .generate import run_all
 from .llm import FakeLLM, make_llm
 from .logging import setup_logging
+from .outputs import invalidate as invalidate_cache
+from .outputs import load_hashes
 from .prompts import load_prompt_set
 
 logger = logging.getLogger(__name__)
@@ -28,8 +30,45 @@ def sync() -> None:
         raise typer.Exit(1)
     message = f"Dataset ready at {data_dir}"
     if pruned:
-        message += f" (pruned {pruned} stale result dir(s) whose upstream content changed)"
+        message += f" (invalidated {pruned} stale skill(s) whose upstream content changed)"
     typer.echo(message)
+
+
+@app.command()
+def invalidate(
+    skill: list[str] = typer.Option(
+        None, "--skill", help="Skill id to invalidate; repeatable. Omit for every skill"
+    ),
+    prompts_opt: str | None = typer.Option(
+        None, "--prompts", help="Comma-separated prompt ids; omit for every prompt"
+    ),
+    all_skills: bool = typer.Option(
+        False, "--all", help="Allow invalidating every skill (required when no filter is given)"
+    ),
+) -> None:
+    """Drop cached outputs so the next `run` regenerates them."""
+    setup_logging()
+    settings = Settings()
+
+    prompt_ids: set[str] | None = None
+    if prompts_opt:
+        prompt_ids = {p.strip() for p in prompts_opt.split(",") if p.strip()}
+        known = set(load_prompt_set(settings.prompts_dir).by_id)
+        unknown = prompt_ids - known
+        if unknown:
+            raise typer.BadParameter(
+                f"unknown prompt(s) {sorted(unknown)}; available: {sorted(known)}"
+            )
+    if not skill and not prompt_ids and not all_skills:
+        raise typer.BadParameter("refusing to invalidate everything - pass --all to confirm")
+
+    hashes = load_hashes(settings)
+    for skill_id in skill or ():
+        if skill_id not in hashes:
+            logger.warning("%s has no cached results", skill_id)
+    removed = invalidate_cache(settings, skill or None, prompt_ids)
+    targets = sorted(skill) if skill else sorted(hashes)
+    logger.info("Invalidated %d output(s) across %d skill(s)", removed, len(targets))
 
 
 @app.command()
@@ -40,13 +79,8 @@ def run(
     prompts_opt: str | None = typer.Option(
         None, "--prompts",
         help="Comma-separated prompt ids to fill in, e.g. 'tagline'. Cached outputs are "
-             "reused under the same rules as a full run; use --force to regenerate. "
+             "reused under the same rules as a full run; use `invalidate` to drop them. "
              "Prompts outside the selection are carried over",
-    ),
-    force: bool = typer.Option(
-        False, "--force", help="Regenerate regardless of existing results or content hash. "
-                              "Applies to --prompts only when given: their dependencies are "
-                              "reused from cache unless missing or invalid"
     ),
     dry_run: bool = typer.Option(False, "--dry-run", help="Use a fake LLM, no API calls"),
     debug: bool = typer.Option(
@@ -56,7 +90,7 @@ def run(
         False, "--verbose", "-v", help="Enable debug logging"
     ),
 ) -> None:
-    """Generate intros; skills with up-to-date results are skipped unless --force."""
+    """Generate missing intros; every cached and valid prompt output is reused."""
     setup_logging(verbose)
     settings = Settings()
     if top is not None:
@@ -82,13 +116,15 @@ def run(
     def on_done(_skill, _record, reused: bool) -> None:
         nonlocal done
         done += 1
-        marker = " (cached)" if reused else (f" ({'+'.join(sorted(only))})" if only else "")
-        logger.info("  [%d/%d] %s%s", done, len(skills), _skill.id, marker)
+        fresh = set(_record.get("generated", ()))
+        parts = [pid + ("*" if pid in fresh else "") for pid in sorted(_record["intros"])]
+        marker = " (cached)" if reused else ""
+        logger.info("  [%d/%d] %s: %s%s", done, len(skills), _skill.id, ",".join(parts), marker)
 
     llm = FakeLLM() if dry_run else make_llm(settings)
     results = asyncio.run(
         run_all(llm, settings, skills, prompt_set, on_skill_done=on_done,
-                force=force, only=only, debug=debug)
+                only=only, debug=debug)
     )
     logger.info("Wrote %d records under %s", len(results), settings.workdir / "results" / "skills")
 

@@ -6,6 +6,7 @@ from skills_intros.data import load_skills
 from skills_intros.generate import run_all
 from skills_intros.llm import FakeLLM
 from skills_intros.models import Domain
+from skills_intros.outputs import invalidate, load_hashes, skill_result_dir
 
 
 @pytest.fixture
@@ -14,33 +15,65 @@ async def results(settings, prompt_set):
     return await run_all(FakeLLM(), settings, skills, prompt_set)
 
 
-def test_one_json_and_md_pair_per_prompt(settings, results):
+def test_one_json_in_skill_dir_and_one_md_in_subdir(settings, results):
     for record in results:
         skill_id = record["skill"]["id"]
         skill_dir = settings.workdir / "results" / "skills" / skill_id.replace(":", "_")
         stems_json = {p.stem for p in skill_dir.glob("*.json")}
-        stems_md = {p.stem for p in skill_dir.glob("*.md")}
+        stems_md = {p.stem for p in (skill_dir / "md").glob("*.md")}
         assert stems_json == set(record["intros"])
         assert stems_md == set(record["intros"])
+        assert not list(skill_dir.glob("*.md"))  # json stays uncluttered
 
 
 def test_skill_output_files_render_fields(settings, results):
     record = results[0]
     skill_id = record["skill"]["id"]
-    skill_dir = settings.workdir / "results" / "skills" / skill_id.replace(":", "_")
+    md_dir = settings.workdir / "results" / "skills" / skill_id.replace(":", "_") / "md"
     intro = record["intros"]
 
-    one_liner = (skill_dir / "one_liner.md").read_text(encoding="utf-8")
-    assert skill_id.rsplit("/", 1)[-1] in one_liner
-    assert intro["one_liner"]["text"] in one_liner
+    scenario = (md_dir / "scenario_intro.md").read_text(encoding="utf-8")
+    assert skill_id.rsplit("/", 1)[-1] in scenario
+    assert intro["scenario_intro"]["text"] in scenario
 
-    taglines = (skill_dir / "tagline.md").read_text(encoding="utf-8")
+    taglines = (md_dir / "tagline.md").read_text(encoding="utf-8")
     for tagline in intro["tagline"]["taglines"]:
         assert f"- {tagline}" in taglines
 
-    guide = (skill_dir / "trigger_guide.md").read_text(encoding="utf-8")
+    guide = (md_dir / "trigger_guide.md").read_text(encoding="utf-8")
     for item in intro["trigger_guide"]["use_when"]:
         assert f"- {item}" in guide
 
-    domain_md = (skill_dir / "domain.md").read_text(encoding="utf-8")
+    domain_md = (md_dir / "domain.md").read_text(encoding="utf-8")
     assert Domain.display(intro["domain"]["domain"]) in domain_md  # emoji-prefixed
+
+
+def test_invalidate_one_prompt_removes_only_it(settings, results):
+    skill_id = results[0]["skill"]["id"]
+    skill_dir = skill_result_dir(settings, skill_id)
+
+    assert invalidate(settings, [skill_id], {"tagline"}) == 1
+    assert not (skill_dir / "tagline.json").exists()
+    assert not (skill_dir / "md" / "tagline.md").exists()
+    # siblings and the prune-index entry survive a partial invalidation
+    assert (skill_dir / "domain.json").exists()
+    assert (skill_dir / "md" / "domain.md").exists()
+    assert skill_id in load_hashes(settings)
+
+
+def test_invalidate_whole_skill_drops_it_from_the_index(settings, results):
+    skill_id = results[0]["skill"]["id"]
+    skill_dir = skill_result_dir(settings, skill_id)
+
+    assert invalidate(settings, [skill_id]) == len(results[0]["intros"])
+    assert not skill_dir.exists()
+    assert skill_id not in load_hashes(settings)
+
+
+def test_invalidate_one_prompt_for_every_skill(settings, results):
+    assert invalidate(settings, prompt_ids={"whitebox"}) == len(results)
+    for record in results:
+        skill_dir = skill_result_dir(settings, record["skill"]["id"])
+        assert not (skill_dir / "whitebox.json").exists()
+        assert (skill_dir / "domain.json").exists()
+    assert set(load_hashes(settings)) == {r["skill"]["id"] for r in results}

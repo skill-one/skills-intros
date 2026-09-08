@@ -7,7 +7,13 @@ import pytest
 from skills_intros.data import load_skills
 from skills_intros.generate import load_results, run_all, run_one
 from skills_intros.llm import FakeLLM
-from skills_intros.outputs import hashes_path, prompt_result_path, skill_result_dir
+from skills_intros.outputs import (
+    hashes_path,
+    invalidate,
+    load_hashes,
+    prompt_result_path,
+    skill_result_dir,
+)
 
 
 class CountingLLM:
@@ -33,9 +39,9 @@ def stored_intros(settings, skill_id: str) -> dict:
 
 async def test_full_run_produces_all_prompt_outputs(settings, prompt_set):
     skill = load_skills(settings)[0]
-    record, _ = await run_one(FakeLLM(), settings, prompt_set, skill, force=True)
-    assert set(record["intros"]) == {"domain", "one_liner", "dev_intro", "scenario_intro",
-                                     "blackbox", "whitebox", "comparison", "trigger_guide",
+    record, _ = await run_one(FakeLLM(), settings, prompt_set, skill)
+    assert set(record["intros"]) == {"domain", "scenario_intro", "blackbox",
+                                     "whitebox", "comparison", "trigger_guide",
                                      "tagline"}
 
 
@@ -44,7 +50,7 @@ async def test_existing_results_skip_llm_calls(settings, prompt_set):
 
     first = CountingLLM(FakeLLM())
     await run_all(first, settings, skills, prompt_set)
-    assert first.calls == 4 * 9  # 4 skills x 9 prompts
+    assert first.calls == 4 * 7  # 4 skills x 7 prompts
 
     second = CountingLLM(FakeLLM())
     results = await run_all(second, settings, skills, prompt_set)
@@ -52,13 +58,23 @@ async def test_existing_results_skip_llm_calls(settings, prompt_set):
     assert len(results) == 4
 
 
-async def test_force_regenerates(settings, prompt_set):
+async def test_cached_run_is_untouched_until_invalidated(settings, prompt_set):
+    """Nothing regenerates until the cache is dropped: `invalidate` is the only
+    way to make a run redo work."""
     skills = load_skills(settings)
     await run_all(FakeLLM(), settings, skills, prompt_set)
 
+    cached = CountingLLM(FakeLLM())
+    results = await run_all(cached, settings, skills, prompt_set)
+    assert cached.calls == 0
+    assert len(results) == 4
+
+    assert invalidate(settings) == 28  # 4 skills x 7 prompts
+    assert load_hashes(settings) == {}  # emptied skills leave the prune index
+
     forced = CountingLLM(FakeLLM())
-    results = await run_all(forced, settings, skills, prompt_set, force=True)
-    assert forced.calls == 4 * 9
+    results = await run_all(forced, settings, skills, prompt_set)
+    assert forced.calls == 4 * 7
     assert len(results) == 4
 
 
@@ -142,52 +158,56 @@ async def test_only_generates_missing_deps_from_scratch(settings, prompt_set):
     skills = load_skills(settings)
     llm = CountingLLM(FakeLLM())
     await run_all(llm, settings, skills[:1], prompt_set, only={"comparison"})
-    # comparison + dev_intro + scenario_intro + domain = 4 prompts
-    assert llm.calls == 4
-    assert set(stored_intros(settings, skills[0].id)) == {
-        "domain", "dev_intro", "scenario_intro", "comparison"}
+    # comparison + scenario_intro = 2 prompts
+    assert llm.calls == 2
+    assert set(stored_intros(settings, skills[0].id)) == {"scenario_intro", "comparison"}
 
     # a partial directory must not count as complete: a full run fills in the gaps
     llm = CountingLLM(FakeLLM())
     await run_all(llm, settings, skills[:1], prompt_set)
-    assert llm.calls == 5  # only the missing blackbox, whitebox, one_liner, trigger_guide, tagline
-    assert len(stored_intros(settings, skills[0].id)) == 9
+    assert llm.calls == 5  # only the missing domain, blackbox, whitebox, trigger_guide, tagline
+    assert len(stored_intros(settings, skills[0].id)) == 7
 
 
-async def test_only_with_force_regenerates_only_the_selection(settings, prompt_set):
-    """--force targets the requested prompts; their dependencies are inputs and
-    keep the normal cache rules (regenerated only when missing or invalid)."""
+async def test_invalidated_prompt_regenerates_only_itself(settings, prompt_set):
+    """Dropping one prompt's cache makes the next run redo exactly that prompt;
+    its dependencies are inputs and keep the normal cache rules."""
     skills = load_skills(settings)
     await run_all(FakeLLM(), settings, skills, prompt_set)
     before = stored_intros(settings, skills[0].id)
 
-    # tagline depends on one_liner, but only tagline is forced -> 1 call
+    assert invalidate(settings, [skills[0].id], {"tagline"}) == 1
+    # a partially invalidated skill keeps its prune-index entry
+    assert skills[0].id in load_hashes(settings)
+
+    # tagline has no dependency, and only tagline was invalidated -> 1 call
     llm = CountingLLM(FakeLLM())
-    await run_all(llm, settings, skills[:1], prompt_set, only={"tagline"}, force=True)
+    await run_all(llm, settings, skills[:1], prompt_set, only={"tagline"})
     assert llm.calls == 1
 
-    # the dependency output is reused unchanged, and so is everything else
-    assert len(stored_intros(settings, skills[0].id)) == 9
+    # every other prompt is reused unchanged
+    assert len(stored_intros(settings, skills[0].id)) == 7
     updated = stored_intros(settings, skills[0].id)
-    for pid in ("domain", "one_liner", "dev_intro", "scenario_intro",
-                "blackbox", "whitebox", "comparison", "trigger_guide"):
+    for pid in ("domain", "scenario_intro", "blackbox", "whitebox",
+                "comparison", "trigger_guide"):
         assert updated[pid] == before[pid]
 
 
-async def test_force_with_only_preserves_prompts_outside_closure(settings, prompt_set):
-    """--force never touches prompts outside the closure: their files survive intact."""
+async def test_run_preserves_prompts_outside_closure(settings, prompt_set):
+    """A run never touches prompts outside the closure: their files survive intact."""
     skills = load_skills(settings)
     await run_all(FakeLLM(), settings, skills, prompt_set)
     before = stored_intros(settings, skills[0].id)
 
-    # closure of dev_intro = {domain, dev_intro}, but only dev_intro is forced -> 1 call
+    # closure of scenario_intro = {domain, scenario_intro}, but only scenario_intro
+    # was invalidated -> 1 call
+    invalidate(settings, [skills[0].id], {"scenario_intro"})
     llm = CountingLLM(FakeLLM())
-    await run_all(llm, settings, skills[:1], prompt_set, only={"dev_intro"}, force=True)
+    await run_all(llm, settings, skills[:1], prompt_set, only={"scenario_intro"})
     assert llm.calls == 1
     updated = stored_intros(settings, skills[0].id)
-    assert len(updated) == 9
-    for pid in ("one_liner", "scenario_intro", "blackbox", "whitebox",
-                "comparison", "trigger_guide", "tagline"):
+    assert len(updated) == 7
+    for pid in ("domain", "blackbox", "whitebox", "comparison", "trigger_guide", "tagline"):
         assert updated[pid] == before[pid]
 
 
@@ -257,13 +277,13 @@ async def test_crash_mid_run_keeps_completed_prompts(settings, prompt_set):
             return await self.inner.create(response_model, messages, **kwargs)
 
     with pytest.raises(RuntimeError, match="boom"):
-        await run_one(FlakyLLM(), settings, prompt_set, skill, force=True)
+        await run_one(FlakyLLM(), settings, prompt_set, skill)
     assert len(stored_intros(settings, skill.id)) == 2  # first two prompts survived
 
     llm = CountingLLM(FakeLLM())
-    await run_one(llm, settings, prompt_set, skill)  # no force: cache rules apply
-    assert llm.calls == 7  # only the remaining seven were regenerated
-    assert len(stored_intros(settings, skill.id)) == 9
+    await run_one(llm, settings, prompt_set, skill)  # cache rules apply
+    assert llm.calls == 5  # only the remaining five were regenerated
+    assert len(stored_intros(settings, skill.id)) == 7
 
 
 async def test_legacy_result_json_removed_on_regeneration(settings, prompt_set):
@@ -275,10 +295,10 @@ async def test_legacy_result_json_removed_on_regeneration(settings, prompt_set):
     legacy.write_text(json.dumps({"skill": {"id": skill.id}, "intros": {}}), encoding="utf-8")
 
     llm = CountingLLM(FakeLLM())
-    await run_one(llm, settings, prompt_set, skill, force=True)
-    assert llm.calls == 9  # the legacy file did not count as a cache
+    await run_one(llm, settings, prompt_set, skill)
+    assert llm.calls == 7  # the legacy file did not count as a cache
     assert not legacy.exists()
-    assert len(stored_intros(settings, skill.id)) == 9
+    assert len(stored_intros(settings, skill.id)) == 7
 
 
 async def test_dep_outputs_flow_into_downstream_prompts(settings, prompt_set):
@@ -290,9 +310,9 @@ async def test_dep_outputs_flow_into_downstream_prompts(settings, prompt_set):
             seen_messages.append(messages[-1]["content"])
             return await FakeLLM().create(response_model, messages, **kwargs)
 
-    await run_one(RecordingLLM(), settings, prompt_set, skill, force=True)
+    await run_one(RecordingLLM(), settings, prompt_set, skill)
     comparison_prompt = seen_messages[-2]  # trigger_guide is last, comparison before it
-    assert "离线演示介绍文本" in comparison_prompt  # dev_intro & scenario_intro fake texts
+    assert "离线演示介绍文本" in comparison_prompt  # scenario_intro's fake text
 
 
 async def test_model_and_system_prompt_passed_to_llm(settings, prompt_set):
@@ -304,7 +324,7 @@ async def test_model_and_system_prompt_passed_to_llm(settings, prompt_set):
             captured.update(kwargs, messages=messages)
             return await FakeLLM().create(response_model, messages, **kwargs)
 
-    await run_one(RecordingLLM(), settings, prompt_set, skill, force=True)
+    await run_one(RecordingLLM(), settings, prompt_set, skill)
     assert captured["model"] == settings.model
     assert captured["messages"][0]["role"] == "system"
     assert "推销自己" in captured["messages"][0]["content"]
@@ -315,7 +335,7 @@ async def test_model_and_system_prompt_passed_to_llm(settings, prompt_set):
 async def test_debug_dumps_rendered_messages(settings, prompt_set, capfd):
     """debug=True prints the exact system/user messages to stderr before each call."""
     skill = load_skills(settings)[0]
-    await run_one(FakeLLM(), settings, prompt_set, skill, force=True, debug=True)
+    await run_one(FakeLLM(), settings, prompt_set, skill, debug=True)
 
     err = capfd.readouterr().err
     assert f"===== debug {skill.id} / domain =====" in err

@@ -1,14 +1,19 @@
-"""On-disk results layout: one json+md pair per prompt under results/skills/<id>/,
-plus results/hashes.json (skill id -> upstream content hash) as sync's prune index."""
+"""On-disk results layout: one json per prompt under results/skills/<id>/ (with a
+markdown copy in md/), plus results/hashes.json (skill id -> upstream content
+hash) as sync's prune index."""
 
 import json
 import logging
+import shutil
+from collections.abc import Iterable
 from pathlib import Path
 
 from .config import Settings
 from .models import Domain
 
 logger = logging.getLogger(__name__)
+
+MD_SUBDIR = "md"  # markdown browsing copies, kept out of the json directory
 
 
 def skill_result_dir(settings: Settings, skill_id: str) -> Path:
@@ -20,6 +25,12 @@ def skill_result_dir(settings: Settings, skill_id: str) -> Path:
 def prompt_result_path(settings: Settings, skill_id: str, prompt_id: str) -> Path:
     """The json file holding one prompt's structured output."""
     return skill_result_dir(settings, skill_id) / f"{prompt_id}.json"
+
+
+def prompt_markdown_path(settings: Settings, skill_id: str, prompt_id: str) -> Path:
+    """The markdown copy of one prompt's output; kept in a `md/` subdir so the
+    skill directory itself only holds json."""
+    return skill_result_dir(settings, skill_id) / MD_SUBDIR / f"{prompt_id}.md"
 
 
 def hashes_path(settings: Settings) -> Path:
@@ -43,21 +54,63 @@ def load_hashes(settings: Settings) -> dict[str, str]:
 
 
 def write_prompt_output(settings: Settings, skill_id: str, prompt_id: str, output: dict) -> Path:
-    """Write one prompt's output as <prompt_id>.md + <prompt_id>.json.
+    """Write one prompt's output as json in the skill dir + a markdown copy in md/.
 
     Markdown first, json last: the json is the commit marker, so a crash can
     only leave a stray markdown (regenerated together with the json next run),
     never a valid-looking json without its markdown.
     """
     skill_dir = skill_result_dir(settings, skill_id)
-    skill_dir.mkdir(parents=True, exist_ok=True)
-    (skill_dir / f"{prompt_id}.md").write_text(
-        _render_markdown(skill_id, prompt_id, output), encoding="utf-8"
-    )
+    md_path = prompt_markdown_path(settings, skill_id, prompt_id)
+    md_path.parent.mkdir(parents=True, exist_ok=True)
+    md_path.write_text(_render_markdown(skill_id, prompt_id, output), encoding="utf-8")
     (skill_dir / f"{prompt_id}.json").write_text(
         json.dumps(output, ensure_ascii=False), encoding="utf-8"
     )
     return skill_dir
+
+
+def invalidate(settings: Settings, skill_ids: Iterable[str] | None = None,
+               prompt_ids: Iterable[str] | None = None) -> int:
+    """Delete cached prompt outputs so the next run regenerates them.
+
+    `skill_ids` None means every skill in the prune index; `prompt_ids` None
+    means every prompt of each selected skill. A skill left without any output
+    is dropped from the index, i.e. it counts as new again. This is the only
+    invalidation path: `sync` uses it for skills whose upstream hash changed.
+    Returns the number of removed prompt outputs.
+    """
+    hashes = load_hashes(settings)
+    targets = sorted(hashes) if skill_ids is None else list(dict.fromkeys(skill_ids))
+    removed = 0
+    dropped = False
+    for skill_id in targets:
+        paths = (_stored_jsons(settings, skill_id) if prompt_ids is None
+                 else [prompt_result_path(settings, skill_id, p) for p in prompt_ids])
+        for path in paths:
+            _unlink(path.parent / MD_SUBDIR / f"{path.stem}.md")
+            removed += _unlink(path)
+        if not _stored_jsons(settings, skill_id):
+            shutil.rmtree(skill_result_dir(settings, skill_id), ignore_errors=True)
+            dropped |= hashes.pop(skill_id, None) is not None
+    if dropped:
+        hashes_path(settings).write_text(json.dumps(hashes, ensure_ascii=False), encoding="utf-8")
+    return removed
+
+
+def _stored_jsons(settings: Settings, skill_id: str) -> list[Path]:
+    """The prompt jsons cached for one skill (a legacy result.json is not one)."""
+    return sorted(p for p in skill_result_dir(settings, skill_id).glob("*.json")
+                  if p.name != "result.json")
+
+
+def _unlink(path: Path) -> int:
+    """Remove a file if present; 1 when something was removed."""
+    try:
+        path.unlink()
+    except FileNotFoundError:
+        return 0
+    return 1
 
 
 def _render_markdown(skill_id: str, prompt_id: str, output: dict) -> str:

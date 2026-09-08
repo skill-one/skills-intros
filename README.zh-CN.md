@@ -17,16 +17,16 @@
 output/results/
 ├── hashes.json                          # skill id -> 上游内容 hash (prune 索引)
 └── skills/<owner>/<repo>/<skill>/
-    ├── domain.json                      # 每个 prompt 一对 json+md
-    ├── domain.md
-    ├── one_liner.json
-    ├── one_liner.md
-    └── ...
+    ├── domain.json                      # 每个 prompt 一个 json
+    ├── scenario_intro.json
+    └── md/                              # 供浏览的 markdown 副本
+        ├── domain.md
+        └── ...
 ```
 
 - 目录名即 `skills.jsonl` 里的 `id`, 与上游 `data/skills/` 布局一致。
-- 每个 prompt 的结构化输出存放在自己的 `<prompt_id>.json` 里(缓存的提交标记); 旁边的 `<prompt_id>.md` 用于浏览。
-- 内置 prompt: `domain`、`one_liner`、`dev_intro`、`scenario_intro`、`blackbox`、`whitebox`、`comparison`、`trigger_guide`、`tagline`。
+- 每个 prompt 的结构化输出存放在自己的 `<prompt_id>.json` 里(缓存的提交标记); 供浏览的 markdown 副本放在 `md/<prompt_id>.md`, 目录本身只放 json。
+- 内置 prompt: `domain`、`scenario_intro`、`blackbox`、`whitebox`、`comparison`、`trigger_guide`、`tagline`。
 
 新鲜度: `hashes.json` 记录每个 skill 的输出是基于哪个上游内容 hash 生成的, 有效性判定发生在
 `sync` 时——每次 sync 将该索引与刚下载的快照逐一对比, 上游 hash 变化(或 skill 已从上游消失)
@@ -47,8 +47,7 @@ skills-intros run --top 50    # 为安装量前 50 的 skill 生成介绍词
 
 ```bash
 skills-intros run --top 0             # 所有可用 skill
-skills-intros run --force             # 无视已有结果强制重跑
-skills-intros run --prompts tagline   # 只(重)生成一个 prompt
+skills-intros run --prompts tagline   # 只为所有 skill 生成这一个 prompt
 skills-intros run --top 5 --dry-run   # 用离线假 LLM 冒烟测试
 skills-intros run --top 5 --debug     # 把最终发给 LLM 的 prompt 打印到 stderr
 skills-intros run --verbose           # 开启 DEBUG 级别的执行日志
@@ -57,6 +56,15 @@ skills-intros run --verbose           # 开启 DEBUG 级别的执行日志
 重跑天然支持断点续传: 每个 prompt 的输出一生成即落盘, 因此即使中途崩溃, 也只有缺失的
 prompt 才会真正调用 LLM。拆分布局之前写入的结果(每个 skill 一个 `result.json`)会被忽略
 并重新生成。
+
+需要重算时先让缓存失效再跑——这与 `sync` 发现上游内容 hash 变化时走的是同一条路径:
+
+```bash
+skills-intros invalidate --prompts whitebox        # 所有 skill 的这一个 prompt
+skills-intros invalidate --skill owner/repo/name   # 某个 skill 的全部 prompt
+skills-intros invalidate --skill owner/repo/name --prompts whitebox
+skills-intros invalidate --all                     # 全部清空(需显式 --all)
+```
 
 ## 新增一个 prompt
 
@@ -70,14 +78,14 @@ skill 上下文——`{{ skill.name }}` 与 `{{ skill.description }}`(均取自 
 ---
 description: 一行说明
 output: IntroText          # models.py 中注册的 pydantic schema
-depends_on: [dev_intro]    # DAG 依赖; 根节点可省略
+depends_on: [scenario_intro]   # DAG 依赖; 根节点可省略
 ---
 
 请为下面的 skill 写……
-{{ deps.dev_intro.text }}   # deps 将 prompt id 映射到其解析后的输出对象
+{{ deps.scenario_intro.text }}   # deps 将 prompt id 映射到其解析后的输出对象
 ```
 
-然后为所有 skill 生成（已缓存的 prompt 一律复用, 只生成缺失的——需要重算请加 `--force`）:
+然后为所有 skill 生成（已缓存的 prompt 一律复用, 只生成缺失的——需要重算请先 `invalidate`）:
 
 ```bash
 skills-intros run --prompts my_angle --top 0
