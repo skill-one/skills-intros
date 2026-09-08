@@ -39,9 +39,10 @@ Key design decisions:
 ## Partial regeneration internals
 
 `run --prompts <id>` computes the dependency closure of the target prompts. Target prompts
-always rerun; their dependencies reuse stored outputs from `result.json` (regenerated only if
-missing or `--force`); prompts outside the closure are carried over untouched, so
-`result.json` stays complete after every run.
+always rerun; their dependencies are inputs, so they reuse stored outputs from `result.json`
+and are regenerated only when missing or schema-invalid. `--force` applies to the requested
+prompts only, not to the dependencies pulled in by the closure. Prompts outside the closure
+are carried over untouched, so `result.json` stays complete after every run.
 
 ## Project layout
 
@@ -65,6 +66,7 @@ src/skills_intros/
 ├── generate.py      # async DAG execution + file-based resume
 ├── outputs.py       # per-skill markdown rendering
 └── cli.py           # typer commands (sync / run)
+└── logging.py       # --verbose logging setup
 ```
 
 ## Configuration resolution

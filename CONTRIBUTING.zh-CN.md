@@ -38,9 +38,10 @@ one_liner ── tagline
 
 ## 局部重跑的实现
 
-`run --prompts <id>` 会先计算目标 prompt 的依赖闭包。目标 prompt 总是重跑; 其依赖复用
-`result.json` 里已存的输出（缺失或传 `--force` 时才重新生成）; 闭包之外的 prompt 原样
-保留——因此每次运行后 `result.json` 始终完整。
+`run --prompts <id>` 会先计算目标 prompt 的依赖闭包。目标 prompt 总是重跑; 依赖属于输入,
+因此复用 `result.json` 里已存的输出, 仅在缺失或 schema 校验失败时重新生成。`--force` 只
+作用于显式指定的 prompt, 不会连带重算闭包带进来的依赖。闭包之外的 prompt 原样保留——因此
+每次运行后 `result.json` 始终完整。
 
 ## 项目结构
 
@@ -64,6 +65,7 @@ src/skills_intros/
 ├── generate.py      # 异步 DAG 执行 + 文件断点续跑
 ├── outputs.py       # 每 skill 的 markdown 渲染
 └── cli.py           # typer 命令（sync / run）
+└── logging.py       # --verbose 日志配置
 ```
 
 ## 配置解析

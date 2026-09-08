@@ -120,14 +120,24 @@ async def test_only_generates_missing_deps_from_scratch(settings, prompt_set):
     assert len(record["intros"]) == 7
 
 
-async def test_only_with_force_regenerates_dependencies(settings, prompt_set):
+async def test_only_with_force_regenerates_only_the_selection(settings, prompt_set):
+    """--force targets the requested prompts; their dependencies are inputs and
+    keep the normal cache rules (regenerated only when missing or invalid)."""
     skills = load_skills(settings)
     await run_all(FakeLLM(), settings, skills, prompt_set)
+    before = json.loads(result_path(settings, skills[0]).read_text(encoding="utf-8"))
 
-    # tagline depends on one_liner: force regenerates the whole closure (2 prompts)
+    # tagline depends on one_liner, but only tagline is forced -> 1 call
     llm = CountingLLM(FakeLLM())
     await run_all(llm, settings, skills[:1], prompt_set, only={"tagline"}, force=True)
-    assert llm.calls == 2
+    assert llm.calls == 1
+
+    # the dependency output is reused unchanged, and so is everything else
+    record = json.loads(result_path(settings, skills[0]).read_text(encoding="utf-8"))
+    assert len(record["intros"]) == 7
+    for pid in ("domain", "one_liner", "dev_intro", "scenario_intro",
+                "comparison", "trigger_guide"):
+        assert record["intros"][pid] == before["intros"][pid]
 
     # without force the cache rules match a full run: nothing regenerates
     llm = CountingLLM(FakeLLM())
@@ -141,10 +151,10 @@ async def test_force_with_only_preserves_prompts_outside_closure(settings, promp
     await run_all(FakeLLM(), settings, skills, prompt_set)
     before = json.loads(result_path(settings, skills[0]).read_text(encoding="utf-8"))
 
-    # closure of dev_intro = {domain, dev_intro} -> 2 calls; the other 5 untouched
+    # closure of dev_intro = {domain, dev_intro}, but only dev_intro is forced -> 1 call
     llm = CountingLLM(FakeLLM())
     await run_all(llm, settings, skills[:1], prompt_set, only={"dev_intro"}, force=True)
-    assert llm.calls == 2
+    assert llm.calls == 1
     record = json.loads(result_path(settings, skills[0]).read_text(encoding="utf-8"))
     assert len(record["intros"]) == 7
     for pid in ("one_liner", "scenario_intro", "comparison", "trigger_guide", "tagline"):
@@ -256,4 +266,18 @@ async def test_model_and_system_prompt_passed_to_llm(settings, prompt_set):
     await run_one(RecordingLLM(), settings, prompt_set, skill, force=True)
     assert captured["model"] == settings.model
     assert captured["messages"][0]["role"] == "system"
-    assert "中文介绍词" in captured["messages"][0]["content"]
+    assert "推销自己" in captured["messages"][0]["content"]
+    # the skill's SKILL.md source lives in the system prompt
+    assert "Alpha does useful things" in captured["messages"][0]["content"]
+
+
+async def test_debug_dumps_rendered_messages(settings, prompt_set, capfd):
+    """debug=True prints the exact system/user messages to stderr before each call."""
+    skill = load_skills(settings)[0]
+    await run_one(FakeLLM(), settings, prompt_set, skill, force=True, debug=True)
+
+    err = capfd.readouterr().err
+    assert f"===== debug {skill.id} / domain =====" in err
+    assert "----- system -----" in err
+    assert "----- user -----" in err
+    assert "Alpha does useful things." in err  # rendered skill_md, not the raw template
