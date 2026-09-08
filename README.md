@@ -12,25 +12,24 @@ Generate multi-angle Chinese introductions for [agent skills](https://www.skills
 Each skill gets one directory under `output/results/skills/`:
 
 ```
-output/results/skills/<owner>/<repo>/<skill>/
-├── result.json        # machine-readable record
-├── domain.md          # one markdown per prompt, for easy browsing
-├── one_liner.md
-├── dev_intro.md
-├── scenario_intro.md
-├── comparison.md
-├── trigger_guide.md
-└── tagline.md
+output/results/
+├── hashes.json                          # skill id -> upstream content hash (prune index)
+└── skills/<owner>/<repo>/<skill>/
+    ├── domain.json                      # one json+md pair per prompt
+    ├── domain.md
+    ├── one_liner.json
+    ├── one_liner.md
+    └── ...
 ```
 
 - The directory name is the skill `id` from `skills.jsonl`, mirroring the upstream `data/skills/` layout.
-- `result.json` is `{"skill": <upstream record incl. content hash>, "intros": {<prompt_id>: <structured output>}}` — the single source of truth.
+- Each prompt's structured output lives in its own `<prompt_id>.json` (the cache commit marker); the `<prompt_id>.md` next to it is for easy browsing.
 - Built-in prompts: `domain`, `one_liner`, `dev_intro`, `scenario_intro`, `blackbox`, `whitebox`, `comparison`, `trigger_guide`, `tagline`.
 
-Freshness: `result.json` stores the upstream content hash for auditing, but validity is
-decided at `sync` time — each sync compares stored results against the freshly downloaded
-snapshot and immediately prunes those whose upstream hash changed or whose skill
-disappeared. `run` itself just reuses whatever `result.json` is on disk.
+Freshness: `hashes.json` maps each skill id to the upstream content hash its outputs were
+generated against, but validity is decided at `sync` time — each sync compares the index
+against the freshly downloaded snapshot and immediately prunes entries whose upstream hash
+changed or whose skill disappeared. `run` itself just reuses whatever is on disk.
 
 ## Quickstart
 
@@ -54,7 +53,10 @@ skills-intros run --top 5 --debug     # print the rendered prompts sent to the L
 skills-intros run --verbose           # enable DEBUG-level run logs
 ```
 
-Re-runs resume for free: only skills without an existing `result.json` cost LLM calls.
+Re-runs resume for free: each prompt's output is committed to disk as soon as it is
+generated, so only missing prompts cost LLM calls — even after a crash mid-run.
+Results written before the per-prompt layout (a single `result.json` per skill) are
+ignored and regenerated.
 
 ## Adding a prompt
 

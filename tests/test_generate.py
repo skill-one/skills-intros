@@ -2,9 +2,12 @@
 
 import json
 
+import pytest
+
 from skills_intros.data import load_skills
-from skills_intros.generate import load_results, result_path, run_all, run_one
+from skills_intros.generate import load_results, run_all, run_one
 from skills_intros.llm import FakeLLM
+from skills_intros.outputs import hashes_path, prompt_result_path, skill_result_dir
 
 
 class CountingLLM:
@@ -17,6 +20,15 @@ class CountingLLM:
     async def create(self, response_model=None, messages=None, **kwargs):
         self.calls += 1
         return await self.inner.create(response_model, messages, **kwargs)
+
+
+def stored_intros(settings, skill_id: str) -> dict:
+    """All per-prompt json outputs stored on disk for one skill."""
+    skill_dir = skill_result_dir(settings, skill_id)
+    return {
+        p.stem: json.loads(p.read_text(encoding="utf-8"))
+        for p in sorted(skill_dir.glob("*.json"))
+    }
 
 
 async def test_full_run_produces_all_prompt_outputs(settings, prompt_set):
@@ -36,7 +48,7 @@ async def test_existing_results_skip_llm_calls(settings, prompt_set):
 
     second = CountingLLM(FakeLLM())
     results = await run_all(second, settings, skills, prompt_set)
-    assert second.calls == 0  # result.json on disk short-circuits the LLM
+    assert second.calls == 0  # per-prompt jsons on disk short-circuit the LLM
     assert len(results) == 4
 
 
@@ -50,7 +62,31 @@ async def test_force_regenerates(settings, prompt_set):
     assert len(results) == 4
 
 
-async def test_run_trusts_result_json_invalidated_by_sync(settings, prompt_set):
+async def test_hash_registered_only_when_generating(settings, prompt_set):
+    """hashes.json gains an entry only for skills that generated something this
+    run; a fully cached run leaves the index untouched."""
+    skills = load_skills(settings)
+    await run_all(FakeLLM(), settings, skills[:1], prompt_set)
+    assert hashes_path(settings).read_text(encoding="utf-8") == json.dumps(
+        {skills[0].id: skills[0].hash}, ensure_ascii=False
+    )
+
+    # a run that generates nothing rewrites nothing
+    before = hashes_path(settings).read_text(encoding="utf-8")
+    await run_all(FakeLLM(), settings, skills[:1], prompt_set)
+    assert hashes_path(settings).read_text(encoding="utf-8") == before
+
+
+async def test_only_runs_write_no_hash_entry_when_fully_cached(settings, prompt_set):
+    skills = load_skills(settings)
+    await run_all(FakeLLM(), settings, skills, prompt_set)
+
+    await run_all(FakeLLM(), settings, skills, prompt_set, only={"tagline"})
+    # nothing was generated, so no new hash entries appeared
+    assert len(json.loads(hashes_path(settings).read_text(encoding="utf-8"))) == 4
+
+
+async def test_run_trusts_existing_outputs_invalidated_by_sync(settings, prompt_set):
     """Invalidation is sync's job (it prunes stale artifacts); run never re-checks hashes."""
     skills = load_skills(settings)
     await run_all(FakeLLM(), settings, skills, prompt_set)
@@ -67,7 +103,7 @@ async def test_run_trusts_result_json_invalidated_by_sync(settings, prompt_set):
 
     llm = CountingLLM(FakeLLM())
     await run_all(llm, settings, load_skills(settings), prompt_set)
-    assert llm.calls == 0  # run trusts result.json as-is
+    assert llm.calls == 0  # run trusts per-prompt jsons as-is
 
 
 async def test_only_reuses_cached_targets_like_a_full_run(settings, prompt_set):
@@ -86,21 +122,19 @@ async def test_only_fills_in_missing_prompt_and_carries_over_rest(settings, prom
     skills = load_skills(settings)
     await run_all(FakeLLM(), settings, skills, prompt_set)
 
-    # drop tagline from Alpha's stored record to simulate a missing prompt
-    path = result_path(settings, skills[0])
-    record = json.loads(path.read_text(encoding="utf-8"))
-    before = {pid: out for pid, out in record["intros"].items() if pid != "tagline"}
-    record["intros"] = dict(before)
-    path.write_text(json.dumps(record, ensure_ascii=False), encoding="utf-8")
+    # drop Alpha's tagline json to simulate a missing prompt
+    tagline_path = prompt_result_path(settings, skills[0].id, "tagline")
+    tagline_path.unlink()
+    before = stored_intros(settings, skills[0].id)
 
     llm = CountingLLM(FakeLLM())
     await run_all(llm, settings, skills, prompt_set, only={"tagline"})
     assert llm.calls == 1  # only Alpha's missing tagline was generated
 
-    updated = json.loads(path.read_text(encoding="utf-8"))
-    assert set(updated["intros"]) == set(before) | {"tagline"}  # complete again
+    updated = stored_intros(settings, skills[0].id)
+    assert set(updated) == set(before) | {"tagline"}  # complete again
     for pid, out in before.items():
-        assert updated["intros"][pid] == out  # carried over untouched
+        assert updated[pid] == out  # carried over untouched
 
 
 async def test_only_generates_missing_deps_from_scratch(settings, prompt_set):
@@ -110,15 +144,14 @@ async def test_only_generates_missing_deps_from_scratch(settings, prompt_set):
     await run_all(llm, settings, skills[:1], prompt_set, only={"comparison"})
     # comparison + dev_intro + scenario_intro + domain = 4 prompts
     assert llm.calls == 4
-    record = json.loads(result_path(settings, skills[0]).read_text(encoding="utf-8"))
-    assert set(record["intros"]) == {"domain", "dev_intro", "scenario_intro", "comparison"}
+    assert set(stored_intros(settings, skills[0].id)) == {
+        "domain", "dev_intro", "scenario_intro", "comparison"}
 
-    # a partial record must not count as complete: a full run fills in the gaps
+    # a partial directory must not count as complete: a full run fills in the gaps
     llm = CountingLLM(FakeLLM())
     await run_all(llm, settings, skills[:1], prompt_set)
     assert llm.calls == 5  # only the missing blackbox, whitebox, one_liner, trigger_guide, tagline
-    record = json.loads(result_path(settings, skills[0]).read_text(encoding="utf-8"))
-    assert len(record["intros"]) == 9
+    assert len(stored_intros(settings, skills[0].id)) == 9
 
 
 async def test_only_with_force_regenerates_only_the_selection(settings, prompt_set):
@@ -126,7 +159,7 @@ async def test_only_with_force_regenerates_only_the_selection(settings, prompt_s
     keep the normal cache rules (regenerated only when missing or invalid)."""
     skills = load_skills(settings)
     await run_all(FakeLLM(), settings, skills, prompt_set)
-    before = json.loads(result_path(settings, skills[0]).read_text(encoding="utf-8"))
+    before = stored_intros(settings, skills[0].id)
 
     # tagline depends on one_liner, but only tagline is forced -> 1 call
     llm = CountingLLM(FakeLLM())
@@ -134,84 +167,55 @@ async def test_only_with_force_regenerates_only_the_selection(settings, prompt_s
     assert llm.calls == 1
 
     # the dependency output is reused unchanged, and so is everything else
-    record = json.loads(result_path(settings, skills[0]).read_text(encoding="utf-8"))
-    assert len(record["intros"]) == 9
+    assert len(stored_intros(settings, skills[0].id)) == 9
+    updated = stored_intros(settings, skills[0].id)
     for pid in ("domain", "one_liner", "dev_intro", "scenario_intro",
-                "comparison", "trigger_guide"):
-        assert record["intros"][pid] == before["intros"][pid]
-
-    # without force the cache rules match a full run: nothing regenerates
-    llm = CountingLLM(FakeLLM())
-    await run_all(llm, settings, skills[:1], prompt_set, only={"tagline"})
-    assert llm.calls == 0
+                "blackbox", "whitebox", "comparison", "trigger_guide"):
+        assert updated[pid] == before[pid]
 
 
 async def test_force_with_only_preserves_prompts_outside_closure(settings, prompt_set):
-    """--force never deletes result.json: prompts outside the closure survive intact."""
+    """--force never touches prompts outside the closure: their files survive intact."""
     skills = load_skills(settings)
     await run_all(FakeLLM(), settings, skills, prompt_set)
-    before = json.loads(result_path(settings, skills[0]).read_text(encoding="utf-8"))
+    before = stored_intros(settings, skills[0].id)
 
     # closure of dev_intro = {domain, dev_intro}, but only dev_intro is forced -> 1 call
     llm = CountingLLM(FakeLLM())
     await run_all(llm, settings, skills[:1], prompt_set, only={"dev_intro"}, force=True)
     assert llm.calls == 1
-    record = json.loads(result_path(settings, skills[0]).read_text(encoding="utf-8"))
-    assert len(record["intros"]) == 9
-    for pid in ("one_liner", "scenario_intro", "comparison", "trigger_guide", "tagline"):
-        assert record["intros"][pid] == before["intros"][pid]
+    updated = stored_intros(settings, skills[0].id)
+    assert len(updated) == 9
+    for pid in ("one_liner", "scenario_intro", "blackbox", "whitebox",
+                "comparison", "trigger_guide", "tagline"):
+        assert updated[pid] == before[pid]
 
 
-async def test_only_regenerates_cached_output_failing_current_schema(settings, prompt_set):
+async def test_regenerates_cached_output_failing_current_schema(settings, prompt_set):
     """A cached output that no longer validates (e.g. after a taxonomy change)
     counts as missing and is regenerated instead of crashing the run."""
     skills = load_skills(settings)
     await run_all(FakeLLM(), settings, skills, prompt_set)
 
     # rewrite Alpha's stored domain to a value the current enum rejects
-    path = result_path(settings, skills[0])
-    record = json.loads(path.read_text(encoding="utf-8"))
-    record["intros"]["domain"]["domain"] = "项目管理"
-    path.write_text(json.dumps(record, ensure_ascii=False), encoding="utf-8")
-    before = record["intros"]
+    domain_path = prompt_result_path(settings, skills[0].id, "domain")
+    domain = json.loads(domain_path.read_text(encoding="utf-8"))
+    domain["domain"] = "项目管理"
+    domain_path.write_text(json.dumps(domain, ensure_ascii=False), encoding="utf-8")
+    before = stored_intros(settings, skills[0].id)
 
     llm = CountingLLM(FakeLLM())
     await run_all(llm, settings, skills, prompt_set, only={"domain"})
     assert llm.calls == 1  # only Alpha's stale domain regenerated
 
-    updated = json.loads(path.read_text(encoding="utf-8"))
-    assert updated["intros"]["domain"]["domain"] == "办公效率"  # FakeLLM's fixed value
+    updated = stored_intros(settings, skills[0].id)
+    assert updated["domain"]["domain"] == "办公效率"  # FakeLLM's fixed value
     for pid, out in before.items():
         if pid != "domain":
-            assert updated["intros"][pid] == out  # carried over untouched
-
-
-async def test_full_run_regenerates_cached_output_failing_current_schema(settings, prompt_set):
-    """Full runs validate cached outputs too: only the invalid one regenerates."""
-    skills = load_skills(settings)
-    await run_all(FakeLLM(), settings, skills, prompt_set)
-
-    # rewrite Alpha's stored domain to a value the current enum rejects
-    path = result_path(settings, skills[0])
-    record = json.loads(path.read_text(encoding="utf-8"))
-    record["intros"]["domain"]["domain"] = "项目管理"
-    path.write_text(json.dumps(record, ensure_ascii=False), encoding="utf-8")
-    before = record["intros"]
-
-    llm = CountingLLM(FakeLLM())
-    await run_all(llm, settings, skills, prompt_set)
-    assert llm.calls == 1  # only Alpha's stale domain regenerated
-
-    updated = json.loads(path.read_text(encoding="utf-8"))
-    assert updated["intros"]["domain"]["domain"] == "办公效率"  # FakeLLM's fixed value
-    for pid, out in before.items():
-        if pid != "domain":
-            assert updated["intros"][pid] == out  # carried over untouched
+            assert updated[pid] == out  # carried over untouched
 
 
 async def test_run_one_rejects_unknown_only(settings, prompt_set):
-    import pytest
-
     skills = load_skills(settings)
     with pytest.raises(KeyError):
         await run_all(FakeLLM(), settings, skills[:1], prompt_set, only={"nope"})
@@ -232,13 +236,49 @@ async def test_results_persisted_and_reloadable(settings, prompt_set):
     assert record["intros"]["tagline"]["taglines"]
 
 
-async def test_result_written_next_to_prompt_markdowns(settings, prompt_set):
+async def test_crash_mid_run_keeps_completed_prompts(settings, prompt_set):
+    """Each prompt is committed to disk right after generation, so a crash
+    (simulated here by an LLM failing partway) keeps completed prompts and a
+    rerun only regenerates what is missing."""
+    skills = load_skills(settings)
+    skill = skills[0]
+
+    class FlakyLLM:
+        """Generates the first two prompts, then explodes."""
+
+        def __init__(self):
+            self.inner = FakeLLM()
+            self.calls = 0
+
+        async def create(self, response_model=None, messages=None, **kwargs):
+            self.calls += 1
+            if self.calls > 2:
+                raise RuntimeError("boom")
+            return await self.inner.create(response_model, messages, **kwargs)
+
+    with pytest.raises(RuntimeError, match="boom"):
+        await run_one(FlakyLLM(), settings, prompt_set, skill, force=True)
+    assert len(stored_intros(settings, skill.id)) == 2  # first two prompts survived
+
+    llm = CountingLLM(FakeLLM())
+    await run_one(llm, settings, prompt_set, skill)  # no force: cache rules apply
+    assert llm.calls == 7  # only the remaining seven were regenerated
+    assert len(stored_intros(settings, skill.id)) == 9
+
+
+async def test_legacy_result_json_removed_on_regeneration(settings, prompt_set):
+    """A pre-split result.json is ignored as a cache and deleted once the skill
+    regenerates under the new layout."""
     skill = load_skills(settings)[0]
-    await run_all(FakeLLM(), settings, [skill], prompt_set)
-    skill_dir = result_path(settings, skill).parent
-    record = json.loads((skill_dir / "result.json").read_text(encoding="utf-8"))
-    assert record["skill"]["id"] == skill.id
-    assert {p.stem for p in skill_dir.glob("*.md")} == set(record["intros"])
+    legacy = skill_result_dir(settings, skill.id) / "result.json"
+    legacy.parent.mkdir(parents=True)
+    legacy.write_text(json.dumps({"skill": {"id": skill.id}, "intros": {}}), encoding="utf-8")
+
+    llm = CountingLLM(FakeLLM())
+    await run_one(llm, settings, prompt_set, skill, force=True)
+    assert llm.calls == 9  # the legacy file did not count as a cache
+    assert not legacy.exists()
+    assert len(stored_intros(settings, skill.id)) == 9
 
 
 async def test_dep_outputs_flow_into_downstream_prompts(settings, prompt_set):

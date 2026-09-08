@@ -1,7 +1,8 @@
-"""DAG-driven generation; per-skill result files on disk act as the resume cache."""
+"""DAG-driven generation; per-prompt files on disk act as the resume cache."""
 
 import asyncio
 import json
+import logging
 import sys
 from pathlib import Path
 from typing import Any, Callable
@@ -10,14 +11,16 @@ from pydantic import ValidationError
 
 from .config import Settings
 from .models import SkillRecord
+from .outputs import (
+    hashes_path,
+    load_hashes,
+    prompt_result_path,
+    skill_result_dir,
+    write_prompt_output,
+)
 from .prompts import PromptSet, PromptSpec, render_user_prompt
-from .outputs import write_skill_output
 
-
-def result_path(settings: Settings, skill: SkillRecord) -> Path:
-    """Per-skill results live under results/skills/<owner>/<repo>/<slug>/ (id-based,
-    mirroring the upstream data/skills/ layout)."""
-    return settings.workdir / "results" / "skills" / skill.id.replace(":", "_") / "result.json"
+logger = logging.getLogger(__name__)
 
 
 def _dump_messages(skill: SkillRecord, spec, messages: list[dict]) -> None:
@@ -25,6 +28,15 @@ def _dump_messages(skill: SkillRecord, spec, messages: list[dict]) -> None:
     for message in messages:
         print(f"----- {message['role']} -----", file=sys.stderr)
         print(message["content"], file=sys.stderr)
+
+
+def _read_prompt_output(settings: Settings, skill_id: str, prompt_id: str) -> Any:
+    """One prompt's stored output dict, or None if absent or unreadable."""
+    path = prompt_result_path(settings, skill_id, prompt_id)
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))
+    except (FileNotFoundError, json.JSONDecodeError):
+        return None
 
 
 async def run_prompt(
@@ -45,36 +57,36 @@ async def run_prompt(
     )
 
 
-def _persist(settings: Settings, skill: SkillRecord, record: dict) -> None:
-    path = result_path(settings, skill)
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(record, ensure_ascii=False), encoding="utf-8")
-    write_skill_output(settings, record)
-
-
 async def run_one(
     llm, settings: Settings, prompts: PromptSet, skill: SkillRecord,
     force: bool = False, only: set[str] | None = None, debug: bool = False,
+    hashes: dict[str, str] | None = None,
 ) -> tuple[dict, bool]:
     """Generate one skill's intros; returns (record, reused).
 
+    Storage: each prompt's output is its own <prompt_id>.json under the skill's
+    results dir, committed (json+md) right after it is generated, so a crash
+    keeps every completed prompt. results/hashes.json maps skill id -> the
+    upstream hash the outputs were generated against; it is the index `sync`
+    prunes against. The hash is registered only when this run actually
+    generated something — a fully cached run leaves the disk untouched.
+
     Cache rules are identical for full runs and `only` runs: an existing
-    result.json is trusted as-is (sync prunes artifacts whose upstream content
-    changed), but every reused output must still validate against its current
-    schema — missing or invalid prompts are regenerated, and prompts outside
-    the selection are carried over from disk.
+    per-prompt json is trusted as-is (sync prunes artifacts whose upstream
+    content changed), but every reused output must still validate against its
+    current schema — missing or invalid prompts are regenerated, and prompts
+    outside the selection are simply not touched.
 
     force applies to the prompts the caller asked for (`only`, or every prompt
     when it is None); dependencies pulled in by the closure are inputs, so they
     keep the normal cache rules and are only computed when missing or invalid.
     """
-    path = result_path(settings, skill)
-    stored: dict[str, Any] = {}
-    if path.exists():
-        stored = json.loads(path.read_text(encoding="utf-8"))["intros"]
-
     targets = prompts.closure_ids(only) if only is not None else set(prompts.by_id)
     forced = set(only) if only is not None else set(prompts.by_id)
+    if hashes is None:
+        hashes = load_hashes(settings)
+    skill_dir = skill_result_dir(settings, skill.id)
+
     outputs: dict[str, Any] = {}
     generated = False
     for spec_id in prompts.ordered_ids():
@@ -82,26 +94,31 @@ async def run_one(
             continue
         spec = prompts.by_id[spec_id]
         deps = {d: outputs[d] for d in spec.depends_on}
-        if not (force and spec_id in forced) and spec_id in stored:
+        stored = _read_prompt_output(settings, skill.id, spec_id)
+        if not (force and spec_id in forced) and stored is not None:
             try:
-                outputs[spec_id] = spec.output_model.model_validate(stored[spec_id])
+                outputs[spec_id] = spec.output_model.model_validate(stored)
                 continue
             except ValidationError:
-                # stored output predates a schema/enum change: treat as missing
-                pass
+                pass  # schema-stale: treat as missing
         generated = True
-        outputs[spec_id] = await run_prompt(
-            llm, settings, prompts, spec, skill, deps, debug=debug,
-        )
+        outputs[spec_id] = await run_prompt(llm, settings, prompts, spec, skill, deps, debug=debug)
+        write_prompt_output(settings, skill.id, spec_id, outputs[spec_id].model_dump(mode="json"))
 
+    intros = {pid: out.model_dump(mode="json") for pid, out in outputs.items()}
     if not generated:
-        # nothing to do: every requested prompt is already cached and valid
-        return {"skill": skill.model_dump(), "intros": stored}, True
-    intros = {pid: out for pid, out in stored.items() if pid not in targets}
-    intros.update({pid: out.model_dump(mode="json") for pid, out in outputs.items()})
-    record = {"skill": skill.model_dump(), "intros": intros}
-    _persist(settings, skill, record)
-    return record, False
+        return {"skill": skill.model_dump(), "intros": intros}, True
+
+    if hashes.get(skill.id) != skill.hash:
+        hashes[skill.id] = skill.hash
+        hashes_path(settings).write_text(json.dumps(hashes, ensure_ascii=False), encoding="utf-8")
+
+    # a legacy single-file record has no meaning next to the per-prompt layout
+    legacy = skill_dir / "result.json"
+    if legacy.exists():
+        legacy.unlink()
+
+    return {"skill": skill.model_dump(), "intros": intros}, False
 
 
 async def run_all(
@@ -116,14 +133,15 @@ async def run_all(
 ) -> list[dict]:
     """Generate intros for all skills concurrently, bounded by a semaphore.
 
-    Skills with a complete, schema-valid result.json are skipped unless force
-    is set; `only` narrows work to a subset of prompts (see run_one).
+    Skills whose every requested prompt is already cached and valid are skipped
+    unless force is set; `only` narrows work to a subset of prompts (see run_one).
     """
     sem = asyncio.Semaphore(settings.concurrency)
+    hashes = load_hashes(settings)
 
     async def _one(skill: SkillRecord) -> dict:
         async with sem:
-            record, reused = await run_one(llm, settings, prompts, skill, force, only, debug)
+            record, reused = await run_one(llm, settings, prompts, skill, force, only, debug, hashes)
         if on_skill_done:
             on_skill_done(skill, record, reused)
         return record
@@ -132,8 +150,23 @@ async def run_all(
 
 
 def load_results(settings: Settings) -> list[dict]:
-    """Load all per-skill result files, sorted by skill id."""
-    root = settings.workdir / "results" / "skills"
-    return [
-        json.loads(p.read_text(encoding="utf-8")) for p in sorted(root.rglob("result.json"))
-    ]
+    """Load all per-skill result records, sorted by skill id.
+
+    A directory counts as a result if hashes.json has an entry for it (the
+    index is what sync prunes against); its outputs are reassembled from the
+    per-prompt json files. A stray legacy result.json is not an output.
+    """
+    hashes = load_hashes(settings)
+    results: list[dict] = []
+    for skill_id, stored_hash in sorted(hashes.items()):
+        skill_dir = skill_result_dir(settings, skill_id)
+        intros: dict[str, Any] = {}
+        for json_file in sorted(skill_dir.glob("*.json")):
+            if json_file.name == "result.json":
+                continue
+            try:
+                intros[json_file.stem] = json.loads(json_file.read_text(encoding="utf-8"))
+            except json.JSONDecodeError:
+                logger.warning("Skipping unreadable %s", json_file)
+        results.append({"skill": {"id": skill_id, "hash": stored_hash}, "intros": intros})
+    return results

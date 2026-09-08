@@ -9,7 +9,7 @@
 
 ```
 skills.jsonl (dist 分支) ──► 按安装量取 Top N ──► 每 skill 执行 prompt DAG
-                                                ──► output/results/skills/<id>/result.json
+                                                ──► output/results/skills/<id>/<prompt>.json
                                                 ──► output/results/skills/<id>/<prompt>.md
 ```
 
@@ -28,9 +28,11 @@ one_liner ── tagline
   [`graphlib.TopologicalSorter`](https://docs.python.org/3/library/graphlib.html)。
 - **结构化输出。** 每个 prompt 在 frontmatter 的 `output:` 中声明一个 pydantic schema;
   LLM 调用通过 [instructor](https://python.useinstructor.com/) 走 OpenAI 兼容客户端。
-- **基于文件的断点续跑。** 每个 skill 的 `result.json` 既是产物也是缓存: 存在即短路跳过
-  LLM。失效清理在 `sync` 时完成（上游 hash 变化或 skill 消失即删除）, `run` 不再做 hash
-  比对。续跑粒度是 prompt 级——只重新生成缺失或未通过当前 schema 校验的输出。
+- **基于文件的断点续跑。** 每个 prompt 的输出是自己的 `<prompt_id>.json`, 生成后立即提交
+  (json+md)——既是产物也是缓存: 存在且通过 schema 校验即不调用 LLM。`results/hashes.json`
+  (skill id -> 上游 hash, 仅在本次 run 真正生成内容时写入) 是 `sync` 的清理索引(上游 hash
+  变化或 skill 消失即删除), `run` 不再做 hash 比对。续跑粒度是 prompt 级, 中途崩溃已完成
+  的 prompt 全部保留。
 - **Prompt 即文件。** 每个 prompt 是 `prompts/` 下的一个 markdown 文件（可用
   `SKILLS_INTROS_PROMPTS_DIR` 覆盖）。YAML frontmatter 存元数据, 正文是 jinja2 用户提示词
   模板; `_system.md` 是共享的 system prompt。新增 prompt 通常无需改代码, 除非需要新的输出
@@ -39,9 +41,9 @@ one_liner ── tagline
 ## 局部重跑的实现
 
 `run --prompts <id>` 会先计算目标 prompt 的依赖闭包。目标 prompt 总是重跑; 依赖属于输入,
-因此复用 `result.json` 里已存的输出, 仅在缺失或 schema 校验失败时重新生成。`--force` 只
-作用于显式指定的 prompt, 不会连带重算闭包带进来的依赖。闭包之外的 prompt 原样保留——因此
-每次运行后 `result.json` 始终完整。
+因此复用各自的 `<prompt_id>.json`, 仅在缺失或 schema 校验失败时重新生成。`--force` 只
+作用于显式指定的 prompt, 不会连带重算闭包带进来的依赖。闭包之外的 prompt 完全不动——
+因此选择之外的输出绝不会意外重算。
 
 ## 项目结构
 
@@ -63,7 +65,7 @@ src/skills_intros/
 ├── prompts.py       # frontmatter 加载 + DAG 排序 + jinja2 渲染
 ├── llm.py           # instructor/openai client + 离线 FakeLLM
 ├── generate.py      # 异步 DAG 执行 + 文件断点续跑
-├── outputs.py       # 每 skill 的 markdown 渲染
+├── outputs.py       # 每 prompt 的 json+md 输出写入与渲染
 └── cli.py           # typer 命令（sync / run）
 └── logging.py       # --verbose 日志配置
 ```

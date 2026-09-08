@@ -12,6 +12,7 @@ from pathlib import Path
 
 from .config import ARCHIVE_URL, DIST_BRANCH, Settings
 from .models import SkillRecord
+from .outputs import hashes_path, load_hashes
 
 logger = logging.getLogger(__name__)
 
@@ -93,8 +94,9 @@ def _prune_stale_results(settings: Settings, data_dir: Path) -> int:
     """Delete result dirs that are stale against the freshly synced snapshot.
 
     Stale means: the skill is gone upstream, its content hash changed, or the
-    result.json is unreadable (it would crash run anyway). Returns the number
-    of pruned dirs.
+    prune index (results/hashes.json) has no usable entry for it. Legacy
+    result.json-only dirs predate the index and are left alone. Returns the
+    number of pruned dirs.
     """
     results_root = settings.workdir / "results" / "skills"
     if not results_root.exists():
@@ -108,18 +110,20 @@ def _prune_stale_results(settings: Settings, data_dir: Path) -> int:
             entry = json.loads(line)
             upstream[entry["id"]] = entry.get("hash", "")
 
+    hashes = load_hashes(settings)
+
+    kept: dict[str, str] = {}
     pruned = 0
-    for result_file in results_root.rglob("result.json"):
-        try:
-            record = json.loads(result_file.read_text(encoding="utf-8"))
-            skill_id = record["skill"]["id"]
-            stored_hash = record["skill"].get("hash", "")
-        except (json.JSONDecodeError, KeyError, TypeError):
-            skill_id, stored_hash = None, None
-        if skill_id is not None and upstream.get(skill_id) == stored_hash:
+    for skill_id, stored_hash in sorted(hashes.items()):
+        dir_path = results_root / skill_id.replace(":", "_")
+        if upstream.get(skill_id) == stored_hash and dir_path.exists():
+            kept[skill_id] = stored_hash
             continue
-        shutil.rmtree(result_file.parent)
+        if dir_path.exists():
+            shutil.rmtree(dir_path)
         pruned += 1
+    if pruned:
+        hashes_path(settings).write_text(json.dumps(kept, ensure_ascii=False), encoding="utf-8")
     return pruned
 
 

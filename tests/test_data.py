@@ -110,30 +110,35 @@ def test_sync_downloads_and_extracts_snapshot(tmp_path, monkeypatch):
 
 
 def test_sync_prunes_stale_results(tmp_path, monkeypatch):
-    """sync deletes results whose upstream hash changed, whose skill vanished
-    upstream, or whose result.json is unreadable; intact results survive."""
+    """sync deletes result dirs whose index hash changed, whose skill vanished
+    upstream, or whose directory is missing; intact results survive and the
+    index is rewritten without pruned entries."""
     import io
     import tarfile
 
     import skills_intros.data as data_mod
     from skills_intros.config import Settings
     from skills_intros.data import sync_data
+    from skills_intros.outputs import hashes_path
 
     settings = Settings(workdir=tmp_path / "out")
     results_root = settings.workdir / "results" / "skills"
 
-    def make_result(dir_name: str, skill_id: str, hash_: str) -> None:
-        d = results_root / dir_name
+    def make_result(skill_id: str) -> None:
+        d = results_root / skill_id.replace(":", "_")
         d.mkdir(parents=True)
-        record = {"skill": {"id": skill_id, "hash": hash_}, "intros": {}}
-        (d / "result.json").write_text(json.dumps(record), encoding="utf-8")
+        (d / "domain.json").write_text("{}", encoding="utf-8")
 
-    make_result("o_r_unchanged", "o/r/unchanged", "h1")
-    make_result("o_r_changed", "o/r/changed", "old")
-    make_result("o_r_gone", "o/r/gone", "h2")
-    make_result("o_r_broken", "o/r/broken", "h3")
-    (results_root / "o_r_broken" / "result.json").write_text("{not json",
-                                                             encoding="utf-8")
+    make_result("o/r/unchanged")
+    make_result("o/r/changed")
+    make_result("o/r/gone")
+
+    hashes_path(settings).write_text(json.dumps({
+        "o/r/unchanged": "h1",
+        "o/r/changed": "old",
+        "o/r/gone": "h2",
+        "o/r/dirless": "h3",  # index entry whose dir was already removed
+    }), encoding="utf-8")
 
     def fake_download(url: str, dest: str) -> None:
         with tarfile.open(dest, "w:gz") as tf:
@@ -156,7 +161,47 @@ def test_sync_prunes_stale_results(tmp_path, monkeypatch):
     monkeypatch.setattr(data_mod, "_download_archive", fake_download)
     _, pruned = sync_data(settings)
     assert pruned == 3
-    assert (results_root / "o_r_unchanged" / "result.json").exists()
-    assert not (results_root / "o_r_changed").exists()
-    assert not (results_root / "o_r_gone").exists()
-    assert not (results_root / "o_r_broken").exists()
+    assert (results_root / "o/r/unchanged" / "domain.json").exists()
+    assert not (results_root / "o/r/changed").exists()
+    assert not (results_root / "o/r/gone").exists()
+    assert json.loads(hashes_path(settings).read_text(encoding="utf-8")) == {
+        "o/r/unchanged": "h1"
+    }
+
+
+def test_sync_leaves_legacy_result_json_dirs_alone(tmp_path, monkeypatch):
+    """Dirs predating the split layout (result.json only, no index entry) are
+    not pruned by sync; the next run converts them in place."""
+    import io
+    import tarfile
+
+    import skills_intros.data as data_mod
+    from skills_intros.config import Settings
+    from skills_intros.data import sync_data
+
+    settings = Settings(workdir=tmp_path / "out")
+    results_root = settings.workdir / "results" / "skills"
+    legacy_dir = results_root / "o_r_legacy"
+    legacy_dir.mkdir(parents=True)
+    (legacy_dir / "result.json").write_text(
+        json.dumps({"skill": {"id": "o/r/legacy", "hash": "stale"}, "intros": {}}),
+        encoding="utf-8",
+    )
+
+    def fake_download(url: str, dest: str) -> None:
+        with tarfile.open(dest, "w:gz") as tf:
+            def add(name: str, content: str) -> None:
+                payload = content.encode()
+                info = tarfile.TarInfo(f"snapshot/{name}")
+                info.size = len(payload)
+                tf.addfile(info, io.BytesIO(payload))
+
+            add("skills.jsonl",
+                json.dumps({"id": "o/r/other", "name": "x", "installs": "1",
+                            "source": "o/r", "hash": "h9"}) + "\n")
+            add("skills/o/r/other/SKILL.md", "---\nname: x\n---\n\ndoes things.\n")
+
+    monkeypatch.setattr(data_mod, "_download_archive", fake_download)
+    _, pruned = sync_data(settings)
+    assert pruned == 0
+    assert (legacy_dir / "result.json").exists()
