@@ -47,3 +47,17 @@ def test_dotenv_fills_unset_fields(tmp_path, monkeypatch):
     assert settings.model == "env-model"
     assert settings.base_url == "https://example.com/v1"
     assert settings.api_key == "sk-test"
+
+
+def test_rejects_invalid_concurrency(tmp_path, monkeypatch):
+    monkeypatch.chdir(tmp_path)
+    with pytest.raises(ValueError, match="concurrency"):
+        Settings(concurrency=0, _env_file=None)
+    with pytest.raises(ValueError, match="concurrency"):
+        Settings(concurrency=-1, _env_file=None)
+
+
+def test_rejects_negative_max_retries(tmp_path, monkeypatch):
+    monkeypatch.chdir(tmp_path)
+    with pytest.raises(ValueError, match="max_retries"):
+        Settings(max_retries=-1, _env_file=None)

@@ -2,6 +2,7 @@
 
 from pathlib import Path
 
+from pydantic import model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 REPO = "skill-one/skills-sh-scraper"
@@ -23,3 +24,11 @@ class Settings(BaseSettings):
     max_retries: int = 3
     workdir: Path = Path("output")  # holds data/ and results
     prompts_dir: Path = Path("prompts")  # one markdown file per prompt
+
+    @model_validator(mode="after")
+    def _validate(self) -> "Settings":
+        if self.concurrency < 1:
+            raise ValueError("concurrency must be >= 1")
+        if self.max_retries < 0:
+            raise ValueError("max_retries must be >= 0")
+        return self
