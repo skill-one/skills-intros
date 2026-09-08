@@ -9,7 +9,3 @@ depends_on: [scenario_intro]
 - avoid_when: 什么情形下不应使用 (2~3 条)
 
 场景分析: {{ deps.scenario_intro.text }}
-
-skill 名称: {{ skill.name }}
-SKILL.md 内容:
-{{ skill_md }}

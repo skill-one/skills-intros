@@ -51,6 +51,8 @@ skills-intros run --top 0             # 所有可用 skill
 skills-intros run --force             # 无视已有结果强制重跑
 skills-intros run --prompts tagline   # 只(重)生成一个 prompt
 skills-intros run --top 5 --dry-run   # 用离线假 LLM 冒烟测试
+skills-intros run --top 5 --debug     # 把最终发给 LLM 的 prompt 打印到 stderr
+skills-intros run --verbose           # 开启 DEBUG 级别的执行日志
 ```
 
 重跑天然支持断点续传: 只有缺少 `result.json` 的 skill 才会真正调用 LLM。
@@ -58,6 +60,10 @@ skills-intros run --top 5 --dry-run   # 用离线假 LLM 冒烟测试
 ## 新增一个 prompt
 
 `prompts/` 下一个 markdown 文件即一个 prompt, 文件名就是 prompt id。
+共享的 `_system.md` 是 system prompt, 按 skill 逐次渲染: 它承载每个 prompt 都能看到的
+skill 上下文——`{{ skill.name }}` 与 `{{ skill.description }}`(均取自 `skills.jsonl`)
+和完整的 `{{ skill_md }}` 原文(每个 skill 目录下的 `SKILL.md` 文件)——因此各 prompt
+文件只需描述任务本身。
 
 ```markdown
 ---
@@ -67,7 +73,7 @@ depends_on: [dev_intro]    # DAG 依赖; 根节点可省略
 ---
 
 请为下面的 skill 写……
-{{ deps.dev_intro.text }}
+{{ deps.dev_intro.text }}   # deps 将 prompt id 映射到其解析后的输出对象
 ```
 
 然后为所有 skill 生成（已缓存的 prompt 一律复用, 只生成缺失的——需要重算请加 `--force`）:
@@ -88,5 +94,4 @@ skills-intros run --prompts my_angle --top 0
 | `SKILLS_INTROS_TOP_N`       | `50`           | 处理的 skill 数量（`0` = 全部）                     |
 | `SKILLS_INTROS_CONCURRENCY` | `8`            | LLM 最大并发调用数                                |
 | `SKILLS_INTROS_WORKDIR`     | `output`       | 存放 `data/` 与 `results/`                    |
-| `SKILLS_INTROS_PROMPTS_DIR` | `prompts`      | prompt markdown 文件所在目录                     |
-
+| `SKILLS_INTROS_PROMPTS_DIR` | `prompts`      | prompt markdown 文件所在目录(含 `_system.md`)          |

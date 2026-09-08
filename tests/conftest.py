@@ -11,13 +11,13 @@ from skills_intros.prompts import load_prompt_set
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
 SKILLS = [
-    {"id": "owner-a/repo-a/alpha", "name": "Alpha", "installs": "300",
-     "source": "owner-a/repo-a", "hash": "a" * 64},
-    {"id": "owner-b/repo-b/beta", "name": "Beta", "installs": "200",
-     "source": "owner-b/repo-b", "hash": "b" * 64},
-    {"id": "owner-c/repo-c/gamma", "name": "Gamma", "installs": "100",
-     "source": "owner-c/repo-c", "hash": "c" * 64},
-    # slug containing a colon is stored under an underscore directory
+    {"id": "owner-a/repo-a/alpha", "name": "Alpha", "description": "Alpha 的官方技能描述",
+     "installs": "300", "source": "owner-a/repo-a", "hash": "a" * 64},
+    {"id": "owner-b/repo-b/beta", "name": "Beta", "description": "Beta 的官方技能描述",
+     "installs": "200", "source": "owner-b/repo-b", "hash": "b" * 64},
+    {"id": "owner-c/repo-c/gamma", "name": "Gamma", "description": "Gamma 的官方技能描述",
+     "installs": "100", "source": "owner-c/repo-c", "hash": "c" * 64},
+    # no description in the index: SkillRecord.description falls back to ""
     {"id": "owner-h/repo-h/hotel:sub", "name": "Hotel", "installs": "50",
      "source": "owner-h/repo-h", "hash": "h" * 64},
     # filtered out: no saved content (no hash)

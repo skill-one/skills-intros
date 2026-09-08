@@ -1,12 +1,13 @@
 """LLM client factory and an offline fake for dry-runs."""
 
 import instructor
+from instructor import Instructor
 from openai import AsyncOpenAI
 
 from .config import Settings
 
 
-def make_llm(settings: Settings):
+def make_llm(settings: Settings) -> Instructor:  # type: ignore[type-arg]
     """instructor-patched async client; supports any OpenAI-compatible endpoint."""
     client = AsyncOpenAI(base_url=settings.base_url, api_key=settings.api_key)
     return instructor.from_openai(client)
@@ -16,9 +17,9 @@ class FakeLLM:
     """Deterministic offline stand-in for dry-runs and tests."""
 
     async def create(self, response_model, messages=None, **kwargs):
-        user = messages[-1]["content"] if messages else ""
+        system = messages[0]["content"] if messages else ""
         name = "该 skill"
-        for line in user.splitlines():
+        for line in system.splitlines():
             if line.startswith("skill 名称:"):
                 name = line.removeprefix("skill 名称:").strip()
                 break

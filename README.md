@@ -50,6 +50,8 @@ skills-intros run --top 0             # all usable skills
 skills-intros run --force             # regenerate even if results exist
 skills-intros run --prompts tagline   # (re)generate one prompt for all skills
 skills-intros run --top 5 --dry-run   # offline smoke test with a fake LLM
+skills-intros run --top 5 --debug     # print the rendered prompts sent to the LLM (stderr)
+skills-intros run --verbose           # enable DEBUG-level run logs
 ```
 
 Re-runs resume for free: only skills without an existing `result.json` cost LLM calls.
@@ -57,6 +59,10 @@ Re-runs resume for free: only skills without an existing `result.json` cost LLM 
 ## Adding a prompt
 
 One markdown file under `prompts/` is one prompt; the file name is the prompt id.
+The shared `_system.md` is the system prompt, rendered once per skill: it carries
+the skill context every prompt sees — `{{ skill.name }}` and `{{ skill.description }}`
+(both from `skills.jsonl`) and the full `{{ skill_md }}` source text (the per-skill
+`SKILL.md` file) — so prompt files only describe the task.
 
 ```markdown
 ---
@@ -66,7 +72,7 @@ depends_on: [dev_intro]    # DAG edges; omit for root prompts
 ---
 
 请为下面的 skill 写……
-{{ deps.dev_intro.text }}
+{{ deps.dev_intro.text }}   # deps maps prompt ids to their parsed output objects
 ```
 
 Then generate it for every skill (already-cached prompts are reused; only missing
@@ -89,4 +95,4 @@ built-in defaults.
 | `SKILLS_INTROS_TOP_N` | `50` | Skills to process (`0` = all) |
 | `SKILLS_INTROS_CONCURRENCY` | `8` | Max concurrent LLM calls |
 | `SKILLS_INTROS_WORKDIR` | `output` | Holds `data/` and `results/` |
-| `SKILLS_INTROS_PROMPTS_DIR` | `prompts` | Directory with one prompt markdown per file |
+| `SKILLS_INTROS_PROMPTS_DIR` | `prompts` | Directory with one prompt markdown per file, plus `_system.md` |

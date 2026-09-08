@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pytest
 
-from skills_intros.models import Domain, DomainClassification, OneLiner
+from skills_intros.models import Domain, OneLiner
 from skills_intros.prompts import _load_prompt, load_prompt_set, render_user_prompt
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
@@ -19,6 +19,7 @@ def prompts():
 class FakeSkill:
     id = "a/b/c"
     name = "Alpha"
+    description = "Alpha 的技能描述"
     skill_md = "Alpha does useful things."
 
 
@@ -30,8 +31,25 @@ def test_all_seven_prompts_loaded_from_files(prompts):
     assert files == expected
 
 
-def test_system_prompt_loaded(prompts):
-    assert "中文介绍词" in prompts.system_prompt
+def test_system_prompt_template_loaded(prompts):
+    assert "推销自己" in prompts.system_template
+    assert "{{ skill_md }}" in prompts.system_template
+
+
+def test_system_prompt_renders_skill_context(prompts):
+    """The rendered system prompt carries the skill's SKILL.md source."""
+    system = prompts.render_system_prompt(FakeSkill())
+    assert "<skill_md>" in system
+    assert "Alpha does useful things." in system
+
+
+def test_system_prompt_omits_empty_description(prompts):
+    class NoDescription(FakeSkill):
+        description = ""
+
+    system = prompts.render_system_prompt(NoDescription())
+    assert "skill 描述" not in system
+    assert "Alpha does useful things." in system
 
 
 def test_all_dependencies_resolve(prompts):
@@ -40,41 +58,47 @@ def test_all_dependencies_resolve(prompts):
             assert dep in prompts.by_id, f"{spec.id} depends on unknown {dep}"
 
 
+def test_template_syntax_error_names_the_file(tmp_path):
+    """A markdown-escaped variable (`{{ x\\_y }}`, typically pasted from a chat
+    window) must fail at load time with the offending file named."""
+    (tmp_path / "_system.md").write_text("system prompt", encoding="utf-8")
+    (tmp_path / "a.md").write_text(
+        "---\noutput: OneLiner\n---\nhello {{ text\\_x }}", encoding="utf-8"
+    )
+    with pytest.raises(ValueError, match=r"a\.md.*line 1"):
+        load_prompt_set(tmp_path)
+
+
 def test_topological_order_puts_roots_first(prompts):
     order = prompts.ordered_ids()
     assert set(order) == set(prompts.by_id)
-    assert order.index("domain") < order.index("dev_intro")
+    assert order.index("domain") < order.index("scenario_intro")
     assert order.index("dev_intro") < order.index("comparison")
     assert order.index("scenario_intro") < order.index("trigger_guide")
     assert order.index("one_liner") < order.index("tagline")
 
 
-def test_render_injects_dep_outputs(prompts):
-    spec = prompts.by_id["dev_intro"]
-    deps = {"domain": DomainClassification(domain=Domain.DEV_CODING, reason="test")}
-    prompt = render_user_prompt(spec, FakeSkill(), deps)
-    assert "开发编程" in prompt
-    assert "Alpha does useful things." in prompt
-
-
-def test_render_root_prompt_without_deps(prompts):
-    prompt = render_user_prompt(prompts.by_id["one_liner"], FakeSkill(), {})
-    assert "Alpha" in prompt
+def test_user_prompts_are_task_only(prompts):
+    """Skill context moved into _system.md: user prompts carry deps/taxonomy only."""
+    prompt = render_user_prompt(prompts.by_id["one_liner"], {})
+    assert "Alpha" not in prompt
+    assert "does useful things" not in prompt
+    assert "一句话介绍你自己" in prompt
 
 
 def test_domain_prompt_renders_full_taxonomy(prompts):
     """Every category (emoji + name) and its description must reach the prompt."""
-    prompt = render_user_prompt(prompts.by_id["domain"], FakeSkill(), {})
+    prompt = render_user_prompt(prompts.by_id["domain"], {})
     for domain in Domain:
         assert f"- {domain.emoji} {domain.value}: " in prompt
-    assert "agent 基础设施" in prompt  # boundary hint for the largest bucket
+    assert "agent 基础设施" not in prompt  # removed from the taxonomy
     assert "行业专业" not in prompt  # removed from the taxonomy
 
 
 def test_render_uses_one_liner_text(prompts):
     spec = prompts.by_id["tagline"]
     deps = {"one_liner": OneLiner(text="一句话简介内容")}
-    prompt = render_user_prompt(spec, FakeSkill(), deps)
+    prompt = render_user_prompt(spec, deps)
     assert "一句话简介内容" in prompt
 
 

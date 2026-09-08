@@ -9,7 +9,3 @@ depends_on: [dev_intro, scenario_intro]
 
 技术介绍: {{ deps.dev_intro.text }}
 场景介绍: {{ deps.scenario_intro.text }}
-
-skill 名称: {{ skill.name }}
-SKILL.md 内容:
-{{ skill_md }}

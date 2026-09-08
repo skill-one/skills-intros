@@ -2,7 +2,7 @@
 
 from enum import StrEnum
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class Domain(StrEnum):
@@ -21,8 +21,7 @@ class Domain(StrEnum):
 
     DEV_CODING = (
         "开发编程", "💻",
-        "写代码、调试、重构、数据库、API/框架集成、爬虫与浏览器自动化, "
-        "以及构建 agent 基础设施(MCP、多 agent 编排、skill/prompt 工程)",
+        "写代码、调试、重构、数据库、API/框架集成、爬虫与浏览器自动化"
     )
     TESTING_QA = ("测试与质量", "🧪", "测试编写与测试框架、E2E/UI 自动化测试、代码审查、质量检查与 bug 排查工具")
     DATA_ANALYSIS = ("数据分析", "📊", "SQL 查询、数据清洗、统计分析、可视化、报表与数据工程(ETL)")
@@ -55,14 +54,14 @@ class Domain(StrEnum):
 class DomainClassification(BaseModel):
     """Output schema for the `domain` prompt."""
 
-    domain: Domain = Field(description="按使用场景最贴合该 skill 的分类")
-    reason: str = Field(description="分类理由, 50 字以内")
+    domain: Domain = Field(description="按使用场景找到你最贴合的分类")
+    reason: str = Field(description="分类理由, 一句话")
 
 
 class OneLiner(BaseModel):
     """Output schema for the `one_liner` prompt."""
 
-    text: str = Field(description="一句话简介, 50 个汉字以内")
+    text: str = Field(description="一句话介绍, 50 个字以内")
 
 
 class IntroText(BaseModel):
@@ -84,18 +83,14 @@ class Taglines(BaseModel):
     taglines: list[str] = Field(description="3 条宣传短标语, 每条 20 个汉字以内")
 
 
-class SkillRecord:
+class SkillRecord(BaseModel):
     """A single skill loaded from the scraper index."""
+    model_config = ConfigDict(frozen=True)
 
-    def __init__(self, id: str, name: str, installs: int, source: str,
-                 hash: str, skill_md: str) -> None:
-        self.id = id
-        self.name = name
-        self.installs = installs
-        self.source = source
-        self.hash = hash  # upstream content hash; change triggers regeneration
-        self.skill_md = skill_md
-
-    def to_dict(self) -> dict:
-        # minimal identity: id locates everything else, hash drives invalidation
-        return {"id": self.id, "hash": self.hash}
+    id: str
+    name: str
+    installs: int
+    source: str
+    hash: str
+    skill_md: str
+    description: str = ""

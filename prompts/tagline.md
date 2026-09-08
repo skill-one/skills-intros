@@ -8,7 +8,3 @@ depends_on: [one_liner]
 风格精炼有力, 面向开发者群体。
 
 一句话简介: {{ deps.one_liner.text }}
-
-skill 名称: {{ skill.name }}
-SKILL.md 内容:
-{{ skill_md }}
