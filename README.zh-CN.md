@@ -27,7 +27,7 @@ output/results/skills/<owner>/<repo>/<skill>/
 
 - 目录名即 `skills.jsonl` 里的 `id`, 与上游 `data/skills/` 布局一致。
 - `result.json` 的结构是 `{"skill": <上游记录, 含内容 hash>, "intros": {<prompt_id>: <结构化输出>}}`——它是唯一的事实来源。
-- 内置 prompt: `domain`、`one_liner`、`dev_intro`、`scenario_intro`、`comparison`、`trigger_guide`、`tagline`。
+- 内置 prompt: `domain`、`one_liner`、`dev_intro`、`scenario_intro`、`blackbox`、`whitebox`、`comparison`、`trigger_guide`、`tagline`。
 
 新鲜度: `result.json` 中保存上游内容 hash 仅供审计, 有效性判定发生在 `sync` 时——每次
 sync 将磁盘上的结果与刚下载的快照逐一对比, 上游 hash 变化(或 skill 已从上游消失)的产物

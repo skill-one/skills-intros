@@ -25,7 +25,7 @@ output/results/skills/<owner>/<repo>/<skill>/
 
 - The directory name is the skill `id` from `skills.jsonl`, mirroring the upstream `data/skills/` layout.
 - `result.json` is `{"skill": <upstream record incl. content hash>, "intros": {<prompt_id>: <structured output>}}` — the single source of truth.
-- Built-in prompts: `domain`, `one_liner`, `dev_intro`, `scenario_intro`, `comparison`, `trigger_guide`, `tagline`.
+- Built-in prompts: `domain`, `one_liner`, `dev_intro`, `scenario_intro`, `blackbox`, `whitebox`, `comparison`, `trigger_guide`, `tagline`.
 
 Freshness: `result.json` stores the upstream content hash for auditing, but validity is
 decided at `sync` time — each sync compares stored results against the freshly downloaded

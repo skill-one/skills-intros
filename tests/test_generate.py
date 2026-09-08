@@ -23,7 +23,8 @@ async def test_full_run_produces_all_prompt_outputs(settings, prompt_set):
     skill = load_skills(settings)[0]
     record, _ = await run_one(FakeLLM(), settings, prompt_set, skill, force=True)
     assert set(record["intros"]) == {"domain", "one_liner", "dev_intro", "scenario_intro",
-                                     "comparison", "trigger_guide", "tagline"}
+                                     "blackbox", "whitebox", "comparison", "trigger_guide",
+                                     "tagline"}
 
 
 async def test_existing_results_skip_llm_calls(settings, prompt_set):
@@ -31,7 +32,7 @@ async def test_existing_results_skip_llm_calls(settings, prompt_set):
 
     first = CountingLLM(FakeLLM())
     await run_all(first, settings, skills, prompt_set)
-    assert first.calls == 4 * 7  # 4 skills x 7 prompts
+    assert first.calls == 4 * 9  # 4 skills x 9 prompts
 
     second = CountingLLM(FakeLLM())
     results = await run_all(second, settings, skills, prompt_set)
@@ -45,7 +46,7 @@ async def test_force_regenerates(settings, prompt_set):
 
     forced = CountingLLM(FakeLLM())
     results = await run_all(forced, settings, skills, prompt_set, force=True)
-    assert forced.calls == 4 * 7
+    assert forced.calls == 4 * 9
     assert len(results) == 4
 
 
@@ -115,9 +116,9 @@ async def test_only_generates_missing_deps_from_scratch(settings, prompt_set):
     # a partial record must not count as complete: a full run fills in the gaps
     llm = CountingLLM(FakeLLM())
     await run_all(llm, settings, skills[:1], prompt_set)
-    assert llm.calls == 3  # only the missing one_liner, trigger_guide, tagline
+    assert llm.calls == 5  # only the missing blackbox, whitebox, one_liner, trigger_guide, tagline
     record = json.loads(result_path(settings, skills[0]).read_text(encoding="utf-8"))
-    assert len(record["intros"]) == 7
+    assert len(record["intros"]) == 9
 
 
 async def test_only_with_force_regenerates_only_the_selection(settings, prompt_set):
@@ -134,7 +135,7 @@ async def test_only_with_force_regenerates_only_the_selection(settings, prompt_s
 
     # the dependency output is reused unchanged, and so is everything else
     record = json.loads(result_path(settings, skills[0]).read_text(encoding="utf-8"))
-    assert len(record["intros"]) == 7
+    assert len(record["intros"]) == 9
     for pid in ("domain", "one_liner", "dev_intro", "scenario_intro",
                 "comparison", "trigger_guide"):
         assert record["intros"][pid] == before["intros"][pid]
@@ -156,7 +157,7 @@ async def test_force_with_only_preserves_prompts_outside_closure(settings, promp
     await run_all(llm, settings, skills[:1], prompt_set, only={"dev_intro"}, force=True)
     assert llm.calls == 1
     record = json.loads(result_path(settings, skills[0]).read_text(encoding="utf-8"))
-    assert len(record["intros"]) == 7
+    assert len(record["intros"]) == 9
     for pid in ("one_liner", "scenario_intro", "comparison", "trigger_guide", "tagline"):
         assert record["intros"][pid] == before["intros"][pid]
 

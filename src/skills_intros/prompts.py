@@ -18,18 +18,21 @@ import yaml
 from jinja2 import Environment, TemplateSyntaxError
 
 from .models import (
+    BlackBoxIntro,
     Domain,
     DomainClassification,
     IntroText,
     OneLiner,
     Taglines,
     TriggerGuide,
+    WhiteBoxIntro,
 )
 
 # frontmatter `output` name -> pydantic schema in models.py
 OUTPUT_MODELS: dict[str, type] = {
     cls.__name__: cls
-    for cls in (DomainClassification, OneLiner, IntroText, TriggerGuide, Taglines)
+    for cls in (DomainClassification, OneLiner, IntroText, BlackBoxIntro, WhiteBoxIntro,
+                TriggerGuide, Taglines)
 }
 
 # Template contexts. System prompt (per skill): `skill` (SkillRecord) and

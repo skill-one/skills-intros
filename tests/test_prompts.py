@@ -23,9 +23,9 @@ class FakeSkill:
     skill_md = "Alpha does useful things."
 
 
-def test_all_seven_prompts_loaded_from_files(prompts):
-    expected = {"domain", "one_liner", "dev_intro", "scenario_intro",
-                "comparison", "trigger_guide", "tagline"}
+def test_all_nine_prompts_loaded_from_files(prompts):
+    expected = {"domain", "one_liner", "dev_intro", "scenario_intro", "blackbox",
+                "whitebox", "comparison", "trigger_guide", "tagline"}
     assert set(prompts.by_id) == expected
     files = {p.stem for p in PROMPTS_DIR.glob("*.md") if not p.name.startswith("_")}
     assert files == expected

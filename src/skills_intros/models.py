@@ -70,6 +70,23 @@ class IntroText(BaseModel):
     text: str = Field(description="介绍词正文, 150~250 个汉字")
 
 
+class BlackBoxIntro(BaseModel):
+    """Output schema for the `blackbox` prompt: outside view, no internals."""
+
+    function: str = Field(description="这个 skill 是做什么的, 一句话")
+    input_output: list[str] = Field(
+        description="典型「输入 → 输出」对照, 3~5 条, 每条格式: 输入 X → 输出 Y"
+    )
+
+
+class WhiteBoxIntro(BaseModel):
+    """Output schema for the `whitebox` prompt: inside view of how it works."""
+
+    execution_flow: list[str] = Field(description="被触发后的执行流程, 按顺序 3~6 步")
+    mechanisms: list[str] = Field(description="各项功能依靠的实现机制, 2~4 条")
+    dependencies: list[str] = Field(description="依赖的外部工具/库/网络资源, 1~4 条")
+
+
 class TriggerGuide(BaseModel):
     """Output schema for the `trigger_guide` prompt."""
 
