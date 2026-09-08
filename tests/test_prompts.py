@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pytest
 
-from skills_intros.models import Domain, OneLiner
+from skills_intros.models import Domain, IntroText
 from skills_intros.prompts import _load_prompt, load_prompt_set, render_user_prompt
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
@@ -23,8 +23,8 @@ class FakeSkill:
     skill_md = "Alpha does useful things."
 
 
-def test_all_nine_prompts_loaded_from_files(prompts):
-    expected = {"domain", "one_liner", "dev_intro", "scenario_intro", "blackbox",
+def test_all_prompts_loaded_from_files(prompts):
+    expected = {"domain", "scenario_intro", "blackbox",
                 "whitebox", "comparison", "trigger_guide", "tagline"}
     assert set(prompts.by_id) == expected
     files = {p.stem for p in PROMPTS_DIR.glob("*.md") if not p.name.startswith("_")}
@@ -63,7 +63,7 @@ def test_template_syntax_error_names_the_file(tmp_path):
     window) must fail at load time with the offending file named."""
     (tmp_path / "_system.md").write_text("system prompt", encoding="utf-8")
     (tmp_path / "a.md").write_text(
-        "---\noutput: OneLiner\n---\nhello {{ text\\_x }}", encoding="utf-8"
+        "---\noutput: IntroText\n---\nhello {{ text\\_x }}", encoding="utf-8"
     )
     with pytest.raises(ValueError, match=r"a\.md.*line 1"):
         load_prompt_set(tmp_path)
@@ -72,18 +72,16 @@ def test_template_syntax_error_names_the_file(tmp_path):
 def test_topological_order_puts_roots_first(prompts):
     order = prompts.ordered_ids()
     assert set(order) == set(prompts.by_id)
-    assert order.index("domain") < order.index("scenario_intro")
-    assert order.index("dev_intro") < order.index("comparison")
+    assert order.index("scenario_intro") < order.index("comparison")
     assert order.index("scenario_intro") < order.index("trigger_guide")
-    assert order.index("one_liner") < order.index("tagline")
 
 
 def test_user_prompts_are_task_only(prompts):
     """Skill context moved into _system.md: user prompts carry deps/taxonomy only."""
-    prompt = render_user_prompt(prompts.by_id["one_liner"], {})
+    prompt = render_user_prompt(prompts.by_id["scenario_intro"], {})
     assert "Alpha" not in prompt
     assert "does useful things" not in prompt
-    assert "一句话介绍你自己" in prompt
+    assert "场景化" in prompt
 
 
 def test_domain_prompt_renders_full_taxonomy(prompts):
@@ -95,11 +93,11 @@ def test_domain_prompt_renders_full_taxonomy(prompts):
     assert "行业专业" not in prompt  # removed from the taxonomy
 
 
-def test_render_uses_one_liner_text(prompts):
-    spec = prompts.by_id["tagline"]
-    deps = {"one_liner": OneLiner(text="一句话简介内容")}
+def test_render_uses_dependency_text(prompts):
+    spec = prompts.by_id["comparison"]
+    deps = {"scenario_intro": IntroText(text="场景介绍内容")}
     prompt = render_user_prompt(spec, deps)
-    assert "一句话简介内容" in prompt
+    assert "场景介绍内容" in prompt
 
 
 def _write(tmp_path: Path, name: str, content: str) -> Path:

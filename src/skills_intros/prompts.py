@@ -22,7 +22,6 @@ from .models import (
     Domain,
     DomainClassification,
     IntroText,
-    OneLiner,
     Taglines,
     TriggerGuide,
     WhiteBoxIntro,
@@ -31,7 +30,7 @@ from .models import (
 # frontmatter `output` name -> pydantic schema in models.py
 OUTPUT_MODELS: dict[str, type] = {
     cls.__name__: cls
-    for cls in (DomainClassification, OneLiner, IntroText, BlackBoxIntro, WhiteBoxIntro,
+    for cls in (DomainClassification, IntroText, BlackBoxIntro, WhiteBoxIntro,
                 TriggerGuide, Taglines)
 }
 

@@ -31,20 +31,20 @@ def _fake_output(model, name: str):
 
     if model is m.DomainClassification:
         return m.DomainClassification(domain=m.Domain.OFFICE, reason="离线演示用的固定分类")
-    if model is m.OneLiner:
-        return m.OneLiner(text=f"{name} 是一个离线演示用的一句话简介。")
     if model is m.IntroText:
         return m.IntroText(text=f"{name} 的离线演示介绍文本, 用于验证管道, 不含真实内容。")
     if model is m.BlackBoxIntro:
         return m.BlackBoxIntro(
             function=f"{name} 的离线演示功能描述",
-            input_output=[f"输入 A → 输出 {name} 的结果 1", "输入 B → 输出 结果 2"],
+            input_output=[
+                m.BlackBoxPair(input="输入 A", output=f"{name} 的结果 1"),
+                m.BlackBoxPair(input="输入 B", output="结果 2"),
+            ],
         )
     if model is m.WhiteBoxIntro:
         return m.WhiteBoxIntro(
             execution_flow=[f"{name} 被触发后先做步骤 1", "再做步骤 2", "最后完成步骤 3"],
-            mechanisms=["通过离线演示机制完成任务"],
-            dependencies=["不依赖任何外部资源"],
+            mechanisms=["通过离线演示机制完成任务, 不依赖外部资源"],
         )
     if model is m.TriggerGuide:
         return m.TriggerGuide(

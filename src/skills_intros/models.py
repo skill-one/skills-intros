@@ -58,33 +58,33 @@ class DomainClassification(BaseModel):
     reason: str = Field(description="分类理由, 一句话")
 
 
-class OneLiner(BaseModel):
-    """Output schema for the `one_liner` prompt."""
-
-    text: str = Field(description="一句话介绍, 50 个字以内")
-
-
 class IntroText(BaseModel):
-    """Output schema for free-text intro prompts (dev_intro, scenario_intro, comparison)."""
+    """Output schema for free-text intro prompts (scenario_intro, comparison)."""
 
     text: str = Field(description="介绍词正文, 150~250 个汉字")
+
+
+class BlackBoxPair(BaseModel):
+    """One 「输入 → 输出」 example for the blackbox intro."""
+
+    input: str = Field(description="用户实际会给出的输入, 如文件路径、URL、一段文本")
+    output: str = Field(description="用户实际会拿到的输出, 如生成的文件、报告、代码")
 
 
 class BlackBoxIntro(BaseModel):
     """Output schema for the `blackbox` prompt: outside view, no internals."""
 
     function: str = Field(description="这个 skill 是做什么的, 一句话")
-    input_output: list[str] = Field(
-        description="典型「输入 → 输出」对照, 3~5 条, 每条格式: 输入 X → 输出 Y"
+    input_output: list[BlackBoxPair] = Field(
+        description="典型「输入 → 输出」对照, 3~5 条"
     )
 
 
 class WhiteBoxIntro(BaseModel):
     """Output schema for the `whitebox` prompt: inside view of how it works."""
 
-    execution_flow: list[str] = Field(description="被触发后的执行流程, 按顺序 3~6 步")
-    mechanisms: list[str] = Field(description="各项功能依靠的实现机制, 2~4 条")
-    dependencies: list[str] = Field(description="依赖的外部工具/库/网络资源, 1~4 条")
+    execution_flow: list[str] = Field(description="主路径 (happy path) 执行流程, 按顺序 3~5 步")
+    mechanisms: list[str] = Field(description="关键实现机制, 2~3 条; 依赖的外部工具/库/模型写在此处")
 
 
 class TriggerGuide(BaseModel):
