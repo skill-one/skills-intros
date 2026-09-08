@@ -1,15 +1,21 @@
 """Fetch and parse the skills dataset published on the scraper's dist branch."""
 
 import json
+import logging
 import shutil
 import tarfile
 import tempfile
+import time
 import urllib.error
 import urllib.request
 from pathlib import Path
 
 from .config import ARCHIVE_URL, DIST_BRANCH, Settings
 from .models import SkillRecord
+
+logger = logging.getLogger(__name__)
+
+MAX_DOWNLOAD_RETRIES = 3
 
 
 def _not_published() -> RuntimeError:
@@ -36,7 +42,21 @@ def _extract(archive: str, data_dir: Path) -> None:
 
 
 def _download_archive(url: str, dest: str) -> None:
-    urllib.request.urlretrieve(url, dest)
+    """Download archive with exponential backoff retry."""
+    last_error: Exception | None = None
+    for attempt in range(1, MAX_DOWNLOAD_RETRIES + 1):
+        try:
+            logger.info("Downloading archive (attempt %d/%d)...", attempt, MAX_DOWNLOAD_RETRIES)
+            urllib.request.urlretrieve(url, dest)
+            return
+        except (urllib.error.URLError, OSError) as e:
+            last_error = e
+            logger.warning("Download failed: %s", e)
+            if attempt < MAX_DOWNLOAD_RETRIES:
+                time.sleep(2 ** attempt)
+    raise RuntimeError(
+        "Failed to download after %d attempts: %s" % (MAX_DOWNLOAD_RETRIES, last_error)
+    ) from last_error
 
 
 def sync_data(settings: Settings) -> tuple[Path, int]:
@@ -60,10 +80,13 @@ def sync_data(settings: Settings) -> tuple[Path, int]:
     with tempfile.NamedTemporaryFile(dir=settings.workdir, suffix=".tar.gz") as tmp:
         try:
             _download_archive(ARCHIVE_URL, tmp.name)
-        except (urllib.error.URLError, OSError) as e:
+        except RuntimeError as e:
             raise _not_published() from e
         _extract(tmp.name, data_dir)
-    return data_dir, _prune_stale_results(settings, data_dir)
+    pruned = _prune_stale_results(settings, data_dir)
+    if pruned:
+        logger.info("Pruned %d stale result dir(s)", pruned)
+    return data_dir, pruned
 
 
 def _prune_stale_results(settings: Settings, data_dir: Path) -> int:
@@ -128,6 +151,7 @@ def load_skills(settings: Settings, top_n: int | None = None) -> list[SkillRecor
         skill_md = root / "skills" / entry["id"].replace(":", "_") / "SKILL.md"
         if not skill_md.exists():
             continue
+        text = skill_md.read_text(encoding="utf-8", errors="replace")[:20000]
         records.append(
             SkillRecord(
                 id=entry["id"],
@@ -135,7 +159,9 @@ def load_skills(settings: Settings, top_n: int | None = None) -> list[SkillRecor
                 installs=int(entry.get("installs") or 0),
                 source=entry.get("source", ""),
                 hash=entry.get("hash", ""),
-                skill_md=skill_md.read_text(encoding="utf-8", errors="replace")[:20000],
+                skill_md=text,
+                # collapsed to one line for the system-prompt template
+                description=" ".join((entry.get("description") or "").split()),
             )
         )
     records.sort(key=lambda r: r.installs, reverse=True)

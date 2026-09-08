@@ -27,6 +27,28 @@ def test_skill_md_content_loaded(settings):
     assert "does useful things" in skills[0].skill_md
 
 
+def test_description_loaded_from_skills_jsonl(settings):
+    skills = load_skills(settings)
+    assert skills[0].description == "Alpha 的官方技能描述"
+
+
+def test_description_collapsed_to_one_line(settings):
+    """Multiline index descriptions must not break the one-line prompt format."""
+    path = settings.workdir / "data" / "skills.jsonl"
+    entries = [json.loads(l) for l in path.read_text(encoding="utf-8").splitlines()]
+    entries[0]["description"] = "第一行\n第二行"
+    path.write_text(
+        "\n".join(json.dumps(e) for e in entries) + "\n", encoding="utf-8"
+    )
+    assert load_skills(settings)[0].description == "第一行 第二行"
+
+
+def test_description_empty_when_jsonl_lacks_it(settings):
+    """Entries without a description still load, with '' as fallback."""
+    hotel = next(s for s in load_skills(settings) if s.id == "owner-h/repo-h/hotel:sub")
+    assert hotel.description == ""
+
+
 def test_colon_slug_resolved_to_underscore_directory(settings):
     skills = load_skills(settings)
     hotel = next(s for s in skills if s.id == "owner-h/repo-h/hotel:sub")
