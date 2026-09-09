@@ -1,0 +1,7 @@
+# azure-rbac (`microsoft/azure-skills/azure-rbac`)
+
+## domain
+
+**domain**: 🛡️ 运维与安全
+
+**reason**: Azure RBAC 角色分配属于云基础设施的权限与访问控制, 并生成 CLI/Bicep 部署代码

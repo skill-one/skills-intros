@@ -1,0 +1,13 @@
+# caveman (`juliusbrussee/caveman/caveman`)
+
+## whitebox
+
+- 触发词命中 (如 /caveman、"be brief"、"less tokens"), 进入 caveman 模式
+- 解析级别: 从命令参数取 lite/full/ultra/wenyan-*, 未指定则默认 full
+- 按规则集压缩生成回复: 删冠词/填充词/对冲词, 允许句子碎片, 每句一个要点
+- 语言镜像: 按用户语言输出, 只压缩风格不改语言; wenyan 级别换文言句式
+- 模式对整个会话持久生效, 直到 "stop caveman"/"normal mode" 或会话结束
+
+- 词法压缩规则集: 删冠词、填充词 (just/really/basically)、客套与对冲语, 短同义词替换; 保护类不删 — not/never/no/only/except (防语义翻转)、数字与单位、技术术语/代码块/错误字符串逐字保留; 禁自造缩写 (cfg/impl 等 token 省不了且难读)
+- Auto-Clarity 逃生舱: 遇安全警告、不可逆操作确认、多步骤易误读、用户要求澄清时, 该段切回正常清晰表达, 段落结束后恢复 caveman
+- 边界持久化: 零外部依赖 (无工具/库/模型 API, 纯提示词规则驱动); 仅作用于聊天回复, 代码/注释/commit/issue 等对外文本一律正常散文

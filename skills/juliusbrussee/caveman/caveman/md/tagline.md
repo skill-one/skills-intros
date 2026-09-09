@@ -1,0 +1,7 @@
+# caveman (`juliusbrussee/caveman/caveman`)
+
+## tagline
+
+- 废话全删，干货全留
+- 字更少，事更快，答案一样准
+- 压缩表达，不压精度

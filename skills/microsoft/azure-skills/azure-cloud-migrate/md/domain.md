@@ -1,0 +1,7 @@
+# azure-cloud-migrate (`microsoft/azure-skills/azure-cloud-migrate`)
+
+## domain
+
+**domain**: 🛡️ 运维与安全
+
+**reason**: 核心是跨云工作负载迁移 (AWS/GCP→Azure) 与云基础设施评估, 代码转换服务于迁移部署。

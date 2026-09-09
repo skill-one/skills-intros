@@ -1,0 +1,7 @@
+# azure-compute (`microsoft/azure-skills/azure-compute`)
+
+## tagline
+
+- 选型比价开建, 云主机一站搞定
+- 一句话说需求, 合适的机器跑起来
+- 懂选型更懂省钱, 你的云主机专家

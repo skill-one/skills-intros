@@ -1,0 +1,14 @@
+# code-review (`mattpocock/skills/code-review`)
+
+## whitebox
+
+- 固定基准点: 解析用户给的 commit/branch/tag, 用 git rev-parse 验证其存在, 用三点 diff + git log 拿到变更范围; 引用无效或 diff 为空则当场失败
+- 找规格来源: 按序查找 commit 中的 issue 引用 → 用户传入的路径 → docs/specs/.scratch 下匹配分支名的文件; 都没有就问用户
+- 找规范来源: 收集仓库内的编码规范文件 (如 CODING_STANDARDS.md), 并叠加一份固定的 Fowler 代码异味基线 (12 条, 即使仓库没写规范也生效)
+- 并行派出两个子代理: Standards (规范符合度) 和 Spec (规格实现度) 同时独立运行, 上下文互不污染; 无规格则跳过 Spec 子代理
+- 汇总: 两份报告原样并列在 ## Standards / ## Spec 标题下, 末尾各加一行总结, 不合并、不重排
+
+- 范围锁定: diff 用三点语法 (<基准>...HEAD), 对比的是 merge-base 而非基准点本身; 坏引用/空 diff 在派子代理前就拦截
+- 上下文隔离与信息注入: 两个子代理看不到主上下文, 因此异味基线 12 条必须全文粘贴进 Standards 子代理的 prompt; 各自限 400 字以内输出
+- 双轴分离不重排: 合并或重新排名是被明确禁止的, 因为允许 '规范全对但实现错' 与 '实现全对但违反规范' 同时成立 — 一轴不得掩盖另一轴
+- 外部依赖: git (rev-parse/diff/log); issue 获取依赖 docs/agents/issue-tracker.md 定义的工作流, 缺失则要求用户先跑 /setup-matt-pocock-skills

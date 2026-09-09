@@ -1,0 +1,7 @@
+# hyperframes-cli (`heygen-com/hyperframes/hyperframes-cli`)
+
+## domain
+
+**domain**: 🎨 设计多媒体
+
+**reason**: 用代码编排时间线、关键帧与音频, 渲染出成片视频 (mp4), 属于视频制作

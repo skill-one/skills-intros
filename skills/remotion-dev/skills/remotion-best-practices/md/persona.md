@@ -1,0 +1,9 @@
+# remotion-best-practices (`remotion-dev/skills/remotion-best-practices`)
+
+## persona
+
+**tool**: remotion
+
+**role**: 动效视频工程师
+
+**scene**: 手头有文案、数据或素材, 想直接出一条能发布的视频, 而不是逐帧做动画时

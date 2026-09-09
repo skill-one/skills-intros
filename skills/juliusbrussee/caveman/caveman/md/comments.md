@@ -1,0 +1,10 @@
+# caveman (`juliusbrussee/caveman/caveman`)
+
+## comments
+
+- user: 按 token 付费的独立开发者, category: 妙用, comment: 想让它把 config 缩成 cfg 再省点, 被拒。自己拿 tokenizer 一测: 缩写根本不省 token 还难读。它砍的是废话不是字数, 这个取舍很清醒。
+- user: 第一次用的新手, category: 坑, comment: 以为只管一条回复, 下个问题接着正常聊, 结果全程电报腔。其实整个会话都持续, 想恢复要说 "normal mode" 或 "stop caveman"。
+- user: 运维老哥, category: 妙用, comment: 让它帮我过删表脚本, 讲到不可逆那步它突然切回完整句子, 把"永久删除无法撤销"警告说全, 过了又变回极简。要命的地方不省字, 这个设计我信。
+- user: 技术文档工程师, category: 注意, comment: 别指望连产出物一起压: 代码、commit message、PR 描述仍是正常书面语, 技能明确排除这些。写给其他人的东西它不搞电报腔, 分得清场合。
+- user: 文言爱好者程序员, category: 注意, comment: wenyan 三档是中文专属, wenyan-full 约砍八到九成字。但代码、报错原文、API 名一律原样保留不翻。想细读技术细节选 lite, ultra 砍得最狠。
+- user: 后端老兵, category: 启发, comment: 省 token 是小头, 真值钱的是"[东西][动作][原因]"句式。我写周报也照搬: 一句一件事, 删掉"其实""基本上", 同事反而说更清楚了。

@@ -1,0 +1,5 @@
+# implement (`mattpocock/skills/implement`)
+
+## scenario
+
+需求文档写好了，代码却迟迟落不了地？我来把 spec 和 ticket 变成能跑的代码：按测试驱动逐步实现，边写边查错，最后全量测试 + 代码审查，干净地提交到分支。你出需求，我出成品。🛠️

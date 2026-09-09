@@ -1,0 +1,7 @@
+# wayfinder (`mattpocock/skills/wayfinder`)
+
+## tagline
+
+- 迷雾再大，也挡不住一张好地图
+- 一题一决，路在脚下渐渐清晰
+- 不急着赶路，先把路找清楚

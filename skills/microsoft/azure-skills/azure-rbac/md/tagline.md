@@ -1,0 +1,7 @@
+# azure-rbac (`microsoft/azure-skills/azure-rbac`)
+
+## tagline
+
+- 最小权限,精准授权,一步到位
+- 说清需求,秒出 CLI 和 Bicep 代码
+- 不多给一分权限,不漏一个步骤

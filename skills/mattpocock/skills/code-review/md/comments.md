@@ -1,0 +1,10 @@
+# code-review (`mattpocock/skills/code-review`)
+
+## comments
+
+- user: 后端老兵, 天天给别人看 PR, category: 妙用, comment: 提 PR 前把目标分支当基准点跑一遍, 等于提前替 reviewer 走完 Standards 和 Spec 两条线, 收到的评审意见少一大半。
+- user: 第一次用的新手, category: 坑, comment: commit 没写 issue 号、仓库里也没 spec 文件, Spec 栏直接「无 spec 可查」, 白瞎一半。后来把需求文档按分支名丢进 docs/specs, 两轴才都有输出。
+- user: 测试工程师, category: 注意, comment: 它有意跳过 linter、CI 已经强制的东西, 别指望它报格式和 lint 错。工具管的它不碰, 只盯文档规范和坏味道这种需要人来判断的。
+- user: 三人小团队 TL, category: 启发, comment: 跑了几次发现 Spec 轴老没东西可查, 才意识到我们的 issue 根本没写验收标准。现在先补 spec 再开工, 等于它反向治了我们的需求管理。
+- user: 独立开发者, category: 注意, comment: 攒了三周的分支整个丢进去, 每轴报告压在 400 词内, 大 diff 只能点到为止。按特性拆开、一次一个基准点跑, 颗粒度立刻细一截。
+- user: 重构老手, category: 坑, comment: 把「疑似 Feature Envy」当硬违规直接大改, 重构一半才发现仓库规范本来就提倡这种写法——文档规范优先于气味基线, 动手前先翻规范文件。

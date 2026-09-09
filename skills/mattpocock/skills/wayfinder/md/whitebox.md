@@ -1,0 +1,13 @@
+# wayfinder (`mattpocock/skills/wayfinder`)
+
+## whitebox
+
+- 输入是一个单次会话装不下的模糊想法:先调 grilling + domain-modeling 两个技能与用户对话,钉死目的地(要产出的 spec / 决定 / 变更),目的地一旦定下,范围随之固定。
+- 再广度优先地问一轮,扫出全部待决策点;若扫不出迷雾(路已全清、全程够一次会话做完),不建图,停下来问用户怎么办。
+- 在 repo 的 issue tracker 上建图:单条 issue 打 wayfinder:map 标签,能说清的问题建成子 issue 票据;第二遍再连阻塞边(票据需要先拿到 id 才能互相引用),分出可领的 frontier 和被阻塞的;还说不清的留在地图 Not yet specified 区。
+- 对刚建好的每张 research 票并行派出子 agent 去解决,然后停止——建图会话不亲自解任何一张票。
+- 后续会话循环:领一张 frontier 票(先认领再干活),解决,以评论+关闭+回写地图 Decisions-so-far 记录结果,再把答案照亮的迷雾升格为新票,直到无票可领、路线全清、交接出去。
+
+- 地图是索引不是存储:每个决策只活在自己的票里(票 body 只写 ## Question 问题本身),地图 Decisions so far 每行只给一句摘要加链接,绝不复述细节;面向人类的叙述一律用 issue 标题称呼,不写裸编号。
+- 一切状态靠 tracker 原生能力表达:票据类型用 wayfinder:<type> 标签(research/prototype/grilling/task)区分 HITL 与 AFK 分工;阻塞用 tracker 原生依赖关系(frontier 由此在 tracker UI 里可视化);认领 = 开工前把票 assign 给自己。依赖:需要预先提供的 issue tracker(未提供则提示运行 /setup-matt-pocock-skills,兜底用本地 markdown 追踪器)。
+- 纪律约束即正确性:每会话只解一张票(research 例外,可并行多张);默认只规划不执行,地图终点是决策全清而非交付物;HITL 票(agent 绝不代答人类)按类型路由到 Skill 工具的 grilling+domain-modeling / prototype / research 技能,research 票由并行子 agent 承担。
