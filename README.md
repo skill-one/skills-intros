@@ -113,9 +113,10 @@ restore (dist branch tarball) → sync → run → publish
 
 Every run starts on a fresh runner, so the results of the previous run are pulled back
 from `dist` first: the branch is both the published artifact and the cache. The order
-matters — `sync` prunes stale results against what was just restored. `SKILLS_INTROS_LIMIT`
-(or the `limit` input of a manual run, 100 by default) bounds how much one run generates,
-so repeated runs work their way through the whole dataset.
+matters — `sync` prunes stale results against what was just restored. The workflow passes
+the `limit` input straight to `run --limit` (scheduled runs have no inputs and fall back to
+the same default, 100), bounding how much one run generates, so repeated runs work their way
+through the whole dataset.
 
 The `dist` branch root mirrors `output/`: `hashes.json` + `skills/` (see [Artifacts](#artifacts)).
 
