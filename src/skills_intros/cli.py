@@ -80,6 +80,9 @@ def invalidate(
         found = stale_result_ids(settings)
         logger.info("%d stale skill(s): upstream content changed or skill gone", len(found))
         skill_ids = list(dict.fromkeys(skill_ids + found))
+        if not found:
+            logger.info("Nothing to invalidate")
+            return
     if not skill_ids and not prompt_ids and not all_skills:
         raise typer.BadParameter("refusing to invalidate everything - pass --all to confirm")
 

@@ -172,6 +172,15 @@ def test_invalidate_stale_drops_hash_changed_skills(settings, monkeypatch):
     assert prompt_result_path(settings, "owner-b/repo-b/beta", "domain").exists()
 
 
+def test_invalidate_stale_is_a_noop_when_nothing_is_stale(settings, monkeypatch):
+    """`--stale` with an up-to-date record invalidates nothing and exits cleanly."""
+    monkeypatch.setattr("skills_intros.cli.Settings", lambda: settings)
+    result = runner.invoke(app, ["invalidate", "--stale"])
+    assert result.exit_code == 0, result.output
+    assert "0 stale skill(s)" in result.output
+    assert "Nothing to invalidate" in result.output
+
+
 def test_invalidate_rejects_unknown_prompt(settings, monkeypatch):
     monkeypatch.setattr("skills_intros.cli.Settings", lambda: settings)
     result = runner.invoke(app, ["invalidate", "--prompts", "nope"])
