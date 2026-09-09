@@ -165,8 +165,8 @@ def run(
         stats.prompts_reused, stats.prompts_stale, stats.skills_skipped,
     )
     if stats.prompts_generated:
-        logger.info("LLM: %d call(s), %.2fs average per prompt",
-                    stats.prompts_generated, avg)
+        logger.info("LLM: %d call(s), %.1fs total, %.2fs average per prompt",
+                    stats.prompts_generated, stats.llm_seconds, avg)
     logger.info(
         "Coverage: %d/%d skill(s) complete, %d remaining | cached prompts: %s",
         cov["complete"], cov["skills"], cov["remaining"],

@@ -73,7 +73,9 @@ def _download(url: str, dest: Path) -> bool:
     for attempt in range(1, MAX_DOWNLOAD_RETRIES + 1):
         try:
             logger.info("Downloading %s (attempt %d/%d)", url, attempt, MAX_DOWNLOAD_RETRIES)
+            start = time.monotonic()
             urllib.request.urlretrieve(url, partial)
+            logger.info("Downloaded %s in %.1fs", url, time.monotonic() - start)
             partial.replace(dest)
             return True
         except urllib.error.HTTPError as e:
@@ -304,6 +306,8 @@ def _prune_stale_results(settings: Settings, data_dir: Path) -> int:
     hashes = load_hashes(settings)
     stale = [sid for sid, hash_ in sorted(hashes.items()) if upstream.get(sid) != hash_]
     if stale:
+        start = time.monotonic()
         invalidate(settings, stale)
-        logger.info("Invalidated %d stale skill(s)", len(stale))
+        logger.info("Invalidated %d stale skill(s) in %.1fs",
+                    len(stale), time.monotonic() - start)
     return len(stale)
