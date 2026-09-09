@@ -164,11 +164,20 @@ def test_invalidate_stale_drops_hash_changed_skills(settings, monkeypatch):
     assert not skill_result_dir(settings, "owner-h/repo-h/hotel:sub").exists()
     assert prompt_result_path(settings, "owner-b/repo-b/beta", "domain").exists()
 
-    # --stale plus --prompts invalidates only that prompt of the stale skills
-    runner.invoke(app, ["run", "--limit", "0", "--dry-run"])  # refill the cache
+    # refill the cache (alpha regenerates with its new hash), then make gamma
+    # stale again: --stale --prompts touches only the stale skill's tagline
+    runner.invoke(app, ["run", "--limit", "0", "--dry-run"])
+    entries = [json.loads(l) for l in data_file.read_text(encoding="utf-8").splitlines()]
+    for e in entries:
+        if e["id"] == "owner-c/repo-c/gamma":
+            e["hash"] = "new" + "c" * 61
+    data_file.write_text(
+        "\n".join(json.dumps(e) for e in entries) + "\n", encoding="utf-8"
+    )
     result = runner.invoke(app, ["invalidate", "--stale", "--prompts", "tagline"])
     assert result.exit_code == 0, result.output
-    assert prompt_result_path(settings, "owner-b/repo-b/beta", "tagline").exists() is False
+    assert prompt_result_path(settings, "owner-c/repo-c/gamma", "tagline").exists() is False
+    assert prompt_result_path(settings, "owner-b/repo-b/beta", "tagline").exists()
     assert prompt_result_path(settings, "owner-b/repo-b/beta", "domain").exists()
 
 
