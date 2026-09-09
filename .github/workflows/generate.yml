@@ -22,7 +22,7 @@ on:
     inputs:
       limit:
         description: How many skills to generate this run
-        default: "100"
+        default: "10"
 
 permissions:
   contents: write

@@ -23,7 +23,7 @@ def test_built_in_defaults(tmp_path, monkeypatch):
     assert settings.model == "gpt-4.1-mini"
     assert settings.base_url is None
     assert settings.api_key is None
-    assert settings.limit == 50
+    assert settings.limit == 10
     assert settings.concurrency == 8
 
 

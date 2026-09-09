@@ -13,7 +13,7 @@
 ```bash
 uv sync
 skills-intros sync            # 下载上游快照（tag 未变则跳过）
-skills-intros run --limit 50  # 生成介绍词，按安装量从高到低；已缓存的跳过不占额度
+skills-intros run --limit 10  # 生成介绍词，按安装量从高到低；已缓存的跳过不占额度
 ```
 
 `run` 的更多选项：
@@ -65,7 +65,7 @@ cache/skills-sh/                             # 上游数据，与产物分离
 `.github/workflows/generate.yml` 手动触发（Actions → generate → Run workflow）：
 
 ```
-恢复 dist 分支 → sync → invalidate --stale → run --limit <输入，默认 100> → 发布到 dist
+恢复 dist 分支 → sync → invalidate --stale → run --limit <输入，默认 10> → 发布到 dist
 ```
 
 `dist` 分支既是发布产物也是缓存，根目录与 `output/` 一致。需在
@@ -109,7 +109,7 @@ skills-intros run --prompts my_angle --limit 0
 | `SKILLS_INTROS_MODEL` | `gpt-4.1-mini` | 任意 OpenAI 兼容模型 |
 | `SKILLS_INTROS_BASE_URL` | 无 | OpenAI 兼容端点 |
 | `SKILLS_INTROS_API_KEY` | 无 | 端点 API key |
-| `SKILLS_INTROS_LIMIT` | `50` | 每次 run 生成的 skill 数（`0` = 全部；已缓存的跳过不计数） |
+| `SKILLS_INTROS_LIMIT` | `10` | 每次 run 生成的 skill 数（`0` = 全部；已缓存的跳过不计数） |
 | `SKILLS_INTROS_CONCURRENCY` | `8` | LLM 最大并发调用数（跨 skill 及 skill 内 prompt 共享） |
 | `SKILLS_INTROS_OUTPUT_DIR` | `output` | 产物目录 |
 | `SKILLS_INTROS_DATA_DIR` | `cache/skills-sh` | 上游数据目录 |

@@ -13,7 +13,7 @@ local `.env` (see `.env.example`).
 ```bash
 uv sync
 skills-intros sync            # download the upstream snapshot (skipped when the tag is unchanged)
-skills-intros run --limit 50  # generate intros, most installed first; cached skills are skipped for free
+skills-intros run --limit 10  # generate intros, most installed first; cached skills are skipped for free
 ```
 
 More `run` options:
@@ -69,7 +69,7 @@ Built-in prompts: `domain`, `scenario`, `blackbox`, `whitebox`, `tagline`, `pers
 `.github/workflows/generate.yml` runs on demand (Actions → generate → Run workflow):
 
 ```
-restore dist branch → sync → invalidate --stale → run --limit <input, default 100> → publish to dist
+restore dist branch → sync → invalidate --stale → run --limit <input, default 10> → publish to dist
 ```
 
 The `dist` branch is both the published artifact and the cache; its root mirrors
@@ -116,7 +116,7 @@ defaults.
 | `SKILLS_INTROS_MODEL` | `gpt-4.1-mini` | Any OpenAI-compatible chat model |
 | `SKILLS_INTROS_BASE_URL` | – | OpenAI-compatible endpoint |
 | `SKILLS_INTROS_API_KEY` | – | API key for the endpoint |
-| `SKILLS_INTROS_LIMIT` | `50` | Skills to generate per run (`0` = all; cached skills are skipped, not counted) |
+| `SKILLS_INTROS_LIMIT` | `10` | Skills to generate per run (`0` = all; cached skills are skipped, not counted) |
 | `SKILLS_INTROS_CONCURRENCY` | `8` | Max concurrent LLM calls, shared across skills and prompts |
 | `SKILLS_INTROS_OUTPUT_DIR` | `output` | Artifacts directory |
 | `SKILLS_INTROS_DATA_DIR` | `cache/skills-sh` | Upstream data directory |
