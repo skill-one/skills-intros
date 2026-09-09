@@ -1,0 +1,13 @@
+# entra-app-registration (`microsoft/azure-skills/entra-app-registration`)
+
+## whitebox
+
+- 先向用户确认四要素: 应用名称、应用类型 (Web/SPA/移动/后台服务)、Redirect URI、所需权限
+- 注册应用: 按用户环境选择门户操作、Azure CLI (az ad app create) 或 IaC (BICEP 模板) 三条路径之一
+- 按应用类型配置认证: 设置 Redirect URI、是否启用 ID token / implicit grant 等
+- 配置 API 权限 (如 Microsoft Graph 的 User.Read、Directory.Read.All), 需要时创建凭据 (client secret / 证书 / 联合身份凭据), 并提醒立即保存只显示一次的 secret
+- 用 MSAL (按语言选 .NET / JS / Python 版) 落地对应 OAuth 流程, 引用现成的控制台应用示例模板
+
+- 任务分流机制: 按任务类型路由到 skill.md 内置的 references 文档加载细节 —— CLI 命令查 cli-commands.md, OAuth 流程查 oauth-flows.md, 首次注册查 first-app-registration.md, 权限查 api-permissions.md, 排错查 troubleshooting.md
+- 外部依赖: Azure CLI 的 az ad app / az ad sp 系列命令负责实际注册与凭据生成; MSAL 库 (.NET Microsoft.Identity.Client、@azure/msal-browser、@azure/msal-node、Python msal) 负责应用侧认证集成; 另附 Azure Identity 多语言 SDK 参考
+- 安全护栏贯穿全程: 默认拒绝硬编码密钥 (推荐 Key Vault / 托管标识)、最小权限原则、生产环境证书优先于 secret、Redirect URI 强制 HTTPS (localhost 除外)、提醒轮换 secret 与校验 token

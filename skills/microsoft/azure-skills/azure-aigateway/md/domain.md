@@ -1,0 +1,7 @@
+# azure-aigateway (`microsoft/azure-skills/azure-aigateway`)
+
+## domain
+
+**domain**: 🛡️ 运维与安全
+
+**reason**: 用 Azure CLI 配置云网关 (AI 接口的统一管理入口), 属于云基础设施部署、限流与内容安全防护.

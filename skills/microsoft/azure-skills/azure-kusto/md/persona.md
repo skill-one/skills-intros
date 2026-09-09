@@ -1,0 +1,9 @@
+# azure-kusto (`microsoft/azure-skills/azure-kusto`)
+
+## persona
+
+**tool**: kql
+
+**role**: 日志分析员
+
+**scene**: 线上出了故障、要在几十亿条日志里捞出台账线索时

@@ -1,0 +1,7 @@
+# entra-app-registration (`microsoft/azure-skills/entra-app-registration`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 核心是把 OAuth/MSAL 认证集成进应用代码，属 API/框架集成场景

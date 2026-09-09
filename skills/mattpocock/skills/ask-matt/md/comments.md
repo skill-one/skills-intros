@@ -1,0 +1,10 @@
+# ask-matt (`mattpocock/skills/ask-matt`)
+
+## comments
+
+- user: 第一次用的新手, category: 坑, comment: 直接跑 /triage 才发现标签、tracker 全没配——前置的 /setup-matt-pocock-skills 没跑。新项目先跑它一次再开工。
+- user: 独立全栈开发者, category: 妙用, comment: 拿它当分流台：说"想法大得一屏装不下"它指 /wayfinder，说"边界清晰的小功能"它让我走主线。同一句"帮我选"，两种处境两种答案。
+- user: 带团队推 AI 编程的 Tech Lead, category: 注意, comment: 它是手动挡：agent 不会自己想起来调它，我描述半天"不知道该用哪个"，它一动不动。迷路时自己敲 /ask-matt，路由立刻开始。
+- user: 刚接手祖传代码的后端, category: 坑, comment: 把 /to-tickets 拆好的票又丢进 /triage，白跑一轮。triage 只收外来的 bug 和需求，自己 spec 出的票本来就是 agent-ready。
+- user: 第一次带 AI 干活的产品经理, category: 注意, comment: 问之前想清楚你在不在项目目录里：有 repo 它指 /grill-with-docs（访谈会存档），没有就指 /grill-me（什么都不留）。我答错过一次。
+- user: 被长会话坑过的工程师, category: 启发, comment: 它让我承认缺的是流程感：现在每个阶段边界先想"继续、清空还是 /compact"，不再硬撑到 15 万 token 后回答开始变糊。

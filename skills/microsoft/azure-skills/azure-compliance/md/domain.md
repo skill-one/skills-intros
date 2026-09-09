@@ -1,0 +1,7 @@
+# azure-compliance (`microsoft/azure-skills/azure-compliance`)
+
+## domain
+
+**domain**: 🛡️ 运维与安全
+
+**reason**: 核心是 Azure 云资源的合规扫描、安全审计与密钥过期检查, 属云基础设施安全防护

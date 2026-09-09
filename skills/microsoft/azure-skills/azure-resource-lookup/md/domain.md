@@ -1,0 +1,7 @@
+# azure-resource-lookup (`microsoft/azure-skills/azure-resource-lookup`)
+
+## domain
+
+**domain**: 🛡️ 运维与安全
+
+**reason**: 查询盘点 Azure 云资源 (VM/应用/存储等) 与孤儿资源排查, 属于云基础设施运维。

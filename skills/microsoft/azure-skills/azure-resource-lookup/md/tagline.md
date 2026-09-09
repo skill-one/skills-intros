@@ -1,0 +1,7 @@
+# azure-resource-lookup (`microsoft/azure-skills/azure-resource-lookup`)
+
+## tagline
+
+- 一句提问, 云端资源尽收眼底
+- 跨订阅盘点, 闲置资源无处遁形
+- 不翻门户不写代码, 清单一秒直达

@@ -1,0 +1,13 @@
+# ask-matt (`mattpocock/skills/ask-matt`)
+
+## whitebox
+
+- 用户显式询问"该用哪个技能/流程"——本技能 frontmatter 标注 disable-model-invocation: true, 模型不会自动调用, 只能被用户手动触发
+- 检查前置条件: 首次进入任何工程流程前, 必须已运行 /setup-matt-pocock-skills (配置 issue tracker、triage 标签、文档布局)
+- 按内置技能地图给用户处境分类: 主流程 (idea→ship) / 入口匝道 (triage、diagnosing-bugs、wayfinder) / 独立技能 / 词汇层
+- 在地图写死的分叉点上逐项判定: 有无 working directory、是否多会话、问题是否需要可运行答案等
+- 输出推荐的具体技能或整条 flow 路径 (含切入点与后续衔接), 交回用户去执行那个技能
+
+- 零代码路由器: 全部逻辑是 skill.md 内的静态地图 (主流程/匝道/独立/词汇层), 不依赖任何外部工具、库或模型 API; 分叉判定全靠内置规则——有无 working directory → grill-with-docs vs grill-me; 多会话与否 → to-spec+to-tickets vs 直接 implement; 问题需可运行答案 → /handoff→/prototype→/handoff 绕行
+- 前置条件校验是唯一的"校验": 未跑 /setup-matt-pocock-skills 不进工程流程; 另有一个明确的反规则——to-tickets 产出的票不进 /triage (它们已是 agent-ready)
+- 上下文卫生约束: 主流程 1–3 步 (grilling→spec→tickets) 必须留在同一个未压缩窗口, 以 smart zone (~150k tokens) 为上限, 接近上限就在阶段边界 /compact; 边界决策细节外置在 PHASE-BOUNDARIES.md, 需要时按引用读取

@@ -1,0 +1,7 @@
+# diagnosing-bugs (`mattpocock/skills/diagnosing-bugs`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 技能本体就是调试: 为难缠 bug 搭建可复现的排查回路, 定位并修复, 与"开发编程-调试"直接对应

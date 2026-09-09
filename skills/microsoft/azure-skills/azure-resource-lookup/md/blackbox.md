@@ -1,0 +1,9 @@
+# azure-resource-lookup (`microsoft/azure-skills/azure-resource-lookup`)
+
+## blackbox
+
+**function**: 帮你盘点和查找 Azure 云上的资源:你用一句话提问,我给你一份清单——网站、虚拟机、存储账号、数据库都行,也能帮你揪出闲置或漏打标签的资源。
+
+- input: 「列出我订阅里所有的网站(web 应用)」, output: 一张表格:每个网站的名称、所属资源组、所在区域、运行状态
+- input: 「我到底都有哪些 Azure 资源?」, output: 跨所有订阅的资源总清单,按类型分组并统计,如:5 台虚拟机、3 个存储账号、2 个数据库……
+- input: 「找出没挂在任何虚拟机上的闲置磁盘」, output: 一份待清理清单:每个孤儿资源的名称、资源组和大小

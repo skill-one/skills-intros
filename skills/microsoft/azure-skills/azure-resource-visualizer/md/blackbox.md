@@ -1,0 +1,9 @@
+# azure-resource-visualizer (`microsoft/azure-skills/azure-resource-visualizer`)
+
+## blackbox
+
+**function**: 给我一个 Azure 资源组的名字, 我会产出一份带架构图的文档, 让你一眼看清这堆云资源之间到底是怎么连起来的。
+
+- input: 只问一句「我有哪些资源组?」(不指定名字), output: 一份带编号的资源组清单 (名称 + 所在区域), 供你选择, 选定后才开始分析
+- input: 一个资源组名称, 如「my-web-app-rg」, output: 一份 markdown 文件 (my-web-app-rg-architecture.md): 内含可直接渲染的架构图、全部资源清单表格、关键连接关系说明和建议备注
+- input: 资源组名称 + 「帮我画下架构图」, output: 一张架构图: 应用 → 数据库 → 存储等数据流向、谁连着谁、各自规格 (型号/区域) 都标在图上; 密钥、连接串等敏感值只显示占位名, 不泄露真实内容

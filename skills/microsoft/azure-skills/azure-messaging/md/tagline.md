@@ -1,0 +1,7 @@
+# azure-messaging (`microsoft/azure-skills/azure-messaging`)
+
+## tagline
+
+- 消息堵了？锁丢了？一键定位根因
+- Azure 消息故障，报错到修复一条龙
+- Event Hubs、Service Bus 故障终结者

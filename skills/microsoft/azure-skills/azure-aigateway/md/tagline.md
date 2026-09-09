@@ -1,0 +1,7 @@
+# azure-aigateway (`microsoft/azure-skills/azure-aigateway`)
+
+## tagline
+
+- AI 治理一网打尽:省钱、控险、扩容
+- 语义缓存,省下八成 AI 开支
+- 给模型与智能体,加一道安全闸

@@ -1,0 +1,7 @@
+# azure-kusto (`microsoft/azure-skills/azure-kusto`)
+
+## domain
+
+**domain**: 📊 数据分析
+
+**reason**: 用 KQL (类似 SQL 的查询语言) 对海量日志/遥测/时序数据做查询、聚合与可视化, 本质是大数据查询分析。

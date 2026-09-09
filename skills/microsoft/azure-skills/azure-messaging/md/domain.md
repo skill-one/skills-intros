@@ -1,0 +1,7 @@
+# azure-messaging (`microsoft/azure-skills/azure-messaging`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 专注排查 Azure 消息 SDK 的连接、认证、锁丢失等编码调试问题
