@@ -138,7 +138,7 @@ def run(
         done += 1
         fresh = set(_record.get("generated", ()))
         parts = [pid + ("*" if pid in fresh else "") for pid in sorted(_record["intros"])]
-        marker = " (cached)" if reused else ""
+        marker = " (cached)" if reused else f" {_record.get('seconds', 0.0):.1f}s"
         logger.info("  [%d/%d] %s: %s%s", done, len(selected), _skill.id, ",".join(parts), marker)
 
     llm = FakeLLM() if dry_run else make_llm(settings)
