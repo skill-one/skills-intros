@@ -76,7 +76,8 @@ def write_index(settings: Settings, index: Mapping[str, dict]) -> None:
 
     Line keys follow a fixed order — id, hash, domain, persona, then anything
     else — so lines stay grep-able and diffs stable regardless of how a line
-    was built.
+    was built. Writing the index completes the migration from the legacy
+    hashes.json, which is removed if still around.
     """
     path = index_path(settings)
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -85,6 +86,7 @@ def write_index(settings: Settings, index: Mapping[str, dict]) -> None:
                 for sid in sorted(index)),
         encoding="utf-8",
     )
+    _unlink(settings.output_dir / LEGACY_HASHES_NAME)
 
 
 def _ordered_line(skill_id: str, line: Mapping) -> dict:
