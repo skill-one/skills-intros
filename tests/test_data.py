@@ -5,10 +5,10 @@ from pathlib import Path
 
 import pytest
 
-import skills_intros.data as data_mod
+import skills_profiles.data as data_mod
 from conftest import fake_download, make_tarball, skill_md_text
-from skills_intros.config import DIST_BRANCH, TARBALL_URL, Settings, tarball_url
-from skills_intros.data import (
+from skills_profiles.config import DIST_BRANCH, TARBALL_URL, Settings, tarball_url
+from skills_profiles.data import (
     _newest_tag,
     load_skills,
     read_marker,
@@ -17,7 +17,7 @@ from skills_intros.data import (
     stale_result_ids,
     sync_data,
 )
-from skills_intros.outputs import load_hashes, write_index
+from skills_profiles.outputs import load_hashes, write_index
 
 TAGS_FEED = b"""<?xml version="1.0" encoding="UTF-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">

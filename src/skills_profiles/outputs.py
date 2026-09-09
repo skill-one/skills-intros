@@ -1,7 +1,7 @@
 """On-disk artifact layout under <output_dir>: one json per prompt in
 skills/<id>/ (with a markdown copy in md/), plus skills.jsonl — the skill
 index, one line per skill carrying its id, the upstream content hash its
-intros were generated from, and the aggregated domain/persona outputs."""
+profiles were generated from, and the aggregated domain/persona outputs."""
 
 import json
 import logging
@@ -108,7 +108,7 @@ def _read_prompt_output(settings: Settings, skill_id: str, prompt_id: str) -> di
 
 
 def load_hashes(settings: Settings) -> dict[str, str]:
-    """skill id -> the hash its intros were generated from; {} when unknown."""
+    """skill id -> the hash its profiles were generated from; {} when unknown."""
     return {sid: line.get("hash", "") for sid, line in load_index(settings).items()}
 
 

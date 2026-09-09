@@ -4,7 +4,7 @@ __pycache__/
 .venv/
 .pytest_cache/
 
-# Generated intros (output/) & upstream cache (cache/skills-sh)
+# Generated profiles (output/) & upstream cache (cache/skills-sh)
 output/
 cache/
 

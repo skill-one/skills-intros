@@ -5,13 +5,13 @@ import re
 
 from typer.testing import CliRunner
 
-from skills_intros.cli import app
+from skills_profiles.cli import app
 
 runner = CliRunner()
 
 
 def test_run_limit_counts_only_skills_that_generate(settings, monkeypatch):
-    monkeypatch.setattr("skills_intros.cli.Settings", lambda: settings)
+    monkeypatch.setattr("skills_profiles.cli.Settings", lambda: settings)
 
     result = runner.invoke(app, ["run", "--limit", "2", "--dry-run"])
     assert result.exit_code == 0, result.output
@@ -32,7 +32,7 @@ def test_run_limit_counts_only_skills_that_generate(settings, monkeypatch):
 
 
 def test_invalidated_prompt_is_regenerated(settings, monkeypatch):
-    monkeypatch.setattr("skills_intros.cli.Settings", lambda: settings)
+    monkeypatch.setattr("skills_profiles.cli.Settings", lambda: settings)
     runner.invoke(app, ["run", "--limit", "2", "--dry-run"])
 
     result = runner.invoke(app, ["invalidate", "--prompts", "tagline"])
@@ -45,7 +45,7 @@ def test_invalidated_prompt_is_regenerated(settings, monkeypatch):
 
 
 def test_invalidate_needs_all_to_wipe_everything(settings, monkeypatch):
-    monkeypatch.setattr("skills_intros.cli.Settings", lambda: settings)
+    monkeypatch.setattr("skills_profiles.cli.Settings", lambda: settings)
     runner.invoke(app, ["run", "--limit", "2", "--dry-run"])
 
     result = runner.invoke(app, ["invalidate"])
@@ -60,7 +60,7 @@ def test_invalidate_needs_all_to_wipe_everything(settings, monkeypatch):
 def test_run_writes_a_stats_summary(settings, monkeypatch):
     """A run logs a timed summary and overwrites output/stats.json with the
     artifact's current state: complete/remaining skills and per-prompt counts."""
-    monkeypatch.setattr("skills_intros.cli.Settings", lambda: settings)
+    monkeypatch.setattr("skills_profiles.cli.Settings", lambda: settings)
     result = runner.invoke(app, ["run", "--limit", "2", "--dry-run"])
     assert result.exit_code == 0, result.output
     assert "Done in" in result.output
@@ -82,7 +82,7 @@ def test_run_stats_snapshot_is_overwritten(settings, monkeypatch):
     The second run's budget moves to the next two skills (the first are cached),
     and the file always describes the whole dataset afterwards.
     """
-    monkeypatch.setattr("skills_intros.cli.Settings", lambda: settings)
+    monkeypatch.setattr("skills_profiles.cli.Settings", lambda: settings)
     runner.invoke(app, ["run", "--limit", "2", "--dry-run"])
     runner.invoke(app, ["run", "--limit", "2", "--dry-run"])
 
@@ -94,7 +94,7 @@ def test_run_stats_snapshot_is_overwritten(settings, monkeypatch):
 def test_run_reports_stale_skills(settings, monkeypatch):
     """A run's summary counts skills whose recorded hash no longer matches the
     snapshot, and stats.json carries the same number."""
-    monkeypatch.setattr("skills_intros.cli.Settings", lambda: settings)
+    monkeypatch.setattr("skills_profiles.cli.Settings", lambda: settings)
     runner.invoke(app, ["run", "--limit", "0", "--dry-run"])
 
     # upstream moves: alpha's content changes
@@ -118,11 +118,11 @@ def test_run_reports_stale_skills(settings, monkeypatch):
 
 def test_sync_reports_tag_and_download(settings, monkeypatch):
     """The sync summary names the tag and whether it downloaded."""
-    from skills_intros.data import SyncReport
+    from skills_profiles.data import SyncReport
 
-    monkeypatch.setattr("skills_intros.cli.Settings", lambda: settings)
+    monkeypatch.setattr("skills_profiles.cli.Settings", lambda: settings)
     monkeypatch.setattr(
-        "skills_intros.cli.sync_data",
+        "skills_profiles.cli.sync_data",
         lambda s, refresh: SyncReport(
             data_dir=s.data_dir, tag="dist-2026-09-09", downloaded=True, seconds=1.5,
         ),
@@ -136,7 +136,7 @@ def test_sync_reports_tag_and_download(settings, monkeypatch):
 def test_invalidate_stale_drops_hash_changed_skills(settings, monkeypatch):
     """`invalidate --stale` drops exactly the skills whose recorded hash no longer
     matches the snapshot (changed or vanished); the next run regenerates them."""
-    monkeypatch.setattr("skills_intros.cli.Settings", lambda: settings)
+    monkeypatch.setattr("skills_profiles.cli.Settings", lambda: settings)
     runner.invoke(app, ["run", "--limit", "0", "--dry-run"])
 
     # simulate upstream: alpha's content changed, hotel vanished
@@ -155,7 +155,7 @@ def test_invalidate_stale_drops_hash_changed_skills(settings, monkeypatch):
     assert "2 stale skill(s)" in result.output
 
     # alpha and hotel are gone; beta and gamma are untouched
-    from skills_intros.outputs import load_hashes, prompt_result_path, skill_result_dir
+    from skills_profiles.outputs import load_hashes, prompt_result_path, skill_result_dir
 
     assert load_hashes(settings) == {
         "owner-b/repo-b/beta": "b" * 64, "owner-c/repo-c/gamma": "c" * 64,
@@ -183,7 +183,7 @@ def test_invalidate_stale_drops_hash_changed_skills(settings, monkeypatch):
 
 def test_invalidate_stale_is_a_noop_when_nothing_is_stale(settings, monkeypatch):
     """`--stale` with an up-to-date record invalidates nothing and exits cleanly."""
-    monkeypatch.setattr("skills_intros.cli.Settings", lambda: settings)
+    monkeypatch.setattr("skills_profiles.cli.Settings", lambda: settings)
     result = runner.invoke(app, ["invalidate", "--stale"])
     assert result.exit_code == 0, result.output
     assert "0 stale skill(s)" in result.output
@@ -191,7 +191,7 @@ def test_invalidate_stale_is_a_noop_when_nothing_is_stale(settings, monkeypatch)
 
 
 def test_invalidate_rejects_unknown_prompt(settings, monkeypatch):
-    monkeypatch.setattr("skills_intros.cli.Settings", lambda: settings)
+    monkeypatch.setattr("skills_profiles.cli.Settings", lambda: settings)
     result = runner.invoke(app, ["invalidate", "--prompts", "nope"])
     assert result.exit_code != 0
     assert "unknown prompt" in result.output

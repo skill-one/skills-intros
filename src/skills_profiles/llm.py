@@ -32,7 +32,7 @@ def _fake_output(model, name: str):
     if model is m.DomainClassification:
         return m.DomainClassification(domain=m.Domain.OFFICE, reason="离线演示用的固定分类")
     if model is m.IntroText:
-        return m.IntroText(text=f"{name} 的离线演示介绍文本, 用于验证管道, 不含真实内容。")
+        return m.IntroText(text=f"{name} 的离线演示档案文本, 用于验证管道, 不含真实内容。")
     if model is m.BlackBoxIntro:
         return m.BlackBoxIntro(
             function=f"{name} 的离线演示功能描述",

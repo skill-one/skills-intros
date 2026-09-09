@@ -59,13 +59,13 @@ class DomainClassification(BaseModel):
 
 
 class IntroText(BaseModel):
-    """Output schema for free-text intro prompts (scenario)."""
+    """Output schema for free-text profile prompts (scenario)."""
 
     text: str = Field(description="介绍词正文, 100 个字以内")
 
 
 class BlackBoxPair(BaseModel):
-    """One 「输入 → 输出」 example for the blackbox intro."""
+    """One 「输入 → 输出」 example for the blackbox profile."""
 
     input: str = Field(description="用户实际会给出的输入, 如文件路径、URL、一段文本")
     output: str = Field(description="用户实际会拿到的输出, 如生成的文件、报告、代码")

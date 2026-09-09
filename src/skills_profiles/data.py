@@ -57,7 +57,7 @@ class SyncReport:
 def _not_published() -> RuntimeError:
     return RuntimeError(
         f"'{DIST_BRANCH}' branch is not published at {TARBALL_URL} yet - "
-        "the upstream daily scrape is still running; retry `skills-intros sync` later"
+        "the upstream daily scrape is still running; retry `skills-profiles sync` later"
     )
 
 
@@ -204,7 +204,7 @@ def sync_data(settings: Settings, refresh: bool = False) -> SyncReport:
         if not (data_dir / INDEX_NAME).exists():
             raise RuntimeError(
                 f"{data_dir} exists and is not a dataset directory - move it away or "
-                "point SKILLS_INTROS_DATA_DIR at a different directory"
+                "point SKILLS_PROFILES_DATA_DIR at a different directory"
             )
     ref = latest_dist_tag() or DIST_BRANCH
     if not refresh and _is_current(data_dir, ref):
@@ -248,7 +248,7 @@ def load_skills(settings: Settings) -> list[SkillRecord]:
     if not index.is_file():
         raise FileNotFoundError(
             f"{INDEX_NAME} not found under {settings.data_dir} - "
-            "run `skills-intros sync` first"
+            "run `skills-profiles sync` first"
         )
 
     records: list[SkillRecord] = []

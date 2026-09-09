@@ -1,6 +1,6 @@
-# skills-intros
+# skills-profiles
 
-Generate multi-angle Chinese introductions for [agent skills](https://www.skills.sh)
+Generate multi-angle Chinese profiles for [agent skills](https://www.skills.sh)
 collected by [skill-one/skills-sh-mirror](https://github.com/skill-one/skills-sh-mirror).
 
 > 中文文档: [README.zh-CN.md](README.zh-CN.md)
@@ -12,18 +12,18 @@ local `.env` (see `.env.example`).
 
 ```bash
 uv sync
-skills-intros sync            # download the upstream snapshot (skipped when the tag is unchanged)
-skills-intros run --limit 10  # generate intros, most installed first; cached skills are skipped for free
+skills-profiles sync            # download the upstream snapshot (skipped when the tag is unchanged)
+skills-profiles run --limit 10  # generate profiles, most installed first; cached skills are skipped for free
 ```
 
 More `run` options:
 
 ```bash
-skills-intros run --limit 0           # every skill with missing prompts
-skills-intros run --prompts tagline   # generate just this one prompt
-skills-intros run --limit 5 --dry-run # offline smoke test (fake LLM, no API calls)
-skills-intros run --limit 5 --debug   # print the rendered prompts to stderr
-skills-intros run --verbose           # DEBUG logging
+skills-profiles run --limit 0           # every skill with missing prompts
+skills-profiles run --prompts tagline   # generate just this one prompt
+skills-profiles run --limit 5 --dry-run # offline smoke test (fake LLM, no API calls)
+skills-profiles run --limit 5 --debug   # print the rendered prompts to stderr
+skills-profiles run --verbose           # DEBUG logging
 ```
 
 Re-runs resume for free: each prompt is committed to disk as soon as it is generated,
@@ -31,16 +31,16 @@ so only missing prompts cost LLM calls — even after a crash mid-run. To redo w
 invalidate first:
 
 ```bash
-skills-intros invalidate --prompts whitebox        # one prompt, for every skill
-skills-intros invalidate --skill owner/repo/name   # every prompt of one skill
-skills-intros invalidate --stale                   # skills whose upstream content changed (or vanished)
-skills-intros invalidate --all                     # everything (needs --all)
+skills-profiles invalidate --prompts whitebox        # one prompt, for every skill
+skills-profiles invalidate --skill owner/repo/name   # every prompt of one skill
+skills-profiles invalidate --stale                   # skills whose upstream content changed (or vanished)
+skills-profiles invalidate --all                     # everything (needs --all)
 ```
 
 ## Artifacts
 
 ```
-output/                                      # generated intros, publishable on their own
+output/                                      # generated profiles, publishable on their own
 ├── skills.jsonl                             # the skill index: id, upstream hash, aggregated domain/persona
 ├── stats.json                               # artifact state: complete/remaining/stale skills, per-prompt coverage
 └── skills/<owner>/<repo>/<skill>/           # the directory name is the skills.jsonl id
@@ -77,9 +77,9 @@ The `dist` branch is both the published artifact and the cache; its root mirrors
 
 | Where | Name | Example |
 |---|---|---|
-| Secret | `SKILLS_INTROS_API_KEY` | the endpoint's API key |
-| Variable | `SKILLS_INTROS_BASE_URL` | `https://api.b.ai/v1` |
-| Variable | `SKILLS_INTROS_MODEL` | `GLM-5.3-Flash` |
+| Secret | `SKILLS_PROFILES_API_KEY` | the endpoint's API key |
+| Variable | `SKILLS_PROFILES_BASE_URL` | `https://api.b.ai/v1` |
+| Variable | `SKILLS_PROFILES_MODEL` | `GLM-5.3-Flash` |
 
 ## Adding a prompt
 
@@ -103,23 +103,23 @@ Then generate it for every skill (cached prompts are reused, only missing ones a
 generated — invalidate first to redo):
 
 ```bash
-skills-intros run --prompts my_angle --limit 0
+skills-profiles run --prompts my_angle --limit 0
 ```
 
 ## Configuration
 
-Resolution order (highest first): `SKILLS_INTROS_*` env vars → local `.env` → built-in
+Resolution order (highest first): `SKILLS_PROFILES_*` env vars → local `.env` → built-in
 defaults.
 
 | Variable | Default | Description |
 |---|---|---|
-| `SKILLS_INTROS_MODEL` | `gpt-4.1-mini` | Any OpenAI-compatible chat model |
-| `SKILLS_INTROS_BASE_URL` | – | OpenAI-compatible endpoint |
-| `SKILLS_INTROS_API_KEY` | – | API key for the endpoint |
-| `SKILLS_INTROS_LIMIT` | `10` | Skills to generate per run (`0` = all; cached skills are skipped, not counted) |
-| `SKILLS_INTROS_CONCURRENCY` | `8` | Max concurrent LLM calls, shared across skills and prompts |
-| `SKILLS_INTROS_OUTPUT_DIR` | `output` | Artifacts directory |
-| `SKILLS_INTROS_DATA_DIR` | `cache/skills-sh` | Upstream data directory |
-| `SKILLS_INTROS_PROMPTS_DIR` | `prompts` | Prompt markdown directory (plus `_system.md`) |
+| `SKILLS_PROFILES_MODEL` | `gpt-4.1-mini` | Any OpenAI-compatible chat model |
+| `SKILLS_PROFILES_BASE_URL` | – | OpenAI-compatible endpoint |
+| `SKILLS_PROFILES_API_KEY` | – | API key for the endpoint |
+| `SKILLS_PROFILES_LIMIT` | `10` | Skills to generate per run (`0` = all; cached skills are skipped, not counted) |
+| `SKILLS_PROFILES_CONCURRENCY` | `8` | Max concurrent LLM calls, shared across skills and prompts |
+| `SKILLS_PROFILES_OUTPUT_DIR` | `output` | Artifacts directory |
+| `SKILLS_PROFILES_DATA_DIR` | `cache/skills-sh` | Upstream data directory |
+| `SKILLS_PROFILES_PROMPTS_DIR` | `prompts` | Prompt markdown directory (plus `_system.md`) |
 
 To develop this software, see [CONTRIBUTING.md](CONTRIBUTING.md).

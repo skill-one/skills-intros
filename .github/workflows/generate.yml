@@ -18,8 +18,8 @@ name: generate
 # run — the branch is both the artifact and the cache.
 #
 # Repository configuration (Settings -> Secrets and variables -> Actions):
-#   Secret:   SKILLS_INTROS_API_KEY
-#   Variable: SKILLS_INTROS_BASE_URL, SKILLS_INTROS_MODEL
+#   Secret:   SKILLS_PROFILES_API_KEY
+#   Variable: SKILLS_PROFILES_BASE_URL, SKILLS_PROFILES_MODEL
 
 on:
   workflow_dispatch:
@@ -37,9 +37,9 @@ concurrency:
 
 env:
   # credentials only; every tunable is passed as a CLI argument
-  SKILLS_INTROS_API_KEY: ${{ secrets.SKILLS_INTROS_API_KEY }}
-  SKILLS_INTROS_BASE_URL: ${{ vars.SKILLS_INTROS_BASE_URL }}
-  SKILLS_INTROS_MODEL: ${{ vars.SKILLS_INTROS_MODEL }}
+  SKILLS_PROFILES_API_KEY: ${{ secrets.SKILLS_PROFILES_API_KEY }}
+  SKILLS_PROFILES_BASE_URL: ${{ vars.SKILLS_PROFILES_BASE_URL }}
+  SKILLS_PROFILES_MODEL: ${{ vars.SKILLS_PROFILES_MODEL }}
 
 jobs:
   generate:
@@ -60,7 +60,7 @@ jobs:
         # newest tag; falls back to "dist" when upstream publishes no tags.
         run: |
           set -euo pipefail
-          tag=$(uv run python -c 'from skills_intros.data import latest_dist_tag; print(latest_dist_tag() or "")')
+          tag=$(uv run python -c 'from skills_profiles.data import latest_dist_tag; print(latest_dist_tag() or "")')
           echo "tag=${tag}" >> "$GITHUB_OUTPUT"
 
       - uses: actions/cache@v4
@@ -69,7 +69,7 @@ jobs:
           # One cache entry per upstream tag: hit within a day -> `sync` is a no-op.
           key: dataset-${{ steps.ref.outputs.tag || 'dist' }}
 
-      - name: Restore published intros
+      - name: Restore published profiles
         run: |
           set -euo pipefail
           mkdir -p output
@@ -82,15 +82,15 @@ jobs:
           fi
 
       - name: Sync dataset
-        run: uv run skills-intros sync
+        run: uv run skills-profiles sync
 
       - name: Invalidate stale results
         # results whose upstream content hash changed (or whose skill vanished)
         # are dropped here, explicitly — sync itself never touches results
-        run: uv run skills-intros invalidate --stale
+        run: uv run skills-profiles invalidate --stale
 
-      - name: Generate intros
-        run: uv run skills-intros run --limit "${{ inputs.limit }}"
+      - name: Generate profiles
+        run: uv run skills-profiles run --limit "${{ inputs.limit }}"
 
       - name: Publish to dist
         env:
@@ -118,7 +118,7 @@ jobs:
             echo "Nothing new to publish"
             exit 0
           fi
-          git commit -q -m "intros: ${GITHUB_RUN_ID} at $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          git commit -q -m "profiles: ${GITHUB_RUN_ID} at $(date -u +%Y-%m-%dT%H:%M:%SZ)"
 
           # Keep dist history at 10 commits, one per publish. Every commit is a
           # full snapshot, so the oldest kept commit becomes a squashed root and

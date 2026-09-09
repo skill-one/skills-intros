@@ -1,12 +1,12 @@
-"""Tests for Settings: SKILLS_INTROS_* env vars over .env over built-in defaults."""
+"""Tests for Settings: SKILLS_PROFILES_* env vars over .env over built-in defaults."""
 
 import os
 
 import pytest
 
-from skills_intros.config import Settings
+from skills_profiles.config import Settings
 
-_ENV_VARS = [name for name in os.environ if name.startswith("SKILLS_INTROS_")]
+_ENV_VARS = [name for name in os.environ if name.startswith("SKILLS_PROFILES_")]
 
 
 @pytest.fixture(autouse=True)
@@ -29,8 +29,8 @@ def test_built_in_defaults(tmp_path, monkeypatch):
 
 def test_env_var_overrides_dotenv(tmp_path, monkeypatch):
     monkeypatch.chdir(tmp_path)
-    (tmp_path / ".env").write_text("SKILLS_INTROS_MODEL=env-model\n", encoding="utf-8")
-    monkeypatch.setenv("SKILLS_INTROS_MODEL", "cli-model")
+    (tmp_path / ".env").write_text("SKILLS_PROFILES_MODEL=env-model\n", encoding="utf-8")
+    monkeypatch.setenv("SKILLS_PROFILES_MODEL", "cli-model")
     assert Settings().model == "cli-model"
 
 
@@ -38,9 +38,9 @@ def test_dotenv_fills_unset_fields(tmp_path, monkeypatch):
     """A local .env provides fields the environment leaves unset."""
     monkeypatch.chdir(tmp_path)
     (tmp_path / ".env").write_text(
-        "SKILLS_INTROS_MODEL=env-model\n"
-        "SKILLS_INTROS_BASE_URL=https://example.com/v1\n"
-        "SKILLS_INTROS_API_KEY=sk-test\n",
+        "SKILLS_PROFILES_MODEL=env-model\n"
+        "SKILLS_PROFILES_BASE_URL=https://example.com/v1\n"
+        "SKILLS_PROFILES_API_KEY=sk-test\n",
         encoding="utf-8",
     )
     settings = Settings()

@@ -22,7 +22,7 @@ TARBALL_URL = tarball_url()
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
-        env_prefix="SKILLS_INTROS_", env_file=".env", env_file_encoding="utf-8", extra="ignore"
+        env_prefix="SKILLS_PROFILES_", env_file=".env", env_file_encoding="utf-8", extra="ignore"
     )
 
     model: str = "gpt-4.1-mini"
@@ -31,7 +31,7 @@ class Settings(BaseSettings):
     limit: int = 10  # skills to generate per run; cached ones are skipped, not counted
     concurrency: int = 8
     max_retries: int = 3
-    # generated intros: skills.jsonl + skills/<id>/<prompt>.json (with md/ copies)
+    # generated profiles: skills.jsonl + skills/<id>/<prompt>.json (with md/ copies)
     output_dir: Path = Path("output")
     # the unpacked dist branch: skills.jsonl + skills/<id>/SKILL.md
     data_dir: Path = Path("cache/skills-sh")

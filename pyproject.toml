@@ -1,7 +1,7 @@
 [project]
-name = "skills-intros"
+name = "skills-profiles"
 version = "0.1.0"
-description = "Generate multi-angle Chinese introductions for agent skills collected by skills-sh-mirror"
+description = "Generate multi-angle Chinese profiles for agent skills collected by skills-sh-mirror"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
@@ -15,7 +15,7 @@ dependencies = [
 ]
 
 [project.scripts]
-skills-intros = "skills_intros.cli:app"
+skills-profiles = "skills_profiles.cli:app"
 
 [build-system]
 requires = ["uv_build>=0.11.21,<0.12.0"]

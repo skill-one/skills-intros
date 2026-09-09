@@ -6,7 +6,7 @@ the user-prompt template as the body; the prompt id is the file name (stem).
 the skill context (name, description, SKILL.md source) every prompt sees.
 Templates are rendered with jinja2; the DAG is ordered with the stdlib
 graphlib.TopologicalSorter. The prompts directory defaults to `./prompts` and
-can be overridden with SKILLS_INTROS_PROMPTS_DIR.
+can be overridden with SKILLS_PROFILES_PROMPTS_DIR.
 """
 
 from dataclasses import dataclass, field

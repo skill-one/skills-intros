@@ -4,8 +4,8 @@ from pathlib import Path
 
 import pytest
 
-from skills_intros.models import Domain, IntroText
-from skills_intros.prompts import _load_prompt, load_prompt_set, render_user_prompt
+from skills_profiles.models import Domain, IntroText
+from skills_profiles.prompts import _load_prompt, load_prompt_set, render_user_prompt
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 PROMPTS_DIR = PROJECT_ROOT / "prompts"

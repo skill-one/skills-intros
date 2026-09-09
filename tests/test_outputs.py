@@ -2,11 +2,11 @@
 
 import pytest
 
-from skills_intros.data import load_skills
-from skills_intros.generate import run_all
-from skills_intros.llm import FakeLLM
-from skills_intros.models import Domain
-from skills_intros.outputs import (
+from skills_profiles.data import load_skills
+from skills_profiles.generate import run_all
+from skills_profiles.llm import FakeLLM
+from skills_profiles.models import Domain
+from skills_profiles.outputs import (
     invalidate,
     load_hashes,
     load_index,

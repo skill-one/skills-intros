@@ -1,6 +1,6 @@
 # 贡献指南 / 开发者文档
 
-与开发 `skills-intros` 本身相关的一切。面向使用者的文档在
+与开发 `skills-profiles` 本身相关的一切。面向使用者的文档在
 [README.zh-CN.md](README.zh-CN.md)。
 
 > English documentation: [CONTRIBUTING.md](CONTRIBUTING.md)
@@ -16,7 +16,7 @@ dist 分支 tarball ──► cache/skills-sh (skills.jsonl + skills/<id>/SKILL.
                                                     ──► output/skills.jsonl (id + hash + domain + persona)
 ```
 
-`output/`(生成的介绍)与 `cache/skills-sh`(上游 skills 基本信息)是两个独立根目录——参见
+`output/`(生成的档案)与 `cache/skills-sh`(上游 skills 基本信息)是两个独立根目录——参见
 [配置解析](#配置解析): 从上游取到的东西永远不会写进产物目录。
 
 Prompt DAG（边表示"依赖其输出"）:
@@ -47,7 +47,7 @@ domain   scenario   blackbox   whitebox   tagline   persona   comments
   `cache/skills-sh/SNAPSHOT.json`, tag 没变就跳过下载(`sync --refresh` 可强制), 因此本地重复
   sync 或在 CI 里跑在 `actions/cache` 之后, 只花一次很小的请求, 而非解包 120 MB。
 - **Prompt 即文件。** 每个 prompt 是 `prompts/` 下的一个 markdown 文件（可用
-  `SKILLS_INTROS_PROMPTS_DIR` 覆盖）。YAML frontmatter 存元数据, 正文是 jinja2 用户提示词
+  `SKILLS_PROFILES_PROMPTS_DIR` 覆盖）。YAML frontmatter 存元数据, 正文是 jinja2 用户提示词
   模板; `_system.md` 是共享的 system prompt。新增 prompt 通常无需改代码, 除非需要新的输出
   schema（那就在 `models.py` 注册）。
 
@@ -74,7 +74,7 @@ prompts/               # 每个 prompt 一个 md 文件（+ _system.md）
 ├── persona.md
 └── comments.md
 
-src/skills_intros/
+src/skills_profiles/
 ├── config.py        # 配置（pydantic-settings）
 ├── data.py          # dist 分支 tarball 下载 + skills.jsonl 解析 + 过期判定
 ├── models.py        # 领域分类体系 + 结构化输出 schema
@@ -88,7 +88,7 @@ src/skills_intros/
 
 ## 配置解析
 
-`SKILLS_INTROS_*` 环境变量 → 本地 `.env` → 内置默认值。由 `config.py` 中的
+`SKILLS_PROFILES_*` 环境变量 → 本地 `.env` → 内置默认值。由 `config.py` 中的
 `pydantic-settings` 实现。
 
 ## 测试

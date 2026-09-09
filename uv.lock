@@ -1235,7 +1235,7 @@ wheels = [
 ]
 
 [[package]]
-name = "skills-intros"
+name = "skills-profiles"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [

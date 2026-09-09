@@ -8,9 +8,9 @@ from pathlib import Path
 
 import pytest
 
-import skills_intros.data as data_mod
-from skills_intros.config import TARBALL_URL, Settings
-from skills_intros.prompts import load_prompt_set
+import skills_profiles.data as data_mod
+from skills_profiles.config import TARBALL_URL, Settings
+from skills_profiles.prompts import load_prompt_set
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 

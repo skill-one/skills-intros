@@ -1,6 +1,6 @@
 # Contributing / Developer guide
 
-Everything about developing `skills-intros` itself. User-facing docs live in
+Everything about developing `skills-profiles` itself. User-facing docs live in
 [README.md](README.md).
 
 ## How it works
@@ -15,9 +15,9 @@ dist branch tarball ──► cache/skills-sh (skills.jsonl + skills/<id>/SKILL.
                                                         ──► output/skills.jsonl (id + hash + domain + persona)
 ```
 
-`output/` (generated intros) and `cache/skills-sh` (upstream skills basic info) are
+`output/` (generated profiles) and `cache/skills-sh` (upstream skills basic info) are
 separate roots — see [Configuration](#configuration-resolution): nothing fetched from
-upstream is ever written next to a generated intro.
+upstream is ever written next to a generated profile.
 
 Prompt DAG (edges = "depends on output of"):
 
@@ -37,7 +37,7 @@ Key design decisions:
 - **File-based resume.** Each prompt's output is its own `<prompt_id>.json` (plus a
   markdown copy under `md/`), committed right after generation — both the output and the cache: present and
   schema-valid means the LLM is not called. `skills.jsonl` (one line per skill: id, the
-  upstream content hash its intros were built from, and the aggregated domain/persona
+  upstream content hash its profiles were built from, and the aggregated domain/persona
   outputs, re-derived from disk on every rewrite; written only when a run generates or
   invalidates something) is what `invalidate --stale`
   compares against; neither `run` nor `sync` re-checks hashes. Resume
@@ -52,7 +52,7 @@ Key design decisions:
   download when the tag is still current (use `sync --refresh` to force it), so a repeat sync
   — locally or in CI behind `actions/cache` — is one small request, not a 120 MB unpack.
 - **Prompts as files.** One markdown file per prompt under `prompts/` (override with
-  `SKILLS_INTROS_PROMPTS_DIR`). YAML frontmatter carries metadata; the body is the jinja2
+  `SKILLS_PROFILES_PROMPTS_DIR`). YAML frontmatter carries metadata; the body is the jinja2
   user-prompt template. `_system.md` holds the shared system prompt. No code changes needed
   to add a prompt unless it needs a new output schema (then register it in `models.py`).
 
@@ -81,7 +81,7 @@ prompts/               # one markdown file per prompt (+ _system.md)
 ├── persona.md
 └── comments.md
 
-src/skills_intros/
+src/skills_profiles/
 ├── config.py        # settings (pydantic-settings)
 ├── data.py          # dist branch tarball download + skills.jsonl parsing + stale detection
 ├── models.py        # domain taxonomy + structured-output schemas
@@ -95,7 +95,7 @@ src/skills_intros/
 
 ## Configuration resolution
 
-`SKILLS_INTROS_*` env vars → local `.env` → built-in defaults. Implemented with
+`SKILLS_PROFILES_*` env vars → local `.env` → built-in defaults. Implemented with
 `pydantic-settings` in `config.py`.
 
 ## Testing

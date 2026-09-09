@@ -207,7 +207,7 @@ async def run_one(
     only: set[str] | None = None, debug: bool = False,
     sem: asyncio.Semaphore | None = None,
 ) -> tuple[dict, bool]:
-    """Generate one skill's intros; returns (record, reused).
+    """Generate one skill's profiles; returns (record, reused).
 
     Storage: each prompt's output is its own <prompt_id>.json under the skill's
     artifact dir, committed (json + md/ copy) right after it is generated, so a
@@ -297,7 +297,7 @@ async def run_all(
     debug: bool = False,
     stats: RunStats | None = None,
 ) -> list[dict]:
-    """Generate intros for all skills concurrently.
+    """Generate profiles for all skills concurrently.
 
     One semaphore bounds the whole run: at most `settings.concurrency` LLM
     calls in flight, shared across skills and across the prompts of each skill

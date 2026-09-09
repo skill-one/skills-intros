@@ -5,8 +5,8 @@ import json
 
 import pytest
 
-from skills_intros.data import load_skills, skill_md_path
-from skills_intros.generate import (
+from skills_profiles.data import load_skills, skill_md_path
+from skills_profiles.generate import (
     RunStats,
     coverage,
     load_results,
@@ -14,15 +14,15 @@ from skills_intros.generate import (
     run_one,
     select_skills,
 )
-from skills_intros.llm import FakeLLM
-from skills_intros.outputs import (
+from skills_profiles.llm import FakeLLM
+from skills_profiles.outputs import (
     index_path,
     invalidate,
     load_hashes,
     prompt_result_path,
     skill_result_dir,
 )
-from skills_intros.prompts import load_prompt_set
+from skills_profiles.prompts import load_prompt_set
 
 
 class CountingLLM:
@@ -59,7 +59,7 @@ class ConcurrencyTrackingLLM:
             self.active -= 1
 
 
-def stored_intros(settings, skill_id: str) -> dict:
+def stored_outputs(settings, skill_id: str) -> dict:
     """All per-prompt json outputs stored on disk for one skill."""
     skill_dir = skill_result_dir(settings, skill_id)
     return {
@@ -231,13 +231,13 @@ async def test_only_fills_in_missing_prompt_and_carries_over_rest(settings, prom
     # drop Alpha's tagline json to simulate a missing prompt
     tagline_path = prompt_result_path(settings, skills[0].id, "tagline")
     tagline_path.unlink()
-    before = stored_intros(settings, skills[0].id)
+    before = stored_outputs(settings, skills[0].id)
 
     llm = CountingLLM(FakeLLM())
     await run_all(llm, settings, skills, prompt_set, only={"tagline"})
     assert llm.calls == 1  # only Alpha's missing tagline was generated
 
-    updated = stored_intros(settings, skills[0].id)
+    updated = stored_outputs(settings, skills[0].id)
     assert set(updated) == set(before) | {"tagline"}  # complete again
     for pid, out in before.items():
         assert updated[pid] == out  # carried over untouched
@@ -250,13 +250,13 @@ async def test_only_generates_just_the_selected_prompt(settings, prompt_set):
     llm = CountingLLM(FakeLLM())
     await run_all(llm, settings, skills[:1], prompt_set, only={"comments"})
     assert llm.calls == 1
-    assert set(stored_intros(settings, skills[0].id)) == {"comments"}
+    assert set(stored_outputs(settings, skills[0].id)) == {"comments"}
 
     # a partial directory must not count as complete: a full run fills in the gaps
     llm = CountingLLM(FakeLLM())
     await run_all(llm, settings, skills[:1], prompt_set)
     assert llm.calls == 6  # the other six prompts were still missing
-    assert len(stored_intros(settings, skills[0].id)) == 7
+    assert len(stored_outputs(settings, skills[0].id)) == 7
 
 
 async def test_invalidated_prompt_regenerates_only_itself(settings, prompt_set):
@@ -264,7 +264,7 @@ async def test_invalidated_prompt_regenerates_only_itself(settings, prompt_set):
     its dependencies are inputs and keep the normal cache rules."""
     skills = load_skills(settings)
     await run_all(FakeLLM(), settings, skills, prompt_set)
-    before = stored_intros(settings, skills[0].id)
+    before = stored_outputs(settings, skills[0].id)
 
     assert invalidate(settings, [skills[0].id], {"tagline"}) == 1
     # a partially invalidated skill stays on record
@@ -276,8 +276,8 @@ async def test_invalidated_prompt_regenerates_only_itself(settings, prompt_set):
     assert llm.calls == 1
 
     # every other prompt is reused unchanged
-    assert len(stored_intros(settings, skills[0].id)) == 7
-    updated = stored_intros(settings, skills[0].id)
+    assert len(stored_outputs(settings, skills[0].id)) == 7
+    updated = stored_outputs(settings, skills[0].id)
     for pid in ("domain", "scenario", "blackbox", "whitebox", "persona", "comments"):
         assert updated[pid] == before[pid]
 
@@ -286,14 +286,14 @@ async def test_run_preserves_prompts_outside_closure(settings, prompt_set):
     """A run never touches prompts outside the closure: their files survive intact."""
     skills = load_skills(settings)
     await run_all(FakeLLM(), settings, skills, prompt_set)
-    before = stored_intros(settings, skills[0].id)
+    before = stored_outputs(settings, skills[0].id)
 
     # closure of a root prompt is just itself: only scenario was invalidated -> 1 call
     invalidate(settings, [skills[0].id], {"scenario"})
     llm = CountingLLM(FakeLLM())
     await run_all(llm, settings, skills[:1], prompt_set, only={"scenario"})
     assert llm.calls == 1
-    updated = stored_intros(settings, skills[0].id)
+    updated = stored_outputs(settings, skills[0].id)
     assert len(updated) == 7
     for pid in ("domain", "blackbox", "whitebox", "tagline", "persona", "comments"):
         assert updated[pid] == before[pid]
@@ -310,13 +310,13 @@ async def test_regenerates_cached_output_failing_current_schema(settings, prompt
     domain = json.loads(domain_path.read_text(encoding="utf-8"))
     domain["domain"] = "项目管理"
     domain_path.write_text(json.dumps(domain, ensure_ascii=False), encoding="utf-8")
-    before = stored_intros(settings, skills[0].id)
+    before = stored_outputs(settings, skills[0].id)
 
     llm = CountingLLM(FakeLLM())
     await run_all(llm, settings, skills, prompt_set, only={"domain"})
     assert llm.calls == 1  # only Alpha's stale domain regenerated
 
-    updated = stored_intros(settings, skills[0].id)
+    updated = stored_outputs(settings, skills[0].id)
     assert updated["domain"]["domain"] == "办公效率"  # FakeLLM's fixed value
     for pid, out in before.items():
         if pid != "domain":
@@ -366,12 +366,12 @@ async def test_crash_mid_run_keeps_completed_prompts(settings, prompt_set):
 
     with pytest.raises(RuntimeError, match="boom"):
         await run_one(FlakyLLM(), settings, prompt_set, skill)
-    assert len(stored_intros(settings, skill.id)) == 2  # first two prompts survived
+    assert len(stored_outputs(settings, skill.id)) == 2  # first two prompts survived
 
     llm = CountingLLM(FakeLLM())
     await run_one(llm, settings, prompt_set, skill)  # cache rules apply
     assert llm.calls == 5  # only the remaining five were regenerated
-    assert len(stored_intros(settings, skill.id)) == 7
+    assert len(stored_outputs(settings, skill.id)) == 7
 
 
 async def test_legacy_result_json_removed_on_regeneration(settings, prompt_set):
@@ -386,7 +386,7 @@ async def test_legacy_result_json_removed_on_regeneration(settings, prompt_set):
     await run_one(llm, settings, prompt_set, skill)
     assert llm.calls == 7  # the legacy file did not count as a cache
     assert not legacy.exists()
-    assert len(stored_intros(settings, skill.id)) == 7
+    assert len(stored_outputs(settings, skill.id)) == 7
 
 
 async def test_coverage_counts_complete_and_remaining_skills(settings, prompt_set):
@@ -412,7 +412,7 @@ async def test_coverage_matches_run_cache_rules(settings, prompt_set):
     """A schema-stale output is not coverage-cached, same as a run regenerates it."""
     import json
 
-    from skills_intros.outputs import prompt_result_path
+    from skills_profiles.outputs import prompt_result_path
 
     skills = load_skills(settings)
     await run_all(FakeLLM(), settings, skills[:1], prompt_set)
@@ -477,7 +477,7 @@ async def test_run_stats_count_stale_caches(settings, prompt_set):
     """A cached output failing the current schema is regenerated and counted stale."""
     import json
 
-    from skills_intros.outputs import prompt_result_path
+    from skills_profiles.outputs import prompt_result_path
 
     skills = load_skills(settings)
     await run_all(FakeLLM(), settings, skills[:1], prompt_set)
@@ -522,7 +522,7 @@ async def test_dep_outputs_flow_into_downstream_prompts(settings, tmp_path):
             return await FakeLLM().create(response_model, messages, **kwargs)
 
     await run_one(RecordingLLM(), settings, prompts, load_skills(settings)[0])
-    assert any("离线演示介绍文本" in m for m in seen_messages)  # scenario flows in via deps
+    assert any("离线演示档案文本" in m for m in seen_messages)  # scenario flows in via deps
 
 
 async def test_model_and_system_prompt_passed_to_llm(settings, prompt_set):

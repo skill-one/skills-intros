@@ -17,7 +17,7 @@ from .prompts import load_prompt_set
 
 logger = logging.getLogger(__name__)
 
-app = typer.Typer(help="Generate multi-angle Chinese introductions for agent skills.")
+app = typer.Typer(help="Generate multi-angle Chinese profiles for agent skills.")
 
 
 @app.command()
@@ -117,7 +117,7 @@ def run(
         False, "--verbose", "-v", help="Enable debug logging"
     ),
 ) -> None:
-    """Generate missing intros; every cached and valid prompt output is reused."""
+    """Generate missing profiles; every cached and valid prompt output is reused."""
     setup_logging(verbose)
     settings = Settings()
     if limit is not None:
