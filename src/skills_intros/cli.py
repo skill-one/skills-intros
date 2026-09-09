@@ -21,7 +21,8 @@ app = typer.Typer(help="Generate multi-angle Chinese introductions for agent ski
 
 @app.command()
 def sync() -> None:
-    """Download the skills dataset snapshot (dist branch) into output/data."""
+    """Download the whole dist branch (skills.jsonl + every SKILL.md) as one
+    tarball into the data dir, and prune results that went stale."""
     setup_logging()
     try:
         data_dir, pruned = sync_data(Settings())
@@ -62,12 +63,12 @@ def invalidate(
     if not skill and not prompt_ids and not all_skills:
         raise typer.BadParameter("refusing to invalidate everything - pass --all to confirm")
 
-    hashes = load_hashes(settings)
+    recorded = load_hashes(settings)
     for skill_id in skill or ():
-        if skill_id not in hashes:
+        if skill_id not in recorded:
             logger.warning("%s has no cached results", skill_id)
     removed = invalidate_cache(settings, skill or None, prompt_ids)
-    targets = sorted(skill) if skill else sorted(hashes)
+    targets = sorted(skill) if skill else sorted(recorded)
     logger.info("Invalidated %d output(s) across %d skill(s)", removed, len(targets))
 
 
@@ -126,7 +127,7 @@ def run(
         run_all(llm, settings, skills, prompt_set, on_skill_done=on_done,
                 only=only, debug=debug)
     )
-    logger.info("Wrote %d records under %s", len(results), settings.workdir / "results" / "skills")
+    logger.info("Wrote %d records under %s", len(results), settings.output_dir / "skills")
 
 
 def main() -> None:  # pragma: no cover

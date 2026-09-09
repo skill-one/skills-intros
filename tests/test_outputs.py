@@ -18,7 +18,7 @@ async def results(settings, prompt_set):
 def test_one_json_in_skill_dir_and_one_md_in_subdir(settings, results):
     for record in results:
         skill_id = record["skill"]["id"]
-        skill_dir = settings.workdir / "results" / "skills" / skill_id.replace(":", "_")
+        skill_dir = settings.output_dir / "skills" / skill_id.replace(":", "_")
         stems_json = {p.stem for p in skill_dir.glob("*.json")}
         stems_md = {p.stem for p in (skill_dir / "md").glob("*.md")}
         assert stems_json == set(record["intros"])
@@ -29,23 +29,35 @@ def test_one_json_in_skill_dir_and_one_md_in_subdir(settings, results):
 def test_skill_output_files_render_fields(settings, results):
     record = results[0]
     skill_id = record["skill"]["id"]
-    md_dir = settings.workdir / "results" / "skills" / skill_id.replace(":", "_") / "md"
+    md_dir = settings.output_dir / "skills" / skill_id.replace(":", "_") / "md"
     intro = record["intros"]
 
-    scenario = (md_dir / "scenario_intro.md").read_text(encoding="utf-8")
+    scenario = (md_dir / "scenario.md").read_text(encoding="utf-8")
     assert skill_id.rsplit("/", 1)[-1] in scenario
-    assert intro["scenario_intro"]["text"] in scenario
+    assert intro["scenario"]["text"] in scenario
 
     taglines = (md_dir / "tagline.md").read_text(encoding="utf-8")
     for tagline in intro["tagline"]["taglines"]:
         assert f"- {tagline}" in taglines
 
-    guide = (md_dir / "trigger_guide.md").read_text(encoding="utf-8")
-    for item in intro["trigger_guide"]["use_when"]:
-        assert f"- {item}" in guide
+    whitebox = (md_dir / "whitebox.md").read_text(encoding="utf-8")
+    for step in intro["whitebox"]["execution_flow"]:
+        assert f"- {step}" in whitebox
+
+    blackbox = (md_dir / "blackbox.md").read_text(encoding="utf-8")
+    for pair in intro["blackbox"]["input_output"]:
+        assert f"- input: {pair['input']}, output: {pair['output']}" in blackbox
 
     domain_md = (md_dir / "domain.md").read_text(encoding="utf-8")
     assert Domain.display(intro["domain"]["domain"]) in domain_md  # emoji-prefixed
+
+    persona_md = (md_dir / "persona.md").read_text(encoding="utf-8")
+    for field in ("tool", "role", "scene"):
+        assert f"**{field}**: {intro['persona'][field]}" in persona_md
+
+    comments_md = (md_dir / "comments.md").read_text(encoding="utf-8")
+    for c in intro["comments"]["comments"]:
+        assert f"- user: {c['user']}, category: {c['category']}, comment: {c['comment']}" in comments_md
 
 
 def test_invalidate_one_prompt_removes_only_it(settings, results):
@@ -55,13 +67,13 @@ def test_invalidate_one_prompt_removes_only_it(settings, results):
     assert invalidate(settings, [skill_id], {"tagline"}) == 1
     assert not (skill_dir / "tagline.json").exists()
     assert not (skill_dir / "md" / "tagline.md").exists()
-    # siblings and the prune-index entry survive a partial invalidation
+    # siblings and the hash record survive a partial invalidation
     assert (skill_dir / "domain.json").exists()
     assert (skill_dir / "md" / "domain.md").exists()
     assert skill_id in load_hashes(settings)
 
 
-def test_invalidate_whole_skill_drops_it_from_the_index(settings, results):
+def test_invalidate_whole_skill_drops_it_from_the_hashes(settings, results):
     skill_id = results[0]["skill"]["id"]
     skill_dir = skill_result_dir(settings, skill_id)
 

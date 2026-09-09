@@ -11,26 +11,43 @@
 
 ## 产物
 
-每个 skill 在 `output/results/skills/` 下有一个独立目录：
+每个 skill 在 `output/skills/` 下有一个独立目录：
 
 ```
-output/results/
-├── hashes.json                          # skill id -> 上游内容 hash (prune 索引)
+output/
+├── hashes.json                          # skill id -> 生成该产物时对应的上游内容 hash
 └── skills/<owner>/<repo>/<skill>/
     ├── domain.json                      # 每个 prompt 一个 json
-    ├── scenario_intro.json
+    ├── scenario.json
     └── md/                              # 供浏览的 markdown 副本
         ├── domain.md
         └── ...
 ```
 
-- 目录名即 `skills.jsonl` 里的 `id`, 与上游 `data/skills/` 布局一致。
+- 目录名即 `skills.jsonl` 里的 `id`, 与上游 `skills/` 布局一致。
 - 每个 prompt 的结构化输出存放在自己的 `<prompt_id>.json` 里(缓存的提交标记); 供浏览的 markdown 副本放在 `md/<prompt_id>.md`, 目录本身只放 json。
-- 内置 prompt: `domain`、`scenario_intro`、`blackbox`、`whitebox`、`comparison`、`trigger_guide`、`tagline`。
+- 内置 prompt: `domain`、`scenario`、`blackbox`、`whitebox`、`tagline`、`persona`、`comments`。
 
-新鲜度: `hashes.json` 记录每个 skill 的输出是基于哪个上游内容 hash 生成的, 有效性判定发生在
-`sync` 时——每次 sync 将该索引与刚下载的快照逐一对比, 上游 hash 变化(或 skill 已从上游消失)
-的条目连同产物目录立即删除, 下次 `run` 重新生成; `run` 本身只信任磁盘上现有的输出文件。
+`hashes.json` 为每一个已生成产物的 skill 记下生成时的上游内容 hash。有效性判定
+发生在 `sync` 时——每次 sync 把记录的 `hash` 与刚下载的快照逐一对比, 上游 hash 变化
+(或 skill 已从上游消失)的条目连同产物目录立即删除, 下次 `run` 重新生成; `run` 本身只信任
+磁盘上现有的输出文件。
+
+## 数据
+
+生成的介绍词与其所依据的上游 skills 数据分处两个独立的根目录
+(`output/` 与 `cache/skills-sh`, 均可通过环境变量覆盖), 两个来源互不混淆,
+介绍词产物还可以单独发布:
+
+```
+cache/skills-sh/                            # SKILLS_INTROS_DATA_DIR: 上游 skills 基本信息
+├── skills.jsonl                            # 索引: 每个 skill 一行 json
+└── skills/<owner>/<repo>/<skill>/SKILL.md  # 每个 skill 的源文件
+```
+
+`sync` 一次请求把整个 dist 分支打包下载(tarball)并完整解压到这里, 不再逐个文件懒下载。
+`cache/skills-sh` 下的一切都只是 dist 分支的可重下副本: 每次 sync 整包替换, 索引与源文件
+因此不可能出现版本错位。
 
 ## 快速开始
 
@@ -39,7 +56,7 @@ output/results/
 ```bash
 uv sync
 # LLM 凭据: 在本地 .env 中配置 KEY / BASE_URL / MODEL（参见 .env.example）
-skills-intros sync            # 下载最新的 dist 分支快照（并清理失效产物）
+skills-intros sync            # 下载 dist 分支快照（并清理失效产物）
 skills-intros run --top 50    # 为安装量前 50 的 skill 生成介绍词
 ```
 
@@ -71,18 +88,18 @@ skills-intros invalidate --all                     # 全部清空(需显式 --al
 `prompts/` 下一个 markdown 文件即一个 prompt, 文件名就是 prompt id。
 共享的 `_system.md` 是 system prompt, 按 skill 逐次渲染: 它承载每个 prompt 都能看到的
 skill 上下文——`{{ skill.name }}` 与 `{{ skill.description }}`(均取自 `skills.jsonl`)
-和完整的 `{{ skill_md }}` 原文(每个 skill 目录下的 `SKILL.md` 文件)——因此各 prompt
-文件只需描述任务本身。
+和完整的 `{{ skill_md }}` 原文(每个 skill 的 `SKILL.md`, 按需从 dist 分支下载)——因此各
+prompt 文件只需描述任务本身。
 
 ```markdown
 ---
 description: 一行说明
 output: IntroText          # models.py 中注册的 pydantic schema
-depends_on: [scenario_intro]   # DAG 依赖; 根节点可省略
+depends_on: [scenario]   # DAG 依赖; 根节点可省略
 ---
 
 请为下面的 skill 写……
-{{ deps.scenario_intro.text }}   # deps 将 prompt id 映射到其解析后的输出对象
+{{ deps.scenario.text }}   # deps 将 prompt id 映射到其解析后的输出对象
 ```
 
 然后为所有 skill 生成（已缓存的 prompt 一律复用, 只生成缺失的——需要重算请先 `invalidate`）:
@@ -102,5 +119,6 @@ skills-intros run --prompts my_angle --top 0
 | `SKILLS_INTROS_API_KEY`     | 无              | 端点对应的 API key                             |
 | `SKILLS_INTROS_TOP_N`       | `50`           | 处理的 skill 数量（`0` = 全部）                     |
 | `SKILLS_INTROS_CONCURRENCY` | `8`            | LLM 最大并发调用数                                |
-| `SKILLS_INTROS_WORKDIR`     | `output`       | 存放 `data/` 与 `results/`                    |
+| `SKILLS_INTROS_OUTPUT_DIR`  | `output`       | 生成的介绍: `hashes.json` + `skills/`              |
+| `SKILLS_INTROS_DATA_DIR`    | `cache/skills-sh`  | 上游 skills 基本信息: `skills.jsonl` + 缓存的 `SKILL.md`      |
 | `SKILLS_INTROS_PROMPTS_DIR` | `prompts`      | prompt markdown 文件所在目录(含 `_system.md`)          |

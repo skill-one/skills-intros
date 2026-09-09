@@ -4,7 +4,7 @@ import json
 
 import pytest
 
-from skills_intros.data import load_skills
+from skills_intros.data import load_skills, skill_md_path
 from skills_intros.generate import load_results, run_all, run_one
 from skills_intros.llm import FakeLLM
 from skills_intros.outputs import (
@@ -14,6 +14,7 @@ from skills_intros.outputs import (
     prompt_result_path,
     skill_result_dir,
 )
+from skills_intros.prompts import load_prompt_set
 
 
 class CountingLLM:
@@ -40,9 +41,8 @@ def stored_intros(settings, skill_id: str) -> dict:
 async def test_full_run_produces_all_prompt_outputs(settings, prompt_set):
     skill = load_skills(settings)[0]
     record, _ = await run_one(FakeLLM(), settings, prompt_set, skill)
-    assert set(record["intros"]) == {"domain", "scenario_intro", "blackbox",
-                                     "whitebox", "comparison", "trigger_guide",
-                                     "tagline"}
+    assert set(record["intros"]) == {"domain", "scenario", "blackbox",
+                                    "whitebox", "tagline", "persona", "comments"}
 
 
 async def test_existing_results_skip_llm_calls(settings, prompt_set):
@@ -70,7 +70,7 @@ async def test_cached_run_is_untouched_until_invalidated(settings, prompt_set):
     assert len(results) == 4
 
     assert invalidate(settings) == 28  # 4 skills x 7 prompts
-    assert load_hashes(settings) == {}  # emptied skills leave the prune index
+    assert load_hashes(settings) == {}  # emptied skills drop out of the record
 
     forced = CountingLLM(FakeLLM())
     results = await run_all(forced, settings, skills, prompt_set)
@@ -78,14 +78,12 @@ async def test_cached_run_is_untouched_until_invalidated(settings, prompt_set):
     assert len(results) == 4
 
 
-async def test_hash_registered_only_when_generating(settings, prompt_set):
-    """hashes.json gains an entry only for skills that generated something this
-    run; a fully cached run leaves the index untouched."""
+async def test_hashes_recorded_only_when_generating(settings, prompt_set):
+    """hashes.json records a skill only once it generated something this run;
+    a fully cached run leaves the record untouched."""
     skills = load_skills(settings)
     await run_all(FakeLLM(), settings, skills[:1], prompt_set)
-    assert hashes_path(settings).read_text(encoding="utf-8") == json.dumps(
-        {skills[0].id: skills[0].hash}, ensure_ascii=False
-    )
+    assert load_hashes(settings) == {skills[0].id: skills[0].hash}
 
     # a run that generates nothing rewrites nothing
     before = hashes_path(settings).read_text(encoding="utf-8")
@@ -93,13 +91,35 @@ async def test_hash_registered_only_when_generating(settings, prompt_set):
     assert hashes_path(settings).read_text(encoding="utf-8") == before
 
 
-async def test_only_runs_write_no_hash_entry_when_fully_cached(settings, prompt_set):
+async def test_skill_md_is_read_only_for_skills_that_generate(settings, prompt_set):
+    """A skill's source is read from the snapshot when it is first needed: a run
+    whose prompts are all cached never reads it."""
+    skills = load_skills(settings)
+    await run_all(FakeLLM(), settings, skills, prompt_set)
+
+    # a skill with a missing prompt but no source in the snapshot generates nothing
+    prompt_result_path(settings, skills[0].id, "tagline").unlink()
+    skill_md_path(settings, skills[0]).unlink()
+    record, _ = await run_one(FakeLLM(), settings, prompt_set, skills[0])
+    assert "tagline" not in record["intros"]
+
+
+async def test_skill_without_skill_md_in_the_snapshot_is_skipped(settings, prompt_set):
+    """A skill the snapshot has no SKILL.md for is skipped instead of failing the run."""
+    orphan = load_skills(settings)[0].model_copy(update={"id": "owner-x/repo-x/nope"})
+    record, _ = await run_one(FakeLLM(), settings, prompt_set, orphan)
+    assert record["intros"] == {}  # nothing generated, so nothing cached either
+    assert not skill_result_dir(settings, orphan.id).exists()
+    assert orphan.id not in load_hashes(settings)
+
+
+async def test_only_runs_write_no_hash_when_fully_cached(settings, prompt_set):
     skills = load_skills(settings)
     await run_all(FakeLLM(), settings, skills, prompt_set)
 
     await run_all(FakeLLM(), settings, skills, prompt_set, only={"tagline"})
-    # nothing was generated, so no new hash entries appeared
-    assert len(json.loads(hashes_path(settings).read_text(encoding="utf-8"))) == 4
+    # nothing was generated, so no new hashes were recorded
+    assert len(load_hashes(settings)) == 4
 
 
 async def test_run_trusts_existing_outputs_invalidated_by_sync(settings, prompt_set):
@@ -108,7 +128,7 @@ async def test_run_trusts_existing_outputs_invalidated_by_sync(settings, prompt_
     await run_all(FakeLLM(), settings, skills, prompt_set)
 
     # simulate an upstream update that sync has not pruned yet
-    data_file = settings.workdir / "data" / "skills.jsonl"
+    data_file = settings.data_dir / "skills.jsonl"
     entries = [json.loads(l) for l in data_file.read_text(encoding="utf-8").splitlines()]
     for e in entries:
         if e["id"] == "owner-a/repo-a/alpha":
@@ -153,19 +173,19 @@ async def test_only_fills_in_missing_prompt_and_carries_over_rest(settings, prom
         assert updated[pid] == out  # carried over untouched
 
 
-async def test_only_generates_missing_deps_from_scratch(settings, prompt_set):
-    """With no stored results, `only` still pulls in its dependency closure."""
+async def test_only_generates_just_the_selected_prompt(settings, prompt_set):
+    """With no stored results, `only` runs just the closure of the selection
+    (every built-in prompt is a root, so that is the prompt itself)."""
     skills = load_skills(settings)
     llm = CountingLLM(FakeLLM())
-    await run_all(llm, settings, skills[:1], prompt_set, only={"comparison"})
-    # comparison + scenario_intro = 2 prompts
-    assert llm.calls == 2
-    assert set(stored_intros(settings, skills[0].id)) == {"scenario_intro", "comparison"}
+    await run_all(llm, settings, skills[:1], prompt_set, only={"comments"})
+    assert llm.calls == 1
+    assert set(stored_intros(settings, skills[0].id)) == {"comments"}
 
     # a partial directory must not count as complete: a full run fills in the gaps
     llm = CountingLLM(FakeLLM())
     await run_all(llm, settings, skills[:1], prompt_set)
-    assert llm.calls == 5  # only the missing domain, blackbox, whitebox, trigger_guide, tagline
+    assert llm.calls == 6  # the other six prompts were still missing
     assert len(stored_intros(settings, skills[0].id)) == 7
 
 
@@ -177,7 +197,7 @@ async def test_invalidated_prompt_regenerates_only_itself(settings, prompt_set):
     before = stored_intros(settings, skills[0].id)
 
     assert invalidate(settings, [skills[0].id], {"tagline"}) == 1
-    # a partially invalidated skill keeps its prune-index entry
+    # a partially invalidated skill stays on record
     assert skills[0].id in load_hashes(settings)
 
     # tagline has no dependency, and only tagline was invalidated -> 1 call
@@ -188,8 +208,7 @@ async def test_invalidated_prompt_regenerates_only_itself(settings, prompt_set):
     # every other prompt is reused unchanged
     assert len(stored_intros(settings, skills[0].id)) == 7
     updated = stored_intros(settings, skills[0].id)
-    for pid in ("domain", "scenario_intro", "blackbox", "whitebox",
-                "comparison", "trigger_guide"):
+    for pid in ("domain", "scenario", "blackbox", "whitebox", "persona", "comments"):
         assert updated[pid] == before[pid]
 
 
@@ -199,15 +218,14 @@ async def test_run_preserves_prompts_outside_closure(settings, prompt_set):
     await run_all(FakeLLM(), settings, skills, prompt_set)
     before = stored_intros(settings, skills[0].id)
 
-    # closure of scenario_intro = {domain, scenario_intro}, but only scenario_intro
-    # was invalidated -> 1 call
-    invalidate(settings, [skills[0].id], {"scenario_intro"})
+    # closure of a root prompt is just itself: only scenario was invalidated -> 1 call
+    invalidate(settings, [skills[0].id], {"scenario"})
     llm = CountingLLM(FakeLLM())
-    await run_all(llm, settings, skills[:1], prompt_set, only={"scenario_intro"})
+    await run_all(llm, settings, skills[:1], prompt_set, only={"scenario"})
     assert llm.calls == 1
     updated = stored_intros(settings, skills[0].id)
     assert len(updated) == 7
-    for pid in ("domain", "blackbox", "whitebox", "comparison", "trigger_guide", "tagline"):
+    for pid in ("domain", "blackbox", "whitebox", "tagline", "persona", "comments"):
         assert updated[pid] == before[pid]
 
 
@@ -301,8 +319,17 @@ async def test_legacy_result_json_removed_on_regeneration(settings, prompt_set):
     assert len(stored_intros(settings, skill.id)) == 7
 
 
-async def test_dep_outputs_flow_into_downstream_prompts(settings, prompt_set):
-    skill = load_skills(settings)[0]
+async def test_dep_outputs_flow_into_downstream_prompts(settings, tmp_path):
+    """A dependent prompt's rendered user message carries its deps' parsed output."""
+    (tmp_path / "_system.md").write_text("system prompt", encoding="utf-8")
+    (tmp_path / "scenario.md").write_text(
+        "---\noutput: IntroText\n---\n场景化介绍", encoding="utf-8"
+    )
+    (tmp_path / "comments.md").write_text(
+        "---\noutput: SkillComments\ndepends_on: [scenario]\n---\n"
+        "基于这段介绍写评论: {{ deps.scenario.text }}", encoding="utf-8"
+    )
+    prompts = load_prompt_set(tmp_path)
     seen_messages = []
 
     class RecordingLLM:
@@ -310,9 +337,8 @@ async def test_dep_outputs_flow_into_downstream_prompts(settings, prompt_set):
             seen_messages.append(messages[-1]["content"])
             return await FakeLLM().create(response_model, messages, **kwargs)
 
-    await run_one(RecordingLLM(), settings, prompt_set, skill)
-    comparison_prompt = seen_messages[-2]  # trigger_guide is last, comparison before it
-    assert "离线演示介绍文本" in comparison_prompt  # scenario_intro's fake text
+    await run_one(RecordingLLM(), settings, prompts, load_skills(settings)[0])
+    assert any("离线演示介绍文本" in m for m in seen_messages)  # scenario flows in via deps
 
 
 async def test_model_and_system_prompt_passed_to_llm(settings, prompt_set):

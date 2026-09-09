@@ -46,11 +46,18 @@ def _fake_output(model, name: str):
             execution_flow=[f"{name} 被触发后先做步骤 1", "再做步骤 2", "最后完成步骤 3"],
             mechanisms=["通过离线演示机制完成任务, 不依赖外部资源"],
         )
-    if model is m.TriggerGuide:
-        return m.TriggerGuide(
-            use_when=[f"当任务涉及 {name} 时"],
-            avoid_when=["任务与该 skill 无关时"],
-        )
     if model is m.Taglines:
         return m.Taglines(taglines=[f"{name}, 简单高效", "让 agent 更能干", "省时省力的好帮手"])
+    if model is m.Persona:
+        return m.Persona(
+            tool=f"{name} 使用的核心工具",
+            role=f"{name} 的专属把关人",
+            scene=f"需要 {name} 帮忙的那一刻",
+        )
+    if model is m.SkillComments:
+        return m.SkillComments(comments=[
+            m.SkillComment(user="后端老兵", category="妙用", comment=f"我发现 {name} 能直接接进现有流程, 省了一步手工操作"),
+            m.SkillComment(user="第一次用的新手", category="坑", comment="我一开始没看前置条件就直接跑, 果然失败了"),
+            m.SkillComment(user="运维老哥", category="注意", comment=f"用 {name} 之前先确认环境配置, 我在这里卡过"),
+        ])
     raise TypeError(f"FakeLLM cannot handle {model}")

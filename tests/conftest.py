@@ -1,11 +1,14 @@
-"""Shared fixtures: an isolated workdir with a small fake dataset on disk."""
+"""Shared fixtures: an isolated workdir with a small fake snapshot on disk, so no
+test touches the network."""
 
 import json
+import tarfile
+import tempfile
 from pathlib import Path
 
 import pytest
 
-from skills_intros.config import Settings
+from skills_intros.config import TARBALL_URL, Settings
 from skills_intros.prompts import load_prompt_set
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
@@ -23,33 +26,70 @@ SKILLS = [
     # filtered out: no saved content (no hash)
     {"id": "owner-d/repo-d/delta", "name": "Delta", "installs": "90",
      "source": "owner-d/repo-d"},
-    # filtered out: indexed as saved but SKILL.md missing on disk
-    {"id": "owner-g/repo-g/golf", "name": "Golf", "installs": "60",
-     "source": "owner-g/repo-g", "hash": "g" * 64, "noFile": True},
 ]
+
+# the root dir GitHub puts inside a branch tarball
+ARCHIVE_ROOT = "skills-sh-scraper-dist"
+
+
+def skill_md_text(entry: dict) -> str | None:
+    """The SKILL.md the fake snapshot holds for one index entry; None = no content."""
+    if not entry.get("hash"):  # the scraper saved no source for it
+        return None
+    name = entry.get("name") or entry["id"]
+    return f"---\nname: {name}\n---\n\n{name} does useful things.\n"
 
 
 def make_fake_dataset(settings: Settings) -> None:
-    data_dir = settings.workdir / "data"
-    skills_dir = data_dir / "skills"
-    skills_dir.mkdir(parents=True, exist_ok=True)
-    with (data_dir / "skills.jsonl").open("w", encoding="utf-8") as f:
-        for entry in SKILLS:
-            f.write(json.dumps(entry) + "\n")
+    """Write the fake snapshot: skills.jsonl + one SKILL.md per skill."""
+    data_dir = settings.data_dir
+    data_dir.mkdir(parents=True, exist_ok=True)
+    (data_dir / "skills.jsonl").write_text(
+        "".join(json.dumps(entry) + "\n" for entry in SKILLS), encoding="utf-8"
+    )
     for entry in SKILLS:
-        if not entry.get("hash") or entry.get("noFile"):
+        text = skill_md_text(entry)
+        if text is None:
             continue
-        directory = skills_dir / entry["id"].replace(":", "_")
-        directory.mkdir(parents=True, exist_ok=True)
-        (directory / "SKILL.md").write_text(
-            f"---\nname: {entry['name']}\n---\n\n{entry['name']} does useful things.\n",
-            encoding="utf-8",
-        )
+        path = data_dir / "skills" / entry["id"].replace(":", "_") / "SKILL.md"
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(text, encoding="utf-8")
+
+
+def make_tarball(archive: Path, entries: list[dict]) -> None:
+    """Build a dist-branch tarball: skills.jsonl + one SKILL.md per entry."""
+    files = {"skills.jsonl": "".join(json.dumps(e) + "\n" for e in entries)}
+    for entry in entries:
+        text = skill_md_text(entry)
+        if text:
+            slug = entry["id"].replace(":", "_")
+            files[f"skills/{slug}/SKILL.md"] = text
+            files[f"skills/{slug}/extra.md"] = "part of the skill repo, not needed\n"
+    with tempfile.TemporaryDirectory() as tmp:
+        root = Path(tmp) / ARCHIVE_ROOT
+        for name, content in files.items():
+            path = root / name
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text(content, encoding="utf-8")
+        with tarfile.open(archive, "w:gz") as tar:
+            tar.add(root, arcname=root.name)
+
+
+def fake_download(entries: list[dict]):
+    """Offline stand-in for data._download: serves a snapshot tarball."""
+
+    def _download(url: str, dest: Path) -> bool:
+        assert url == TARBALL_URL, f"unexpected download url: {url}"
+        make_tarball(Path(dest), entries)
+        return True
+
+    return _download
 
 
 @pytest.fixture
 def settings(tmp_path) -> Settings:
-    s = Settings(workdir=tmp_path / "out")
+    s = Settings(output_dir=tmp_path / "output",
+                 data_dir=tmp_path / "cache" / "skills-sh")
     make_fake_dataset(s)
     return s
 

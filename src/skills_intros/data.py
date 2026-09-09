@@ -1,4 +1,9 @@
-"""Fetch and parse the skills dataset published on the scraper's dist branch."""
+"""Fetch the skill dataset (the scraper's dist branch) once, then read it locally.
+
+`sync` downloads the whole branch as one tarball and unpacks it into <data_dir>
+(skills.jsonl plus every skills/<id>/SKILL.md), so index and sources can never
+drift apart and every later read is a local file read.
+"""
 
 import json
 import logging
@@ -10,143 +15,129 @@ import urllib.error
 import urllib.request
 from pathlib import Path
 
-from .config import ARCHIVE_URL, DIST_BRANCH, Settings
+from .config import DIST_BRANCH, TARBALL_URL, Settings
 from .models import SkillRecord
 from .outputs import invalidate, load_hashes
 
 logger = logging.getLogger(__name__)
 
 MAX_DOWNLOAD_RETRIES = 3
+MD_MAX_CHARS = 20000  # cap on the SKILL.md text sent to the LLM
 
 
 def _not_published() -> RuntimeError:
     return RuntimeError(
-        f"'{DIST_BRANCH}' branch is not published on {ARCHIVE_URL} yet - "
+        f"'{DIST_BRANCH}' branch is not published at {TARBALL_URL} yet - "
         "the upstream daily scrape is still running; retry `skills-intros sync` later"
     )
 
 
-def _extract(archive: str, data_dir: Path) -> None:
-    """Extract a codeload tar.gz (single top-level dir) flat into data_dir."""
-    data_dir.mkdir(parents=True, exist_ok=True)
+def _download(url: str, dest: Path) -> bool:
+    """Download url into dest atomically, retrying with exponential backoff.
 
-    def _strip(member: tarfile.TarInfo) -> tarfile.TarInfo:
-        member.path = member.path.partition("/")[2]
-        return member
-
-    with tarfile.open(archive, "r:gz") as tf:
-        tf.extractall(
-            data_dir,
-            members=[_strip(m) for m in tf.getmembers() if "/" in m.path],
-            filter="data",
-        )
-
-
-def _download_archive(url: str, dest: str) -> None:
-    """Download archive with exponential backoff retry."""
+    False means "no such file upstream" (HTTP 404); a failure that survives all
+    retries raises RuntimeError.
+    """
+    partial = dest.with_name(dest.name + ".part")
     last_error: Exception | None = None
     for attempt in range(1, MAX_DOWNLOAD_RETRIES + 1):
         try:
-            logger.info("Downloading archive (attempt %d/%d)...", attempt, MAX_DOWNLOAD_RETRIES)
-            urllib.request.urlretrieve(url, dest)
-            return
+            logger.info("Downloading %s (attempt %d/%d)", url, attempt, MAX_DOWNLOAD_RETRIES)
+            urllib.request.urlretrieve(url, partial)
+            partial.replace(dest)
+            return True
+        except urllib.error.HTTPError as e:
+            if e.code == 404:
+                logger.warning("No content at %s", url)
+                partial.unlink(missing_ok=True)
+                return False
+            last_error = e
         except (urllib.error.URLError, OSError) as e:
             last_error = e
-            logger.warning("Download failed: %s", e)
-            if attempt < MAX_DOWNLOAD_RETRIES:
-                time.sleep(2 ** attempt)
+        logger.warning("Download failed: %s", last_error)
+        if attempt < MAX_DOWNLOAD_RETRIES:
+            time.sleep(2 ** attempt)
+    partial.unlink(missing_ok=True)
     raise RuntimeError(
-        "Failed to download after %d attempts: %s" % (MAX_DOWNLOAD_RETRIES, last_error)
+        f"Failed to download {url} after {MAX_DOWNLOAD_RETRIES} attempts: {last_error}"
     ) from last_error
 
 
-def sync_data(settings: Settings) -> tuple[Path, int]:
-    """Download the dist-branch tarball and extract it into <workdir>/data.
+def _download_snapshot(url: str, dest: Path) -> bool:
+    """Replace dest with the tarball's contents; False means "nothing published yet".
 
-    The upstream scraper rewrites the whole snapshot daily, so there is nothing
-    incremental to fetch: each sync replaces the previous one wholesale. Right
-    after extracting, result dirs whose upstream hash changed (or whose skill
+    The archive is unpacked next to itself first, so a failed download or a
+    corrupt archive leaves whatever is already in dest untouched.
+    """
+    with tempfile.TemporaryDirectory() as tmp:
+        archive = Path(tmp) / "snapshot.tar.gz"
+        if not _download(url, archive):
+            return False
+        unpacked = Path(tmp) / "unpacked"
+        with tarfile.open(archive, "r:gz") as tar:
+            tar.extractall(unpacked, filter="data")
+        shutil.rmtree(dest, ignore_errors=True)
+        shutil.move(str(_snapshot_root(unpacked)), str(dest))
+    return True
+
+
+def _snapshot_root(unpacked: Path) -> Path:
+    """GitHub archives wrap the branch contents in one <repo>-<branch>/ dir."""
+    entries = list(unpacked.iterdir())
+    return entries[0] if len(entries) == 1 and entries[0].is_dir() else unpacked
+
+
+def sync_data(settings: Settings) -> tuple[Path, int]:
+    """Replace <data_dir> with the dist branch snapshot and prune what went stale.
+
+    One request downloads the whole branch as a tarball; the previous snapshot is
+    replaced wholesale, so there is nothing incremental to fetch or to expire.
+    Right after syncing, result dirs whose upstream hash changed (or whose skill
     disappeared upstream) are pruned, so the next `run` regenerates them; run
     itself never re-checks hashes. Returns (data_dir, pruned_result_count).
     """
-    data_dir = settings.workdir / "data"
+    data_dir = settings.data_dir
     if data_dir.exists() and any(data_dir.iterdir()):
         if not (data_dir / "skills.jsonl").exists():
             raise RuntimeError(
-                f"{data_dir} exists and is not a dataset snapshot - move it away or "
-                "point SKILLS_INTROS_WORKDIR at a different directory"
+                f"{data_dir} exists and is not a dataset directory - move it away or "
+                "point SKILLS_INTROS_DATA_DIR at a different directory"
             )
-        shutil.rmtree(data_dir)
-    settings.workdir.mkdir(parents=True, exist_ok=True)
-    with tempfile.NamedTemporaryFile(dir=settings.workdir, suffix=".tar.gz") as tmp:
-        try:
-            _download_archive(ARCHIVE_URL, tmp.name)
-        except RuntimeError as e:
-            raise _not_published() from e
-        _extract(tmp.name, data_dir)
+    data_dir.parent.mkdir(parents=True, exist_ok=True)
+    try:
+        downloaded = _download_snapshot(TARBALL_URL, data_dir)
+    except RuntimeError as e:
+        raise _not_published() from e
+    if not downloaded:
+        raise _not_published()
     pruned = _prune_stale_results(settings, data_dir)
     if pruned:
         logger.info("Pruned %d stale result dir(s)", pruned)
     return data_dir, pruned
 
 
-def _prune_stale_results(settings: Settings, data_dir: Path) -> int:
-    """Invalidate results that are stale against the freshly synced snapshot.
-
-    Stale means: the skill is gone upstream, or its content hash changed.
-    Invalidation goes through `invalidate` — the same path the `invalidate`
-    command uses — so a stale skill ends up in exactly the state a manual
-    invalidation leaves behind. Returns the number of pruned skills.
-    """
-    results_root = settings.workdir / "results" / "skills"
-    if not results_root.exists():
-        return 0
-
-    upstream: dict[str, str] = {}
-    for line in (_dataset_root(data_dir) / "skills.jsonl").read_text(
-        encoding="utf-8"
-    ).splitlines():
-        if line.strip():
-            entry = json.loads(line)
-            upstream[entry["id"]] = entry.get("hash", "")
-
-    hashes = load_hashes(settings)
-    stale = [sid for sid, stored in sorted(hashes.items()) if upstream.get(sid) != stored]
-    if stale:
-        invalidate(settings, stale)
-        logger.info("Invalidated %d stale skill(s)", len(stale))
-    return len(stale)
-
-
-def _dataset_root(data_dir: Path) -> Path:
-    """dist snapshots put skills.jsonl at the root; local scraper runs under data/."""
-    for candidate in (data_dir, data_dir / "data"):
-        if (candidate / "skills.jsonl").exists():
-            return candidate
-    raise FileNotFoundError(
-        f"skills.jsonl not found under {data_dir} - run `skills-intros sync` first"
-    )
-
-
 def load_skills(settings: Settings, top_n: int | None = None) -> list[SkillRecord]:
-    """Load the top N skills (by installs) that have SKILL.md content on disk.
+    """Load the top N skills (by installs) that have SKILL.md content upstream.
 
+    Reads the local snapshot: `skill_md` stays empty until `read_skill_md` fills
+    it in, which a run does just for the skills it really generates.
     top_n=None uses settings.top_n; top_n <= 0 loads every usable skill.
     """
-    root = _dataset_root(settings.workdir / "data")
+    index = settings.data_dir / "skills.jsonl"
+    if not index.is_file():
+        raise FileNotFoundError(
+            f"skills.jsonl not found under {settings.data_dir} - "
+            "run `skills-intros sync` first"
+        )
 
     records: list[SkillRecord] = []
-    for line in (root / "skills.jsonl").read_text(encoding="utf-8").splitlines():
+    for line in index.read_text(encoding="utf-8").splitlines():
         if not line.strip():
             continue
         entry = json.loads(line)
         # content is saved iff the scraper recorded a content hash
         if not entry.get("hash"):
             continue
-        skill_md = root / "skills" / entry["id"].replace(":", "_") / "SKILL.md"
-        if not skill_md.exists():
-            continue
-        text = skill_md.read_text(encoding="utf-8", errors="replace")[:20000]
         records.append(
             SkillRecord(
                 id=entry["id"],
@@ -154,7 +145,6 @@ def load_skills(settings: Settings, top_n: int | None = None) -> list[SkillRecor
                 installs=int(entry.get("installs") or 0),
                 source=entry.get("source", ""),
                 hash=entry.get("hash", ""),
-                skill_md=text,
                 # collapsed to one line for the system-prompt template
                 description=" ".join((entry.get("description") or "").split()),
             )
@@ -162,3 +152,46 @@ def load_skills(settings: Settings, top_n: int | None = None) -> list[SkillRecor
     records.sort(key=lambda r: r.installs, reverse=True)
     top_n = settings.top_n if top_n is None else top_n
     return records if top_n <= 0 else records[:top_n]
+
+
+def skill_md_path(settings: Settings, skill: SkillRecord) -> Path:
+    """Where one skill's SKILL.md sits in the snapshot."""
+    return settings.data_dir / "skills" / skill.id.replace(":", "_") / "SKILL.md"
+
+
+def read_skill_md(settings: Settings, skill: SkillRecord) -> str | None:
+    """One skill's SKILL.md text from the local snapshot.
+
+    None when the snapshot has no source for it — a skill listed in skills.jsonl
+    whose content the scraper could not save.
+    """
+    path = skill_md_path(settings, skill)
+    if not path.is_file():
+        return None
+    return path.read_text(encoding="utf-8", errors="replace")[:MD_MAX_CHARS]
+
+
+def _prune_stale_results(settings: Settings, data_dir: Path) -> int:
+    """Invalidate artifacts that are stale against the freshly synced snapshot.
+
+    Stale means: the skill is gone upstream, or its content hash changed.
+    Invalidation goes through `invalidate` — the same path the `invalidate`
+    command uses — so a stale skill ends up in exactly the state a manual
+    invalidation leaves behind. Returns the number of pruned skills.
+    """
+    results_root = settings.output_dir / "skills"
+    if not results_root.exists():
+        return 0
+
+    upstream: dict[str, str] = {}
+    for line in (data_dir / "skills.jsonl").read_text(encoding="utf-8").splitlines():
+        if line.strip():
+            entry = json.loads(line)
+            upstream[entry["id"]] = entry.get("hash", "")
+
+    hashes = load_hashes(settings)
+    stale = [sid for sid, hash_ in sorted(hashes.items()) if upstream.get(sid) != hash_]
+    if stale:
+        invalidate(settings, stale)
+        logger.info("Invalidated %d stale skill(s)", len(stale))
+    return len(stale)

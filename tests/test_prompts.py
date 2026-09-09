@@ -24,8 +24,8 @@ class FakeSkill:
 
 
 def test_all_prompts_loaded_from_files(prompts):
-    expected = {"domain", "scenario_intro", "blackbox",
-                "whitebox", "comparison", "trigger_guide", "tagline"}
+    expected = {"domain", "scenario", "blackbox",
+                "whitebox", "tagline", "persona", "comments"}
     assert set(prompts.by_id) == expected
     files = {p.stem for p in PROMPTS_DIR.glob("*.md") if not p.name.startswith("_")}
     assert files == expected
@@ -69,19 +69,28 @@ def test_template_syntax_error_names_the_file(tmp_path):
         load_prompt_set(tmp_path)
 
 
-def test_topological_order_puts_roots_first(prompts):
+def test_topological_order_covers_every_prompt(prompts):
     order = prompts.ordered_ids()
     assert set(order) == set(prompts.by_id)
-    assert order.index("scenario_intro") < order.index("comparison")
-    assert order.index("scenario_intro") < order.index("trigger_guide")
+    assert len(order) == len(prompts.by_id)  # no duplicates
+
+
+def test_ordering_puts_dependencies_first(tmp_path):
+    """A prompt comes after every prompt it depends on."""
+    _write(tmp_path, "_system.md", "system prompt")
+    _write(tmp_path, "a.md", "---\noutput: IntroText\n---\nA")
+    _write(tmp_path, "b.md", "---\noutput: Taglines\ndepends_on: [a]\n---\nB")
+    order = load_prompt_set(tmp_path).ordered_ids()
+    assert order.index("a") < order.index("b")
 
 
 def test_user_prompts_are_task_only(prompts):
     """Skill context moved into _system.md: user prompts carry deps/taxonomy only."""
-    prompt = render_user_prompt(prompts.by_id["scenario_intro"], {})
+    spec = prompts.by_id["scenario"]
+    prompt = render_user_prompt(spec, {})
     assert "Alpha" not in prompt
     assert "does useful things" not in prompt
-    assert "场景化" in prompt
+    assert prompt.strip() == spec.template.strip()  # nothing but the task itself
 
 
 def test_domain_prompt_renders_full_taxonomy(prompts):
@@ -93,10 +102,10 @@ def test_domain_prompt_renders_full_taxonomy(prompts):
     assert "行业专业" not in prompt  # removed from the taxonomy
 
 
-def test_render_uses_dependency_text(prompts):
-    spec = prompts.by_id["comparison"]
-    deps = {"scenario_intro": IntroText(text="场景介绍内容")}
-    prompt = render_user_prompt(spec, deps)
+def test_render_uses_dependency_text(tmp_path):
+    """`deps` maps a dependency's id to its parsed output object."""
+    spec = _load_prompt(_write(tmp_path, "b.md", VALID_DEPENDENT))
+    prompt = render_user_prompt(spec, {"scenario": IntroText(text="场景介绍内容")})
     assert "场景介绍内容" in prompt
 
 
@@ -113,6 +122,15 @@ output: IntroText
 ---
 
 Body {{ skill.name }}
+"""
+
+VALID_DEPENDENT = """\
+---
+output: Taglines
+depends_on: [scenario]
+---
+
+intro: {{ deps.scenario.text }}
 """
 
 

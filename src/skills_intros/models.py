@@ -55,13 +55,13 @@ class DomainClassification(BaseModel):
     """Output schema for the `domain` prompt."""
 
     domain: Domain = Field(description="按使用场景找到你最贴合的分类")
-    reason: str = Field(description="分类理由, 一句话")
+    reason: str = Field(description="分类理由, 极简一句话")
 
 
 class IntroText(BaseModel):
-    """Output schema for free-text intro prompts (scenario_intro, comparison)."""
+    """Output schema for free-text intro prompts (scenario)."""
 
-    text: str = Field(description="介绍词正文, 150~250 个汉字")
+    text: str = Field(description="介绍词正文, 100 个字以内")
 
 
 class BlackBoxPair(BaseModel):
@@ -87,17 +87,32 @@ class WhiteBoxIntro(BaseModel):
     mechanisms: list[str] = Field(description="关键实现机制, 2~3 条; 依赖的外部工具/库/模型写在此处")
 
 
-class TriggerGuide(BaseModel):
-    """Output schema for the `trigger_guide` prompt."""
+class Persona(BaseModel):
+    """Output schema for the `persona` prompt: the skill's occupational portrait."""
 
-    use_when: list[str] = Field(description="agent 应自动触发该 skill 的时机, 3~5 条")
-    avoid_when: list[str] = Field(description="不应触发该 skill 的情形, 2~3 条")
+    tool: str = Field(description="最具标志性的趁手工具, 写实际操作的那个真实工具/对象, 如 git, figma")
+    role: str = Field(description="最合适的职业角色, 像真实职业一样命名自己, 如 提交把关人、文档排版师")
+    scene: str = Field(description="最高频、最常见的工作场景, 用户最需要你的那一刻, 如 改完代码准备提交时")
 
 
 class Taglines(BaseModel):
     """Output schema for the `tagline` prompt."""
 
-    taglines: list[str] = Field(description="3 条宣传短标语, 每条 20 个汉字以内")
+    taglines: list[str] = Field(description="3 条宣传短标语, 每条 20 个字以内")
+
+
+class SkillComment(BaseModel):
+    """One first-person user comment on a skill."""
+
+    user: str = Field(description="评论者身份, 简短具体, 如 后端老兵、第一次用的新手")
+    category: str = Field(description="评论类型, 通常为 妙用 / 坑 / 注意 / 启发 之一, 也可自拟")
+    comment: str = Field(description="评论正文, 第一人称, 有实质性帮助, 60 字以内")
+
+
+class SkillComments(BaseModel):
+    """Output schema for the `comments` prompt: users commenting on the skill."""
+
+    comments: list[SkillComment] = Field(description="4~6 条来自不同背景用户的评论")
 
 
 class SkillRecord(BaseModel):
@@ -109,5 +124,5 @@ class SkillRecord(BaseModel):
     installs: int
     source: str
     hash: str
-    skill_md: str
+    skill_md: str = ""  # filled in by data.read_skill_md when a run needs it
     description: str = ""

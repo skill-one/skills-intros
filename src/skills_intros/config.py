@@ -8,7 +8,8 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 REPO = "skill-one/skills-sh-scraper"
 DIST_BRANCH = "dist"
 REPO_URL = f"https://github.com/{REPO}"
-ARCHIVE_URL = f"https://codeload.github.com/{REPO}/tar.gz/refs/heads/{DIST_BRANCH}"
+# the whole dist branch in one request: `sync` downloads and unpacks this
+TARBALL_URL = f"https://codeload.github.com/{REPO}/tar.gz/{DIST_BRANCH}"
 
 
 class Settings(BaseSettings):
@@ -22,7 +23,10 @@ class Settings(BaseSettings):
     top_n: int = 50
     concurrency: int = 8
     max_retries: int = 3
-    workdir: Path = Path("output")  # holds data/ and results
+    # generated intros: hashes.json + skills/<id>/<prompt>.json (with md/ copies)
+    output_dir: Path = Path("output")
+    # the unpacked dist branch: skills.jsonl + skills/<id>/SKILL.md
+    data_dir: Path = Path("cache/skills-sh")
     prompts_dir: Path = Path("prompts")  # one markdown file per prompt
 
     @model_validator(mode="after")

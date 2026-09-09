@@ -1,25 +1,24 @@
-"""On-disk results layout: one json per prompt under results/skills/<id>/ (with a
-markdown copy in md/), plus results/hashes.json (skill id -> upstream content
-hash) as sync's prune index."""
+"""On-disk artifact layout under <output_dir>: one json per prompt in
+skills/<id>/ (with a markdown copy in md/), plus hashes.json — skill id -> the
+upstream content hash its intros were generated from, which is all `sync` needs
+to decide what to invalidate."""
 
 import json
-import logging
 import shutil
 from collections.abc import Iterable
 from pathlib import Path
+from typing import Mapping
 
 from .config import Settings
 from .models import Domain
-
-logger = logging.getLogger(__name__)
 
 MD_SUBDIR = "md"  # markdown browsing copies, kept out of the json directory
 
 
 def skill_result_dir(settings: Settings, skill_id: str) -> Path:
-    """Per-skill results live under results/skills/<owner>/<repo>/<slug>/ (id-based,
-    mirroring the upstream data/skills/ layout)."""
-    return settings.workdir / "results" / "skills" / skill_id.replace(":", "_")
+    """Per-skill artifacts live under <output_dir>/skills/<owner>/<repo>/<slug>/
+    (id-based, mirroring the upstream data/skills/ layout)."""
+    return settings.output_dir / "skills" / skill_id.replace(":", "_")
 
 
 def prompt_result_path(settings: Settings, skill_id: str, prompt_id: str) -> Path:
@@ -34,23 +33,26 @@ def prompt_markdown_path(settings: Settings, skill_id: str, prompt_id: str) -> P
 
 
 def hashes_path(settings: Settings) -> Path:
-    """The prune index: skill id -> the upstream hash its outputs were generated against."""
-    return settings.workdir / "results" / "hashes.json"
+    """The invalidation record: skill id -> upstream content hash."""
+    return settings.output_dir / "hashes.json"
 
 
 def load_hashes(settings: Settings) -> dict[str, str]:
-    """The prune index; absent or unreadable file means 'nothing known' ({})."""
+    """skill id -> the hash its intros were generated from; {} when unknown."""
     try:
-        hashes = json.loads(hashes_path(settings).read_text(encoding="utf-8"))
+        return json.loads(hashes_path(settings).read_text(encoding="utf-8"))
     except FileNotFoundError:
         return {}
-    except json.JSONDecodeError:
-        logger.warning("%s is unreadable - treating as empty", hashes_path(settings))
-        return {}
-    if not isinstance(hashes, dict):
-        logger.warning("%s is not an object - treating as empty", hashes_path(settings))
-        return {}
-    return hashes
+
+
+def write_hashes(settings: Settings, hashes: Mapping[str, str]) -> None:
+    """Rewrite the whole record, sorted by skill id."""
+    path = hashes_path(settings)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(
+        json.dumps(dict(sorted(hashes.items())), ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
 
 
 def write_prompt_output(settings: Settings, skill_id: str, prompt_id: str, output: dict) -> Path:
@@ -74,9 +76,9 @@ def invalidate(settings: Settings, skill_ids: Iterable[str] | None = None,
                prompt_ids: Iterable[str] | None = None) -> int:
     """Delete cached prompt outputs so the next run regenerates them.
 
-    `skill_ids` None means every skill in the prune index; `prompt_ids` None
+    `skill_ids` None means every skill on record; `prompt_ids` None
     means every prompt of each selected skill. A skill left without any output
-    is dropped from the index, i.e. it counts as new again. This is the only
+    is dropped from the record, i.e. it counts as new again. This is the only
     invalidation path: `sync` uses it for skills whose upstream hash changed.
     Returns the number of removed prompt outputs.
     """
@@ -94,7 +96,7 @@ def invalidate(settings: Settings, skill_ids: Iterable[str] | None = None,
             shutil.rmtree(skill_result_dir(settings, skill_id), ignore_errors=True)
             dropped |= hashes.pop(skill_id, None) is not None
     if dropped:
-        hashes_path(settings).write_text(json.dumps(hashes, ensure_ascii=False), encoding="utf-8")
+        write_hashes(settings, hashes)
     return removed
 
 

@@ -10,12 +10,13 @@ from typing import Any, Callable
 from pydantic import ValidationError
 
 from .config import Settings
+from .data import read_skill_md
 from .models import SkillRecord
 from .outputs import (
-    hashes_path,
     load_hashes,
     prompt_result_path,
     skill_result_dir,
+    write_hashes,
     write_prompt_output,
 )
 from .prompts import PromptSet, PromptSpec, render_user_prompt
@@ -39,6 +40,11 @@ def _read_prompt_output(settings: Settings, skill_id: str, prompt_id: str) -> An
         return None
 
 
+def _dump(outputs: dict[str, Any]) -> dict[str, Any]:
+    """Every prompt output as a plain dict, keyed by prompt id."""
+    return {pid: out.model_dump(mode="json") for pid, out in outputs.items()}
+
+
 async def run_prompt(
     llm, settings: Settings, prompts: PromptSet, spec: PromptSpec, skill: SkillRecord, deps: dict,
     debug: bool = False,
@@ -60,26 +66,25 @@ async def run_prompt(
 async def run_one(
     llm, settings: Settings, prompts: PromptSet, skill: SkillRecord,
     only: set[str] | None = None, debug: bool = False,
-    hashes: dict[str, str] | None = None,
 ) -> tuple[dict, bool]:
     """Generate one skill's intros; returns (record, reused).
 
     Storage: each prompt's output is its own <prompt_id>.json under the skill's
-    results dir, committed (json + md/ copy) right after it is generated, so a
-    crash keeps every completed prompt. results/hashes.json maps skill id -> the
-    upstream hash the outputs were generated against; it is the index `sync`
-    prunes against. The hash is registered only when this run actually
-    generated something — a fully cached run leaves the disk untouched.
+    artifact dir, committed (json + md/ copy) right after it is generated, so a
+    crash keeps every completed prompt. `run_all` records the content hash of
+    the skills that generated something in hashes.json, the record `sync` prunes
+    against — a fully cached run leaves the disk untouched.
 
     Cache rule: an existing per-prompt json is trusted as-is (invalidation is
     `sync`'s and `invalidate`'s job), but every reused output must still
     validate against its current schema — missing or invalid prompts are
     regenerated, and prompts outside the selection (`only`, plus the closure of
     their dependencies) are simply not touched.
+
+    The skill's SKILL.md is read from the local snapshot only once something has
+    to be generated, so a fully cached skill reads nothing at all.
     """
     targets = prompts.closure_ids(only) if only is not None else set(prompts.by_id)
-    if hashes is None:
-        hashes = load_hashes(settings)
     skill_dir = skill_result_dir(settings, skill.id)
 
     outputs: dict[str, Any] = {}
@@ -88,7 +93,6 @@ async def run_one(
         if spec_id not in targets:
             continue
         spec = prompts.by_id[spec_id]
-        deps = {d: outputs[d] for d in spec.depends_on}
         stored = _read_prompt_output(settings, skill.id, spec_id)
         if stored is not None:
             try:
@@ -97,23 +101,28 @@ async def run_one(
             except ValidationError:
                 pass  # schema-stale: treat as missing
         generated.append(spec_id)
+
+    if not generated:
+        return {"skill": skill.model_dump(), "intros": _dump(outputs)}, True
+
+    skill_md = read_skill_md(settings, skill)
+    if skill_md is None:
+        logger.warning("%s: no SKILL.md in the snapshot - skipped", skill.id)
+        return {"skill": skill.model_dump(), "intros": _dump(outputs)}, True
+    skill = skill.model_copy(update={"skill_md": skill_md})
+
+    for spec_id in generated:
+        spec = prompts.by_id[spec_id]
+        deps = {d: outputs[d] for d in spec.depends_on}
         outputs[spec_id] = await run_prompt(llm, settings, prompts, spec, skill, deps, debug=debug)
         write_prompt_output(settings, skill.id, spec_id, outputs[spec_id].model_dump(mode="json"))
-
-    intros = {pid: out.model_dump(mode="json") for pid, out in outputs.items()}
-    if not generated:
-        return {"skill": skill.model_dump(), "intros": intros}, True
-
-    if hashes.get(skill.id) != skill.hash:
-        hashes[skill.id] = skill.hash
-        hashes_path(settings).write_text(json.dumps(hashes, ensure_ascii=False), encoding="utf-8")
 
     # a legacy single-file record has no meaning next to the per-prompt layout
     legacy = skill_dir / "result.json"
     if legacy.exists():
         legacy.unlink()
 
-    return {"skill": skill.model_dump(), "intros": intros, "generated": generated}, False
+    return {"skill": skill.model_dump(), "intros": _dump(outputs), "generated": generated}, False
 
 
 async def run_all(
@@ -128,31 +137,48 @@ async def run_all(
     """Generate intros for all skills concurrently, bounded by a semaphore.
 
     Skills whose every requested prompt is already cached and valid are
-    skipped; `only` narrows work to a subset of prompts (see run_one).
+    skipped; `only` narrows work to a subset of prompts (see run_one). When
+    anything was generated, hashes.json is updated once, at the end.
     """
     sem = asyncio.Semaphore(settings.concurrency)
-    hashes = load_hashes(settings)
 
     async def _one(skill: SkillRecord) -> dict:
         async with sem:
-            record, reused = await run_one(llm, settings, prompts, skill, only, debug, hashes)
+            record, reused = await run_one(llm, settings, prompts, skill, only, debug)
         if on_skill_done:
             on_skill_done(skill, record, reused)
         return record
 
-    return await asyncio.gather(*(_one(s) for s in skills))
+    records = await asyncio.gather(*(_one(s) for s in skills))
+    _update_hashes(settings, records)
+    return records
+
+
+def _update_hashes(settings: Settings, records: list[dict]) -> None:
+    """Record the content hash of every skill that generated something.
+
+    hashes.json (skill id -> hash) is the sole freshness record: `sync` compares
+    it against the new snapshot to decide what to invalidate. Skills that were
+    already complete keep their hash; a run that generated nothing writes nothing.
+    """
+    fresh = {r["skill"]["id"]: r["skill"]["hash"] for r in records if r.get("generated")}
+    if not fresh:
+        return
+    hashes = load_hashes(settings)
+    hashes.update(fresh)
+    write_hashes(settings, hashes)
 
 
 def load_results(settings: Settings) -> list[dict]:
     """Load all per-skill result records, sorted by skill id.
 
-    A directory counts as a result if hashes.json has an entry for it (the
-    index is what sync prunes against); its outputs are reassembled from the
-    per-prompt json files. A stray legacy result.json is not an output.
+    A directory counts as a result if hashes.json has the skill on record (the
+    record sync prunes against); its outputs are reassembled from the per-prompt
+    json files. A stray legacy result.json is not an output.
     """
-    hashes = load_hashes(settings)
     results: list[dict] = []
-    for skill_id, stored_hash in sorted(hashes.items()):
+    for skill_id, hash_ in sorted(load_hashes(settings).items()):
+        entry = {"id": skill_id, "hash": hash_}
         skill_dir = skill_result_dir(settings, skill_id)
         intros: dict[str, Any] = {}
         for json_file in sorted(skill_dir.glob("*.json")):
@@ -162,5 +188,5 @@ def load_results(settings: Settings) -> list[dict]:
                 intros[json_file.stem] = json.loads(json_file.read_text(encoding="utf-8"))
             except json.JSONDecodeError:
                 logger.warning("Skipping unreadable %s", json_file)
-        results.append({"skill": {"id": skill_id, "hash": stored_hash}, "intros": intros})
+        results.append({"skill": entry, "intros": intros})
     return results

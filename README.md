@@ -9,27 +9,44 @@ Generate multi-angle Chinese introductions for [agent skills](https://www.skills
 
 ## Artifacts
 
-Each skill gets one directory under `output/results/skills/`:
+Each skill gets one directory under `output/skills/`:
 
 ```
-output/results/
-├── hashes.json                          # skill id -> upstream content hash (prune index)
+output/
+├── hashes.json                          # skill id -> the upstream hash its intros were built from
 └── skills/<owner>/<repo>/<skill>/
     ├── domain.json                      # one json per prompt
-    ├── scenario_intro.json
+    ├── scenario.json
     └── md/                              # markdown copies for browsing
         ├── domain.md
         └── ...
 ```
 
-- The directory name is the skill `id` from `skills.jsonl`, mirroring the upstream `data/skills/` layout.
+- The directory name is the skill `id` from `skills.jsonl`, mirroring the upstream `skills/` layout.
 - Each prompt's structured output lives in its own `<prompt_id>.json` (the cache commit marker); a markdown copy for easy browsing goes to `md/<prompt_id>.md`, so the directory itself stays json-only.
-- Built-in prompts: `domain`, `scenario_intro`, `blackbox`, `whitebox`, `comparison`, `trigger_guide`, `tagline`.
+- Built-in prompts: `domain`, `scenario`, `blackbox`, `whitebox`, `tagline`, `persona`, `comments`.
 
-Freshness: `hashes.json` maps each skill id to the upstream content hash its outputs were
-generated against, but validity is decided at `sync` time — each sync compares the index
-against the freshly downloaded snapshot and immediately prunes entries whose upstream hash
-changed or whose skill disappeared. `run` itself just reuses whatever is on disk.
+Freshness: `hashes.json` records, for every skill that has generated intros, the upstream
+content hash those intros were built from. Validity is decided at `sync` time: each sync
+compares the recorded hash against the freshly downloaded snapshot and immediately prunes
+entries whose upstream hash changed or whose skill disappeared. `run` itself just reuses
+whatever is on disk.
+
+## Data
+
+Generated intros and the upstream skills data they are built from live under two
+separate roots (`output/` and `cache/skills-sh`, both overridable) so the
+two sources are never mixed and the intros can be published on their own:
+
+```
+cache/skills-sh/                            # SKILLS_INTROS_DATA_DIR: upstream skills basic info
+├── skills.jsonl                            # the index: one json line per skill
+└── skills/<owner>/<repo>/<skill>/SKILL.md  # each skill's source
+```
+
+`sync` downloads the whole dist branch as one tarball and unpacks it here — one request, no
+per-file fetching. Everything under `cache/skills-sh` is a re-downloadable copy of the dist
+branch: each sync replaces it wholesale, so index and sources can never drift apart.
 
 ## Quickstart
 
@@ -38,7 +55,7 @@ Requires Python 3.12+ and [uv](https://docs.astral.sh/uv/).
 ```bash
 uv sync
 # LLM credentials: put KEY / BASE_URL / MODEL in a local .env (see .env.example)
-skills-intros sync            # download the latest dist-branch snapshot (prunes stale results)
+skills-intros sync            # download the dist branch snapshot (prunes stale results)
 skills-intros run --top 50    # generate intros for the top 50 skills by installs
 ```
 
@@ -73,17 +90,17 @@ One markdown file under `prompts/` is one prompt; the file name is the prompt id
 The shared `_system.md` is the system prompt, rendered once per skill: it carries
 the skill context every prompt sees — `{{ skill.name }}` and `{{ skill.description }}`
 (both from `skills.jsonl`) and the full `{{ skill_md }}` source text (the per-skill
-`SKILL.md` file) — so prompt files only describe the task.
+`SKILL.md`, fetched from the dist branch on demand) — so prompt files only describe the task.
 
 ```markdown
 ---
 description: one line
 output: IntroText          # a pydantic schema registered in models.py
-depends_on: [scenario_intro]   # DAG edges; omit for root prompts
+depends_on: [scenario]   # DAG edges; omit for root prompts
 ---
 
 请为下面的 skill 写……
-{{ deps.scenario_intro.text }}   # deps maps prompt ids to their parsed output objects
+{{ deps.scenario.text }}   # deps maps prompt ids to their parsed output objects
 ```
 
 Then generate it for every skill (already-cached prompts are reused; only missing
@@ -105,5 +122,6 @@ built-in defaults.
 | `SKILLS_INTROS_API_KEY` | – | API key for the endpoint |
 | `SKILLS_INTROS_TOP_N` | `50` | Skills to process (`0` = all) |
 | `SKILLS_INTROS_CONCURRENCY` | `8` | Max concurrent LLM calls |
-| `SKILLS_INTROS_WORKDIR` | `output` | Holds `data/` and `results/` |
+| `SKILLS_INTROS_OUTPUT_DIR` | `output` | Generated intros: `hashes.json` + `skills/` |
+| `SKILLS_INTROS_DATA_DIR` | `cache/skills-sh` | Upstream skills basic info: `skills.jsonl` + the cached `SKILL.md` files |
 | `SKILLS_INTROS_PROMPTS_DIR` | `prompts` | Directory with one prompt markdown per file, plus `_system.md` |

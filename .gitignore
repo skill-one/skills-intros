@@ -4,8 +4,9 @@ __pycache__/
 .venv/
 .pytest_cache/
 
-# Generated data & results
+# Generated intros (output/) & upstream cache (cache/skills-sh)
 output/
+cache/
 
 # Local config
 .env
