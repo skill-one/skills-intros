@@ -88,6 +88,33 @@ skills-intros invalidate --skill owner/repo/name --prompts whitebox
 skills-intros invalidate --all                     # everything (needs --all)
 ```
 
+## Continuous generation (GitHub Actions)
+
+`.github/workflows/generate.yml` runs on a schedule and on demand, keeping the `dist`
+branch in sync with the generated intros:
+
+```
+restore (dist branch tarball) → sync → run → publish
+```
+
+Every run starts on a fresh runner, so the results of the previous run are pulled back
+from `dist` first: the branch is both the published artifact and the cache. The order
+matters — `sync` prunes stale results against what was just restored. `SKILLS_INTROS_LIMIT`
+(or the `limit` input of a manual run, 2 by default) bounds how much one run generates,
+so repeated runs work their way through the whole dataset.
+
+The `dist` branch root mirrors `output/`: `hashes.json` + `skills/` (see [Artifacts](#artifacts)).
+
+Required repository configuration (Settings → Secrets and variables → Actions):
+
+| Where | Name | Example |
+|---|---|---|
+| Secret | `SKILLS_INTROS_API_KEY` | the endpoint's API key |
+| Variable | `SKILLS_INTROS_BASE_URL` | `https://api.b.ai/v1` |
+| Variable | `SKILLS_INTROS_MODEL` | `GLM-5.3-Flash` |
+
+The schedule is `*/10 * * * *`; adjust it together with the limit.
+
 ## Adding a prompt
 
 One markdown file under `prompts/` is one prompt; the file name is the prompt id.

@@ -86,6 +86,30 @@ skills-intros invalidate --skill owner/repo/name --prompts whitebox
 skills-intros invalidate --all                     # 全部清空(需显式 --all)
 ```
 
+## 持续生成（GitHub Actions）
+
+`.github/workflows/generate.yml` 定时（也可手动）执行, 让 `dist` 分支始终与生成的介绍保持同步:
+
+```
+恢复（dist 分支 tarball）→ sync → run → 发布
+```
+
+每次执行都是全新 runner, 因此先把上一次的产物从 `dist` 拉回来: 这个分支既是发布产物, 也是缓存。
+顺序很关键——`sync` 的失效清理依赖刚恢复回来的那些产物。`SKILLS_INTROS_LIMIT`（手动运行时是 `limit`
+输入, 默认 2）限制单次生成量, 反复执行就能逐步覆盖整个数据集。
+
+`dist` 分支的根目录与 `output/` 一致: `hashes.json` + `skills/`（参见[产物](#产物)）。
+
+需要在仓库 Settings → Secrets and variables → Actions 里配置:
+
+| 位置        | 名称                       | 示例                    |
+| --------- | ------------------------ | --------------------- |
+| Secret    | `SKILLS_INTROS_API_KEY`  | 端点对应的 API key         |
+| Variable  | `SKILLS_INTROS_BASE_URL` | `https://api.b.ai/v1` |
+| Variable  | `SKILLS_INTROS_MODEL`    | `GLM-5.3-Flash`       |
+
+定时为 `*/10 * * * *`, 可与 limit 一起调整。
+
 ## 新增一个 prompt
 
 `prompts/` 下一个 markdown 文件即一个 prompt, 文件名就是 prompt id。

@@ -14,3 +14,5 @@ cache/
 
 # Local tooling dotfiles (e.g. .vscode/)
 .*
+# ...but keep the workflows
+!.github/

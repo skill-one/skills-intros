@@ -1,0 +1,97 @@
+name: generate
+
+# Incremental generation + publishing:
+#
+#   restore (dist branch tarball) -> sync (dataset + prune stale) -> run -> publish
+#
+# Every run starts on a fresh runner, so the previously published outputs are
+# pulled back from the `dist` branch first (one tarball request); the order
+# matters, because sync prunes stale results against what is already there.
+# `run` never redoes cached work, so SKILLS_INTROS_LIMIT bounds how much is
+# generated per run — the branch is both the artifact and the cache.
+#
+# Repository configuration (Settings -> Secrets and variables -> Actions):
+#   Secret:   SKILLS_INTROS_API_KEY
+#   Variable: SKILLS_INTROS_BASE_URL, SKILLS_INTROS_MODEL
+
+on:
+  schedule:
+    - cron: "*/10 * * * *"  # 2 skills per run; adjust as needed
+  workflow_dispatch:
+    inputs:
+      limit:
+        description: How many skills to generate this run
+        default: "2"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: generate-dist
+  cancel-in-progress: false  # never cancel a run that is about to push
+
+env:
+  SKILLS_INTROS_LIMIT: ${{ inputs.limit || '2' }}
+  SKILLS_INTROS_API_KEY: ${{ secrets.SKILLS_INTROS_API_KEY }}
+  SKILLS_INTROS_BASE_URL: ${{ vars.SKILLS_INTROS_BASE_URL }}
+  SKILLS_INTROS_MODEL: ${{ vars.SKILLS_INTROS_MODEL }}
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - name: Install
+        run: uv sync
+
+      - name: Restore published intros
+        run: |
+          set -euo pipefail
+          mkdir -p output
+          if curl -fsSL "https://codeload.github.com/${GITHUB_REPOSITORY}/tar.gz/dist" \
+              -o "${RUNNER_TEMP}/dist.tar.gz"; then
+            tar -xzf "${RUNNER_TEMP}/dist.tar.gz" -C output --strip-components=1
+            echo "Restored $(find output/skills -name '*.json' 2>/dev/null | wc -l) prompt outputs"
+          else
+            echo "No dist branch yet: starting from an empty output/"
+          fi
+
+      - name: Sync dataset
+        run: uv run skills-intros sync
+
+      - name: Generate intros
+        run: uv run skills-intros run
+
+      - name: Publish to dist
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          remote="https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          dist="${RUNNER_TEMP}/dist"
+          rm -rf "$dist"
+          if ! git clone --depth 1 --branch dist "$remote" "$dist" 2>/dev/null; then
+            # first publish: the branch does not exist yet
+            mkdir -p "$dist"
+            git -C "$dist" init -q
+            git -C "$dist" checkout -q -b dist
+            git -C "$dist" remote add origin "$remote"
+          fi
+          find "$dist" -mindepth 1 -maxdepth 1 -not -name .git -exec rm -rf {} +
+          cp -a output/. "$dist/"
+          cd "$dist"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "Nothing new to publish"
+            exit 0
+          fi
+          git commit -q -m "intros: ${GITHUB_RUN_ID} at $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          git push origin dist
+          echo "Published $(find skills -name '*.json' | wc -l) prompt outputs" \
+              >> "$GITHUB_STEP_SUMMARY"
