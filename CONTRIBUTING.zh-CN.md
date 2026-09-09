@@ -35,9 +35,9 @@ domain   scenario   blackbox   whitebox   tagline   persona   comments
   LLM 调用通过 [instructor](https://python.useinstructor.com/) 走 OpenAI 兼容客户端。
 - **基于文件的断点续跑。** 每个 prompt 的输出是自己的 `<prompt_id>.json` (另有 markdown 副本
   放在 `md/` 下), 生成后立即提交——既是产物也是缓存: 存在且通过 schema 校验即不调用 LLM。`hashes.json`
-  (skill id -> 上游内容 hash, 仅在本次 run 真正生成内容时写入) 是 `sync` 的清理依据(上游 hash
-  变化或 skill 消失即删除), `run` 不再做 hash 比对。续跑粒度是 prompt 级, 中途崩溃已完成
-  的 prompt 全部保留。
+  (skill id -> 上游内容 hash, 仅在本次 run 真正生成内容时写入) 是失效判定的依据——
+  `invalidate --stale` 用它找出上游内容变化（或消失）的 skill; `run` 与 `sync` 都不做 hash 比对。
+  续跑粒度是 prompt 级, 中途崩溃已完成的 prompt 全部保留。
 - **一次请求拿整个快照。** `sync` 把 dist 分支作为一个 tarball 整体下载(codeload)并解压到
   `cache/skills-sh`, 整包替换上一次的快照——没有逐文件下载, 也不需要额外的缓存失效逻辑;
   之后 `read_skill_md` 直接读本地文件。解压的只有真正会读的内容: `skills.jsonl` 与每个
@@ -58,7 +58,7 @@ domain   scenario   blackbox   whitebox   tagline   persona   comments
 
 重算从来不是 `run` 的参数: `invalidate` 删掉缓存的 json(以及它的 `md/` 副本), `run` 再把
 缺口补上。某 skill 若一个输出都不剩, 会从 `hashes.json` 中除名, 即重新视为全新 skill。
-`sync` 对上游 hash 变化的 skill 调用的也是同一个 `invalidate`, 手动与自动失效是同一条代码路径。
+`invalidate --stale` 选出的正是上游 hash 变化（或已从快照消失）的 skill, 走的是同一个 `invalidate`。
 
 ## 项目结构
 
@@ -75,7 +75,7 @@ prompts/               # 每个 prompt 一个 md 文件（+ _system.md）
 
 src/skills_intros/
 ├── config.py        # 配置（pydantic-settings）
-├── data.py          # dist 分支 tarball 下载 + skills.jsonl 解析 + SKILL.md 读取
+├── data.py          # dist 分支 tarball 下载 + skills.jsonl 解析 + 过期判定
 ├── models.py        # 领域分类体系 + 结构化输出 schema
 ├── prompts.py       # frontmatter 加载 + DAG 排序 + jinja2 渲染
 ├── llm.py           # instructor/openai client + 离线 FakeLLM
