@@ -1,10 +1,7 @@
 """Tests for per-prompt markdown output rendering and the on-disk layout."""
 
-import json
-
 import pytest
 
-from skills_intros.config import Settings
 from skills_intros.data import load_skills
 from skills_intros.generate import run_all
 from skills_intros.llm import FakeLLM
@@ -132,20 +129,3 @@ async def test_partial_run_aggregates_only_what_it_generated(settings, results, 
     line = load_index(settings)[skill_id]
     assert line["hash"] == results[0]["skill"]["hash"]
     assert "domain" not in line and "persona" not in line
-
-
-def test_writing_the_index_removes_the_legacy_hashes(tmp_path, monkeypatch):
-    """The first index write retires a legacy hashes.json lying next to it."""
-    from skills_intros.outputs import load_index, write_index
-
-    monkeypatch.chdir(tmp_path)
-    settings = Settings(_env_file=None, output_dir=tmp_path / "output",
-                        data_dir=tmp_path / "cache")
-    legacy = settings.output_dir / "hashes.json"
-    legacy.parent.mkdir(parents=True)
-    legacy.write_text(json.dumps({"o/r/a": "h1"}), encoding="utf-8")
-    assert load_index(settings)["o/r/a"]["hash"] == "h1"  # fallback still serves it
-
-    write_index(settings, {"o/r/a": {"id": "o/r/a", "hash": "h1"}})
-    assert not legacy.exists()  # migration completed: the legacy file is gone
-    assert load_index(settings)["o/r/a"]["hash"] == "h1"  # the index took over

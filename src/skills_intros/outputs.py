@@ -15,7 +15,6 @@ from .models import Domain
 
 MD_SUBDIR = "md"  # markdown browsing copies, kept out of the json directory
 INDEX_NAME = "skills.jsonl"  # the skill index: id, hash, aggregated domain/persona
-LEGACY_HASHES_NAME = "hashes.json"  # pre-index freshness record, read as a fallback
 AGGREGATED_PROMPTS = ("domain", "persona")  # prompts folded into the index lines
 
 logger = logging.getLogger(__name__)
@@ -44,20 +43,11 @@ def index_path(settings: Settings) -> Path:
 
 
 def load_index(settings: Settings) -> dict[str, dict]:
-    """skill id -> its index line ({id, hash, domain?, persona?}); {} when unknown.
-
-    Falls back to the legacy hashes.json (a plain id -> hash map) when the index
-    file does not exist yet, so records written before the index keep working.
-    """
+    """skill id -> its index line ({id, hash, domain?, persona?}); {} when unknown."""
     try:
         text = index_path(settings).read_text(encoding="utf-8")
     except FileNotFoundError:
-        try:
-            legacy = json.loads(
-                (settings.output_dir / LEGACY_HASHES_NAME).read_text(encoding="utf-8"))
-        except (FileNotFoundError, json.JSONDecodeError):
-            return {}
-        return {sid: {"id": sid, "hash": h} for sid, h in legacy.items()}
+        return {}
     index: dict[str, dict] = {}
     for line in text.splitlines():
         if not line.strip():
@@ -76,8 +66,7 @@ def write_index(settings: Settings, index: Mapping[str, dict]) -> None:
 
     Line keys follow a fixed order — id, hash, domain, persona, then anything
     else — so lines stay grep-able and diffs stable regardless of how a line
-    was built. Writing the index completes the migration from the legacy
-    hashes.json, which is removed if still around.
+    was built.
     """
     path = index_path(settings)
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -86,7 +75,6 @@ def write_index(settings: Settings, index: Mapping[str, dict]) -> None:
                 for sid in sorted(index)),
         encoding="utf-8",
     )
-    _unlink(settings.output_dir / LEGACY_HASHES_NAME)
 
 
 def _ordered_line(skill_id: str, line: Mapping) -> dict:
