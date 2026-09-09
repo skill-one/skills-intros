@@ -13,7 +13,7 @@ dist 分支 tarball ──► cache/skills-sh (skills.jsonl + skills/<id>/SKILL.
                              └─► 按安装量取 --limit 个仍有缺失的 ──► 每 skill 执行 prompt DAG
                                                     ──► output/skills/<id>/<prompt>.json
                                                     ──► output/skills/<id>/md/<prompt>.md
-                                                    ──► output/hashes.json
+                                                    ──► output/skills.jsonl (id + hash + domain + persona)
 ```
 
 `output/`(生成的介绍)与 `cache/skills-sh`(上游 skills 基本信息)是两个独立根目录——参见
@@ -34,10 +34,10 @@ domain   scenario   blackbox   whitebox   tagline   persona   comments
 - **结构化输出。** 每个 prompt 在 frontmatter 的 `output:` 中声明一个 pydantic schema;
   LLM 调用通过 [instructor](https://python.useinstructor.com/) 走 OpenAI 兼容客户端。
 - **基于文件的断点续跑。** 每个 prompt 的输出是自己的 `<prompt_id>.json` (另有 markdown 副本
-  放在 `md/` 下), 生成后立即提交——既是产物也是缓存: 存在且通过 schema 校验即不调用 LLM。`hashes.json`
-  (skill id -> 上游内容 hash, 仅在本次 run 真正生成内容时写入) 是失效判定的依据——
-  `invalidate --stale` 用它找出上游内容变化（或消失）的 skill; `run` 与 `sync` 都不做 hash 比对。
-  续跑粒度是 prompt 级, 中途崩溃已完成的 prompt 全部保留。
+  放在 `md/` 下), 生成后立即提交——既是产物也是缓存: 存在且通过 schema 校验即不调用 LLM。`skills.jsonl`
+  (每行一个 skill: id、上游内容 hash、聚合的 domain/persona 输出, 仅在本次 run 真正生成内容时写入)
+  是失效判定的依据——`invalidate --stale` 用它找出上游内容变化（或消失）的 skill;
+  `run` 与 `sync` 都不做 hash 比对。续跑粒度是 prompt 级, 中途崩溃已完成的 prompt 全部保留。
 - **一次请求拿整个快照。** `sync` 把 dist 分支作为一个 tarball 整体下载(codeload)并解压到
   `cache/skills-sh`, 整包替换上一次的快照——没有逐文件下载, 也不需要额外的缓存失效逻辑;
   之后 `read_skill_md` 直接读本地文件。解压的只有真正会读的内容: `skills.jsonl` 与每个
@@ -57,7 +57,7 @@ domain   scenario   blackbox   whitebox   tagline   persona   comments
 完全不动——因此选择之外的输出绝不会意外重算。
 
 重算从来不是 `run` 的参数: `invalidate` 删掉缓存的 json(以及它的 `md/` 副本), `run` 再把
-缺口补上。某 skill 若一个输出都不剩, 会从 `hashes.json` 中除名, 即重新视为全新 skill。
+缺口补上。某 skill 若一个输出都不剩, 会从 `skills.jsonl` 中除名, 即重新视为全新 skill。
 `invalidate --stale` 选出的正是上游 hash 变化（或已从快照消失）的 skill, 走的是同一个 `invalidate`。
 
 ## 项目结构

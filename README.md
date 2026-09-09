@@ -41,7 +41,7 @@ skills-intros invalidate --all                     # everything (needs --all)
 
 ```
 output/                                      # generated intros, publishable on their own
-├── hashes.json                              # skill id -> the upstream hash its intros were built from
+├── skills.jsonl                             # the skill index: id, upstream hash, aggregated domain/persona
 ├── stats.json                               # artifact state: complete/remaining/stale skills, per-prompt coverage
 └── skills/<owner>/<repo>/<skill>/           # the directory name is the skills.jsonl id
     ├── domain.json                          # one json per prompt, committed on generation (cache marker)

@@ -16,7 +16,7 @@ from skills_intros.generate import (
 )
 from skills_intros.llm import FakeLLM
 from skills_intros.outputs import (
-    hashes_path,
+    index_path,
     invalidate,
     load_hashes,
     prompt_result_path,
@@ -149,16 +149,16 @@ async def test_limit_respects_the_prompt_selection(settings, prompt_set):
 
 
 async def test_hashes_recorded_only_when_generating(settings, prompt_set):
-    """hashes.json records a skill only once it generated something this run;
+    """skills.jsonl records a skill only once it generated something this run;
     a fully cached run leaves the record untouched."""
     skills = load_skills(settings)
     await run_all(FakeLLM(), settings, skills[:1], prompt_set)
     assert load_hashes(settings) == {skills[0].id: skills[0].hash}
 
     # a run that generates nothing rewrites nothing
-    before = hashes_path(settings).read_text(encoding="utf-8")
+    before = index_path(settings).read_text(encoding="utf-8")
     await run_all(FakeLLM(), settings, skills[:1], prompt_set)
-    assert hashes_path(settings).read_text(encoding="utf-8") == before
+    assert index_path(settings).read_text(encoding="utf-8") == before
 
 
 async def test_skill_md_is_read_only_for_skills_that_generate(settings, prompt_set):

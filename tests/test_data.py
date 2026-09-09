@@ -17,7 +17,7 @@ from skills_intros.data import (
     stale_result_ids,
     sync_data,
 )
-from skills_intros.outputs import load_hashes, write_hashes
+from skills_intros.outputs import load_hashes, write_index
 
 TAGS_FEED = b"""<?xml version="1.0" encoding="UTF-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
@@ -267,12 +267,12 @@ def test_sync_keeps_results_even_when_stale(tmp_path, monkeypatch):
     make_result("o/r/changed")
     make_result("o/r/gone")
 
-    write_hashes(settings, {
+    write_index(settings, {sid: {"id": sid, "hash": h} for sid, h in {
         "o/r/unchanged": "h1",
         "o/r/changed": "old",
         "o/r/gone": "h2",
         "o/r/dirless": "h3",
-    })
+    }.items()})
 
     monkeypatch.setattr(data_mod, "_download", fake_download([
         {"id": "o/r/unchanged", "name": "u", "installs": "1", "source": "o/r", "hash": "h1"},

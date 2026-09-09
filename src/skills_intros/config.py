@@ -31,7 +31,7 @@ class Settings(BaseSettings):
     limit: int = 10  # skills to generate per run; cached ones are skipped, not counted
     concurrency: int = 8
     max_retries: int = 3
-    # generated intros: hashes.json + skills/<id>/<prompt>.json (with md/ copies)
+    # generated intros: skills.jsonl + skills/<id>/<prompt>.json (with md/ copies)
     output_dir: Path = Path("output")
     # the unpacked dist branch: skills.jsonl + skills/<id>/SKILL.md
     data_dir: Path = Path("cache/skills-sh")

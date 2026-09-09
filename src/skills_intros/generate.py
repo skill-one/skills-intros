@@ -15,10 +15,12 @@ from .config import Settings
 from .data import read_marker, read_skill_md, stale_result_ids
 from .models import SkillRecord
 from .outputs import (
-    load_hashes,
+    AGGREGATED_PROMPTS,
+    index_path,
+    load_index,
     prompt_result_path,
     skill_result_dir,
-    write_hashes,
+    write_index,
     write_prompt_output,
     write_stats,
 )
@@ -211,9 +213,9 @@ async def run_one(
 
     Storage: each prompt's output is its own <prompt_id>.json under the skill's
     artifact dir, committed (json + md/ copy) right after it is generated, so a
-    crash keeps every completed prompt. `run_all` records the content hash of
-    the skills that generated something in hashes.json, the record `sync` prunes
-    against — a fully cached run leaves the disk untouched.
+    crash keeps every completed prompt. `run_all` records the skills that
+    generated something in skills.jsonl, the index `invalidate --stale`
+    compares against — a fully cached run leaves the disk untouched.
 
     Cache rule: an existing per-prompt json is trusted as-is (invalidation is
     `sync`'s and `invalidate`'s job), but every reused output must still
@@ -303,7 +305,7 @@ async def run_all(
     calls in flight, shared across skills and across the prompts of each skill
     (see run_one). Skills whose every requested prompt is already cached and
     valid are skipped; `only` narrows work to a subset of prompts. When
-    anything was generated, hashes.json is updated once, at the end. When
+    anything was generated, skills.jsonl is updated once, at the end. When
     `stats` is given, the run's counters are tallied into it.
     """
     sem = asyncio.Semaphore(settings.concurrency)
@@ -317,35 +319,45 @@ async def run_all(
         return record
 
     records = await asyncio.gather(*(_one(s) for s in skills))
-    _update_hashes(settings, records)
+    _update_index(settings, records)
     return records
 
 
-def _update_hashes(settings: Settings, records: list[dict]) -> None:
-    """Record the content hash of every skill that generated something.
+def _update_index(settings: Settings, records: list[dict]) -> None:
+    """Refresh skills.jsonl for every skill that generated something.
 
-    hashes.json (skill id -> hash) is the sole freshness record: `sync` compares
-    it against the new snapshot to decide what to invalidate. Skills that were
-    already complete keep their hash; a run that generated nothing writes nothing.
+    A line carries the upstream content hash the intros were built from plus
+    the aggregated domain/persona outputs: freshly generated ones replace
+    whatever the line held, everything else is preserved. The index is the
+    freshness record `invalidate --stale` compares against the snapshot; a run
+    that generated nothing writes nothing.
     """
-    fresh = {r["skill"]["id"]: r["skill"]["hash"] for r in records if r.get("generated")}
+    fresh = [r for r in records if r.get("generated")]
     if not fresh:
         return
-    hashes = load_hashes(settings)
-    hashes.update(fresh)
-    write_hashes(settings, hashes)
+    index = load_index(settings)
+    for record in fresh:
+        skill_id = record["skill"]["id"]
+        line = index.get(skill_id) or {"id": skill_id}
+        line["hash"] = record["skill"]["hash"]
+        for key in AGGREGATED_PROMPTS:
+            if key in record.get("intros", {}):
+                line[key] = record["intros"][key]
+        index[skill_id] = line
+    write_index(settings, index)
 
 
 def load_results(settings: Settings) -> list[dict]:
     """Load all per-skill result records, sorted by skill id.
 
-    A directory counts as a result if hashes.json has the skill on record (the
-    record sync prunes against); its outputs are reassembled from the per-prompt
-    json files. A stray legacy result.json is not an output.
+    A directory counts as a result if skills.jsonl has the skill on record
+    (the record `invalidate --stale` compares against); its outputs are
+    reassembled from the per-prompt json files. A stray legacy result.json is
+    not an output.
     """
     results: list[dict] = []
-    for skill_id, hash_ in sorted(load_hashes(settings).items()):
-        entry = {"id": skill_id, "hash": hash_}
+    for skill_id, line in sorted(load_index(settings).items()):
+        entry = {"id": skill_id, "hash": line.get("hash", "")}
         skill_dir = skill_result_dir(settings, skill_id)
         intros: dict[str, Any] = {}
         for json_file in sorted(skill_dir.glob("*.json")):

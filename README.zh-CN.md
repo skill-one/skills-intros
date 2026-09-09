@@ -40,7 +40,7 @@ skills-intros invalidate --all                     # 全部清空（需显式 --
 
 ```
 output/                                      # 生成结果，可独立发布
-├── hashes.json                              # skill id -> 生成时依据的上游内容 hash
+├── skills.jsonl                             # skill 索引: id、上游内容 hash、聚合的 domain/persona
 ├── stats.json                               # 产物现状: 已完成/剩余/过期 skill 数、每个 prompt 的覆盖率
 └── skills/<owner>/<repo>/<skill>/           # 目录名即 skills.jsonl 里的 id
     ├── domain.json                          # 每个 prompt 一个 json，生成即落盘（缓存标记）

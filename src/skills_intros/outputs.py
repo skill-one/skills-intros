@@ -1,9 +1,10 @@
 """On-disk artifact layout under <output_dir>: one json per prompt in
-skills/<id>/ (with a markdown copy in md/), plus hashes.json — skill id -> the
-upstream content hash its intros were generated from, which is all `sync` needs
-to decide what to invalidate."""
+skills/<id>/ (with a markdown copy in md/), plus skills.jsonl — the skill
+index, one line per skill carrying its id, the upstream content hash its
+intros were generated from, and the aggregated domain/persona outputs."""
 
 import json
+import logging
 import shutil
 from collections.abc import Iterable
 from pathlib import Path
@@ -13,6 +14,11 @@ from .config import Settings
 from .models import Domain
 
 MD_SUBDIR = "md"  # markdown browsing copies, kept out of the json directory
+INDEX_NAME = "skills.jsonl"  # the skill index: id, hash, aggregated domain/persona
+LEGACY_HASHES_NAME = "hashes.json"  # pre-index freshness record, read as a fallback
+AGGREGATED_PROMPTS = ("domain", "persona")  # prompts folded into the index lines
+
+logger = logging.getLogger(__name__)
 
 
 def skill_result_dir(settings: Settings, skill_id: str) -> Path:
@@ -32,27 +38,53 @@ def prompt_markdown_path(settings: Settings, skill_id: str, prompt_id: str) -> P
     return skill_result_dir(settings, skill_id) / MD_SUBDIR / f"{prompt_id}.md"
 
 
-def hashes_path(settings: Settings) -> Path:
-    """The invalidation record: skill id -> upstream content hash."""
-    return settings.output_dir / "hashes.json"
+def index_path(settings: Settings) -> Path:
+    """The skill index: one json line per generated skill."""
+    return settings.output_dir / INDEX_NAME
+
+
+def load_index(settings: Settings) -> dict[str, dict]:
+    """skill id -> its index line ({id, hash, domain?, persona?}); {} when unknown.
+
+    Falls back to the legacy hashes.json (a plain id -> hash map) when the index
+    file does not exist yet, so records written before the index keep working.
+    """
+    try:
+        text = index_path(settings).read_text(encoding="utf-8")
+    except FileNotFoundError:
+        try:
+            legacy = json.loads(
+                (settings.output_dir / LEGACY_HASHES_NAME).read_text(encoding="utf-8"))
+        except (FileNotFoundError, json.JSONDecodeError):
+            return {}
+        return {sid: {"id": sid, "hash": h} for sid, h in legacy.items()}
+    index: dict[str, dict] = {}
+    for line in text.splitlines():
+        if not line.strip():
+            continue
+        try:
+            entry = json.loads(line)
+        except json.JSONDecodeError:
+            logger.warning("Skipping unreadable index line: %s", line[:80])
+            continue
+        index[entry["id"]] = entry
+    return index
+
+
+def write_index(settings: Settings, index: Mapping[str, dict]) -> None:
+    """Rewrite the whole index, one line per skill, sorted by skill id."""
+    path = index_path(settings)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(
+        "".join(json.dumps(index[sid], ensure_ascii=False, sort_keys=True) + "\n"
+                for sid in sorted(index)),
+        encoding="utf-8",
+    )
 
 
 def load_hashes(settings: Settings) -> dict[str, str]:
     """skill id -> the hash its intros were generated from; {} when unknown."""
-    try:
-        return json.loads(hashes_path(settings).read_text(encoding="utf-8"))
-    except FileNotFoundError:
-        return {}
-
-
-def write_hashes(settings: Settings, hashes: Mapping[str, str]) -> None:
-    """Rewrite the whole record, sorted by skill id."""
-    path = hashes_path(settings)
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(
-        json.dumps(dict(sorted(hashes.items())), ensure_ascii=False, indent=2) + "\n",
-        encoding="utf-8",
-    )
+    return {sid: line.get("hash", "") for sid, line in load_index(settings).items()}
 
 
 def write_stats(settings: Settings, stats: Mapping) -> Path:
@@ -96,25 +128,34 @@ def invalidate(settings: Settings, skill_ids: Iterable[str] | None = None,
 
     `skill_ids` None means every skill on record; `prompt_ids` None
     means every prompt of each selected skill. A skill left without any output
-    is dropped from the record, i.e. it counts as new again. This is the only
-    invalidation path: `sync` uses it for skills whose upstream hash changed.
-    Returns the number of removed prompt outputs.
+    is dropped from the index, i.e. it counts as new again; removing a skill's
+    domain or persona output also clears the aggregated copy in the index
+    line. This is the only invalidation path: `invalidate --stale` uses it for
+    skills whose upstream hash changed. Returns the number of removed prompt
+    outputs.
     """
-    hashes = load_hashes(settings)
-    targets = sorted(hashes) if skill_ids is None else list(dict.fromkeys(skill_ids))
+    index = load_index(settings)
+    targets = sorted(index) if skill_ids is None else list(dict.fromkeys(skill_ids))
     removed = 0
-    dropped = False
+    changed = False
     for skill_id in targets:
         paths = (_stored_jsons(settings, skill_id) if prompt_ids is None
                  else [prompt_result_path(settings, skill_id, p) for p in prompt_ids])
         for path in paths:
             _unlink(path.parent / MD_SUBDIR / f"{path.stem}.md")
             removed += _unlink(path)
-        if not _stored_jsons(settings, skill_id):
-            shutil.rmtree(skill_result_dir(settings, skill_id), ignore_errors=True)
-            dropped |= hashes.pop(skill_id, None) is not None
-    if dropped:
-        write_hashes(settings, hashes)
+        line = index.get(skill_id)
+        if line is not None:
+            for key in AGGREGATED_PROMPTS:
+                if key in line and not prompt_result_path(settings, skill_id, key).exists():
+                    line.pop(key)
+                    changed = True
+            if not _stored_jsons(settings, skill_id):
+                shutil.rmtree(skill_result_dir(settings, skill_id), ignore_errors=True)
+                index.pop(skill_id, None)
+                changed = True
+    if changed:
+        write_index(settings, index)
     return removed
 
 

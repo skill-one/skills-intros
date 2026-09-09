@@ -6,7 +6,12 @@ from skills_intros.data import load_skills
 from skills_intros.generate import run_all
 from skills_intros.llm import FakeLLM
 from skills_intros.models import Domain
-from skills_intros.outputs import invalidate, load_hashes, skill_result_dir
+from skills_intros.outputs import (
+    invalidate,
+    load_hashes,
+    load_index,
+    skill_result_dir,
+)
 
 
 @pytest.fixture
@@ -89,3 +94,36 @@ def test_invalidate_one_prompt_for_every_skill(settings, results):
         assert not (skill_dir / "whitebox.json").exists()
         assert (skill_dir / "domain.json").exists()
     assert set(load_hashes(settings)) == {r["skill"]["id"] for r in results}
+
+
+def test_index_aggregates_domain_and_persona(settings, results):
+    """skills.jsonl folds each skill's domain and persona outputs into its line."""
+    index = load_index(settings)
+    for record in results:
+        line = index[record["skill"]["id"]]
+        assert line["hash"] == record["skill"]["hash"]
+        assert line["domain"] == record["intros"]["domain"]
+        assert line["persona"] == record["intros"]["persona"]
+
+
+def test_invalidate_clears_the_aggregated_copy(settings, results):
+    """Dropping a skill's domain json also clears the aggregated copy in the
+    index line; persona and the hash survive."""
+    skill_id = results[0]["skill"]["id"]
+    invalidate(settings, [skill_id], {"domain"})
+    line = load_index(settings)[skill_id]
+    assert "domain" not in line
+    assert line["persona"] == results[0]["intros"]["persona"]
+    assert line["hash"] == results[0]["skill"]["hash"]
+
+
+async def test_partial_run_aggregates_only_what_it_generated(settings, results, prompt_set):
+    """After a tagline-only refill the line is back on record with a fresh hash
+    but carries no domain/persona until those run again."""
+    skill_id = results[0]["skill"]["id"]
+    invalidate(settings, [skill_id])
+    await run_all(FakeLLM(), settings, load_skills(settings)[:1], prompt_set,
+                  only={"tagline"})
+    line = load_index(settings)[skill_id]
+    assert line["hash"] == results[0]["skill"]["hash"]
+    assert "domain" not in line and "persona" not in line
