@@ -1,0 +1,9 @@
+# resolving-merge-conflicts (`mattpocock/skills/resolving-merge-conflicts`)
+
+## persona
+
+**tool**: git
+
+**role**: 合并调解员
+
+**scene**: 合并分支卡在半路、满屏 <<<<<<< 冲突标记时

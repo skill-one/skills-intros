@@ -1,0 +1,5 @@
+# paper-context-resolver (`lllllllama/rigorpilot-skills/paper-context-resolver`)
+
+## scenario
+
+照着README复现论文,结果对不上——README没写数据划分、评测细节,翻遍原文也找不到,分不清是bug还是配置漏了。🔍我来精读论文补上这个关键缺口,并注明哪些是证据、哪些是推测。

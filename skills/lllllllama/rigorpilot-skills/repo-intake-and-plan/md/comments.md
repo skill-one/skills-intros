@@ -1,0 +1,10 @@
+# repo-intake-and-plan (`lllllllama/rigorpilot-skills/repo-intake-and-plan`)
+
+## comments
+
+- user: 论文复现的研究生, category: 坑, comment: 我直接让它「装环境跑推理」,它只扫描规划不执行,白等一轮。装环境、下权重、跑命令都得交给后续流程。
+- user: 搞流水线自动化的开发者, category: 妙用, comment: 当流水线第一步用最香:先扫出带文档背书的命令清单,把「文档写的」和「我猜的」分开,后面执行层不容易翻车。
+- user: 刚接手前人项目的新手, category: 妙用, comment: 我给提示「推理优先」,它就把推理入口排到训练前面。先跑通 demo 再看训练,陌生仓库一下有了抓手。
+- user: 复现过几十个仓库的工程师, category: 注意, comment: 分类保守是刻意的:只有文档写明的才算可信候选,其余进风险清单。别拿它当终版结论,执行前要自己核一遍。
+- user: 维护祖传代码的后端, category: 坑, comment: 目标是没有 README 的老仓库时它帮不上忙,靠文档提命令,拿不到就只剩模糊建议。先确认有 README 再调它。
+- user: 独立做研究的博士生, category: 启发, comment: 它把「文档写明的」和「推测的」分层,提醒我读仓库也该这样;复现先找最小能跑通的一步,别一口气全上。

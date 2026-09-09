@@ -1,0 +1,10 @@
+# paper-context-resolver (`lllllllama/rigorpilot-skills/paper-context-resolver`)
+
+## comments
+
+- user: 复现论文的研二学生, category: 注意, comment: 上来只丢一个论文标题它是不接的。要同时给 README 和具体问题, 比如「test split 到底是 1k 还是 5k」, 它才动手。
+- user: 第一次复现的新手, category: 坑, comment: 我让它「帮我总结这篇论文」, 被明确拒了, 白跑一轮。它只补复现关键细节, 通读论文请换别的工具。
+- user: 算法工程师, category: 妙用, comment: 指标对不上时最灵: 它翻论文实验节, 发现作者用了验证集子集评测, 和 README 写法冲突, 还单独记下冲突点, 省我两天排查。
+- user: 实验室带新人的博士, category: 妙用, comment: 输出会把「论文原文直接写的」和「合理推测」分开标。组会汇报我只引直接证据那部分, 不怕被追问出处。
+- user: 接手祖传复现项目的工程师, category: 注意, comment: 它不管装环境、跑命令、扫仓库, 只负责论文证据那一环。复现主体先照 README 走, 卡住了再叫它补证据。
+- user: 被组会抓包过的研究员, category: 启发, comment: 用它后我改了习惯: 复现卡住先写下唯一的具体问题再求助, 问题一收窄, 答案准得多。这招找同事帮忙同样管用。

@@ -1,0 +1,7 @@
+# repo-intake-and-plan (`lllllllama/rigorpilot-skills/repo-intake-and-plan`)
+
+## tagline
+
+- 先扫后跑,复现路线一目了然
+- 只给最小可信方案,不让你白跑
+- 命令分类加风险清单,提前避坑

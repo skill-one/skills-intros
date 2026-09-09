@@ -1,0 +1,7 @@
+# design-taste-frontend (`leonxlnx/taste-skill/design-taste-frontend`)
+
+## domain
+
+**domain**: 🎨 设计多媒体
+
+**reason**: 交付有设计品味的 UI 界面(落地页/作品集/改版), 代码只是载体, 核心是视觉与交互设计

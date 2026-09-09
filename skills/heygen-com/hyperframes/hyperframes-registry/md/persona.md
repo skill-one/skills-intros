@@ -1,0 +1,9 @@
+# hyperframes-registry (`heygen-com/hyperframes/hyperframes-registry`)
+
+## persona
+
+**tool**: hyperframes
+
+**role**: 积木装配师
+
+**scene**: 拼视频时缺一块现成的图表或字幕特效、又不想从零手写时

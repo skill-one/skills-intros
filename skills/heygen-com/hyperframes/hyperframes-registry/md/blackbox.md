@@ -1,0 +1,10 @@
+# hyperframes-registry (`heygen-com/hyperframes/hyperframes-registry`)
+
+## blackbox
+
+**function**: 给你的 HyperFrames 视频项目添砖加瓦:按你的一句话需求找到现成的动画积木(字幕样式、图表、转场、特效等),装进你的项目并接好线,让它在视频里准时、准位出现。
+
+- input: 一句白话需求,如「标题一行一行浮现」(英文描述效果最佳) → , output: 按匹配度排好序的现成动画块清单,选中一个名字即可
+- input: 一个块名 + 你的项目文件夹,如「安装 data-chart」→ , output: 块文件写进项目,并附一段可直接粘贴的接入代码和安装结果说明
+- input: 你的 index.html + 已安装的块名 → , output: 改好的 index.html:块已接入主时间线,出现时间、持续时长、图层顺序都填好了
+- input: 「我想要的这种开场特效库里没有」→ , output: 现做一个新的动画块,验证通过后可以直接提交给官方库收录

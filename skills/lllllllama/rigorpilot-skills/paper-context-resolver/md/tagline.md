@@ -1,0 +1,7 @@
+# paper-context-resolver (`lllllllama/rigorpilot-skills/paper-context-resolver`)
+
+## tagline
+
+- README 缺的细节, 论文原文来补
+- 复现卡壳一环, 溯源到论文原句
+- 只补关键缺口, 条条有据可查

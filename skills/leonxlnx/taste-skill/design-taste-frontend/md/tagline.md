@@ -1,0 +1,7 @@
+# design-taste-frontend (`leonxlnx/taste-skill/design-taste-frontend`)
+
+## tagline
+
+- 拒绝AI模板脸，让界面一眼即品牌
+- 先读懂需求，再落笔设计
+- 有taste的前端，不做流水线审美

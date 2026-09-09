@@ -1,0 +1,7 @@
+# hyperframes-registry (`heygen-com/hyperframes/hyperframes-registry`)
+
+## domain
+
+**domain**: 🎨 设计多媒体
+
+**reason**: 服务于视频合成制作：安装并接线字幕、转场、VFX、数据图表等视频素材块到时间线合成中

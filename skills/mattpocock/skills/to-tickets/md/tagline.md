@@ -1,0 +1,7 @@
+# to-tickets (`mattpocock/skills/to-tickets`)
+
+## tagline
+
+- 大计划拆成小任务，拿到就能开工
+- 谁先谁后，依赖关系一目了然
+- 每步做完都能验收，进展看得见

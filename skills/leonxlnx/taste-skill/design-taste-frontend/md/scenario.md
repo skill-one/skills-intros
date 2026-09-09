@@ -1,0 +1,5 @@
+# design-taste-frontend (`leonxlnx/taste-skill/design-taste-frontend`)
+
+## scenario
+
+让 AI 做官网,打开一看:紫色渐变、居中大标题、三张一模一样的功能卡——和全网模板撞脸,客户三秒划走。📉 我专门「洗掉 AI 味」:先读懂你的品牌和用户,再定方向、配色、版式,交付有设计主张、不像模板的落地页。

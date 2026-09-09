@@ -1,0 +1,7 @@
+# minimal-run-and-audit (`lllllllama/rigorpilot-skills/minimal-run-and-audit`)
+
+## domain
+
+**domain**: 🧪 测试与质量
+
+**reason**: 核心是执行冒烟/评估命令并产出标准化验证与审计报告, 属于质量核查而非编程开发本身

@@ -1,0 +1,7 @@
+# paper-context-resolver (`lllllllama/rigorpilot-skills/paper-context-resolver`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 服务于深度学习代码仓库复现, 从论文原文补齐 README 缺失的关键开发细节

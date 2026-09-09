@@ -1,0 +1,7 @@
+# to-spec (`mattpocock/skills/to-spec`)
+
+## tagline
+
+- 聊完即成规范, 无需二次访谈
+- 一场对话, 换一份可执行规范
+- 从讨论到发布, 需求不再走样

@@ -1,0 +1,9 @@
+# research (`mattpocock/skills/research`)
+
+## blackbox
+
+**function**: 你抛给我一个想搞清楚的问题, 我去翻权威原始来源 (官方文档、源码、规范), 最后交给你一份每条结论都标了出处的 Markdown 研究笔记。
+
+- input: 「Next.js 15 的缓存行为和上一版具体差在哪?」, output: 一个 .md 笔记文件: 逐条列出差异, 每条后面附官方文档原文链接
+- input: 一个 API 文档 URL + 问题「这个接口的调用频率上限到底是多少?」, output: 一个 .md 文件: 给出确切数字和适用条件, 附上出处, 不靠博客转述
+- input: 一个有争议的技术问题, 如「React Server Components 能和 Redux 一起用吗?」, output: 一个 .md 报告: 结论只引用官方规范或源码, 并标明每条依据来自哪里, 文件存放在项目里顺手能找到的位置

@@ -1,0 +1,7 @@
+# resolving-merge-conflicts (`mattpocock/skills/resolving-merge-conflicts`)
+
+## tagline
+
+- 冲突不逃,逐行化解,绝不弃合并
+- 读历史,懂初衷,两边意图都保留
+- 解冲突,过检查,合并干净收尾

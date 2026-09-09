@@ -1,0 +1,13 @@
+# env-and-assets-bootstrap (`lllllllama/rigorpilot-skills/env-and-assets-bootstrap`)
+
+## whitebox
+
+- 接收输入: 目标仓库路径、已选定的复现目标、README 中的安装步骤、已知 OS/包约束
+- 依据 references/env-policy.md 与 references/assets-policy.md (及共享 operating principles) 做保守的安装规划
+- 产出候选 conda 命令与保守的环境准备说明; 需要实际引导环境时走 scripts/bootstrap_env.py
+- 制定资产路径方案: checkpoint/数据集来源提示与缓存目录位置 (scripts/prepare_assets.py)
+- 输出安装说明、候选命令、资产路径方案, 以及未解决的依赖/资产风险清单
+
+- README 翻译: 把 README 安装步骤转换为 conda-first 的候选命令, 由 Python 脚本承担 (plan_setup.py 规划, bootstrap_env.py 引导); bootstrap_env.sh 仅是后者的 POSIX shell 包装, 无独立逻辑
+- 策略约束: 不自由发挥, 环境与资产规划均受 env-policy.md / assets-policy.md 及 ai-research-reproduction 的共享 operating principles 约束, 判定保持保守
+- 边界与缺口转发: 只做环境和资产准备, 不负责选目标、不做论文检索 (缺口仅转发给可选的 paper resolver), 不负责最终运行报告; 无法解决的依赖/资产问题以风险清单形式显式输出

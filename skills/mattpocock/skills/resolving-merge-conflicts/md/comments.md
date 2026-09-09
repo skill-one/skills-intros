@@ -1,0 +1,10 @@
+# resolving-merge-conflicts (`mattpocock/skills/resolving-merge-conflicts`)
+
+## comments
+
+- user: 后端老兵, category: 妙用, comment: 它动手前会先翻两个分支的提交记录和关联 issue, 搞清每边为什么改. 我们一次冲突里, 一边重构一边顺手塞了个 hotfix, 靠溯源没被合丢。
+- user: 第一次处理 rebase 的新手, category: 坑, comment: 我 rebase 五个 commit, 它解完第一个我就以为完事了, 后面还排着一串冲突. 一定让它一路 continue 到最后一个解完, 再一起提交。
+- user: 前端开发, category: 注意, comment: 提交前务必让它把 typecheck → 测试 → 格式化三步跑完. 我嫌慢跳过 typecheck, 两边各自加的字段类型没对上, CI 当场红了。
+- user: 开源项目维护者, category: 注意, comment: 要求它解完把每个冲突点的取舍说清楚: 保留了谁、牺牲了什么. 这样我 review 只看说明就能过, 不用逐行 diff 猜它改了什么。
+- user: 运维老哥, category: 坑, comment: 叫它之前别自己 abort 或手改一半, 现场一被破坏它只能凭 diff 猜意图, 我那次解出来就不对劲了. 带着原始冲突状态交给它最准。
+- user: 团队 Tech Lead, category: 启发, comment: 受它启发我改了口头禅: 解冲突不是写代码, 是把两边意图都保住、不发明新行为. 现在我 review 同事解法, 看到夹带'顺手优化'就打回。
