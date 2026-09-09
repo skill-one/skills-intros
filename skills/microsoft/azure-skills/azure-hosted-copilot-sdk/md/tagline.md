@@ -1,0 +1,7 @@
+# azure-hosted-copilot-sdk (`microsoft/azure-skills/azure-hosted-copilot-sdk`)
+
+## tagline
+
+- Copilot 应用，构建到上线一步到位
+- 你出需求，Copilot 应用即刻上线
+- 自带模型连 Azure，安全又省心

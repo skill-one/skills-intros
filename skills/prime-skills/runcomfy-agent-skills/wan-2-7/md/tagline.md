@@ -1,0 +1,7 @@
+# wan-2-7 (`prime-skills/runcomfy-agent-skills/wan-2-7`)
+
+## tagline
+
+- 一句话, 变 15 秒大片
+- 声音进, 口型准, 广告会说话
+- 动作像真的, 转场像剪好的

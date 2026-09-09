@@ -1,0 +1,7 @@
+# image-to-video (`prime-skills/runcomfy-agent-skills/image-to-video`)
+
+## tagline
+
+- 一张静图，活过来的第一步
+- 你的配音，她的口型，天生对上
+- 你给一张图，还你一部短片

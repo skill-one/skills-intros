@@ -1,0 +1,5 @@
+# flux-kontext (`prime-skills/runcomfy-agent-skills/flux-kontext`)
+
+## scenario
+
+📸 产品照拍好了,却要换颜色、改标签、加个小物件——重拍太贵,普通 P 图又容易把人脸和细节改坏。我专做"只改一点、其余不动"的精准修图:一张原图 + 一句话,保真出新图。

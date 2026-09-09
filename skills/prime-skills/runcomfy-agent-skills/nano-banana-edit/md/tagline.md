@@ -1,0 +1,7 @@
+# nano-banana-edit (`prime-skills/runcomfy-agent-skills/nano-banana-edit`)
+
+## tagline
+
+- 换背景不换脸, 人还是那个人
+- 指哪改哪, 其余分毫不动
+- 一次改 20 张, 张张如出一辙

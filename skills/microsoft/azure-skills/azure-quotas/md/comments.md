@@ -1,0 +1,10 @@
+# azure-quotas (`microsoft/azure-skills/azure-quotas`)
+
+## comments
+
+- user: 第一次用 Azure 的新手, category: 坑, comment: 别拿资源类型当配额名:我填 virtualMachines 一直报错,VM 真名是 standardDSv3Family。先 az quota list,照 name 字段抄。
+- user: 后端老兵, category: 坑, comment: REST 和 Portal 显示的 No Limit 不是无限,我信了,部署照样撞墙。那只是 API 不支持该类型,查配额老实用 az quota。
+- user: DevOps 工程师, category: 妙用, comment: 把 check-quota.sh 塞进发布流水线,available 不够就直接 fail-fast。从此没再遇到部署到一半 QuotaExceeded 又回滚的破事。
+- user: 运维老哥, category: 注意, comment: az quota 不是开箱即用:先 az extension add --name quota;报 MissingRegistration 就再 az provider register --namespace Microsoft.Quota。
+- user: 云架构师, category: 启发, comment: 以前怕提额收费硬绕限制,实际申请免费、多数几分钟自动批。现在先对比各区域 available 再选区,留 20% 余量,救火少多了。
+- user: 初创公司后端, category: 注意, comment: 它查不了 Cosmos DB,az quota 会 BadRequest。我改看 Portal 和官方 limits 文档;Compute、Network、App 这些才放心用它。

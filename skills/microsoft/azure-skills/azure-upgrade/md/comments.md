@@ -1,0 +1,10 @@
+# azure-upgrade (`microsoft/azure-skills/azure-upgrade`)
+
+## comments
+
+- user: 第一次用的新手, category: 坑, comment: 升级完我急着让它删旧应用腾资源, 它停下来要我确认。后来才明白:先验证新应用跑通、再回头清理, 旧应用留着就是回退保险。
+- user: 运维老哥, category: 妙用, comment: 半夜跑 Consumption 升 Flex, 脚本中断后直接重跑, 它幂等续跑, 没产生重复资源。比手写迁移脚本靠谱太多。
+- user: Java 老项目维护人, category: 注意, comment: 老 SDK 迁移走的是改代码流程, 不动你的 Azure 资源。开口要说清是 com.microsoft.azure 换 com.azure, 它才不会跑偏。
+- user: 后端老兵, category: 妙用, comment: 评估报告没升级我也在用——拿它体检存量函数应用的配置和依赖差异, 等于顺手做了次架构检查。
+- user: 技术负责人, category: 启发, comment: 先评估、确认目标、破坏性操作必问, 这套顺序我们直接抄进了内部变更流程, 事后追责和回滚都有据可查。
+- user: Redis 老用户, category: 注意, comment: ACR 转 AMR 会被路由给专用迁移技能, 地理复制的 Enterprise 版尤其要先说清场景, 别一句"迁到 AMR"就撒手。

@@ -1,0 +1,7 @@
+# image-edit (`prime-skills/runcomfy-agent-skills/image-edit`)
+
+## tagline
+
+- 一句指令, 自动选对修图模型
+- 批量 20 张, 风格统一一次成片
+- 改你所改, 其余分毫不动

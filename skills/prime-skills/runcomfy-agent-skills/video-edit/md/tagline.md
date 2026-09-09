@@ -1,0 +1,7 @@
+# video-edit (`prime-skills/runcomfy-agent-skills/video-edit`)
+
+## tagline
+
+- 一句话改视频, 人还是那个人
+- 换景换装不换脸, 一次到位
+- 自动选对模型, 少烧次数

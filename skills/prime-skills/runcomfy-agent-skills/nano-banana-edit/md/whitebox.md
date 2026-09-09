@@ -1,0 +1,13 @@
+# nano-banana-edit (`prime-skills/runcomfy-agent-skills/nano-banana-edit`)
+
+## whitebox
+
+- 用户明确要求用 nano banana 编辑图片 (触发词如 "nano banana edit") 或需求命中其强项 (保主体换背景/批量编辑/空间局部编辑) → 本技能接手
+- 按 schema 组装 JSON 输入: 编辑指令 prompt (保真在前、改动在后) + 1–20 张可公网抓取的 HTTPS image_urls
+- 调用本地 RunComfy CLI: runcomfy run google/nano-banana-2/edit --input '<json>' --output-dir <绝对路径>, CLI 携带 token 将请求 POST 到 RunComfy Model API
+- CLI 轮询该请求, 等待模型 (Gemini 系 flash 档图像模型的 image-to-image 端点) 生成完成并取回结果
+- CLI 把生成的图片下载到 --output-dir; Ctrl-C 会在退出前取消远端请求
+
+- Prompt 工程即校验核心: 固定语法 "Keep [identity/pose/... ] unchanged" 开头 + 改动指令放最后, 用空间语言 ("left object only"、"bottom-right") 局部化编辑; 长复合指令主动拆成多次 pass 以防漂移
+- 输入边界与安全: prompt 以 JSON 字符串直传 --input, CLI 不做 shell 展开 → 无 shell 注入面; image_urls 限 1–20 个 (第一张为主图, 其余作辅助参考); 批量一致性靠锁定 aspect_ratio + resolution
+- 外部依赖: RunComfy CLI (@runcomfy/cli, 认证走 RUNCOMFY_TOKEN 或 ~/.config/runcomfy/token.json, mode 0600) + RunComfy Model API (https://model-api.runcomfy.net/v1/models/google/nano-banana-2/edit); 下载仅限 *.runcomfy.net/.com 白名单, 单文件 >2GiB 自动中止

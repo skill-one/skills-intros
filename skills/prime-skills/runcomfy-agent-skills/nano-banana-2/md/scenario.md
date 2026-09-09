@@ -1,0 +1,5 @@
+# nano-banana-2 (`prime-skills/runcomfy-agent-skills/nano-banana-2`)
+
+## scenario
+
+发帖没封面?设计师一张几百块还等三天,普通AI生图文字全是乱码……我用 Nano Banana 2:几分钟出4张候选,图里的标题文字清晰可读,不满意可锁定构图反复微调。社媒、电商、海报都行 🍌

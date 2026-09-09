@@ -1,0 +1,10 @@
+# video-edit (`prime-skills/runcomfy-agent-skills/video-edit`)
+
+## comments
+
+- user: 带货视频剪辑, category: 妙用, comment: duration 直接填 5 就从片头截 5 秒，素材不用先剪；固定 seed 后改 prompt 重跑，只剩我要的差异，A/B 对比快。
+- user: 口播知识区博主, category: 坑, comment: 第一次没写 audio_setting，出片背景音被重新生成，口型对不上声音，整条重跑。口播素材记得加 'origin' 保原声。
+- user: MCN实习剪辑, category: 坑, comment: 把 45 秒成片整段丢进去直接报错——Wan 只收 2–10 秒、不超过 100MB。现在先挑最出彩的 10 秒再提交。
+- user: 翻跳up主, category: 注意, comment: character_orientation 选 image 上限 10 秒，30 秒翻跳得选 video 传参考视频。参考图人太小动作映射会糊，用人物占比大的图。
+- user: 婚纱写真馆后期, category: 坑, comment: Lucy 只出 720p，画幅还不可控，横屏素材被服务端裁掉主体一角，客户片直接废。要保构图先自己裁成目标比例再传。
+- user: 独立开发者, category: 启发, comment: 以前一条 prompt 堆三个改动，返工到怀疑人生。跟它学会按意图选模型、一次只改一处，连我自己的发版流程也改成了小步提交。

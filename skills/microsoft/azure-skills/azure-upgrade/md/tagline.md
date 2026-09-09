@@ -1,0 +1,7 @@
+# azure-upgrade (`microsoft/azure-skills/azure-upgrade`)
+
+## tagline
+
+- 一键评估, 云端升级稳稳落地
+- 旧应用焕新, 自动迁移不踩坑
+- 先评估再动手, 升级安心不折腾

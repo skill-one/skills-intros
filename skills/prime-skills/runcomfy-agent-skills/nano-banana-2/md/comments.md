@@ -1,0 +1,10 @@
+# nano-banana-2 (`prime-skills/runcomfy-agent-skills/nano-banana-2`)
+
+## comments
+
+- user: 第一次用的新手, category: 坑, comment: 我以为它能改图, 写了一大段「人物不变、背景换雪地」, 结果连人都换了. 这个端点只管文生图, 保主体换背景得用 nano-banana-edit 那个兄弟技能, 我白烧了好几轮.
+- user: 电商美工, category: 妙用, comment: 图里的字要原样打引号写进 prompt, 再补位置和字体, 比如: 标签 "AURA", 粗体无衬线, 居中. 我第一次写「杯子上印品牌名」, 出来全是乱码字母.
+- user: 自动化运维, category: 注意, comment: CI 里别跑 runcomfy login(要弹浏览器), 设 RUNCOMFY_TOKEN 环境变量就行. 排障先看退出码: 77 是 token 被拒, 75 是限流/超时加重试即可, 别当 bug 修.
+- user: 独立开发者, category: 坑, comment: 我填了 "1080p"、"23:9", 直接 422. 分辨率只有 0.5K/1K/2K/4K 四档, 画幅固定 11 种(16:9、9:16、4:5…), 照表填. 默认 1K 够用, 2K/4K 更贵, 定稿再升.
+- user: 社媒增长操盘手, category: 妙用, comment: 锁同一个 seed, 只改引号里的标题字, 构图和主体纹丝不动, 出来两张只差文案的图, 正好拿去投 A/B 测点击, 观察变量干净多了.
+- user: 平面设计老手, category: 启发, comment: 以前 1K 一张张抽卡; 现在先 0.5K 一次出 4 张选构图, 中稿锁 seed 升 2K. 钱花在定稿上, 抽卡次数少了一大半 — 这思路搬到别的工具上也成立.

@@ -1,0 +1,13 @@
+# azure-hosted-copilot-sdk (`microsoft/azure-skills/azure-hosted-copilot-sdk`)
+
+## whitebox
+
+- 先跑强制检测: 读 package.json (根目录+下一层) 找 @github/copilot-sdk / copilot-sdk 标记, 找不到再扫 .ts/.js 源码找 CopilotClient / createSession+sendAndWait
+- 按意图路由: 新建项目→脚手架 (2A); 已有仓库加 SDK 服务→2B; 已有 SDK 应用补 Azure 基础设施→2C; 改功能→直接结合 SDK 参考实现
+- 脚手架: 执行 azd init --template azure-samples/copilot-sdk-service (模板自带 Express+TS API、React/Vite 前端、Bicep 基础设施、Dockerfile、token 脚本), 不手工重造
+- 模型配置三选一: 不传 model (GitHub 默认) / 传具体 model 名 (先用 listModels() 发现) / Azure BYOM (model+provider+bearerToken)
+- 收尾部署: 依序调用子技能 azure-prepare (跳过其 Step 0) → azure-validate → azure-deploy
+
+- 标记检测门卫 (MANDATORY): 只要代码库含 copilot-sdk 标记, 本技能抢占入口, 不允许直接路由到 azure-prepare/azure-deploy — 它们被本技能编排为子技能; 例外: 已存在 .azure/deployment-plan.md 且用户只要部署 → 让位给 azure-deploy
+- 变更前先读用户仓库的 AGENTS.md; 改造已有仓库时, 把模板脚手架到临时目录再拷贝 API 服务+infra 进来, 并改编 azure.yaml 合并新旧服务
+- 外部依赖: azd CLI + 模板仓库 azure-samples/copilot-sdk-service、Docker (运行前需 docker info 通过)、@github/copilot-sdk (CopilotClient/createSession/sendAndWait/listModels); BYOM 认证唯一合法模式是 DefaultAzureCredential (本地) / ManagedIdentityCredential (生产) 取 bearerToken, 其他模式一律不用

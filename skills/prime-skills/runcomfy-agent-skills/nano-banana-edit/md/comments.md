@@ -1,0 +1,10 @@
+# nano-banana-edit (`prime-skills/runcomfy-agent-skills/nano-banana-edit`)
+
+## comments
+
+- user: 电商运营, category: 妙用, comment: 批量20张SKU,锁定aspect_ratio和resolution,同一段提示词换背景,成品齐得像同一个棚拍的,省了逐张调。
+- user: 第一次用的新手, category: 坑, comment: 直接填本地文件路径报65错。image_urls必须是公网可访问的HTTPS链接,先把图传到图床再跑。
+- user: 人像修图师, category: 注意, comment: 保留要求必须放开头:我先把改动写前面,结尾才补Keep unchanged,结果脸被悄悄重画了。先声明保留才生效。
+- user: 投放优化师, category: 妙用, comment: A/B测试锁同一个seed,再把number_of_images开到4,一晚出几十张同款变体,完全不用写循环脚本。
+- user: 跨境卖家, category: 坑, comment: 想改图里的日文标签,字直接糊了。别硬试,多语言文字编辑按指南绕道GPT Image 2,这条是模型边界。
+- user: 独立开发者, category: 注意, comment: CI里别走login流程,直接设RUNCOMFY_TOKEN环境变量。报75是限流超时等会重试,77是token没配对。
