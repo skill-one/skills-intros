@@ -27,6 +27,9 @@ on:
       limit:
         description: How many skills to generate this run
         default: "10"
+  schedule:
+    # Every 20 minutes
+    - cron: "*/20 * * * *"
 
 permissions:
   contents: write
