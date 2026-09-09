@@ -1,0 +1,13 @@
+# image-to-video (`genmedia-labs/skills/image-to-video`)
+
+## whitebox
+
+- 触发词命中 ("image to video"/"i2v"/"animate image" 等) 后, 查意图路由表归类: 人像/产品/通用动画 → HappyHorse 1.0 I2V; 自带配音做对口型 → Wan 2.7 + audio_url; 图+参考视频+参考音频多模态 → Seedance 2.0 Pro; 未指定默认 HappyHorse。
+- 按所选模型的 schema 构建 JSON 输入, 并套用其提示词模式 (动作动词前置、不复述画面内容、一段视频只做一个主动作)。
+- 前置检查通过后, 调本地 CLI 执行 `runcomfy run <vendor>/<model-id> --input '{...}' --output-dir <绝对路径>`。
+- CLI 经 HTTPS 把 JSON 直投 Model API 并轮询请求直至生成完成。
+- 从 `.runcomfy.net`/`.runcomfy.com` 白名单链接下载产物到 `--output-dir`, 正常退出 (exit 0); Ctrl-C 会先取消远端请求再退出。
+
+- 意图路由是一次性决策: 每次调用只锁一个模型, 明确不做多路由混合; 用户点名未收录的变体 (如 Wan 2.6、Seedance 1.5) 则转交对应品牌 skill 而非硬塞进本技能。
+- 参数校验在构建期完成, 各路由的硬限制内建于技能文档: HappyHorse — 图 ≤10MB、最短边 ≥300px、宽高比 1:2.5–2.5:1、prompt ≤5000 非CJK (2500 CJK) 字符、时长 3–15s、输出宽高比=输入; Wan 2.7 — 音频 3–30s 且 ≤15MB, duration 需对齐音频长度; Seedance — 参考视频/音频各 2–15s (音频 <15MB), CN prompt ≤500 字符。对口型注意点: Wan 2.7 走的是 t2v 端点 (`wan-ai/wan-2-7/text-to-video`) 而非 i2v。
+- 传输层即外部依赖层: 依赖 `@runcomfy/cli` (npm 全局安装) + `runcomfy login` 或 `RUNCOMFY_TOKEN` 环境变量 (CI 用), 模型侧为 RunComfy Model API 的三个端点 (`happyhorse/happyhorse-1-0/image-to-video`、`wan-ai/wan-2-7/text-to-video`、`bytedance/seedance-v2/pro`)。安全设计: prompt 以 JSON 字符串经 `--input` 直传, CLI 不做 shell 展开 (无注入面); 仅出站 `model-api.runcomfy.net` + 下载白名单域; 单个下载文件 >2GiB 中止; token 落盘 `~/.config/runcomfy/token.json` (mode 0600)。

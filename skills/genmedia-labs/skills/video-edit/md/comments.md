@@ -1,0 +1,10 @@
+# video-edit (`genmedia-labs/skills/video-edit`)
+
+## comments
+
+- user: 第一次用的新手, category: 坑, comment: 我把换背景和换服装写进同一条 prompt,人物动作全飘了。后来一次只提一个改动、分两次跑,每次都稳。
+- user: 口播知识博主, category: 注意, comment: 默认 audio_setting 是 auto,我跑完发现原声被重做了。口播换背景记得手动设 origin,原声和嘴型才对得上。
+- user: 电商运营, category: 妙用, comment: 换包装别靠 prompt 硬描述,把新设计图塞进 reference_image,手持动作和镜头晃动都保住了,省一次重拍。
+- user: 舞蹈翻拍号主, category: 坑, comment: 想出 30 秒成品,character_orientation 必须选 video;选 image 只给 10 秒,我先白跑了一单才搞懂。
+- user: 后端老兵, category: 妙用, comment: CI 里别落 token 文件,直接喂 RUNCOMFY_TOKEN 环境变量;退出码 75 是超时/限流,脚本外面包一层重试就稳。
+- user: 自由剪辑接单党, category: 注意, comment: Lucy 只有 720p,也没有画幅参数,输出跟着输入走。竖屏改横屏的需求得自己先裁好再传,不然服务器替你裁。

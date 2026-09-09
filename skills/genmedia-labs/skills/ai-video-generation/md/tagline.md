@@ -1,0 +1,7 @@
+# ai-video-generation (`genmedia-labs/skills/ai-video-generation`)
+
+## tagline
+
+- 一句话, 让画面动起来
+- 一张图, 也能成为大片开场
+- 顶尖视频模型, 一条命令直达

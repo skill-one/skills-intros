@@ -1,0 +1,7 @@
+# video-edit (`genmedia-labs/skills/video-edit`)
+
+## domain
+
+**domain**: 🎨 设计多媒体
+
+**reason**: 核心能力是视频剪辑再创作 (换背景/换装/风格重绘/动作迁移), 属于视觉与音视频制作。

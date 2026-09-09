@@ -1,0 +1,7 @@
+# video-edit (`genmedia-labs/skills/video-edit`)
+
+## tagline
+
+- 你说改什么,模型自己选对路
+- 脸在,戏在,只改你想改的
+- 换景换装换风格,出片一次到位

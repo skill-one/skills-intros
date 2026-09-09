@@ -1,0 +1,7 @@
+# ai-music (`genmedia-labs/skills/ai-music`)
+
+## domain
+
+**domain**: 🎨 设计多媒体
+
+**reason**: AI 音乐生成与音频修复/延长属于音视频制作范畴

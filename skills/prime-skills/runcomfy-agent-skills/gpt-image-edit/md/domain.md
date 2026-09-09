@@ -1,0 +1,7 @@
+# gpt-image-edit (`prime-skills/runcomfy-agent-skills/gpt-image-edit`)
+
+## domain
+
+**domain**: 🎨 设计多媒体
+
+**reason**: 核心能力是图像编辑(改背景、改图内文字、多图合成), 属于图像编辑范畴。

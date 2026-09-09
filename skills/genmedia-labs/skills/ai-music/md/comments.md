@@ -1,0 +1,10 @@
+# ai-music (`genmedia-labs/skills/ai-music`)
+
+## comments
+
+- user: 第一次用的新手, category: 坑, comment: 没登录直接 runcomfy run, 退出码 77 (token 被拒)。先跑 runcomfy login, CI 里改用 RUNCOMFY_TOKEN 环境变量, 一次过。
+- user: 品牌广告创意, category: 妙用, comment: 客户要改副歌两句词, ElevenLabs 没有编辑接口。我把成片 URL 喂给 ACE inpaint 只重做那 20 秒, tags 照抄原曲风格, 接缝听不出来。
+- user: 独立游戏开发者, category: 注意, comment: outpaint 总长上限 4 分钟。我想给 3 分半的 BGM 加 1 分钟尾奏直接被拒, 只能分两次链式调, 先补到 4 分再补一段。
+- user: 自媒体剪辑, category: 注意, comment: inpaint/outpaint 的 audio 只收公网 URL, 我直接填本地 mp3 路径就失败。先传对象存储, 再把链接填进去。
+- user: 出海独立音乐人, category: 坑, comment: base 版唱中文发音含糊, 换 ace-step-1.5 端点立刻清晰。非英语歌词直接上 1.5, 别在 base 上烧钱试错。
+- user: 后端老兵, category: 注意, comment: runcomfy login 是交互式的, CI 容器里没法敲。设 RUNCOMFY_TOKEN 注入即可, token 文件权限 0600, 别打进镜像层。

@@ -1,0 +1,7 @@
+# azure-kubernetes (`microsoft/azure-skills/azure-kubernetes`)
+
+## domain
+
+**domain**: 🛡️ 运维与安全
+
+**reason**: 核心是云基础设施(AKS 集群)的规划、创建与配置, 涵盖网络、安全、监控、升级与扩缩容等运维实践

@@ -1,0 +1,10 @@
+# azure-kubernetes (`microsoft/azure-skills/azure-kubernetes`)
+
+## comments
+
+- user: 自己折腾的新手, category: 坑, comment: 第一次就丢一句「帮我建个集群」, 出来直接是生产级配置, 三可用区加 Standard 层, 月账单看得我心颤。现在开头必先声明「dev/test 环境, 不用的时候 az aks stop 停掉」。
+- user: 后端老兵, 管微服务, category: 妙用, comment: 它不只执行命令, 我说想建集群, 它先反问有没有定制需求, 直接给出 Automatic vs Standard 的取舍对比, 省了我一下午翻文档, 选型理由还能直接搬进评审稿。
+- user: 运维老哥, 管集群, category: 注意, comment: Pod IP 模型是 Day-0 决策, 选错可能要重建集群。我拿不准时先让它讲清 Overlay 和 VNet-routable 的区别再拍板, 聊十分钟比推倒重来便宜太多。
+- user: 管公司云账单的, category: 妙用, comment: 发现隐藏玩法: 直接说「pod 好像过度配置了」「空闲节点太多」, 它会拉出对应的 rightsize、autoscaler 专题方案; 说「批处理任务想要便宜」就给 Spot 节点, 按场景报关键词比笼统提问快得多。
+- user: 安全合规守门人, category: 注意, comment: 它主动不让我贴订阅 ID, 也不输出任何密钥; 要接 Workload Identity 或 Key Vault, 说清楚要连什么就行。别往对话里塞 token, 它会拒绝并给你免凭据的正规做法。
+- user: 小团队技术负责人, category: 启发, comment: Day-0/Day-1 的分法很值得抄: 先列「定了就难改」的事 (网络、API server 访问), 精力全砸那里; 其余功能随时能开。我现在做架构决策都套这个清单。

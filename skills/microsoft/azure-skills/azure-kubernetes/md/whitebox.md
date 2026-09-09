@@ -1,0 +1,13 @@
+# azure-kubernetes (`microsoft/azure-skills/azure-kubernetes`)
+
+## whitebox
+
+- 收集需求：只问必要项（环境类型/区域/规模/网络/安全/成本），未知的直接用安全默认值补齐
+- 通过 `mcp_azure_mcp_aks` 发现当前可用的 AKS 专用工具，覆盖不到的功能回退到 Azure CLI（`az aks create/show`、`kubectl`）
+- 定 SKU：默认 AKS Automatic，仅当用户有 Node Auto-Provisioning 不支持的定制需求（网络/自动伸缩/节点池）才改选 Standard
+- 产出推荐配置：按 网络→安全→可观测→升级→节点池→可靠性→成本 逐项决策，显式区分 Day-0（难改：网络、API server）与 Day-1（可后开），并记录每项理由
+- 命中深入场景关键词（rightsize/VPA/autoscaler/spot）时，加载 references/ 下对应的深度参考文件继续给方案
+
+- Day-0/Day-1 分流校验：后期难改的决策（网络、API server 访问）若需求含糊必须先追问澄清；可事后开启的（Day-1）给 2~3 个带取舍的选项并选保守默认，不承诺零停机，改以 PDB/探针/分阶段升级等保障建议替代
+- 外部依赖与工具链：Azure MCP server（入口 `mcp_azure_mcp_aks`，先发现再调用，优先于 CLI）、Azure CLI（`az aks` 系列）、kubectl（诊断查询）；skill 本身只做配置规划，实际创建/查询由这些工具承担
+- 上下文自发现 + 安全护栏：订阅/资源组上下文通过 MCP 工具或 `az account show` 自动解析，不要求用户粘贴订阅 ID，不输出密钥；歧义触发词（如 spot vs autoscaler）按最具体匹配加载参考文件，仍模糊则先澄清

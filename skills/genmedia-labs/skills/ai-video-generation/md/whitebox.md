@@ -1,0 +1,13 @@
+# ai-video-generation (`genmedia-labs/skills/ai-video-generation`)
+
+## whitebox
+
+- 触发: 用户请求命中触发词 (generate video / text to video / i2v / animate / make X move…) 后进入本技能
+- 路由: 按 t2v / i2v / extend 三类 + 约束 (自带音频、对口型、4K、竖屏、物理运动、成本) 从模型目录表选定唯一 endpoint
+- 构造输入: 按该模型的提示词模板写 prompt (动作动词优先、内联 "Audio:…"、image_url/audio_url 传引用素材), 填 duration/aspect_ratio/resolution 等字段
+- 执行: 通过 Bash 运行 `runcomfy run <vendor>/<model>/<endpoint> --input '{JSON}' --output-dir ./out`
+- 交付: 生成的视频文件落盘 --output-dir, 返回给用户
+
+- 规则式选型 (纯静态映射, 无代码逻辑): 每个 endpoint 带 "Pick for / Avoid for" 正反规则, 按用户意图匹配, 负向规则负责排除冲突项 — 如需对指定 MP3 对口型 → 排除 HappyHorse, 选 Wan 2-7 (audio_url); 需物理精确运动 → Veo 3-1; 默认 t2v → Arena #1 的 HappyHorse 1.0; 21:9 电影感 → Seedance v2 Pro
+- 每模型提示词模板 + 字段透传: 各模型段落内置其文档化 prompting patterns (HappyHorse: 主语优先+内联 Audio 描述; Veo: 物理语言如 "rotates 180 degrees, no other motion"; Seedance: 镜头/胶片语言; Kling: 分镜节拍保角色一致), 引用素材经 image_url/audio_url 传入 (Seedance v2 最多 9 图/3 视频/3 音频), schema 字段原样透传给 CLI, 不做二次转换
+- 执行底座是单一 CLI: `runcomfy` (npm 包 @runcomfy/cli, 先安装并 login 或 export RUNCOMFY_TOKEN), 由 Bash 工具调用且权限限定 `Bash(runcomfy *)`; CLI 作为智能路由器转发到 RunComfy 托管的各模型 API (HappyHorse / Wan / Kling / Veo / Seedance / Hailuo / Dreamina), 结果写入 --output-dir

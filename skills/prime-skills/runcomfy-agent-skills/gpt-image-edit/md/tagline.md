@@ -1,0 +1,7 @@
+# gpt-image-edit (`prime-skills/runcomfy-agent-skills/gpt-image-edit`)
+
+## tagline
+
+- 只改想改的, 其余分毫不动
+- 图内文字换语言, 版式品牌原样
+- 十张参考图, 合成一张大片
