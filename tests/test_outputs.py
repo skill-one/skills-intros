@@ -11,6 +11,7 @@ from skills_intros.outputs import (
     load_hashes,
     load_index,
     skill_result_dir,
+    write_index,
 )
 
 
@@ -121,7 +122,7 @@ def test_invalidate_clears_the_aggregated_copy(settings, results):
 
 async def test_partial_run_aggregates_only_what_it_generated(settings, results, prompt_set):
     """After a tagline-only refill the line is back on record with a fresh hash
-    but carries no domain/persona until those run again."""
+    but carries no domain/persona until those exist on disk again."""
     skill_id = results[0]["skill"]["id"]
     invalidate(settings, [skill_id])
     await run_all(FakeLLM(), settings, load_skills(settings)[:1], prompt_set,
@@ -129,3 +130,15 @@ async def test_partial_run_aggregates_only_what_it_generated(settings, results, 
     line = load_index(settings)[skill_id]
     assert line["hash"] == results[0]["skill"]["hash"]
     assert "domain" not in line and "persona" not in line
+
+
+def test_index_rewrite_heals_legacy_lines(settings, results):
+    """A line written before aggregation existed (id + hash only) is re-derived
+    from disk on the next index rewrite, instead of staying stale forever."""
+    record = results[0]
+    skill_id = record["skill"]["id"]
+    write_index(settings, {skill_id: {"id": skill_id, "hash": record["skill"]["hash"]}})
+    line = load_index(settings)[skill_id]
+    assert line["hash"] == record["skill"]["hash"]
+    assert line["domain"] == record["intros"]["domain"]
+    assert line["persona"] == record["intros"]["persona"]

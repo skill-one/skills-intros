@@ -15,8 +15,6 @@ from .config import Settings
 from .data import read_marker, read_skill_md, stale_result_ids
 from .models import SkillRecord
 from .outputs import (
-    AGGREGATED_PROMPTS,
-    index_path,
     load_index,
     prompt_result_path,
     skill_result_dir,
@@ -324,13 +322,13 @@ async def run_all(
 
 
 def _update_index(settings: Settings, records: list[dict]) -> None:
-    """Refresh skills.jsonl for every skill that generated something.
+    """Record the generation-time hash of every skill that generated something.
 
-    A line carries the upstream content hash the intros were built from plus
-    the aggregated domain/persona outputs: freshly generated ones replace
-    whatever the line held, everything else is preserved. The index is the
-    freshness record `invalidate --stale` compares against the snapshot; a run
-    that generated nothing writes nothing.
+    The hash is the freshness record `invalidate --stale` compares against the
+    snapshot; a run that generated nothing writes nothing. Aggregated prompt
+    outputs (domain, persona, ...) are not written here: write_index derives
+    them from the per-prompt json on disk, so index lines cannot drift from
+    what is actually stored.
     """
     fresh = [r for r in records if r.get("generated")]
     if not fresh:
@@ -338,11 +336,8 @@ def _update_index(settings: Settings, records: list[dict]) -> None:
     index = load_index(settings)
     for record in fresh:
         skill_id = record["skill"]["id"]
-        line = index.get(skill_id) or {"id": skill_id}
+        line = index.get(skill_id) or {}
         line["hash"] = record["skill"]["hash"]
-        for key in AGGREGATED_PROMPTS:
-            if key in record.get("intros", {}):
-                line[key] = record["intros"][key]
         index[skill_id] = line
     write_index(settings, index)
 

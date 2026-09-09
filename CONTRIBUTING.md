@@ -38,7 +38,8 @@ Key design decisions:
   markdown copy under `md/`), committed right after generation — both the output and the cache: present and
   schema-valid means the LLM is not called. `skills.jsonl` (one line per skill: id, the
   upstream content hash its intros were built from, and the aggregated domain/persona
-  outputs; written only when a run generates something) is what `invalidate --stale`
+  outputs, re-derived from disk on every rewrite; written only when a run generates or
+  invalidates something) is what `invalidate --stale`
   compares against; neither `run` nor `sync` re-checks hashes. Resume
   granularity is per prompt, and a crash mid-run keeps every completed prompt.
 - **One snapshot, one request.** `sync` downloads the dist branch as a single tarball

@@ -35,7 +35,8 @@ domain   scenario   blackbox   whitebox   tagline   persona   comments
   LLM 调用通过 [instructor](https://python.useinstructor.com/) 走 OpenAI 兼容客户端。
 - **基于文件的断点续跑。** 每个 prompt 的输出是自己的 `<prompt_id>.json` (另有 markdown 副本
   放在 `md/` 下), 生成后立即提交——既是产物也是缓存: 存在且通过 schema 校验即不调用 LLM。`skills.jsonl`
-  (每行一个 skill: id、上游内容 hash、聚合的 domain/persona 输出, 仅在本次 run 真正生成内容时写入)
+  (每行一个 skill: id、上游内容 hash、聚合的 domain/persona 输出, 每次重写时从磁盘重新推导,
+  仅在 run 生成或 invalidate 删除内容时写入)
   是失效判定的依据——`invalidate --stale` 用它找出上游内容变化（或消失）的 skill;
   `run` 与 `sync` 都不做 hash 比对。续跑粒度是 prompt 级, 中途崩溃已完成的 prompt 全部保留。
 - **一次请求拿整个快照。** `sync` 把 dist 分支作为一个 tarball 整体下载(codeload)并解压到
