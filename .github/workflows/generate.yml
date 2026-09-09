@@ -5,6 +5,10 @@ name: generate
 #   resolve tag -> restore cache (dataset) -> restore (dist tarball, output)
 #              -> sync (dataset) -> invalidate --stale -> run -> publish
 #
+# A successful publish also tags the dist commit as `dist-YYYYMMDDHHmm` (UTC).
+# dist keeps exactly the 10 newest publish commits and the 10 newest dist-* tags
+# — one commit per publish, each tagged, so dist history and tags correspond 1:1.
+#
 # Every run starts on a fresh runner. The dataset is restored from actions/cache
 # (keyed by the upstream daily tag, resolved by the CLI's own resolver), so within
 # a day `sync` has nothing to download; the published outputs are pulled back from
@@ -96,7 +100,8 @@ jobs:
           remote="https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
           dist="${RUNNER_TEMP}/dist"
           rm -rf "$dist"
-          if ! git clone --depth 1 --branch dist "$remote" "$dist" 2>/dev/null; then
+          # Full history clone: the branch is pruned to 10 commits, so it stays small
+          if ! git clone --branch dist "$remote" "$dist" 2>/dev/null; then
             # first publish: the branch does not exist yet
             mkdir -p "$dist"
             git -C "$dist" init -q
@@ -114,6 +119,33 @@ jobs:
             exit 0
           fi
           git commit -q -m "intros: ${GITHUB_RUN_ID} at $(date -u +%Y-%m-%dT%H:%M:%SZ)"
-          git push origin dist
-          echo "Published $(find skills -name '*.json' | wc -l) prompt outputs" \
+
+          # Keep dist history at 10 commits, one per publish. Every commit is a
+          # full snapshot, so the oldest kept commit becomes a squashed root and
+          # the 9 newer ones are replayed on top; older commits are dropped.
+          keep=10
+          if [ "$(git rev-list --count HEAD)" -gt "$keep" ]; then
+            first_keep=$(git rev-list HEAD | sed -n "${keep}p")
+            new_root=$(git commit-tree "$first_keep^{tree}" \
+              -m "$(git log -1 --format=%B "$first_keep")")
+            git rebase -q --onto "$new_root" "$first_keep" dist
+            git push --force origin dist
+          else
+            git push origin dist
+          fi
+
+          # Tag the release (UTC timestamp; lexicographic order == chronological)
+          run_tag="dist-$(date -u +%Y%m%d%H%M)"
+          git tag -f "$run_tag" HEAD
+          git push -f origin "refs/tags/${run_tag}"
+
+          # Prune: keep only the 10 newest dist-* tags (1:1 with dist commits)
+          old_tags=$(git ls-remote --tags origin 'refs/tags/dist-*' \
+            | awk -F'refs/tags/' '{print $2}' | grep -v '\^{}' \
+            | sort -r | tail -n +11)
+          for t in $old_tags; do
+            git push origin --delete "refs/tags/$t"
+          done
+
+          echo "Published $(find skills -name '*.json' | wc -l) prompt outputs as ${run_tag}" \
               >> "$GITHUB_STEP_SUMMARY"
