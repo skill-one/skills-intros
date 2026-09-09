@@ -59,7 +59,7 @@ def test_invalidate_needs_all_to_wipe_everything(settings, monkeypatch):
 
 def test_run_writes_a_stats_summary(settings, monkeypatch):
     """A run logs a timed summary and overwrites output/stats.json with the
-    counters, coverage and snapshot tag CI reads."""
+    artifact's current state: complete/remaining skills and per-prompt counts."""
     monkeypatch.setattr("skills_intros.cli.Settings", lambda: settings)
     result = runner.invoke(app, ["run", "--limit", "2", "--dry-run"])
     assert result.exit_code == 0, result.output
@@ -71,32 +71,24 @@ def test_run_writes_a_stats_summary(settings, monkeypatch):
     assert re.search(r"owner-a/repo-a/alpha: \S+ \d+\.\d+s", result.output)
 
     stats = json.loads((settings.output_dir / "stats.json").read_text(encoding="utf-8"))
-    assert stats["run"]["selected"] == 2
-    assert stats["run"]["skills_generated"] == 2
-    assert stats["run"]["prompts_generated"] == 2 * 7
-    assert stats["run"]["prompts_reused"] == 0
-    assert stats["run"]["total_seconds"] >= 0
-    assert stats["coverage"]["complete"] == 2
-    assert stats["coverage"]["remaining"] == 2
-    assert stats["coverage"]["skills"] == 4
-    assert stats["model"]
+    assert stats["skills"] == {"total": 4, "complete": 2, "remaining": 2}
+    assert all(v == 2 for v in stats["prompts"].values())
+    assert set(stats) == {"snapshot", "skills", "prompts"}  # artifact state only, no run info
 
 
 def test_run_stats_snapshot_is_overwritten(settings, monkeypatch):
     """stats.json is a single snapshot: the latest run replaces it wholesale.
 
     The second run's budget moves to the next two skills (the first are cached),
-    so its stats describe that batch — while coverage spans the whole dataset.
+    and the file always describes the whole dataset afterwards.
     """
     monkeypatch.setattr("skills_intros.cli.Settings", lambda: settings)
     runner.invoke(app, ["run", "--limit", "2", "--dry-run"])
     runner.invoke(app, ["run", "--limit", "2", "--dry-run"])
 
     stats = json.loads((settings.output_dir / "stats.json").read_text(encoding="utf-8"))
-    assert stats["run"]["skills_generated"] == 2  # gamma and hotel, the next batch
-    assert stats["run"]["prompts_generated"] == 2 * 7
-    assert stats["coverage"]["complete"] == 4
-    assert stats["coverage"]["remaining"] == 0
+    assert stats["skills"] == {"total": 4, "complete": 4, "remaining": 0}
+    assert all(v == 4 for v in stats["prompts"].values())
 
 
 def test_sync_reports_tag_and_prunes(settings, monkeypatch):

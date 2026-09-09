@@ -14,7 +14,7 @@ Each skill gets one directory under `output/skills/`:
 ```
 output/
 ├── hashes.json                          # skill id -> the upstream hash its intros were built from
-├── stats.json                           # the latest run's summary (counters, timing, coverage)
+├── stats.json                           # artifact state: complete/remaining skills, per-prompt coverage
 └── skills/<owner>/<repo>/<skill>/
     ├── domain.json                      # one json per prompt
     ├── scenario.json
@@ -33,11 +33,11 @@ compares the recorded hash against the freshly downloaded snapshot and immediate
 entries whose upstream hash changed or whose skill disappeared. `run` itself just reuses
 whatever is on disk.
 
-Statistics: every `run` prints a timed summary and overwrites `stats.json` (one snapshot,
-no history): the snapshot tag it ran against, prompts generated / reused / regenerated from
-schema-stale caches, LLM seconds with the per-prompt average, stage timings (setup, generate,
-total), and dataset-wide coverage — how many skills are complete, how many still miss prompts,
-and a cached count per prompt. `sync` reports the tag it aligned to, a cache hit or the
+Statistics: every `run` prints a timed summary (prompts generated / reused / regenerated
+from schema-stale caches, per-skill and total LLM seconds, stage timings) and overwrites
+`stats.json` — a snapshot of the artifact's current state, not the run's: how many skills
+are complete, how many still miss prompts, a cached count per prompt, and the snapshot tag
+the artifacts were built from. `sync` reports the tag it aligned to, a cache hit or the
 download duration, and how many stale results it invalidated.
 
 ## Data

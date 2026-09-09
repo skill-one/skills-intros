@@ -12,7 +12,7 @@ from typing import Any, Callable
 from pydantic import ValidationError
 
 from .config import Settings
-from .data import read_skill_md
+from .data import read_marker, read_skill_md
 from .models import SkillRecord
 from .outputs import (
     load_hashes,
@@ -20,6 +20,7 @@ from .outputs import (
     skill_result_dir,
     write_hashes,
     write_prompt_output,
+    write_stats,
 )
 from .prompts import PromptSet, PromptSpec, render_user_prompt
 
@@ -157,6 +158,28 @@ def coverage(
         "remaining": len(skills) - complete,
         "prompts": per_prompt,
     }
+
+
+def write_artifact_stats(
+    settings: Settings, prompts: PromptSet, skills: list[SkillRecord],
+    only: set[str] | None = None,
+) -> dict:
+    """Overwrite output/stats.json with the artifact's current state.
+
+    The file describes what is on disk right now — complete/remaining skill
+    counts, a cached count per prompt and the snapshot tag the artifacts were
+    built from — never a run's counters or timings (those stay in the log).
+    """
+    cov = coverage(settings, prompts, skills, only)
+    snapshot = read_marker(settings.data_dir)
+    write_stats(settings, {
+        "snapshot": {"ref": snapshot.get("ref", ""),
+                     "fetched_at": snapshot.get("fetched_at", "")},
+        "skills": {"total": cov["skills"], "complete": cov["complete"],
+                   "remaining": cov["remaining"]},
+        "prompts": cov["prompts"],
+    })
+    return cov
 
 
 async def run_prompt(

@@ -56,10 +56,13 @@ def write_hashes(settings: Settings, hashes: Mapping[str, str]) -> None:
 
 
 def write_stats(settings: Settings, stats: Mapping) -> Path:
-    """Overwrite output/stats.json: the latest run's summary.
+    """Overwrite output/stats.json: the artifact's current state, not the run's.
 
-    One snapshot file (no history) — CI and humans read the same place. Sorting
-    dict keys keeps the layout stable across runs.
+    How many skills are complete/remaining and how many skills hold each
+    prompt's output on disk, plus the snapshot tag the artifacts were built
+    from. Run counters and timings stay in the log; one snapshot file (no
+    history) so CI and humans read the same place. Sorting dict keys keeps the
+    layout stable across runs.
     """
     path = settings.output_dir / "stats.json"
     path.parent.mkdir(parents=True, exist_ok=True)

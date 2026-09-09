@@ -7,12 +7,12 @@ import time
 import typer
 
 from .config import Settings
-from .data import load_skills, read_marker, sync_data
-from .generate import RunStats, coverage, run_all, select_skills
+from .data import load_skills, sync_data
+from .generate import RunStats, coverage, run_all, select_skills, write_artifact_stats
 from .llm import FakeLLM, make_llm
 from .logging import setup_logging
 from .outputs import invalidate as invalidate_cache
-from .outputs import load_hashes, write_stats
+from .outputs import load_hashes
 from .prompts import load_prompt_set
 
 logger = logging.getLogger(__name__)
@@ -172,27 +172,9 @@ def run(
         cov["complete"], cov["skills"], cov["remaining"],
         ", ".join(f"{pid} {n}/{cov['skills']}" for pid, n in cov["prompts"].items()),
     )
-    snapshot = read_marker(settings.data_dir)
-    write_stats(settings, {
-        "model": settings.model,
-        "snapshot": {"ref": snapshot.get("ref", ""),
-                     "fetched_at": snapshot.get("fetched_at", "")},
-        "coverage": cov,
-        "run": {
-            "finished_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-            "selected": len(selected),
-            "skills_generated": stats.skills_generated,
-            "skills_skipped": stats.skills_skipped,
-            "prompts_generated": stats.prompts_generated,
-            "prompts_reused": stats.prompts_reused,
-            "prompts_stale": stats.prompts_stale,
-            "llm_seconds": round(stats.llm_seconds, 3),
-            "llm_avg_seconds": round(avg, 3),
-            "setup_seconds": round(setup_seconds, 3),
-            "generate_seconds": round(generate_seconds, 3),
-            "total_seconds": round(total_seconds, 3),
-        },
-    })
+    # stats.json is the artifact's state, not the run's: what is on disk right
+    # now, against which snapshot. Run counters and timings stay in the log.
+    write_artifact_stats(settings, prompt_set, skills, only)
 
 
 def main() -> None:  # pragma: no cover

@@ -16,7 +16,7 @@
 ```
 output/
 ├── hashes.json                          # skill id -> 生成该产物时对应的上游内容 hash
-├── stats.json                           # 最近一次 run 的汇总（计数、耗时、覆盖率）
+├── stats.json                           # 产物当前状态: 已完成/剩余 skill 数、每个 prompt 的覆盖率
 └── skills/<owner>/<repo>/<skill>/
     ├── domain.json                      # 每个 prompt 一个 json
     ├── scenario.json
@@ -34,10 +34,10 @@ output/
 (或 skill 已从上游消失)的条目连同产物目录立即删除, 下次 `run` 重新生成; `run` 本身只信任
 磁盘上现有的输出文件。
 
-统计: 每次 `run` 结束会打印一段计时汇总, 并整体覆盖 `stats.json`(只保留一份快照, 不存历史):
-本次所依据的快照 tag、新生成/复用/因 schema 失效而重算的 prompt 数、LLM 秒数及单次平均、
-各阶段耗时(选点、生成、总计), 以及全量覆盖率——已完成多少 skill、还剩多少缺 prompt、
-每个 prompt 各被多少 skill 缓存。`sync` 则汇报对齐到的 tag、命中缓存还是真实下载(含耗时)、
+统计: 每次 `run` 结束会打印一段计时汇总(新生成/复用/因 schema 失效而重算的 prompt 数、
+每个 skill 与总计的 LLM 秒数、各阶段耗时), 并整体覆盖 `stats.json`——它只描述产物的当前
+状态而非某次执行: 已完成多少 skill、还剩多少缺 prompt、每个 prompt 各被多少 skill 缓存,
+以及产物所依据的快照 tag。`sync` 则汇报对齐到的 tag、命中缓存还是真实下载(含耗时)、
 以及清理了多少失效产物。
 
 ## 数据
