@@ -30,7 +30,7 @@ SKILLS = [
 ]
 
 # the root dir GitHub puts inside a branch tarball
-ARCHIVE_ROOT = "skills-sh-scraper-dist"
+ARCHIVE_ROOT = "skills-sh-mirror-dist"
 
 
 def skill_md_text(entry: dict) -> str | None:

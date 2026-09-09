@@ -5,7 +5,7 @@ from pathlib import Path
 from pydantic import model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-REPO = "skill-one/skills-sh-scraper"
+REPO = "skill-one/skills-sh-mirror"
 DIST_BRANCH = "dist"
 REPO_URL = f"https://github.com/{REPO}"
 # the daily snapshot as GitHub publishes it: `sync` downloads and unpacks this

@@ -1,6 +1,6 @@
 # skills-intros
 
-为 [skill-one/skills-sh-scraper](https://github.com/skill-one/skills-sh-scraper) 收录的
+为 [skill-one/skills-sh-mirror](https://github.com/skill-one/skills-sh-mirror) 收录的
 [agent skills](https://www.skills.sh) 批量生成多角度中文介绍词。
 
 - 只想要产物？看[产物](#产物)。

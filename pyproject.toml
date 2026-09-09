@@ -1,7 +1,7 @@
 [project]
 name = "skills-intros"
 version = "0.1.0"
-description = "Generate multi-angle Chinese introductions for agent skills collected by skills-sh-scraper"
+description = "Generate multi-angle Chinese introductions for agent skills collected by skills-sh-mirror"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [

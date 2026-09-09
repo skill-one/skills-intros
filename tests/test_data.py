@@ -20,8 +20,8 @@ from skills_intros.outputs import load_hashes, write_hashes
 
 TAGS_FEED = b"""<?xml version="1.0" encoding="UTF-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <id>tag:github.com,2008:https://github.com/skill-one/skills-sh-scraper/releases</id>
-  <title>Tags from skills-sh-scraper</title>
+  <id>tag:github.com,2008:https://github.com/skill-one/skills-sh-mirror/releases</id>
+  <title>Tags from skills-sh-mirror</title>
   <entry>
     <id>tag:github.com,2008:Repository/1/dist-2026-09-09</id>
     <title>dist-2026-09-09</title>

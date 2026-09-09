@@ -1,7 +1,7 @@
 # skills-intros
 
 Generate multi-angle Chinese introductions for [agent skills](https://www.skills.sh) collected by
-[skill-one/skills-sh-scraper](https://github.com/skill-one/skills-sh-scraper).
+[skill-one/skills-sh-mirror](https://github.com/skill-one/skills-sh-mirror).
 
 - Just want the results? See [Artifacts](#artifacts).
 - Want to run it or add a prompt? See [Quickstart](#quickstart).
