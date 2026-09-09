@@ -44,9 +44,11 @@ cache/skills-sh/                            # SKILLS_INTROS_DATA_DIR: upstream s
 └── skills/<owner>/<repo>/<skill>/SKILL.md  # each skill's source
 ```
 
-`sync` downloads the whole dist branch as one tarball and unpacks it here — one request, no
-per-file fetching. Everything under `cache/skills-sh` is a re-downloadable copy of the dist
-branch: each sync replaces it wholesale, so index and sources can never drift apart.
+`sync` downloads the whole dist branch as one tarball — one request, no per-file fetching —
+and unpacks only what a run reads: `skills.jsonl` and every `skills/<id>/SKILL.md`. The branch
+also mirrors the rest of each skill repo (READMEs, evals, manifests): ~70x more data that
+nothing reads, so it stays in the archive. Each sync replaces the snapshot wholesale, so index
+and sources can never drift apart.
 
 ## Quickstart
 

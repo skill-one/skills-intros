@@ -98,9 +98,9 @@ def test_sync_refuses_to_wipe_foreign_data(tmp_path, monkeypatch):
     assert (data_dir / "user-file.txt").read_text(encoding="utf-8") == "precious"
 
 
-def test_sync_unpacks_the_whole_snapshot(tmp_path, monkeypatch):
-    """One tarball request fills the data dir: index, every SKILL.md and
-    everything else the branch carries."""
+def test_sync_unpacks_only_what_a_run_reads(tmp_path, monkeypatch):
+    """One tarball request fills the data dir with the index and every SKILL.md;
+    the rest of the branch (hundreds of MB of skill repos) is left in the archive."""
     settings = make_settings(tmp_path)
     served = fake_download([
         {"id": "o/r/s", "name": "s", "installs": "1", "source": "o/r", "hash": "h"},
@@ -116,7 +116,7 @@ def test_sync_unpacks_the_whole_snapshot(tmp_path, monkeypatch):
     assert seen == [TARBALL_URL]
     assert (data_dir / "skills.jsonl").exists()
     assert (data_dir / "skills" / "o" / "r" / "s" / "SKILL.md").exists()
-    assert (data_dir / "skills" / "o" / "r" / "s" / "extra.md").exists()
+    assert not (data_dir / "skills" / "o" / "r" / "s" / "extra.md").exists()
     assert pruned == 0
     assert load_skills(settings)[0].name == "s"
     assert read_skill_md(settings, load_skills(settings)[0]) is not None

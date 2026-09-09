@@ -1,8 +1,9 @@
 """Fetch the skill dataset (the scraper's dist branch) once, then read it locally.
 
-`sync` downloads the whole branch as one tarball and unpacks it into <data_dir>
-(skills.jsonl plus every skills/<id>/SKILL.md), so index and sources can never
-drift apart and every later read is a local file read.
+`sync` downloads the whole branch as one tarball and unpacks into <data_dir> only
+what a run reads: skills.jsonl plus every skills/<id>/SKILL.md. One request still
+fetches the whole branch, so index and sources can never drift apart, and every
+later read is a local file read.
 """
 
 import json
@@ -21,6 +22,9 @@ from .outputs import invalidate, load_hashes
 
 logger = logging.getLogger(__name__)
 
+INDEX_NAME = "skills.jsonl"  # the index: one json line per skill
+SKILLS_DIR = "skills"  # one directory per skill id, mirroring the upstream ids
+SKILL_MD = "SKILL.md"
 MAX_DOWNLOAD_RETRIES = 3
 MD_MAX_CHARS = 20000  # cap on the SKILL.md text sent to the LLM
 
@@ -75,10 +79,23 @@ def _download_snapshot(url: str, dest: Path) -> bool:
             return False
         unpacked = Path(tmp) / "unpacked"
         with tarfile.open(archive, "r:gz") as tar:
-            tar.extractall(unpacked, filter="data")
+            tar.extractall(unpacked, members=_snapshot_files(tar), filter="data")
         shutil.rmtree(dest, ignore_errors=True)
         shutil.move(str(_snapshot_root(unpacked)), str(dest))
     return True
+
+
+def _snapshot_files(tar: tarfile.TarFile):
+    """The archive members worth unpacking: the index and every SKILL.md.
+
+    The branch mirrors whole skill repos, and only these two kinds of files are
+    ever read — keeping the rest (READMEs, evals, manifests, other markdown)
+    would unpack ~70x more data than a run needs, on every single sync.
+    """
+    for member in tar:
+        rel = member.name.split("/", 1)[-1]  # drop GitHub's <repo>-<branch>/ root
+        if rel == INDEX_NAME or rel.startswith(f"{SKILLS_DIR}/") and rel.endswith(f"/{SKILL_MD}"):
+            yield member
 
 
 def _snapshot_root(unpacked: Path) -> Path:
@@ -90,15 +107,16 @@ def _snapshot_root(unpacked: Path) -> Path:
 def sync_data(settings: Settings) -> tuple[Path, int]:
     """Replace <data_dir> with the dist branch snapshot and prune what went stale.
 
-    One request downloads the whole branch as a tarball; the previous snapshot is
-    replaced wholesale, so there is nothing incremental to fetch or to expire.
-    Right after syncing, result dirs whose upstream hash changed (or whose skill
-    disappeared upstream) are pruned, so the next `run` regenerates them; run
-    itself never re-checks hashes. Returns (data_dir, pruned_result_count).
+    One request downloads the whole branch as a tarball, of which only the index
+    and the SKILL.md files are unpacked; the previous snapshot is replaced
+    wholesale, so there is nothing incremental to fetch or to expire. Right after
+    syncing, result dirs whose upstream hash changed (or whose skill disappeared
+    upstream) are pruned, so the next `run` regenerates them; run itself never
+    re-checks hashes. Returns (data_dir, pruned_result_count).
     """
     data_dir = settings.data_dir
     if data_dir.exists() and any(data_dir.iterdir()):
-        if not (data_dir / "skills.jsonl").exists():
+        if not (data_dir / INDEX_NAME).exists():
             raise RuntimeError(
                 f"{data_dir} exists and is not a dataset directory - move it away or "
                 "point SKILLS_INTROS_DATA_DIR at a different directory"
@@ -123,10 +141,10 @@ def load_skills(settings: Settings) -> list[SkillRecord]:
     it in, which a run does just for the skills it really generates. Narrowing
     the run is `generate.select_skills`'s job (see `--limit`).
     """
-    index = settings.data_dir / "skills.jsonl"
+    index = settings.data_dir / INDEX_NAME
     if not index.is_file():
         raise FileNotFoundError(
-            f"skills.jsonl not found under {settings.data_dir} - "
+            f"{INDEX_NAME} not found under {settings.data_dir} - "
             "run `skills-intros sync` first"
         )
 
@@ -155,7 +173,7 @@ def load_skills(settings: Settings) -> list[SkillRecord]:
 
 def skill_md_path(settings: Settings, skill: SkillRecord) -> Path:
     """Where one skill's SKILL.md sits in the snapshot."""
-    return settings.data_dir / "skills" / skill.id.replace(":", "_") / "SKILL.md"
+    return settings.data_dir / SKILLS_DIR / skill.id.replace(":", "_") / SKILL_MD
 
 
 def read_skill_md(settings: Settings, skill: SkillRecord) -> str | None:
@@ -183,7 +201,7 @@ def _prune_stale_results(settings: Settings, data_dir: Path) -> int:
         return 0
 
     upstream: dict[str, str] = {}
-    for line in (data_dir / "skills.jsonl").read_text(encoding="utf-8").splitlines():
+    for line in (data_dir / INDEX_NAME).read_text(encoding="utf-8").splitlines():
         if line.strip():
             entry = json.loads(line)
             upstream[entry["id"]] = entry.get("hash", "")

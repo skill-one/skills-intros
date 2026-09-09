@@ -45,9 +45,9 @@ cache/skills-sh/                            # SKILLS_INTROS_DATA_DIR: 上游 ski
 └── skills/<owner>/<repo>/<skill>/SKILL.md  # 每个 skill 的源文件
 ```
 
-`sync` 一次请求把整个 dist 分支打包下载(tarball)并完整解压到这里, 不再逐个文件懒下载。
-`cache/skills-sh` 下的一切都只是 dist 分支的可重下副本: 每次 sync 整包替换, 索引与源文件
-因此不可能出现版本错位。
+`sync` 一次请求把整个 dist 分支打包下载(tarball), 不再逐个文件懒下载; 但只解压真正会读的部分:
+`skills.jsonl` 与每个 `skills/<id>/SKILL.md`。分支里还有完整的 skill 仓库(README、evals、manifest
+等), 体积约 70 倍且从不读取, 因此留在压缩包里。每次 sync 整包替换, 索引与源文件不可能出现版本错位。
 
 ## 快速开始
 

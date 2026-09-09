@@ -43,7 +43,9 @@ Key design decisions:
 - **One snapshot, one request.** `sync` downloads the dist branch as a single tarball
   (codeload) and unpacks it into `cache/skills-sh`, replacing the previous snapshot
   wholesale — no per-file fetching, no cache expiry of its own. `read_skill_md` then reads a
-  skill's source as a plain local file.
+  skill's source as a plain local file. Only what a run reads is unpacked: `skills.jsonl`
+  and every `skills/<id>/SKILL.md`. The branch mirrors whole skill repos (READMEs, evals,
+  manifests), which is ~70x more data that nothing ever reads.
 - **Prompts as files.** One markdown file per prompt under `prompts/` (override with
   `SKILLS_INTROS_PROMPTS_DIR`). YAML frontmatter carries metadata; the body is the jinja2
   user-prompt template. `_system.md` holds the shared system prompt. No code changes needed

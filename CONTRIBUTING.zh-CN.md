@@ -38,9 +38,11 @@ domain   scenario   blackbox   whitebox   tagline   persona   comments
   (skill id -> 上游内容 hash, 仅在本次 run 真正生成内容时写入) 是 `sync` 的清理依据(上游 hash
   变化或 skill 消失即删除), `run` 不再做 hash 比对。续跑粒度是 prompt 级, 中途崩溃已完成
   的 prompt 全部保留。
-- **一次请求拿整个快照。** `sync` 把 dist 分支作为一个 tarball 整体下载(codeload)并完整解压到
+- **一次请求拿整个快照。** `sync` 把 dist 分支作为一个 tarball 整体下载(codeload)并解压到
   `cache/skills-sh`, 整包替换上一次的快照——没有逐文件下载, 也不需要额外的缓存失效逻辑;
-  之后 `read_skill_md` 直接读本地文件。
+  之后 `read_skill_md` 直接读本地文件。解压的只有真正会读的内容: `skills.jsonl` 与每个
+  `skills/<id>/SKILL.md`; 分支里还有完整的 skill 仓库(README、evals、manifest 等), 体积约
+  70 倍且从不读取, 留在压缩包里。
 - **Prompt 即文件。** 每个 prompt 是 `prompts/` 下的一个 markdown 文件（可用
   `SKILLS_INTROS_PROMPTS_DIR` 覆盖）。YAML frontmatter 存元数据, 正文是 jinja2 用户提示词
   模板; `_system.md` 是共享的 system prompt。新增 prompt 通常无需改代码, 除非需要新的输出
