@@ -104,8 +104,8 @@ skills-intros invalidate --all                     # everything (needs --all)
 
 ## Continuous generation (GitHub Actions)
 
-`.github/workflows/generate.yml` runs on a schedule and on demand, keeping the `dist`
-branch in sync with the generated intros:
+`.github/workflows/generate.yml` runs on demand (Actions tab → generate → Run workflow),
+keeping the `dist` branch in sync with the generated intros:
 
 ```
 restore (dist branch tarball) → sync → run → publish
@@ -114,9 +114,8 @@ restore (dist branch tarball) → sync → run → publish
 Every run starts on a fresh runner, so the results of the previous run are pulled back
 from `dist` first: the branch is both the published artifact and the cache. The order
 matters — `sync` prunes stale results against what was just restored. The workflow passes
-the `limit` input straight to `run --limit` (scheduled runs have no inputs and fall back to
-the same default, 100), bounding how much one run generates, so repeated runs work their way
-through the whole dataset.
+the `limit` input straight to `run --limit` (default 100), bounding how much one run
+generates, so repeated runs work their way through the whole dataset.
 
 The `dist` branch root mirrors `output/`: `hashes.json` + `skills/` (see [Artifacts](#artifacts)).
 
@@ -128,7 +127,7 @@ Required repository configuration (Settings → Secrets and variables → Action
 | Variable | `SKILLS_INTROS_BASE_URL` | `https://api.b.ai/v1` |
 | Variable | `SKILLS_INTROS_MODEL` | `GLM-5.3-Flash` |
 
-The schedule is `*/10 * * * *`; adjust it together with the limit.
+Each manual run's `limit` input (default 100) bounds how much it generates.
 
 ## Adding a prompt
 

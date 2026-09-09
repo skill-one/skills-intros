@@ -10,8 +10,7 @@ name: generate
 # a day `sync` has nothing to download; the published outputs are pulled back from
 # the `dist` branch (one tarball request) and order matters because sync prunes
 # stale results against what is already there. `run` never redoes cached work, so
-# the `limit` input bounds how much is generated per run (scheduled runs, which
-# have no inputs, fall back to the same default) — the branch is both the
+# the `limit` input bounds how much is generated per run — the branch is both the
 # artifact and the cache.
 #
 # Repository configuration (Settings -> Secrets and variables -> Actions):
@@ -19,8 +18,6 @@ name: generate
 #   Variable: SKILLS_INTROS_BASE_URL, SKILLS_INTROS_MODEL
 
 on:
-  schedule:
-    - cron: "*/10 * * * *"  # 100 skills per run; adjust as needed
   workflow_dispatch:
     inputs:
       limit:
@@ -32,7 +29,7 @@ permissions:
 
 concurrency:
   group: generate-dist
-  cancel-in-progress: false  # never cancel a run that is about to push
+  cancel-in-progress: false # never cancel a run that is about to push
 
 env:
   # credentials only; every tunable is passed as a CLI argument
@@ -43,7 +40,6 @@ env:
 jobs:
   generate:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v5
 
@@ -85,9 +81,7 @@ jobs:
         run: uv run skills-intros sync
 
       - name: Generate intros
-        # the limit input is the only source: passed as an argument; scheduled
-        # runs have no inputs and fall back to the same default as the input
-        run: uv run skills-intros run --limit "${{ inputs.limit || '100' }}"
+        run: uv run skills-intros run --limit "${{ inputs.limit }}"
 
       - name: Publish to dist
         env:
