@@ -72,14 +72,29 @@ def load_index(settings: Settings) -> dict[str, dict]:
 
 
 def write_index(settings: Settings, index: Mapping[str, dict]) -> None:
-    """Rewrite the whole index, one line per skill, sorted by skill id."""
+    """Rewrite the whole index, one line per skill, sorted by skill id.
+
+    Line keys follow a fixed order — id, hash, domain, persona, then anything
+    else — so lines stay grep-able and diffs stable regardless of how a line
+    was built.
+    """
     path = index_path(settings)
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(
-        "".join(json.dumps(index[sid], ensure_ascii=False, sort_keys=True) + "\n"
+        "".join(json.dumps(_ordered_line(sid, index[sid]), ensure_ascii=False) + "\n"
                 for sid in sorted(index)),
         encoding="utf-8",
     )
+
+
+def _ordered_line(skill_id: str, line: Mapping) -> dict:
+    """One index line with its keys in canonical order."""
+    ordered: dict = {"id": skill_id}
+    for key in ("hash", *AGGREGATED_PROMPTS):
+        if key in line:
+            ordered[key] = line[key]
+    ordered.update({k: v for k, v in line.items() if k not in ordered})
+    return ordered
 
 
 def load_hashes(settings: Settings) -> dict[str, str]:

@@ -97,10 +97,12 @@ def test_invalidate_one_prompt_for_every_skill(settings, results):
 
 
 def test_index_aggregates_domain_and_persona(settings, results):
-    """skills.jsonl folds each skill's domain and persona outputs into its line."""
+    """skills.jsonl folds each skill's domain and persona outputs into its line,
+    with keys in the canonical order (id, hash, domain, persona)."""
     index = load_index(settings)
     for record in results:
         line = index[record["skill"]["id"]]
+        assert list(line) == ["id", "hash", "domain", "persona"]
         assert line["hash"] == record["skill"]["hash"]
         assert line["domain"] == record["intros"]["domain"]
         assert line["persona"] == record["intros"]["persona"]
