@@ -55,6 +55,21 @@ def write_hashes(settings: Settings, hashes: Mapping[str, str]) -> None:
     )
 
 
+def write_stats(settings: Settings, stats: Mapping) -> Path:
+    """Overwrite output/stats.json: the latest run's summary.
+
+    One snapshot file (no history) — CI and humans read the same place. Sorting
+    dict keys keeps the layout stable across runs.
+    """
+    path = settings.output_dir / "stats.json"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(
+        json.dumps(stats, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+    return path
+
+
 def write_prompt_output(settings: Settings, skill_id: str, prompt_id: str, output: dict) -> Path:
     """Write one prompt's output as json in the skill dir + a markdown copy in md/.
 

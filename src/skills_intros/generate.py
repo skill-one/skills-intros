@@ -4,6 +4,8 @@ import asyncio
 import json
 import logging
 import sys
+import time
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Callable
 
@@ -22,6 +24,35 @@ from .outputs import (
 from .prompts import PromptSet, PromptSpec, render_user_prompt
 
 logger = logging.getLogger(__name__)
+
+
+@dataclass
+class RunStats:
+    """Aggregated counters for one `run`, tallied by `run_all`.
+
+    `prompts_stale` counts reused-cached outputs that failed schema validation
+    and were regenerated; `llm_seconds` sums the time spent inside `run_prompt`,
+    so `llm_seconds / prompts_generated` is the average per-prompt latency.
+    """
+
+    selected: int = 0  # skills handed to run_all
+    skills_generated: int = 0
+    skills_skipped: int = 0  # no SKILL.md in the snapshot
+    prompts_generated: int = 0
+    prompts_reused: int = 0
+    prompts_stale: int = 0
+    llm_seconds: float = 0.0
+
+
+def _tally(stats: RunStats, record: dict) -> None:
+    """Fold one skill's record into the run stats."""
+    generated = record.get("generated", ())
+    stats.skills_generated += 1 if generated else 0
+    stats.skills_skipped += 1 if record.get("skipped") else 0
+    stats.prompts_generated += len(generated)
+    stats.prompts_reused += len(record["intros"]) - len(generated)
+    stats.prompts_stale += len(record.get("stale", ()))
+    stats.llm_seconds += record.get("seconds", 0.0)
 
 
 def _dump_messages(skill: SkillRecord, spec, messages: list[dict]) -> None:
@@ -47,16 +78,17 @@ def _dump(outputs: dict[str, Any]) -> dict[str, Any]:
 
 def _load_cached(
     settings: Settings, prompts: PromptSet, skill: SkillRecord, only: set[str] | None = None,
-) -> tuple[dict[str, Any], list[str]]:
-    """Split the selection into (cached outputs, prompt ids still to generate).
+) -> tuple[dict[str, Any], list[str], list[str]]:
+    """Split the selection into (cached outputs, prompt ids still to generate, stale ids).
 
     A prompt belongs to the selection when it is in `prompts` and (with `only`)
     in the closure of the requested ids. Its stored json is trusted as-is, but
-    must still validate against the current schema — missing or schema-stale
-    prompts come back as pending.
+    must still validate against the current schema — missing prompts come back
+    as pending, schema-stale ones as stale (also pending, but counted apart).
     """
     targets = prompts.closure_ids(only) if only is not None else set(prompts.by_id)
     outputs: dict[str, Any] = {}
+    stale: list[str] = []
     for spec_id in prompts.ordered_ids():
         if spec_id not in targets:
             continue
@@ -67,8 +99,9 @@ def _load_cached(
             outputs[spec_id] = prompts.by_id[spec_id].output_model.model_validate(stored)
         except ValidationError:
             logger.debug("%s: stored %s no longer validates - regenerating", skill.id, spec_id)
+            stale.append(spec_id)
     pending = [pid for pid in prompts.ordered_ids() if pid in targets and pid not in outputs]
-    return outputs, pending
+    return outputs, pending, stale
 
 
 def select_skills(
@@ -95,6 +128,35 @@ def select_skills(
         if _load_cached(settings, prompts, skill, only)[1]:
             picked.append(skill)
     return picked
+
+
+def coverage(
+    settings: Settings, prompts: PromptSet, skills: list[SkillRecord],
+    only: set[str] | None = None,
+) -> dict:
+    """Cache coverage over all skills, for the run summary and stats.json.
+
+    Applies the same cache rules as a run to every skill's stored outputs and
+    returns {"skills", "complete", "remaining", "prompts"}: how many skills are
+    complete (every selected prompt cached), how many still miss at least one,
+    and, per prompt id, how many skills have it cached. Only called once per
+    run: it re-reads every stored output.
+    """
+    targets = prompts.closure_ids(only) if only is not None else set(prompts.by_id)
+    complete = 0
+    per_prompt = dict.fromkeys(sorted(targets), 0)
+    for skill in skills:
+        outputs, pending, _ = _load_cached(settings, prompts, skill, only)
+        if not pending:
+            complete += 1
+        for pid in outputs:
+            per_prompt[pid] += 1
+    return {
+        "skills": len(skills),
+        "complete": complete,
+        "remaining": len(skills) - complete,
+        "prompts": per_prompt,
+    }
 
 
 async def run_prompt(
@@ -135,22 +197,29 @@ async def run_one(
 
     The skill's SKILL.md is read from the local snapshot only once something has
     to be generated, so a fully cached skill reads nothing at all.
+
+    The record carries run-bookkeeping besides the outputs: `generated` (prompt
+    ids newly generated), `stale` (of those, ids whose cache was schema-stale),
+    `seconds` (time spent inside the LLM) and `skipped` (no SKILL.md).
     """
     skill_dir = skill_result_dir(settings, skill.id)
-    outputs, generated = _load_cached(settings, prompts, skill, only)
+    outputs, generated, stale = _load_cached(settings, prompts, skill, only)
     if not generated:
         return {"skill": skill.model_dump(), "intros": _dump(outputs)}, True
 
     skill_md = read_skill_md(settings, skill)
     if skill_md is None:
         logger.warning("%s: no SKILL.md in the snapshot - skipped", skill.id)
-        return {"skill": skill.model_dump(), "intros": _dump(outputs)}, True
+        return {"skill": skill.model_dump(), "intros": _dump(outputs), "skipped": True}, True
     skill = skill.model_copy(update={"skill_md": skill_md})
 
+    seconds = 0.0
     for spec_id in generated:
         spec = prompts.by_id[spec_id]
         deps = {d: outputs[d] for d in spec.depends_on}
+        start = time.monotonic()
         outputs[spec_id] = await run_prompt(llm, settings, prompts, spec, skill, deps, debug=debug)
+        seconds += time.monotonic() - start
         write_prompt_output(settings, skill.id, spec_id, outputs[spec_id].model_dump(mode="json"))
 
     # a legacy single-file record has no meaning next to the per-prompt layout
@@ -158,7 +227,13 @@ async def run_one(
     if legacy.exists():
         legacy.unlink()
 
-    return {"skill": skill.model_dump(), "intros": _dump(outputs), "generated": generated}, False
+    return {
+        "skill": skill.model_dump(),
+        "intros": _dump(outputs),
+        "generated": generated,
+        "stale": stale,
+        "seconds": seconds,
+    }, False
 
 
 async def run_all(
@@ -169,12 +244,14 @@ async def run_all(
     on_skill_done: Callable[[SkillRecord, dict, bool], None] | None = None,
     only: set[str] | None = None,
     debug: bool = False,
+    stats: RunStats | None = None,
 ) -> list[dict]:
     """Generate intros for all skills concurrently, bounded by a semaphore.
 
     Skills whose every requested prompt is already cached and valid are
     skipped; `only` narrows work to a subset of prompts (see run_one). When
-    anything was generated, hashes.json is updated once, at the end.
+    anything was generated, hashes.json is updated once, at the end. When
+    `stats` is given, the run's counters are tallied into it.
     """
     sem = asyncio.Semaphore(settings.concurrency)
 
@@ -183,6 +260,8 @@ async def run_all(
             record, reused = await run_one(llm, settings, prompts, skill, only, debug)
         if on_skill_done:
             on_skill_done(skill, record, reused)
+        if stats is not None:
+            _tally(stats, record)
         return record
 
     records = await asyncio.gather(*(_one(s) for s in skills))

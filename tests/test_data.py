@@ -134,12 +134,15 @@ def test_sync_unpacks_only_what_a_run_reads(tmp_path, monkeypatch):
         return served(url, dest)
 
     monkeypatch.setattr(data_mod, "_download", recording)
-    data_dir, pruned = sync_data(settings)
+    report = sync_data(settings)
     assert seen == [TARBALL_URL]
-    assert (data_dir / "skills.jsonl").exists()
-    assert (data_dir / "skills" / "o" / "r" / "s" / "SKILL.md").exists()
-    assert not (data_dir / "skills" / "o" / "r" / "s" / "extra.md").exists()
-    assert pruned == 0
+    assert (report.data_dir / "skills.jsonl").exists()
+    assert (report.data_dir / "skills" / "o" / "r" / "s" / "SKILL.md").exists()
+    assert not (report.data_dir / "skills" / "o" / "r" / "s" / "extra.md").exists()
+    assert report.downloaded
+    assert report.tag == DIST_BRANCH  # no tags upstream: the branch itself
+    assert report.seconds > 0
+    assert report.pruned == 0
     assert load_skills(settings)[0].name == "s"
     assert read_skill_md(settings, load_skills(settings)[0]) is not None
 
@@ -175,9 +178,12 @@ def test_sync_skips_download_when_the_tag_is_unchanged(tmp_path, monkeypatch):
         raise AssertionError("sync should not download when the tag is unchanged")
     monkeypatch.setattr(data_mod, "_download", no_download)
 
-    data_dir, pruned = sync_data(settings)
+    report = sync_data(settings)
     assert called == []
-    assert pruned == 0
+    assert not report.downloaded  # cache hit: tag unchanged
+    assert report.tag == "dist-2026-09-09"
+    assert report.seconds == 0.0
+    assert report.pruned == 0
 
 
 def _serve(seen: list[str], entry: dict):
@@ -274,8 +280,8 @@ def test_sync_prunes_stale_results(tmp_path, monkeypatch):
         {"id": "o/r/changed", "name": "c", "installs": "2", "source": "o/r", "hash": "new"},
         {"id": "o/r/other", "name": "x", "installs": "3", "source": "o/r", "hash": "h9"},
     ]))
-    _, pruned = sync_data(settings)
-    assert pruned == 3
+    report = sync_data(settings)
+    assert report.pruned == 3
     assert (results_root / "o/r/unchanged" / "domain.json").exists()
     assert not (results_root / "o/r/changed").exists()
     assert not (results_root / "o/r/gone").exists()
@@ -297,6 +303,6 @@ def test_sync_leaves_legacy_result_json_dirs_alone(tmp_path, monkeypatch):
     monkeypatch.setattr(data_mod, "_download", fake_download([
         {"id": "o/r/other", "name": "x", "installs": "1", "source": "o/r", "hash": "h9"},
     ]))
-    _, pruned = sync_data(settings)
-    assert pruned == 0
+    report = sync_data(settings)
+    assert report.pruned == 0
     assert (legacy_dir / "result.json").exists()

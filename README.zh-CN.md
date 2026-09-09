@@ -16,6 +16,7 @@
 ```
 output/
 ├── hashes.json                          # skill id -> 生成该产物时对应的上游内容 hash
+├── stats.json                           # 最近一次 run 的汇总（计数、耗时、覆盖率）
 └── skills/<owner>/<repo>/<skill>/
     ├── domain.json                      # 每个 prompt 一个 json
     ├── scenario.json
@@ -32,6 +33,12 @@ output/
 发生在 `sync` 时——每次 sync 把记录的 `hash` 与刚下载的快照逐一对比, 上游 hash 变化
 (或 skill 已从上游消失)的条目连同产物目录立即删除, 下次 `run` 重新生成; `run` 本身只信任
 磁盘上现有的输出文件。
+
+统计: 每次 `run` 结束会打印一段计时汇总, 并整体覆盖 `stats.json`(只保留一份快照, 不存历史):
+本次所依据的快照 tag、新生成/复用/因 schema 失效而重算的 prompt 数、LLM 秒数及单次平均、
+各阶段耗时(选点、生成、总计), 以及全量覆盖率——已完成多少 skill、还剩多少缺 prompt、
+每个 prompt 各被多少 skill 缓存。`sync` 则汇报对齐到的 tag、命中缓存还是真实下载(含耗时)、
+以及清理了多少失效产物。
 
 ## 数据
 
@@ -97,7 +104,7 @@ skills-intros invalidate --all                     # 全部清空(需显式 --al
 
 每次执行都是全新 runner, 因此先把上一次的产物从 `dist` 拉回来: 这个分支既是发布产物, 也是缓存。
 顺序很关键——`sync` 的失效清理依赖刚恢复回来的那些产物。`SKILLS_INTROS_LIMIT`（手动运行时是 `limit`
-输入, 默认 2）限制单次生成量, 反复执行就能逐步覆盖整个数据集。
+输入, 默认 100）限制单次生成量, 反复执行就能逐步覆盖整个数据集。
 
 `dist` 分支的根目录与 `output/` 一致: `hashes.json` + `skills/`（参见[产物](#产物)）。
 

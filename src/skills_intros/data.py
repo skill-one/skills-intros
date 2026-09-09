@@ -20,6 +20,7 @@ import time
 import urllib.error
 import urllib.request
 import xml.etree.ElementTree as ElementTree
+from dataclasses import dataclass
 from pathlib import Path
 
 from .config import DIST_BRANCH, TAGS_ATOM_URL, TARBALL_URL, Settings, tarball_url
@@ -35,6 +36,23 @@ MARKER_NAME = "SNAPSHOT.json"  # which upstream ref the local snapshot holds
 ATOM_NS = "{http://www.w3.org/2005/Atom}"
 MAX_DOWNLOAD_RETRIES = 3
 MD_MAX_CHARS = 20000  # cap on the SKILL.md text sent to the LLM
+
+
+@dataclass(frozen=True)
+class SyncReport:
+    """What one sync did, for the CLI summary and stats.json.
+
+    `tag` is the snapshot ref now on disk (an upstream `<branch>-<date>` tag, or
+    the branch itself when upstream publishes no tags); `downloaded` False means
+    the local snapshot was already at `tag` and nothing was fetched;
+    `seconds` times the whole download-and-prune pass, 0 on a cache hit.
+    """
+
+    data_dir: Path
+    tag: str
+    downloaded: bool
+    seconds: float
+    pruned: int
 
 
 def _not_published() -> RuntimeError:
@@ -168,7 +186,7 @@ def _is_current(data_dir: Path, ref: str) -> bool:
     return read_marker(data_dir).get("ref") == ref
 
 
-def sync_data(settings: Settings, refresh: bool = False) -> tuple[Path, int]:
+def sync_data(settings: Settings, refresh: bool = False) -> SyncReport:
     """Bring <data_dir> to the newest upstream snapshot and prune what went stale.
 
     One request downloads the whole branch as a tarball, of which only the index
@@ -179,7 +197,7 @@ def sync_data(settings: Settings, refresh: bool = False) -> tuple[Path, int]:
     `refresh` says otherwise. Right after a download, result dirs whose upstream
     hash changed (or whose skill disappeared upstream) are pruned, so the next
     `run` regenerates them; run itself never re-checks hashes.
-    Returns (data_dir, pruned_result_count).
+    Returns a SyncReport (tag, whether a download happened, duration, prune count).
     """
     data_dir = settings.data_dir
     if data_dir.exists() and any(data_dir.iterdir()):
@@ -191,8 +209,9 @@ def sync_data(settings: Settings, refresh: bool = False) -> tuple[Path, int]:
     ref = latest_dist_tag() or DIST_BRANCH
     if not refresh and _is_current(data_dir, ref):
         logger.info("Already at %s - nothing to download", ref)
-        return data_dir, 0
+        return SyncReport(data_dir=data_dir, tag=ref, downloaded=False, seconds=0.0, pruned=0)
 
+    start = time.monotonic()
     data_dir.parent.mkdir(parents=True, exist_ok=True)
     try:
         downloaded = _download_snapshot(tarball_url(ref), data_dir)
@@ -204,7 +223,10 @@ def sync_data(settings: Settings, refresh: bool = False) -> tuple[Path, int]:
     pruned = _prune_stale_results(settings, data_dir)
     if pruned:
         logger.info("Pruned %d stale result dir(s)", pruned)
-    return data_dir, pruned
+    return SyncReport(
+        data_dir=data_dir, tag=ref, downloaded=True,
+        seconds=time.monotonic() - start, pruned=pruned,
+    )
 
 
 def load_skills(settings: Settings) -> list[SkillRecord]:

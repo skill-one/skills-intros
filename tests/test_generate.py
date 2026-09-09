@@ -5,7 +5,14 @@ import json
 import pytest
 
 from skills_intros.data import load_skills, skill_md_path
-from skills_intros.generate import load_results, run_all, run_one, select_skills
+from skills_intros.generate import (
+    RunStats,
+    coverage,
+    load_results,
+    run_all,
+    run_one,
+    select_skills,
+)
 from skills_intros.llm import FakeLLM
 from skills_intros.outputs import (
     hashes_path,
@@ -357,6 +364,94 @@ async def test_legacy_result_json_removed_on_regeneration(settings, prompt_set):
     assert llm.calls == 7  # the legacy file did not count as a cache
     assert not legacy.exists()
     assert len(stored_intros(settings, skill.id)) == 7
+
+
+async def test_coverage_counts_complete_and_remaining_skills(settings, prompt_set):
+    """coverage() applies the run's cache rules dataset-wide: complete skills,
+    how many still miss prompts, and a cached count per prompt."""
+    skills = load_skills(settings)
+    cov = coverage(settings, prompt_set, skills)
+    assert cov == {"skills": 4, "complete": 0, "remaining": 4,
+                   "prompts": {p: 0 for p in prompt_set.by_id}}
+
+    await run_all(FakeLLM(), settings, skills[:2], prompt_set)
+    cov = coverage(settings, prompt_set, skills)
+    assert cov["complete"] == 2
+    assert cov["remaining"] == 2
+    assert all(n == 2 for n in cov["prompts"].values())
+
+    # only counts the selected prompts' closure
+    cov = coverage(settings, prompt_set, skills, only={"tagline"})
+    assert cov["prompts"] == {"tagline": 2}
+
+
+async def test_coverage_matches_run_cache_rules(settings, prompt_set):
+    """A schema-stale output is not coverage-cached, same as a run regenerates it."""
+    import json
+
+    from skills_intros.outputs import prompt_result_path
+
+    skills = load_skills(settings)
+    await run_all(FakeLLM(), settings, skills[:1], prompt_set)
+    domain_path = prompt_result_path(settings, skills[0].id, "domain")
+    domain = json.loads(domain_path.read_text(encoding="utf-8"))
+    domain["domain"] = "项目管理"
+    domain_path.write_text(json.dumps(domain, ensure_ascii=False), encoding="utf-8")
+
+    cov = coverage(settings, prompt_set, skills[:1])
+    assert cov["complete"] == 0  # the stale domain makes the skill incomplete
+    assert cov["prompts"]["domain"] == 0
+
+
+async def test_run_all_tallies_stats(settings, prompt_set):
+    """run_all folds generated/reused/stale counters and LLM seconds into RunStats."""
+    skills = load_skills(settings)
+
+    stats = RunStats()
+    await run_all(FakeLLM(), settings, skills, prompt_set, stats=stats)
+    assert stats.selected == 0  # the caller sets it; run_all only tallies records
+    assert stats.skills_generated == 4
+    assert stats.prompts_generated == 4 * 7
+    assert stats.prompts_reused == 0
+    assert stats.prompts_stale == 0
+    assert stats.llm_seconds > 0
+
+    stats = RunStats()
+    await run_all(FakeLLM(), settings, skills, prompt_set, stats=stats)
+    assert stats.skills_generated == 0
+    assert stats.prompts_generated == 0
+    assert stats.prompts_reused == 4 * 7
+    assert stats.llm_seconds == 0.0
+
+
+async def test_run_stats_count_stale_caches(settings, prompt_set):
+    """A cached output failing the current schema is regenerated and counted stale."""
+    import json
+
+    from skills_intros.outputs import prompt_result_path
+
+    skills = load_skills(settings)
+    await run_all(FakeLLM(), settings, skills[:1], prompt_set)
+    domain_path = prompt_result_path(settings, skills[0].id, "domain")
+    domain = json.loads(domain_path.read_text(encoding="utf-8"))
+    domain["domain"] = "项目管理"
+    domain_path.write_text(json.dumps(domain, ensure_ascii=False), encoding="utf-8")
+
+    stats = RunStats()
+    await run_all(FakeLLM(), settings, skills[:1], prompt_set, stats=stats)
+    assert stats.prompts_generated == 1
+    assert stats.prompts_stale == 1
+    assert stats.prompts_reused == 6
+
+
+async def test_run_stats_count_skills_without_source(settings, prompt_set):
+    """A skill the snapshot has no SKILL.md for lands in skills_skipped."""
+    skills = load_skills(settings)
+    orphan = skills[0].model_copy(update={"id": "owner-x/repo-x/nope"})
+    stats = RunStats()
+    await run_all(FakeLLM(), settings, [orphan], prompt_set, stats=stats)
+    assert stats.skills_skipped == 1
+    assert stats.skills_generated == 0
 
 
 async def test_dep_outputs_flow_into_downstream_prompts(settings, tmp_path):

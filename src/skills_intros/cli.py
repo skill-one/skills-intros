@@ -2,16 +2,17 @@
 
 import asyncio
 import logging
+import time
 
 import typer
 
 from .config import Settings
-from .data import load_skills, sync_data
-from .generate import run_all, select_skills
+from .data import load_skills, read_marker, sync_data
+from .generate import RunStats, coverage, run_all, select_skills
 from .llm import FakeLLM, make_llm
 from .logging import setup_logging
 from .outputs import invalidate as invalidate_cache
-from .outputs import load_hashes
+from .outputs import load_hashes, write_stats
 from .prompts import load_prompt_set
 
 logger = logging.getLogger(__name__)
@@ -34,14 +35,16 @@ def sync(
     """
     setup_logging()
     try:
-        data_dir, pruned = sync_data(Settings(), refresh)
+        report = sync_data(Settings(), refresh)
     except RuntimeError as e:
         logger.error("%s", e)
         raise typer.Exit(1)
-    message = f"Dataset ready at {data_dir}"
-    if pruned:
-        message += f" (invalidated {pruned} stale skill(s) whose upstream content changed)"
-    typer.echo(message)
+    fetched = (f"downloaded {report.tag} in {report.seconds:.1f}s" if report.downloaded
+               else f"already at {report.tag}")
+    details = fetched
+    if report.pruned:
+        details += f"; invalidated {report.pruned} stale skill(s) whose upstream content changed"
+    typer.echo(f"Dataset ready at {report.data_dir} ({details})")
 
 
 @app.command()
@@ -120,8 +123,10 @@ def run(
             )
         only = ids
 
+    start = time.monotonic()
     skills = load_skills(settings)
     selected = select_skills(settings, prompt_set, skills, only)
+    setup_seconds = time.monotonic() - start
     logger.info("Processing %d of %d skills with model=%s%s",
                 len(selected), len(skills), settings.model,
                 " (dry-run)" if dry_run else "")
@@ -137,11 +142,53 @@ def run(
         logger.info("  [%d/%d] %s: %s%s", done, len(selected), _skill.id, ",".join(parts), marker)
 
     llm = FakeLLM() if dry_run else make_llm(settings)
+    stats = RunStats(selected=len(selected))
+    generate_start = time.monotonic()
     results = asyncio.run(
         run_all(llm, settings, selected, prompt_set, on_skill_done=on_done,
-                only=only, debug=debug)
+                only=only, debug=debug, stats=stats)
     )
-    logger.info("Wrote %d records under %s", len(results), settings.output_dir / "skills")
+    generate_seconds = time.monotonic() - generate_start
+    total_seconds = time.monotonic() - start
+
+    cov = coverage(settings, prompt_set, skills, only)
+    avg = stats.llm_seconds / stats.prompts_generated if stats.prompts_generated else 0.0
+    logger.info(
+        "Done in %.1fs (setup %.1fs, generate %.1fs): %d prompt(s) generated for %d/%d "
+        "skill(s), %d reused, %d stale cache(s), %d skipped (no SKILL.md)",
+        total_seconds, setup_seconds, generate_seconds,
+        stats.prompts_generated, stats.skills_generated, len(selected),
+        stats.prompts_reused, stats.prompts_stale, stats.skills_skipped,
+    )
+    if stats.prompts_generated:
+        logger.info("LLM: %d call(s), %.2fs average per prompt",
+                    stats.prompts_generated, avg)
+    logger.info(
+        "Coverage: %d/%d skill(s) complete, %d remaining | cached prompts: %s",
+        cov["complete"], cov["skills"], cov["remaining"],
+        ", ".join(f"{pid} {n}/{cov['skills']}" for pid, n in cov["prompts"].items()),
+    )
+    snapshot = read_marker(settings.data_dir)
+    write_stats(settings, {
+        "model": settings.model,
+        "snapshot": {"ref": snapshot.get("ref", ""),
+                     "fetched_at": snapshot.get("fetched_at", "")},
+        "coverage": cov,
+        "run": {
+            "finished_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+            "selected": len(selected),
+            "skills_generated": stats.skills_generated,
+            "skills_skipped": stats.skills_skipped,
+            "prompts_generated": stats.prompts_generated,
+            "prompts_reused": stats.prompts_reused,
+            "prompts_stale": stats.prompts_stale,
+            "llm_seconds": round(stats.llm_seconds, 3),
+            "llm_avg_seconds": round(avg, 3),
+            "setup_seconds": round(setup_seconds, 3),
+            "generate_seconds": round(generate_seconds, 3),
+            "total_seconds": round(total_seconds, 3),
+        },
+    })
 
 
 def main() -> None:  # pragma: no cover

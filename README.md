@@ -14,6 +14,7 @@ Each skill gets one directory under `output/skills/`:
 ```
 output/
 ├── hashes.json                          # skill id -> the upstream hash its intros were built from
+├── stats.json                           # the latest run's summary (counters, timing, coverage)
 └── skills/<owner>/<repo>/<skill>/
     ├── domain.json                      # one json per prompt
     ├── scenario.json
@@ -31,6 +32,13 @@ content hash those intros were built from. Validity is decided at `sync` time: e
 compares the recorded hash against the freshly downloaded snapshot and immediately prunes
 entries whose upstream hash changed or whose skill disappeared. `run` itself just reuses
 whatever is on disk.
+
+Statistics: every `run` prints a timed summary and overwrites `stats.json` (one snapshot,
+no history): the snapshot tag it ran against, prompts generated / reused / regenerated from
+schema-stale caches, LLM seconds with the per-prompt average, stage timings (setup, generate,
+total), and dataset-wide coverage — how many skills are complete, how many still miss prompts,
+and a cached count per prompt. `sync` reports the tag it aligned to, a cache hit or the
+download duration, and how many stale results it invalidated.
 
 ## Data
 
@@ -106,7 +114,7 @@ restore (dist branch tarball) → sync → run → publish
 Every run starts on a fresh runner, so the results of the previous run are pulled back
 from `dist` first: the branch is both the published artifact and the cache. The order
 matters — `sync` prunes stale results against what was just restored. `SKILLS_INTROS_LIMIT`
-(or the `limit` input of a manual run, 2 by default) bounds how much one run generates,
+(or the `limit` input of a manual run, 100 by default) bounds how much one run generates,
 so repeated runs work their way through the whole dataset.
 
 The `dist` branch root mirrors `output/`: `hashes.json` + `skills/` (see [Artifacts](#artifacts)).
