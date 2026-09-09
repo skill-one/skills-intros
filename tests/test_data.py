@@ -1,4 +1,4 @@
-"""Tests for skills.jsonl parsing, Top-N filtering, snapshot sync and local SKILL.md reads."""
+"""Tests for skills.jsonl parsing, snapshot sync and local SKILL.md reads."""
 
 import json
 from pathlib import Path
@@ -16,15 +16,6 @@ def test_loads_only_valid_skills_sorted_by_installs(settings):
     skills = load_skills(settings)
     assert [s.name for s in skills] == ["Alpha", "Beta", "Gamma", "Hotel"]
     assert skills[0].installs == 300
-
-
-def test_top_n_limits_result(settings):
-    skills = load_skills(settings, top_n=2)
-    assert [s.name for s in skills] == ["Alpha", "Beta"]
-
-
-def test_top_n_zero_loads_all(settings):
-    assert len(load_skills(settings, top_n=0)) == 4
 
 
 def test_skill_md_empty_until_read(settings):

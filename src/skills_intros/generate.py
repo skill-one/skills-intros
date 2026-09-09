@@ -45,6 +45,58 @@ def _dump(outputs: dict[str, Any]) -> dict[str, Any]:
     return {pid: out.model_dump(mode="json") for pid, out in outputs.items()}
 
 
+def _load_cached(
+    settings: Settings, prompts: PromptSet, skill: SkillRecord, only: set[str] | None = None,
+) -> tuple[dict[str, Any], list[str]]:
+    """Split the selection into (cached outputs, prompt ids still to generate).
+
+    A prompt belongs to the selection when it is in `prompts` and (with `only`)
+    in the closure of the requested ids. Its stored json is trusted as-is, but
+    must still validate against the current schema — missing or schema-stale
+    prompts come back as pending.
+    """
+    targets = prompts.closure_ids(only) if only is not None else set(prompts.by_id)
+    outputs: dict[str, Any] = {}
+    for spec_id in prompts.ordered_ids():
+        if spec_id not in targets:
+            continue
+        stored = _read_prompt_output(settings, skill.id, spec_id)
+        if stored is None:
+            continue
+        try:
+            outputs[spec_id] = prompts.by_id[spec_id].output_model.model_validate(stored)
+        except ValidationError:
+            logger.debug("%s: stored %s no longer validates - regenerating", skill.id, spec_id)
+    pending = [pid for pid in prompts.ordered_ids() if pid in targets and pid not in outputs]
+    return outputs, pending
+
+
+def select_skills(
+    settings: Settings,
+    prompts: PromptSet,
+    skills: list[SkillRecord],
+    only: set[str] | None = None,
+    limit: int | None = None,
+) -> list[SkillRecord]:
+    """The skills of this run: the first `limit` ones that still need work.
+
+    Skills are considered in install order; one whose every selected prompt is
+    already cached is skipped without spending any of the budget, so repeated
+    runs keep moving down the list instead of re-scanning the same head.
+    limit=None uses settings.limit; limit <= 0 selects every skill.
+    """
+    limit = settings.limit if limit is None else limit
+    if limit <= 0:
+        return list(skills)
+    picked: list[SkillRecord] = []
+    for skill in skills:
+        if len(picked) == limit:
+            break
+        if _load_cached(settings, prompts, skill, only)[1]:
+            picked.append(skill)
+    return picked
+
+
 async def run_prompt(
     llm, settings: Settings, prompts: PromptSet, spec: PromptSpec, skill: SkillRecord, deps: dict,
     debug: bool = False,
@@ -84,24 +136,8 @@ async def run_one(
     The skill's SKILL.md is read from the local snapshot only once something has
     to be generated, so a fully cached skill reads nothing at all.
     """
-    targets = prompts.closure_ids(only) if only is not None else set(prompts.by_id)
     skill_dir = skill_result_dir(settings, skill.id)
-
-    outputs: dict[str, Any] = {}
-    generated: list[str] = []
-    for spec_id in prompts.ordered_ids():
-        if spec_id not in targets:
-            continue
-        spec = prompts.by_id[spec_id]
-        stored = _read_prompt_output(settings, skill.id, spec_id)
-        if stored is not None:
-            try:
-                outputs[spec_id] = spec.output_model.model_validate(stored)
-                continue
-            except ValidationError:
-                pass  # schema-stale: treat as missing
-        generated.append(spec_id)
-
+    outputs, generated = _load_cached(settings, prompts, skill, only)
     if not generated:
         return {"skill": skill.model_dump(), "intros": _dump(outputs)}, True
 

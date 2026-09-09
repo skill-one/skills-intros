@@ -57,16 +57,19 @@ cache/skills-sh/                            # SKILLS_INTROS_DATA_DIR: 上游 ski
 uv sync
 # LLM 凭据: 在本地 .env 中配置 KEY / BASE_URL / MODEL（参见 .env.example）
 skills-intros sync            # 下载 dist 分支快照（并清理失效产物）
-skills-intros run --top 50    # 为安装量前 50 的 skill 生成介绍词
+skills-intros run --limit 50  # 为 50 个 skill 生成介绍词（按安装量从高到低）
 ```
+
+`--limit` 限制的是「本次真正生成的数量」: 已缓存完全的 skill 会被跳过且不占用额度,
+因此反复执行会沿着列表持续推进。
 
 `run` 的更多选项:
 
 ```bash
-skills-intros run --top 0             # 所有可用 skill
+skills-intros run --limit 0           # 所有还有缺失 prompt 的 skill
 skills-intros run --prompts tagline   # 只为所有 skill 生成这一个 prompt
-skills-intros run --top 5 --dry-run   # 用离线假 LLM 冒烟测试
-skills-intros run --top 5 --debug     # 把最终发给 LLM 的 prompt 打印到 stderr
+skills-intros run --limit 5 --dry-run # 用离线假 LLM 冒烟测试
+skills-intros run --limit 5 --debug   # 把最终发给 LLM 的 prompt 打印到 stderr
 skills-intros run --verbose           # 开启 DEBUG 级别的执行日志
 ```
 
@@ -105,7 +108,7 @@ depends_on: [scenario]   # DAG 依赖; 根节点可省略
 然后为所有 skill 生成（已缓存的 prompt 一律复用, 只生成缺失的——需要重算请先 `invalidate`）:
 
 ```bash
-skills-intros run --prompts my_angle --top 0
+skills-intros run --prompts my_angle --limit 0
 ```
 
 ## 配置
@@ -117,7 +120,7 @@ skills-intros run --prompts my_angle --top 0
 | `SKILLS_INTROS_MODEL`       | `gpt-4.1-mini` | 任意 OpenAI 兼容对话模型                           |
 | `SKILLS_INTROS_BASE_URL`    | 无              | OpenAI 兼容端点覆盖                              |
 | `SKILLS_INTROS_API_KEY`     | 无              | 端点对应的 API key                             |
-| `SKILLS_INTROS_TOP_N`       | `50`           | 处理的 skill 数量（`0` = 全部）                     |
+| `SKILLS_INTROS_LIMIT`       | `50`           | 每次 run 生成的 skill 数量（按安装量，`0` = 全部）; 已缓存的跳过不计数      |
 | `SKILLS_INTROS_CONCURRENCY` | `8`            | LLM 最大并发调用数                                |
 | `SKILLS_INTROS_OUTPUT_DIR`  | `output`       | 生成的介绍: `hashes.json` + `skills/`              |
 | `SKILLS_INTROS_DATA_DIR`    | `cache/skills-sh`  | 上游 skills 基本信息: `skills.jsonl` + 缓存的 `SKILL.md`      |

@@ -8,7 +8,8 @@ Everything about developing `skills-intros` itself. User-facing docs live in
 ```
 dist branch tarball ──► cache/skills-sh (skills.jsonl + skills/<id>/SKILL.md)
                              │
-                             └─► Top N by installs ──► per-skill prompt DAG
+                             └─► by installs, --limit of the ones still
+                                 missing prompts ──► per-skill prompt DAG
                                                         ──► output/skills/<id>/<prompt>.json
                                                         ──► output/skills/<id>/md/<prompt>.md
                                                         ──► output/hashes.json

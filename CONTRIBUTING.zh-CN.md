@@ -10,7 +10,7 @@
 ```
 dist 分支 tarball ──► cache/skills-sh (skills.jsonl + skills/<id>/SKILL.md)
                              │
-                             └─► 按安装量取 Top N ──► 每 skill 执行 prompt DAG
+                             └─► 按安装量取 --limit 个仍有缺失的 ──► 每 skill 执行 prompt DAG
                                                     ──► output/skills/<id>/<prompt>.json
                                                     ──► output/skills/<id>/md/<prompt>.md
                                                     ──► output/hashes.json

@@ -5,7 +5,7 @@ import json
 import pytest
 
 from skills_intros.data import load_skills, skill_md_path
-from skills_intros.generate import load_results, run_all, run_one
+from skills_intros.generate import load_results, run_all, run_one, select_skills
 from skills_intros.llm import FakeLLM
 from skills_intros.outputs import (
     hashes_path,
@@ -76,6 +76,46 @@ async def test_cached_run_is_untouched_until_invalidated(settings, prompt_set):
     results = await run_all(forced, settings, skills, prompt_set)
     assert forced.calls == 4 * 7
     assert len(results) == 4
+
+
+async def test_limit_skips_cached_skills_without_spending_the_budget(settings, prompt_set):
+    """`--limit` bounds the skills that generate: cached ones are skipped for free,
+    so repeated runs keep moving down the install-ordered list."""
+    skills = load_skills(settings)
+    await run_all(FakeLLM(), settings, skills[:2], prompt_set)
+
+    # Alpha and Beta are complete: the budget of 2 goes to Gamma and Hotel
+    picked = select_skills(settings, prompt_set, skills, limit=2)
+    assert [s.id for s in picked] == [skills[2].id, skills[3].id]
+
+    # nothing left to do
+    await run_all(FakeLLM(), settings, skills[2:], prompt_set)
+    assert select_skills(settings, prompt_set, skills, limit=2) == []
+
+
+async def test_limit_zero_selects_every_skill(settings, prompt_set):
+    skills = load_skills(settings)
+    assert select_skills(settings, prompt_set, skills, limit=0) == skills
+
+
+async def test_limit_defaults_to_settings(settings, prompt_set):
+    skills = load_skills(settings)
+    settings.limit = 1
+    assert len(select_skills(settings, prompt_set, skills)) == 1
+
+
+async def test_limit_respects_the_prompt_selection(settings, prompt_set):
+    """With `only`, a skill counts as cached when the selected prompts are cached."""
+    skills = load_skills(settings)
+    await run_all(FakeLLM(), settings, skills[:1], prompt_set, only={"tagline"})
+
+    # Alpha's tagline is cached, so it does not spend the budget
+    picked = select_skills(settings, prompt_set, skills, only={"tagline"}, limit=1)
+    assert [s.id for s in picked] == [skills[1].id]
+
+    # a prompt Alpha never generated still makes it a target
+    picked = select_skills(settings, prompt_set, skills, only={"domain"}, limit=1)
+    assert [s.id for s in picked] == [skills[0].id]
 
 
 async def test_hashes_recorded_only_when_generating(settings, prompt_set):

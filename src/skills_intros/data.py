@@ -116,12 +116,12 @@ def sync_data(settings: Settings) -> tuple[Path, int]:
     return data_dir, pruned
 
 
-def load_skills(settings: Settings, top_n: int | None = None) -> list[SkillRecord]:
-    """Load the top N skills (by installs) that have SKILL.md content upstream.
+def load_skills(settings: Settings) -> list[SkillRecord]:
+    """Every skill that has SKILL.md content upstream, most installed first.
 
     Reads the local snapshot: `skill_md` stays empty until `read_skill_md` fills
-    it in, which a run does just for the skills it really generates.
-    top_n=None uses settings.top_n; top_n <= 0 loads every usable skill.
+    it in, which a run does just for the skills it really generates. Narrowing
+    the run is `generate.select_skills`'s job (see `--limit`).
     """
     index = settings.data_dir / "skills.jsonl"
     if not index.is_file():
@@ -150,8 +150,7 @@ def load_skills(settings: Settings, top_n: int | None = None) -> list[SkillRecor
             )
         )
     records.sort(key=lambda r: r.installs, reverse=True)
-    top_n = settings.top_n if top_n is None else top_n
-    return records if top_n <= 0 else records[:top_n]
+    return records
 
 
 def skill_md_path(settings: Settings, skill: SkillRecord) -> Path:

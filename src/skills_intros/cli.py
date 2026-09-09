@@ -7,7 +7,7 @@ import typer
 
 from .config import Settings
 from .data import load_skills, sync_data
-from .generate import run_all
+from .generate import run_all, select_skills
 from .llm import FakeLLM, make_llm
 from .logging import setup_logging
 from .outputs import invalidate as invalidate_cache
@@ -74,8 +74,11 @@ def invalidate(
 
 @app.command()
 def run(
-    top: int | None = typer.Option(
-        None, "--top", help="How many top skills to process (0 = all usable skills)"
+    limit: int | None = typer.Option(
+        None, "--limit",
+        help="How many skills to generate this run, most installed first "
+             "(0 = every skill with missing prompts). Skills whose selected prompts "
+             "are all cached are skipped and do not count",
     ),
     prompts_opt: str | None = typer.Option(
         None, "--prompts",
@@ -94,8 +97,8 @@ def run(
     """Generate missing intros; every cached and valid prompt output is reused."""
     setup_logging(verbose)
     settings = Settings()
-    if top is not None:
-        settings.top_n = top
+    if limit is not None:
+        settings.limit = limit
 
     prompt_set = load_prompt_set(settings.prompts_dir)
     only = None
@@ -109,8 +112,10 @@ def run(
         only = ids
 
     skills = load_skills(settings)
-    logger.info("Processing %d skills with model=%s%s",
-                len(skills), settings.model, " (dry-run)" if dry_run else "")
+    selected = select_skills(settings, prompt_set, skills, only)
+    logger.info("Processing %d of %d skills with model=%s%s",
+                len(selected), len(skills), settings.model,
+                " (dry-run)" if dry_run else "")
 
     done = 0
 
@@ -120,11 +125,11 @@ def run(
         fresh = set(_record.get("generated", ()))
         parts = [pid + ("*" if pid in fresh else "") for pid in sorted(_record["intros"])]
         marker = " (cached)" if reused else ""
-        logger.info("  [%d/%d] %s: %s%s", done, len(skills), _skill.id, ",".join(parts), marker)
+        logger.info("  [%d/%d] %s: %s%s", done, len(selected), _skill.id, ",".join(parts), marker)
 
     llm = FakeLLM() if dry_run else make_llm(settings)
     results = asyncio.run(
-        run_all(llm, settings, skills, prompt_set, on_skill_done=on_done,
+        run_all(llm, settings, selected, prompt_set, on_skill_done=on_done,
                 only=only, debug=debug)
     )
     logger.info("Wrote %d records under %s", len(results), settings.output_dir / "skills")

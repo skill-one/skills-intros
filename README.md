@@ -56,16 +56,20 @@ Requires Python 3.12+ and [uv](https://docs.astral.sh/uv/).
 uv sync
 # LLM credentials: put KEY / BASE_URL / MODEL in a local .env (see .env.example)
 skills-intros sync            # download the dist branch snapshot (prunes stale results)
-skills-intros run --top 50    # generate intros for the top 50 skills by installs
+skills-intros run --limit 50  # generate intros for 50 skills, most installed first
 ```
+
+`--limit` bounds what one run actually generates: skills whose prompts are all
+cached are skipped without spending any of it, so repeated runs keep working
+their way down the list.
 
 More `run` options:
 
 ```bash
-skills-intros run --top 0             # all usable skills
+skills-intros run --limit 0           # every skill with missing prompts
 skills-intros run --prompts tagline   # generate one prompt for all skills
-skills-intros run --top 5 --dry-run   # offline smoke test with a fake LLM
-skills-intros run --top 5 --debug     # print the rendered prompts sent to the LLM (stderr)
+skills-intros run --limit 5 --dry-run # offline smoke test with a fake LLM
+skills-intros run --limit 5 --debug   # print the rendered prompts sent to the LLM (stderr)
 skills-intros run --verbose           # enable DEBUG-level run logs
 ```
 
@@ -107,7 +111,7 @@ Then generate it for every skill (already-cached prompts are reused; only missin
 ones are generated — invalidate first to regenerate):
 
 ```bash
-skills-intros run --prompts my_angle --top 0
+skills-intros run --prompts my_angle --limit 0
 ```
 
 ## Configuration
@@ -120,7 +124,7 @@ built-in defaults.
 | `SKILLS_INTROS_MODEL` | `gpt-4.1-mini` | Any OpenAI-compatible chat model |
 | `SKILLS_INTROS_BASE_URL` | – | Override for OpenAI-compatible endpoints |
 | `SKILLS_INTROS_API_KEY` | – | API key for the endpoint |
-| `SKILLS_INTROS_TOP_N` | `50` | Skills to process (`0` = all) |
+| `SKILLS_INTROS_LIMIT` | `50` | Skills to generate per run, most installed first (`0` = all); cached skills are skipped, not counted |
 | `SKILLS_INTROS_CONCURRENCY` | `8` | Max concurrent LLM calls |
 | `SKILLS_INTROS_OUTPUT_DIR` | `output` | Generated intros: `hashes.json` + `skills/` |
 | `SKILLS_INTROS_DATA_DIR` | `cache/skills-sh` | Upstream skills basic info: `skills.jsonl` + the cached `SKILL.md` files |
