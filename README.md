@@ -166,7 +166,7 @@ built-in defaults.
 | `SKILLS_INTROS_BASE_URL` | – | Override for OpenAI-compatible endpoints |
 | `SKILLS_INTROS_API_KEY` | – | API key for the endpoint |
 | `SKILLS_INTROS_LIMIT` | `50` | Skills to generate per run, most installed first (`0` = all); cached skills are skipped, not counted |
-| `SKILLS_INTROS_CONCURRENCY` | `8` | Max concurrent LLM calls |
+| `SKILLS_INTROS_CONCURRENCY` | `8` | Max concurrent LLM calls, shared across skills and the prompts of each skill |
 | `SKILLS_INTROS_OUTPUT_DIR` | `output` | Generated intros: `hashes.json` + `skills/` |
 | `SKILLS_INTROS_DATA_DIR` | `cache/skills-sh` | Upstream skills basic info: `skills.jsonl` + the cached `SKILL.md` files |
 | `SKILLS_INTROS_PROMPTS_DIR` | `prompts` | Directory with one prompt markdown per file, plus `_system.md` |

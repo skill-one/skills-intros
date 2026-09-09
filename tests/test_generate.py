@@ -1,5 +1,6 @@
 """Tests for DAG execution, file-based resume and end-to-end generation."""
 
+import asyncio
 import json
 
 import pytest
@@ -34,6 +35,28 @@ class CountingLLM:
     async def create(self, response_model=None, messages=None, **kwargs):
         self.calls += 1
         return await self.inner.create(response_model, messages, **kwargs)
+
+
+class ConcurrencyTrackingLLM:
+    """Wraps a LLM and tracks the peak number of in-flight calls.
+
+    A short sleep makes each call actually suspend, so overlapping calls show
+    up in `peak` even though the fake inner LLM returns instantly.
+    """
+
+    def __init__(self, inner):
+        self.inner = inner
+        self.active = 0
+        self.peak = 0
+
+    async def create(self, response_model=None, messages=None, **kwargs):
+        self.active += 1
+        self.peak = max(self.peak, self.active)
+        try:
+            await asyncio.sleep(0.01)
+            return await self.inner.create(response_model, messages, **kwargs)
+        finally:
+            self.active -= 1
 
 
 def stored_intros(settings, skill_id: str) -> dict:
@@ -422,6 +445,32 @@ async def test_run_all_tallies_stats(settings, prompt_set):
     assert stats.prompts_generated == 0
     assert stats.prompts_reused == 4 * 7
     assert stats.llm_seconds == 0.0
+
+
+async def test_prompts_within_a_skill_share_the_concurrency_pool(settings, prompt_set):
+    """Independent prompts of one skill run in parallel, bounded by the shared pool;
+    the per-skill record separates wall time from summed LLM seconds."""
+    skill = load_skills(settings)[0]
+    llm = ConcurrencyTrackingLLM(FakeLLM())
+    record, reused = await run_one(llm, settings, prompt_set, skill)
+    assert not reused
+    assert llm.peak == 7  # all seven root prompts in flight together
+    assert set(record["prompt_seconds"]) == set(record["generated"])
+
+    # the same pool caps skills and prompts together: another skill, concurrency 2
+    settings.concurrency = 2
+    llm = ConcurrencyTrackingLLM(FakeLLM())
+    await run_all(llm, settings, load_skills(settings)[1:2], prompt_set)
+    assert llm.peak == 2
+
+
+async def test_run_one_standalone_gets_its_own_pool(settings, prompt_set):
+    """Without a shared semaphore, run_one bounds itself by settings.concurrency."""
+    settings.concurrency = 3
+    skill = load_skills(settings)[0]
+    llm = ConcurrencyTrackingLLM(FakeLLM())
+    await run_one(llm, settings, prompt_set, skill)
+    assert llm.peak == 3
 
 
 async def test_run_stats_count_stale_caches(settings, prompt_set):

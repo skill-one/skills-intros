@@ -153,7 +153,7 @@ skills-intros run --prompts my_angle --limit 0
 | `SKILLS_INTROS_BASE_URL`    | 无              | OpenAI 兼容端点覆盖                              |
 | `SKILLS_INTROS_API_KEY`     | 无              | 端点对应的 API key                             |
 | `SKILLS_INTROS_LIMIT`       | `50`           | 每次 run 生成的 skill 数量（按安装量，`0` = 全部）; 已缓存的跳过不计数      |
-| `SKILLS_INTROS_CONCURRENCY` | `8`            | LLM 最大并发调用数                                |
+| `SKILLS_INTROS_CONCURRENCY` | `8`            | LLM 最大并发调用数（跨 skill 及 skill 内 prompt 共享）       |
 | `SKILLS_INTROS_OUTPUT_DIR`  | `output`       | 生成的介绍: `hashes.json` + `skills/`              |
 | `SKILLS_INTROS_DATA_DIR`    | `cache/skills-sh`  | 上游 skills 基本信息: `skills.jsonl` + 缓存的 `SKILL.md`      |
 | `SKILLS_INTROS_PROMPTS_DIR` | `prompts`      | prompt markdown 文件所在目录(含 `_system.md`)          |

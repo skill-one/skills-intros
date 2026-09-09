@@ -32,8 +32,9 @@ class RunStats:
     """Aggregated counters for one `run`, tallied by `run_all`.
 
     `prompts_stale` counts reused-cached outputs that failed schema validation
-    and were regenerated; `llm_seconds` sums the time spent inside `run_prompt`,
-    so `llm_seconds / prompts_generated` is the average per-prompt latency.
+    and were regenerated; `llm_seconds` sums the per-prompt LLM seconds, so
+    `llm_seconds / prompts_generated` is the average per-prompt latency (the
+    sum can exceed the wall time, prompts run concurrently).
     """
 
     selected: int = 0  # skills handed to run_all
@@ -53,7 +54,7 @@ def _tally(stats: RunStats, record: dict) -> None:
     stats.prompts_generated += len(generated)
     stats.prompts_reused += len(record["intros"]) - len(generated)
     stats.prompts_stale += len(record.get("stale", ()))
-    stats.llm_seconds += record.get("seconds", 0.0)
+    stats.llm_seconds += sum(record.get("prompt_seconds", {}).values())
 
 
 def _dump_messages(skill: SkillRecord, spec, messages: list[dict]) -> None:
@@ -203,6 +204,7 @@ async def run_prompt(
 async def run_one(
     llm, settings: Settings, prompts: PromptSet, skill: SkillRecord,
     only: set[str] | None = None, debug: bool = False,
+    sem: asyncio.Semaphore | None = None,
 ) -> tuple[dict, bool]:
     """Generate one skill's intros; returns (record, reused).
 
@@ -221,9 +223,15 @@ async def run_one(
     The skill's SKILL.md is read from the local snapshot only once something has
     to be generated, so a fully cached skill reads nothing at all.
 
+    The skill's prompts run concurrently where the DAG allows: every prompt
+    waits for its dependencies' tasks, then takes a slot from `sem` — the same
+    pool `run_all` shares across skills (a fresh one from settings.concurrency
+    when called standalone). Nothing is generated outside the pool.
+
     The record carries run-bookkeeping besides the outputs: `generated` (prompt
     ids newly generated), `stale` (of those, ids whose cache was schema-stale),
-    `seconds` (time spent inside the LLM) and `skipped` (no SKILL.md).
+    `seconds` (wall time of the generation phase), `prompt_seconds` (per-prompt
+    LLM seconds) and `skipped` (no SKILL.md).
     """
     skill_dir = skill_result_dir(settings, skill.id)
     outputs, generated, stale = _load_cached(settings, prompts, skill, only)
@@ -236,14 +244,32 @@ async def run_one(
         return {"skill": skill.model_dump(), "intros": _dump(outputs), "skipped": True}, True
     skill = skill.model_copy(update={"skill_md": skill_md})
 
-    seconds = 0.0
-    for spec_id in generated:
+    sem = sem or asyncio.Semaphore(settings.concurrency)
+    tasks: dict[str, asyncio.Task] = {}
+
+    async def generate(spec_id: str) -> float:
+        """One prompt: wait for its deps' tasks, then take a concurrency slot."""
         spec = prompts.by_id[spec_id]
+        await asyncio.gather(*(tasks[d] for d in spec.depends_on if d in tasks))
         deps = {d: outputs[d] for d in spec.depends_on}
-        start = time.monotonic()
-        outputs[spec_id] = await run_prompt(llm, settings, prompts, spec, skill, deps, debug=debug)
-        seconds += time.monotonic() - start
-        write_prompt_output(settings, skill.id, spec_id, outputs[spec_id].model_dump(mode="json"))
+        async with sem:
+            start = time.monotonic()
+            outputs[spec_id] = await run_prompt(
+                llm, settings, prompts, spec, skill, deps, debug=debug)
+            write_prompt_output(settings, skill.id, spec_id,
+                                outputs[spec_id].model_dump(mode="json"))
+            return time.monotonic() - start
+
+    for spec_id in generated:  # topologically ordered; deps resolve via the tasks
+        tasks[spec_id] = asyncio.create_task(generate(spec_id))
+    start = time.monotonic()
+    try:
+        durations = await asyncio.gather(*tasks.values())
+    except BaseException:
+        for task in tasks.values():
+            task.cancel()
+        await asyncio.gather(*tasks.values(), return_exceptions=True)
+        raise
 
     # a legacy single-file record has no meaning next to the per-prompt layout
     legacy = skill_dir / "result.json"
@@ -255,7 +281,8 @@ async def run_one(
         "intros": _dump(outputs),
         "generated": generated,
         "stale": stale,
-        "seconds": seconds,
+        "seconds": time.monotonic() - start,
+        "prompt_seconds": dict(zip(generated, durations)),
     }, False
 
 
@@ -269,18 +296,19 @@ async def run_all(
     debug: bool = False,
     stats: RunStats | None = None,
 ) -> list[dict]:
-    """Generate intros for all skills concurrently, bounded by a semaphore.
+    """Generate intros for all skills concurrently.
 
-    Skills whose every requested prompt is already cached and valid are
-    skipped; `only` narrows work to a subset of prompts (see run_one). When
+    One semaphore bounds the whole run: at most `settings.concurrency` LLM
+    calls in flight, shared across skills and across the prompts of each skill
+    (see run_one). Skills whose every requested prompt is already cached and
+    valid are skipped; `only` narrows work to a subset of prompts. When
     anything was generated, hashes.json is updated once, at the end. When
     `stats` is given, the run's counters are tallied into it.
     """
     sem = asyncio.Semaphore(settings.concurrency)
 
     async def _one(skill: SkillRecord) -> dict:
-        async with sem:
-            record, reused = await run_one(llm, settings, prompts, skill, only, debug)
+        record, reused = await run_one(llm, settings, prompts, skill, only, debug, sem=sem)
         if on_skill_done:
             on_skill_done(skill, record, reused)
         if stats is not None:
