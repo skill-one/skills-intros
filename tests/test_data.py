@@ -14,6 +14,7 @@ from skills_intros.data import (
     read_marker,
     read_skill_md,
     skill_md_path,
+    stale_result_ids,
     sync_data,
 )
 from skills_intros.outputs import load_hashes, write_hashes
@@ -142,7 +143,6 @@ def test_sync_unpacks_only_what_a_run_reads(tmp_path, monkeypatch):
     assert report.downloaded
     assert report.tag == DIST_BRANCH  # no tags upstream: the branch itself
     assert report.seconds > 0
-    assert report.pruned == 0
     assert load_skills(settings)[0].name == "s"
     assert read_skill_md(settings, load_skills(settings)[0]) is not None
 
@@ -183,7 +183,6 @@ def test_sync_skips_download_when_the_tag_is_unchanged(tmp_path, monkeypatch):
     assert not report.downloaded  # cache hit: tag unchanged
     assert report.tag == "dist-2026-09-09"
     assert report.seconds == 0.0
-    assert report.pruned == 0
 
 
 def _serve(seen: list[str], entry: dict):
@@ -252,10 +251,10 @@ def test_sync_replaces_the_previous_snapshot(tmp_path, monkeypatch):
     assert load_skills(settings)[0].hash == "h"
 
 
-def test_sync_prunes_stale_results(tmp_path, monkeypatch):
-    """sync deletes result dirs whose recorded hash changed, whose skill vanished
-    upstream, or whose directory is missing; intact results survive and
-    hashes.json is rewritten without pruned entries."""
+def test_sync_keeps_results_even_when_stale(tmp_path, monkeypatch):
+    """Sync is a pure data operation: results whose recorded hash changed, whose
+    skill vanished upstream, or whose directory is missing all survive; spotting
+    them is `stale_result_ids`'s job, dropping them `invalidate --stale`'s."""
     settings = make_settings(tmp_path)
     results_root = settings.output_dir / "skills"
 
@@ -280,12 +279,22 @@ def test_sync_prunes_stale_results(tmp_path, monkeypatch):
         {"id": "o/r/changed", "name": "c", "installs": "2", "source": "o/r", "hash": "new"},
         {"id": "o/r/other", "name": "x", "installs": "3", "source": "o/r", "hash": "h9"},
     ]))
-    report = sync_data(settings)
-    assert report.pruned == 3
-    assert (results_root / "o/r/unchanged" / "domain.json").exists()
-    assert not (results_root / "o/r/changed").exists()
-    assert not (results_root / "o/r/gone").exists()
-    assert load_hashes(settings) == {"o/r/unchanged": "h1"}
+    sync_data(settings)
+    for skill_id in ("o/r/unchanged", "o/r/changed", "o/r/gone"):
+        assert (results_root / skill_id.replace(":", "_") / "domain.json").exists()
+    assert load_hashes(settings) == {
+        "o/r/unchanged": "h1", "o/r/changed": "old", "o/r/gone": "h2", "o/r/dirless": "h3",
+    }
+
+    # changed and vanished ids are stale (dirless is gone from the index too);
+    # only unchanged still matches the snapshot
+    assert stale_result_ids(settings) == ["o/r/changed", "o/r/dirless", "o/r/gone"]
+
+
+def test_stale_result_ids_needs_a_snapshot(tmp_path):
+    """Without a synced snapshot there is nothing to compare against."""
+    with pytest.raises(FileNotFoundError):
+        stale_result_ids(make_settings(tmp_path))
 
 
 def test_sync_leaves_legacy_result_json_dirs_alone(tmp_path, monkeypatch):
@@ -303,6 +312,5 @@ def test_sync_leaves_legacy_result_json_dirs_alone(tmp_path, monkeypatch):
     monkeypatch.setattr(data_mod, "_download", fake_download([
         {"id": "o/r/other", "name": "x", "installs": "1", "source": "o/r", "hash": "h9"},
     ]))
-    report = sync_data(settings)
-    assert report.pruned == 0
+    sync_data(settings)
     assert (legacy_dir / "result.json").exists()

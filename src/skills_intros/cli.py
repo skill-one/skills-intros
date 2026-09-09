@@ -7,7 +7,7 @@ import time
 import typer
 
 from .config import Settings
-from .data import load_skills, sync_data
+from .data import load_skills, stale_result_ids, sync_data
 from .generate import RunStats, coverage, run_all, select_skills, write_artifact_stats
 from .llm import FakeLLM, make_llm
 from .logging import setup_logging
@@ -41,10 +41,7 @@ def sync(
         raise typer.Exit(1)
     fetched = (f"downloaded {report.tag} in {report.seconds:.1f}s" if report.downloaded
                else f"already at {report.tag}")
-    details = fetched
-    if report.pruned:
-        details += f"; invalidated {report.pruned} stale skill(s) whose upstream content changed"
-    typer.echo(f"Dataset ready at {report.data_dir} ({details})")
+    typer.echo(f"Dataset ready at {report.data_dir} ({fetched})")
 
 
 @app.command()
@@ -57,6 +54,11 @@ def invalidate(
     ),
     all_skills: bool = typer.Option(
         False, "--all", help="Allow invalidating every skill (required when no filter is given)"
+    ),
+    stale: bool = typer.Option(
+        False, "--stale",
+        help="Select every cached skill whose upstream content hash changed or that "
+             "vanished from the snapshot (run `sync` first to have a fresh snapshot)",
     ),
 ) -> None:
     """Drop cached outputs so the next `run` regenerates them."""
@@ -72,15 +74,21 @@ def invalidate(
             raise typer.BadParameter(
                 f"unknown prompt(s) {sorted(unknown)}; available: {sorted(known)}"
             )
-    if not skill and not prompt_ids and not all_skills:
+
+    skill_ids = list(skill or [])
+    if stale:
+        found = stale_result_ids(settings)
+        logger.info("%d stale skill(s): upstream content changed or skill gone", len(found))
+        skill_ids = list(dict.fromkeys(skill_ids + found))
+    if not skill_ids and not prompt_ids and not all_skills:
         raise typer.BadParameter("refusing to invalidate everything - pass --all to confirm")
 
     recorded = load_hashes(settings)
-    for skill_id in skill or ():
+    for skill_id in skill_ids:
         if skill_id not in recorded:
             logger.warning("%s has no cached results", skill_id)
-    removed = invalidate_cache(settings, skill or None, prompt_ids)
-    targets = sorted(skill) if skill else sorted(recorded)
+    removed = invalidate_cache(settings, skill_ids or None, prompt_ids)
+    targets = sorted(skill_ids) if skill_ids else sorted(recorded)
     logger.info("Invalidated %d output(s) across %d skill(s)", removed, len(targets))
 
 

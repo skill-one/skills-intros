@@ -3,15 +3,15 @@ name: generate
 # Incremental generation + publishing:
 #
 #   resolve tag -> restore cache (dataset) -> restore (dist tarball, output)
-#              -> sync (dataset + prune stale) -> run -> publish
+#              -> sync (dataset) -> invalidate --stale -> run -> publish
 #
 # Every run starts on a fresh runner. The dataset is restored from actions/cache
 # (keyed by the upstream daily tag, resolved by the CLI's own resolver), so within
 # a day `sync` has nothing to download; the published outputs are pulled back from
-# the `dist` branch (one tarball request) and order matters because sync prunes
-# stale results against what is already there. `run` never redoes cached work, so
-# the `limit` input bounds how much is generated per run — the branch is both the
-# artifact and the cache.
+# the `dist` branch (one tarball request) and order matters because `invalidate
+# --stale` compares the recorded hashes against what was just restored. `run`
+# never redoes cached work, so the `limit` input bounds how much is generated per
+# run — the branch is both the artifact and the cache.
 #
 # Repository configuration (Settings -> Secrets and variables -> Actions):
 #   Secret:   SKILLS_INTROS_API_KEY
@@ -79,6 +79,11 @@ jobs:
 
       - name: Sync dataset
         run: uv run skills-intros sync
+
+      - name: Invalidate stale results
+        # results whose upstream content hash changed (or whose skill vanished)
+        # are dropped here, explicitly — sync itself never touches results
+        run: uv run skills-intros invalidate --stale
 
       - name: Generate intros
         run: uv run skills-intros run --limit "${{ inputs.limit }}"

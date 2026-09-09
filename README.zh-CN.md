@@ -29,9 +29,9 @@ output/
 - 每个 prompt 的结构化输出存放在自己的 `<prompt_id>.json` 里(缓存的提交标记); 供浏览的 markdown 副本放在 `md/<prompt_id>.md`, 目录本身只放 json。
 - 内置 prompt: `domain`、`scenario`、`blackbox`、`whitebox`、`tagline`、`persona`、`comments`。
 
-`hashes.json` 为每一个已生成产物的 skill 记下生成时的上游内容 hash。有效性判定
-发生在 `sync` 时——每次 sync 把记录的 `hash` 与刚下载的快照逐一对比, 上游 hash 变化
-(或 skill 已从上游消失)的条目连同产物目录立即删除, 下次 `run` 重新生成; `run` 本身只信任
+`hashes.json` 为每一个已生成产物的 skill 记下生成时的上游内容 hash。`sync` 不会碰这份
+记录——它只负责下载数据; 失效是显式操作: `skills-intros invalidate --stale` 会把记录 hash
+与本地快照不一致(或已从快照消失)的 skill 全部失效(先 `sync` 保证快照最新)。`run` 本身只信任
 磁盘上现有的输出文件。
 
 统计: 每次 `run` 结束会打印一段计时汇总(新生成/复用/因 schema 失效而重算的 prompt 数、
@@ -63,7 +63,7 @@ cache/skills-sh/                            # SKILLS_INTROS_DATA_DIR: 上游 ski
 ```bash
 uv sync
 # LLM 凭据: 在本地 .env 中配置 KEY / BASE_URL / MODEL（参见 .env.example）
-skills-intros sync            # 下载 dist 分支快照（并清理失效产物）
+skills-intros sync            # 下载 dist 分支快照
 skills-intros sync --refresh   # 即使已是最新 tag 也重新下载
 skills-intros run --limit 50  # 为 50 个 skill 生成介绍词（按安装量从高到低）
 ```
@@ -91,6 +91,7 @@ prompt 才会真正调用 LLM。拆分布局之前写入的结果(每个 skill �
 skills-intros invalidate --prompts whitebox        # 所有 skill 的这一个 prompt
 skills-intros invalidate --skill owner/repo/name   # 某个 skill 的全部 prompt
 skills-intros invalidate --skill owner/repo/name --prompts whitebox
+skills-intros invalidate --stale                   # 上游 hash 变化(或消失)的 skill
 skills-intros invalidate --all                     # 全部清空(需显式 --all)
 ```
 
@@ -99,11 +100,11 @@ skills-intros invalidate --all                     # 全部清空(需显式 --al
 `.github/workflows/generate.yml` 手动触发（Actions 页签 → generate → Run workflow）执行, 让 `dist` 分支始终与生成的介绍保持同步:
 
 ```
-恢复（dist 分支 tarball）→ sync → run → 发布
+恢复（dist 分支 tarball）→ sync → invalidate --stale → run → 发布
 ```
 
 每次执行都是全新 runner, 因此先把上一次的产物从 `dist` 拉回来: 这个分支既是发布产物, 也是缓存。
-顺序很关键——`sync` 的失效清理依赖刚恢复回来的那些产物。workflow 把 `limit` 输入直接以
+顺序很关键——`invalidate --stale` 的 hash 对比依赖刚恢复回来的产物。workflow 把 `limit` 输入直接以
 `run --limit` 传参（默认 100）来限制单次生成量, 反复执行就能逐步覆盖整个数据集。
 
 `dist` 分支的根目录与 `output/` 一致: `hashes.json` + `skills/`（参见[产物](#产物)）。

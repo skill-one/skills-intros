@@ -28,10 +28,10 @@ output/
 - Built-in prompts: `domain`, `scenario`, `blackbox`, `whitebox`, `tagline`, `persona`, `comments`.
 
 Freshness: `hashes.json` records, for every skill that has generated intros, the upstream
-content hash those intros were built from. Validity is decided at `sync` time: each sync
-compares the recorded hash against the freshly downloaded snapshot and immediately prunes
-entries whose upstream hash changed or whose skill disappeared. `run` itself just reuses
-whatever is on disk.
+content hash those intros were built from. `sync` never touches it — it only downloads the
+snapshot. Dropping stale results is explicit: `skills-intros invalidate --stale` invalidates
+every skill whose recorded hash no longer matches the snapshot or that disappeared from it
+(run `sync` first). `run` itself just reuses whatever is on disk.
 
 Statistics: every `run` prints a timed summary (prompts generated / reused / regenerated
 from schema-stale caches, per-skill and total LLM seconds, stage timings) and overwrites
@@ -68,7 +68,7 @@ Requires Python 3.12+ and [uv](https://docs.astral.sh/uv/).
 ```bash
 uv sync
 # LLM credentials: put KEY / BASE_URL / MODEL in a local .env (see .env.example)
-skills-intros sync            # download the dist branch snapshot (prunes stale results)
+skills-intros sync            # download the dist branch snapshot
 skills-intros sync --refresh   # re-download even when the newest tag is already present
 skills-intros run --limit 50  # generate intros for 50 skills, most installed first
 ```
@@ -99,6 +99,7 @@ uses when an upstream skill's content hash changed:
 skills-intros invalidate --prompts whitebox        # one prompt, for every skill
 skills-intros invalidate --skill owner/repo/name   # every prompt of one skill
 skills-intros invalidate --skill owner/repo/name --prompts whitebox
+skills-intros invalidate --stale                   # skills whose upstream hash changed
 skills-intros invalidate --all                     # everything (needs --all)
 ```
 
@@ -108,12 +109,13 @@ skills-intros invalidate --all                     # everything (needs --all)
 keeping the `dist` branch in sync with the generated intros:
 
 ```
-restore (dist branch tarball) → sync → run → publish
+restore (dist branch tarball) → sync → invalidate --stale → run → publish
 ```
 
 Every run starts on a fresh runner, so the results of the previous run are pulled back
 from `dist` first: the branch is both the published artifact and the cache. The order
-matters — `sync` prunes stale results against what was just restored. The workflow passes
+matters — `invalidate --stale` compares the recorded hashes against what was just
+restored. The workflow passes
 the `limit` input straight to `run --limit` (default 100), bounding how much one run
 generates, so repeated runs work their way through the whole dataset.
 

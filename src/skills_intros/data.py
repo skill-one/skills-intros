@@ -25,7 +25,7 @@ from pathlib import Path
 
 from .config import DIST_BRANCH, TAGS_ATOM_URL, TARBALL_URL, Settings, tarball_url
 from .models import SkillRecord
-from .outputs import invalidate, load_hashes
+from .outputs import load_hashes
 
 logger = logging.getLogger(__name__)
 
@@ -40,19 +40,18 @@ MD_MAX_CHARS = 20000  # cap on the SKILL.md text sent to the LLM
 
 @dataclass(frozen=True)
 class SyncReport:
-    """What one sync did, for the CLI summary and stats.json.
+    """What one sync did, for the CLI summary.
 
     `tag` is the snapshot ref now on disk (an upstream `<branch>-<date>` tag, or
     the branch itself when upstream publishes no tags); `downloaded` False means
     the local snapshot was already at `tag` and nothing was fetched;
-    `seconds` times the whole download-and-prune pass, 0 on a cache hit.
+    `seconds` times the download pass, 0 on a cache hit.
     """
 
     data_dir: Path
     tag: str
     downloaded: bool
     seconds: float
-    pruned: int
 
 
 def _not_published() -> RuntimeError:
@@ -189,17 +188,16 @@ def _is_current(data_dir: Path, ref: str) -> bool:
 
 
 def sync_data(settings: Settings, refresh: bool = False) -> SyncReport:
-    """Bring <data_dir> to the newest upstream snapshot and prune what went stale.
+    """Bring <data_dir> to the newest upstream snapshot.
 
     One request downloads the whole branch as a tarball, of which only the index
     and the SKILL.md files are unpacked; the previous snapshot is replaced
     wholesale, so there is nothing incremental to fetch or to expire. Upstream
-    tags each daily scrape: when the local snapshot already holds the newest tag,
-    nothing is downloaded (and nothing pruned, since upstream did not move) unless
-    `refresh` says otherwise. Right after a download, result dirs whose upstream
-    hash changed (or whose skill disappeared upstream) are pruned, so the next
-    `run` regenerates them; run itself never re-checks hashes.
-    Returns a SyncReport (tag, whether a download happened, duration, prune count).
+    tags each daily scrape: when the local snapshot already holds the newest
+    tag, nothing is downloaded unless `refresh` says otherwise. Sync is a pure
+    data operation — it never touches the generated results; invalidating stale
+    ones is `invalidate --stale`'s explicit job (see stale_result_ids).
+    Returns a SyncReport (tag, whether a download happened, duration).
     """
     data_dir = settings.data_dir
     if data_dir.exists() and any(data_dir.iterdir()):
@@ -211,7 +209,7 @@ def sync_data(settings: Settings, refresh: bool = False) -> SyncReport:
     ref = latest_dist_tag() or DIST_BRANCH
     if not refresh and _is_current(data_dir, ref):
         logger.info("Already at %s - nothing to download", ref)
-        return SyncReport(data_dir=data_dir, tag=ref, downloaded=False, seconds=0.0, pruned=0)
+        return SyncReport(data_dir=data_dir, tag=ref, downloaded=False, seconds=0.0)
 
     start = time.monotonic()
     data_dir.parent.mkdir(parents=True, exist_ok=True)
@@ -222,13 +220,21 @@ def sync_data(settings: Settings, refresh: bool = False) -> SyncReport:
     if not downloaded:
         raise _not_published()
     _write_marker(data_dir, ref)
-    pruned = _prune_stale_results(settings, data_dir)
-    if pruned:
-        logger.info("Pruned %d stale result dir(s)", pruned)
     return SyncReport(
-        data_dir=data_dir, tag=ref, downloaded=True,
-        seconds=time.monotonic() - start, pruned=pruned,
+        data_dir=data_dir, tag=ref, downloaded=True, seconds=time.monotonic() - start,
     )
+
+
+def stale_result_ids(settings: Settings) -> list[str]:
+    """Cached skills whose recorded content hash no longer matches the snapshot.
+
+    A skill is stale when upstream changed its content (the freshly downloaded
+    snapshot holds a different hash) or when it disappeared from the index.
+    Nothing calls this automatically: `invalidate --stale` is the explicit path.
+    """
+    upstream = {s.id: s.hash for s in load_skills(settings)}
+    hashes = load_hashes(settings)
+    return sorted(sid for sid, h in hashes.items() if upstream.get(sid) != h)
 
 
 def load_skills(settings: Settings) -> list[SkillRecord]:
@@ -283,31 +289,3 @@ def read_skill_md(settings: Settings, skill: SkillRecord) -> str | None:
     if not path.is_file():
         return None
     return path.read_text(encoding="utf-8", errors="replace")[:MD_MAX_CHARS]
-
-
-def _prune_stale_results(settings: Settings, data_dir: Path) -> int:
-    """Invalidate artifacts that are stale against the freshly synced snapshot.
-
-    Stale means: the skill is gone upstream, or its content hash changed.
-    Invalidation goes through `invalidate` — the same path the `invalidate`
-    command uses — so a stale skill ends up in exactly the state a manual
-    invalidation leaves behind. Returns the number of pruned skills.
-    """
-    results_root = settings.output_dir / "skills"
-    if not results_root.exists():
-        return 0
-
-    upstream: dict[str, str] = {}
-    for line in (data_dir / INDEX_NAME).read_text(encoding="utf-8").splitlines():
-        if line.strip():
-            entry = json.loads(line)
-            upstream[entry["id"]] = entry.get("hash", "")
-
-    hashes = load_hashes(settings)
-    stale = [sid for sid, hash_ in sorted(hashes.items()) if upstream.get(sid) != hash_]
-    if stale:
-        start = time.monotonic()
-        invalidate(settings, stale)
-        logger.info("Invalidated %d stale skill(s) in %.1fs",
-                    len(stale), time.monotonic() - start)
-    return len(stale)

@@ -91,23 +91,60 @@ def test_run_stats_snapshot_is_overwritten(settings, monkeypatch):
     assert all(v == 4 for v in stats["prompts"].values())
 
 
-def test_sync_reports_tag_and_prunes(settings, monkeypatch):
-    """The sync summary names the tag, cache hit vs download, and the prune count."""
+def test_sync_reports_tag_and_download(settings, monkeypatch):
+    """The sync summary names the tag and whether it downloaded."""
     from skills_intros.data import SyncReport
 
     monkeypatch.setattr("skills_intros.cli.Settings", lambda: settings)
     monkeypatch.setattr(
         "skills_intros.cli.sync_data",
         lambda s, refresh: SyncReport(
-            data_dir=s.data_dir, tag="dist-2026-09-09",
-            downloaded=True, seconds=1.5, pruned=3,
+            data_dir=s.data_dir, tag="dist-2026-09-09", downloaded=True, seconds=1.5,
         ),
     )
     result = runner.invoke(app, ["sync"])
     assert result.exit_code == 0, result.output
     assert "dist-2026-09-09" in result.output
     assert "downloaded" in result.output
-    assert "invalidated 3 stale skill(s)" in result.output
+
+
+def test_invalidate_stale_drops_hash_changed_skills(settings, monkeypatch):
+    """`invalidate --stale` drops exactly the skills whose recorded hash no longer
+    matches the snapshot (changed or vanished); the next run regenerates them."""
+    monkeypatch.setattr("skills_intros.cli.Settings", lambda: settings)
+    runner.invoke(app, ["run", "--limit", "0", "--dry-run"])
+
+    # simulate upstream: alpha's content changed, hotel vanished
+    data_file = settings.data_dir / "skills.jsonl"
+    entries = [json.loads(l) for l in data_file.read_text(encoding="utf-8").splitlines()]
+    for e in entries:
+        if e["id"] == "owner-a/repo-a/alpha":
+            e["hash"] = "new" + "a" * 61
+    entries = [e for e in entries if e["id"] != "owner-h/repo-h/hotel:sub"]
+    data_file.write_text(
+        "\n".join(json.dumps(e) for e in entries) + "\n", encoding="utf-8"
+    )
+
+    result = runner.invoke(app, ["invalidate", "--stale"])
+    assert result.exit_code == 0, result.output
+    assert "2 stale skill(s)" in result.output
+
+    # alpha and hotel are gone; beta and gamma are untouched
+    from skills_intros.outputs import load_hashes, prompt_result_path, skill_result_dir
+
+    assert load_hashes(settings) == {
+        "owner-b/repo-b/beta": "b" * 64, "owner-c/repo-c/gamma": "c" * 64,
+    }
+    assert not skill_result_dir(settings, "owner-a/repo-a/alpha").exists()
+    assert not skill_result_dir(settings, "owner-h/repo-h/hotel:sub").exists()
+    assert prompt_result_path(settings, "owner-b/repo-b/beta", "domain").exists()
+
+    # --stale plus --prompts invalidates only that prompt of the stale skills
+    runner.invoke(app, ["run", "--limit", "0", "--dry-run"])  # refill the cache
+    result = runner.invoke(app, ["invalidate", "--stale", "--prompts", "tagline"])
+    assert result.exit_code == 0, result.output
+    assert prompt_result_path(settings, "owner-b/repo-b/beta", "tagline").exists() is False
+    assert prompt_result_path(settings, "owner-b/repo-b/beta", "domain").exists()
 
 
 def test_invalidate_rejects_unknown_prompt(settings, monkeypatch):
