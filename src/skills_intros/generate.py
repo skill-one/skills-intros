@@ -12,7 +12,7 @@ from typing import Any, Callable
 from pydantic import ValidationError
 
 from .config import Settings
-from .data import read_marker, read_skill_md
+from .data import read_marker, read_skill_md, stale_result_ids
 from .models import SkillRecord
 from .outputs import (
     load_hashes,
@@ -161,26 +161,27 @@ def coverage(
     }
 
 
-def write_artifact_stats(
-    settings: Settings, prompts: PromptSet, skills: list[SkillRecord],
-    only: set[str] | None = None,
-) -> dict:
+def write_artifact_stats(settings: Settings, cov: dict) -> dict:
     """Overwrite output/stats.json with the artifact's current state.
 
     The file describes what is on disk right now — complete/remaining skill
-    counts, a cached count per prompt and the snapshot tag the artifacts were
-    built from — never a run's counters or timings (those stay in the log).
+    counts, how many are stale against the snapshot (upstream content changed
+    or skill gone), a cached count per prompt and the snapshot tag the
+    artifacts were built from — never a run's counters or timings (those stay
+    in the log). `cov` is the coverage dict computed by the caller; the full
+    stats written are returned.
     """
-    cov = coverage(settings, prompts, skills, only)
+    stale = len(stale_result_ids(settings))
     snapshot = read_marker(settings.data_dir)
-    write_stats(settings, {
+    stats = {
         "snapshot": {"ref": snapshot.get("ref", ""),
                      "fetched_at": snapshot.get("fetched_at", "")},
         "skills": {"total": cov["skills"], "complete": cov["complete"],
-                   "remaining": cov["remaining"]},
+                   "remaining": cov["remaining"], "stale": stale},
         "prompts": cov["prompts"],
-    })
-    return cov
+    }
+    write_stats(settings, stats)
+    return stats
 
 
 async def run_prompt(

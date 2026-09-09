@@ -71,7 +71,7 @@ def test_run_writes_a_stats_summary(settings, monkeypatch):
     assert re.search(r"owner-a/repo-a/alpha: \S+ \d+\.\d+s", result.output)
 
     stats = json.loads((settings.output_dir / "stats.json").read_text(encoding="utf-8"))
-    assert stats["skills"] == {"total": 4, "complete": 2, "remaining": 2}
+    assert stats["skills"] == {"total": 4, "complete": 2, "remaining": 2, "stale": 0}
     assert all(v == 2 for v in stats["prompts"].values())
     assert set(stats) == {"snapshot", "skills", "prompts"}  # artifact state only, no run info
 
@@ -87,8 +87,33 @@ def test_run_stats_snapshot_is_overwritten(settings, monkeypatch):
     runner.invoke(app, ["run", "--limit", "2", "--dry-run"])
 
     stats = json.loads((settings.output_dir / "stats.json").read_text(encoding="utf-8"))
-    assert stats["skills"] == {"total": 4, "complete": 4, "remaining": 0}
+    assert stats["skills"] == {"total": 4, "complete": 4, "remaining": 0, "stale": 0}
     assert all(v == 4 for v in stats["prompts"].values())
+
+
+def test_run_reports_stale_skills(settings, monkeypatch):
+    """A run's summary counts skills whose recorded hash no longer matches the
+    snapshot, and stats.json carries the same number."""
+    monkeypatch.setattr("skills_intros.cli.Settings", lambda: settings)
+    runner.invoke(app, ["run", "--limit", "0", "--dry-run"])
+
+    # upstream moves: alpha's content changes
+    data_file = settings.data_dir / "skills.jsonl"
+    entries = [json.loads(l) for l in data_file.read_text(encoding="utf-8").splitlines()]
+    for e in entries:
+        if e["id"] == "owner-a/repo-a/alpha":
+            e["hash"] = "new" + "a" * 61
+    data_file.write_text(
+        "\n".join(json.dumps(e) for e in entries) + "\n", encoding="utf-8"
+    )
+
+    result = runner.invoke(app, ["run", "--limit", "0", "--dry-run"])
+    assert result.exit_code == 0, result.output
+    assert "1 stale" in result.output
+
+    stats = json.loads((settings.output_dir / "stats.json").read_text(encoding="utf-8"))
+    assert stats["skills"]["stale"] == 1
+    assert stats["skills"]["complete"] == 4  # staleness does not change completeness
 
 
 def test_sync_reports_tag_and_download(settings, monkeypatch):

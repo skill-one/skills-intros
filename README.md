@@ -36,9 +36,10 @@ every skill whose recorded hash no longer matches the snapshot or that disappear
 Statistics: every `run` prints a timed summary (prompts generated / reused / regenerated
 from schema-stale caches, per-skill and total LLM seconds, stage timings) and overwrites
 `stats.json` — a snapshot of the artifact's current state, not the run's: how many skills
-are complete, how many still miss prompts, a cached count per prompt, and the snapshot tag
-the artifacts were built from. `sync` reports the tag it aligned to, a cache hit or the
-download duration, and how many stale results it invalidated.
+are complete, how many still miss prompts, how many are stale against the snapshot (upstream
+content changed or skill gone), a cached count per prompt, and the snapshot tag the
+artifacts were built from. `sync` reports the tag it aligned to, a cache hit or the download
+duration.
 
 ## Data
 
