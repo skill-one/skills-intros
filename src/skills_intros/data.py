@@ -4,6 +4,11 @@
 what a run reads: skills.jsonl plus every skills/<id>/SKILL.md. One request still
 fetches the whole branch, so index and sources can never drift apart, and every
 later read is a local file read.
+
+Upstream publishes each daily scrape as a `<branch>-<date>` tag. A sync records
+the tag it fetched in <data_dir>/SNAPSHOT.json and re-downloads only when the
+newest tag differs, so repeat syncs (locally, or in CI behind a cache) cost one
+small request instead of the whole snapshot.
 """
 
 import json
@@ -14,9 +19,10 @@ import tempfile
 import time
 import urllib.error
 import urllib.request
+import xml.etree.ElementTree as ElementTree
 from pathlib import Path
 
-from .config import DIST_BRANCH, TARBALL_URL, Settings
+from .config import DIST_BRANCH, TAGS_ATOM_URL, TARBALL_URL, Settings, tarball_url
 from .models import SkillRecord
 from .outputs import invalidate, load_hashes
 
@@ -25,6 +31,8 @@ logger = logging.getLogger(__name__)
 INDEX_NAME = "skills.jsonl"  # the index: one json line per skill
 SKILLS_DIR = "skills"  # one directory per skill id, mirroring the upstream ids
 SKILL_MD = "SKILL.md"
+MARKER_NAME = "SNAPSHOT.json"  # which upstream ref the local snapshot holds
+ATOM_NS = "{http://www.w3.org/2005/Atom}"
 MAX_DOWNLOAD_RETRIES = 3
 MD_MAX_CHARS = 20000  # cap on the SKILL.md text sent to the LLM
 
@@ -104,15 +112,74 @@ def _snapshot_root(unpacked: Path) -> Path:
     return entries[0] if len(entries) == 1 and entries[0].is_dir() else unpacked
 
 
-def sync_data(settings: Settings) -> tuple[Path, int]:
-    """Replace <data_dir> with the dist branch snapshot and prune what went stale.
+def latest_dist_tag() -> str | None:
+    """The newest `<branch>-<date>` tag upstream, or None when there is none.
+
+    One small request answers "does a sync have anything to do"; failing to read
+    the feed is not fatal, it only costs the shortcut.
+    """
+    try:
+        with urllib.request.urlopen(TAGS_ATOM_URL, timeout=30) as response:
+            feed = response.read()
+    except OSError as e:  # URLError included: never fail a sync over this
+        logger.warning("Could not read %s: %s", TAGS_ATOM_URL, e)
+        return None
+    return _newest_tag(feed)
+
+
+def _newest_tag(feed: bytes) -> str | None:
+    """Newest `<branch>-<date>` entry title of a GitHub tags atom feed."""
+    prefix = f"{DIST_BRANCH}-"
+    try:
+        root = ElementTree.fromstring(feed)
+    except ElementTree.ParseError:
+        logger.warning("Could not parse the tags feed at %s", TAGS_ATOM_URL)
+        return None
+    titles = (t.text or "" for t in root.iter(f"{ATOM_NS}title"))
+    tags = sorted(title for title in titles if title.startswith(prefix))
+    return tags[-1] if tags else None
+
+
+def read_marker(data_dir: Path) -> dict:
+    """What the local snapshot holds: {"ref": ..., "fetched_at": ...}; {} if unknown."""
+    try:
+        return json.loads((data_dir / MARKER_NAME).read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return {}
+
+
+def _write_marker(data_dir: Path, ref: str) -> None:
+    (data_dir / MARKER_NAME).write_text(
+        json.dumps({"ref": ref,
+                    "fetched_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())},
+                   indent=2) + "\n",
+        encoding="utf-8",
+    )
+
+
+def _is_current(data_dir: Path, ref: str) -> bool:
+    """Whether <data_dir> already holds `ref`.
+
+    Only a tag can answer that: a branch name says nothing about its content, so
+    the branch always has to be downloaded again.
+    """
+    if ref == DIST_BRANCH or not (data_dir / INDEX_NAME).is_file():
+        return False
+    return read_marker(data_dir).get("ref") == ref
+
+
+def sync_data(settings: Settings, refresh: bool = False) -> tuple[Path, int]:
+    """Bring <data_dir> to the newest upstream snapshot and prune what went stale.
 
     One request downloads the whole branch as a tarball, of which only the index
     and the SKILL.md files are unpacked; the previous snapshot is replaced
-    wholesale, so there is nothing incremental to fetch or to expire. Right after
-    syncing, result dirs whose upstream hash changed (or whose skill disappeared
-    upstream) are pruned, so the next `run` regenerates them; run itself never
-    re-checks hashes. Returns (data_dir, pruned_result_count).
+    wholesale, so there is nothing incremental to fetch or to expire. Upstream
+    tags each daily scrape: when the local snapshot already holds the newest tag,
+    nothing is downloaded (and nothing pruned, since upstream did not move) unless
+    `refresh` says otherwise. Right after a download, result dirs whose upstream
+    hash changed (or whose skill disappeared upstream) are pruned, so the next
+    `run` regenerates them; run itself never re-checks hashes.
+    Returns (data_dir, pruned_result_count).
     """
     data_dir = settings.data_dir
     if data_dir.exists() and any(data_dir.iterdir()):
@@ -121,13 +188,19 @@ def sync_data(settings: Settings) -> tuple[Path, int]:
                 f"{data_dir} exists and is not a dataset directory - move it away or "
                 "point SKILLS_INTROS_DATA_DIR at a different directory"
             )
+    ref = latest_dist_tag() or DIST_BRANCH
+    if not refresh and _is_current(data_dir, ref):
+        logger.info("Already at %s - nothing to download", ref)
+        return data_dir, 0
+
     data_dir.parent.mkdir(parents=True, exist_ok=True)
     try:
-        downloaded = _download_snapshot(TARBALL_URL, data_dir)
+        downloaded = _download_snapshot(tarball_url(ref), data_dir)
     except RuntimeError as e:
         raise _not_published() from e
     if not downloaded:
         raise _not_published()
+    _write_marker(data_dir, ref)
     pruned = _prune_stale_results(settings, data_dir)
     if pruned:
         logger.info("Pruned %d stale result dir(s)", pruned)

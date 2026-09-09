@@ -47,7 +47,7 @@ cache/skills-sh/                            # SKILLS_INTROS_DATA_DIR: 上游 ski
 
 `sync` 一次请求把整个 dist 分支打包下载(tarball), 不再逐个文件懒下载; 但只解压真正会读的部分:
 `skills.jsonl` 与每个 `skills/<id>/SKILL.md`。分支里还有完整的 skill 仓库(README、evals、manifest
-等), 体积约 70 倍且从不读取, 因此留在压缩包里。每次 sync 整包替换, 索引与源文件不可能出现版本错位。
+等), 体积约 70 倍且从不读取, 因此留在压缩包里。每次 sync 整包替换, 索引与源文件不可能出现版本错位。上游每天为抓取结果打一个 `dist-<日期>` tag;\n`sync` 把最新 tag 记到 `cache/skills-sh/SNAPSHOT.json`, tag 未变就跳过下载, 因此本地重复 sync(或 CI 里跑在 `actions/cache` 之后)只需一次很小的请求。`--refresh` 可强制重新下载。
 
 ## 快速开始
 
@@ -57,6 +57,7 @@ cache/skills-sh/                            # SKILLS_INTROS_DATA_DIR: 上游 ski
 uv sync
 # LLM 凭据: 在本地 .env 中配置 KEY / BASE_URL / MODEL（参见 .env.example）
 skills-intros sync            # 下载 dist 分支快照（并清理失效产物）
+skills-intros sync --refresh   # 即使已是最新 tag 也重新下载
 skills-intros run --limit 50  # 为 50 个 skill 生成介绍词（按安装量从高到低）
 ```
 

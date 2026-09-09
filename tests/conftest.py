@@ -8,6 +8,7 @@ from pathlib import Path
 
 import pytest
 
+import skills_intros.data as data_mod
 from skills_intros.config import TARBALL_URL, Settings
 from skills_intros.prompts import load_prompt_set
 
@@ -84,6 +85,13 @@ def fake_download(entries: list[dict]):
         return True
 
     return _download
+
+
+@pytest.fixture(autouse=True)
+def _no_upstream_tags(monkeypatch):
+    """Pretend upstream publishes no tags: a sync must not reach the network for
+    anything but the snapshot itself, and tests that care set their own tag."""
+    monkeypatch.setattr(data_mod, "latest_dist_tag", lambda: None)
 
 
 @pytest.fixture

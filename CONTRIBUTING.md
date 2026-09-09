@@ -45,7 +45,10 @@ Key design decisions:
   wholesale — no per-file fetching, no cache expiry of its own. `read_skill_md` then reads a
   skill's source as a plain local file. Only what a run reads is unpacked: `skills.jsonl`
   and every `skills/<id>/SKILL.md`. The branch mirrors whole skill repos (READMEs, evals,
-  manifests), which is ~70x more data that nothing ever reads.
+  manifests), which is ~70x more data that nothing ever reads. Upstream tags each daily scrape
+  as `dist-<date>`; `sync` writes that tag to `cache/skills-sh/SNAPSHOT.json` and skips the
+  download when the tag is still current (use `sync --refresh` to force it), so a repeat sync
+  — locally or in CI behind `actions/cache` — is one small request, not a 120 MB unpack.
 - **Prompts as files.** One markdown file per prompt under `prompts/` (override with
   `SKILLS_INTROS_PROMPTS_DIR`). YAML frontmatter carries metadata; the body is the jinja2
   user-prompt template. `_system.md` holds the shared system prompt. No code changes needed

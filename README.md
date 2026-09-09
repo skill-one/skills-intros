@@ -48,7 +48,10 @@ cache/skills-sh/                            # SKILLS_INTROS_DATA_DIR: upstream s
 and unpacks only what a run reads: `skills.jsonl` and every `skills/<id>/SKILL.md`. The branch
 also mirrors the rest of each skill repo (READMEs, evals, manifests): ~70x more data that
 nothing reads, so it stays in the archive. Each sync replaces the snapshot wholesale, so index
-and sources can never drift apart.
+and sources can never drift apart. Upstream tags each daily scrape; `sync` records the
+newest tag in `cache/skills-sh/SNAPSHOT.json` and skips the download when it is unchanged, so
+a local re-sync (or a CI run behind `actions/cache`) costs one small request, not the whole
+snapshot. `--refresh` forces a re-download.
 
 ## Quickstart
 
@@ -58,6 +61,7 @@ Requires Python 3.12+ and [uv](https://docs.astral.sh/uv/).
 uv sync
 # LLM credentials: put KEY / BASE_URL / MODEL in a local .env (see .env.example)
 skills-intros sync            # download the dist branch snapshot (prunes stale results)
+skills-intros sync --refresh   # re-download even when the newest tag is already present
 skills-intros run --limit 50  # generate intros for 50 skills, most installed first
 ```
 

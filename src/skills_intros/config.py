@@ -8,8 +8,16 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 REPO = "skill-one/skills-sh-scraper"
 DIST_BRANCH = "dist"
 REPO_URL = f"https://github.com/{REPO}"
-# the whole dist branch in one request: `sync` downloads and unpacks this
-TARBALL_URL = f"https://codeload.github.com/{REPO}/tar.gz/{DIST_BRANCH}"
+# the daily snapshot as GitHub publishes it: `sync` downloads and unpacks this
+TAGS_ATOM_URL = f"{REPO_URL}/tags.atom"
+
+
+def tarball_url(ref: str = DIST_BRANCH) -> str:
+    """The whole branch in one request, at a branch, tag or commit."""
+    return f"https://codeload.github.com/{REPO}/tar.gz/{ref}"
+
+
+TARBALL_URL = tarball_url()
 
 
 class Settings(BaseSettings):

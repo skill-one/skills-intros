@@ -2,13 +2,16 @@ name: generate
 
 # Incremental generation + publishing:
 #
-#   restore (dist branch tarball) -> sync (dataset + prune stale) -> run -> publish
+#   resolve tag -> restore cache (dataset) -> restore (dist tarball, output)
+#              -> sync (dataset + prune stale) -> run -> publish
 #
-# Every run starts on a fresh runner, so the previously published outputs are
-# pulled back from the `dist` branch first (one tarball request); the order
-# matters, because sync prunes stale results against what is already there.
-# `run` never redoes cached work, so SKILLS_INTROS_LIMIT bounds how much is
-# generated per run — the branch is both the artifact and the cache.
+# Every run starts on a fresh runner. The dataset is restored from actions/cache
+# (keyed by the upstream daily tag, resolved by the CLI's own resolver), so within
+# a day `sync` has nothing to download; the published outputs are pulled back from
+# the `dist` branch (one tarball request) and order matters because sync prunes
+# stale results against what is already there. `run` never redoes cached work, so
+# SKILLS_INTROS_LIMIT bounds how much is generated per run — the branch is both
+# the artifact and the cache.
 #
 # Repository configuration (Settings -> Secrets and variables -> Actions):
 #   Secret:   SKILLS_INTROS_API_KEY
@@ -49,6 +52,21 @@ jobs:
 
       - name: Install
         run: uv sync
+
+      - name: Resolve upstream snapshot tag
+        id: ref
+        # Reuses the CLI's own resolver so the cache key and `sync` agree on the
+        # newest tag; falls back to "dist" when upstream publishes no tags.
+        run: |
+          set -euo pipefail
+          tag=$(uv run python -c 'from skills_intros.data import latest_dist_tag; print(latest_dist_tag() or "")')
+          echo "tag=${tag}" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/cache@v4
+        with:
+          path: cache/skills-sh
+          # One cache entry per upstream tag: hit within a day -> `sync` is a no-op.
+          key: dataset-${{ steps.ref.outputs.tag || 'dist' }}
 
       - name: Restore published intros
         run: |

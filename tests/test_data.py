@@ -6,10 +6,32 @@ from pathlib import Path
 import pytest
 
 import skills_intros.data as data_mod
-from conftest import fake_download, skill_md_text
-from skills_intros.config import TARBALL_URL, Settings
-from skills_intros.data import load_skills, read_skill_md, skill_md_path, sync_data
+from conftest import fake_download, make_tarball, skill_md_text
+from skills_intros.config import DIST_BRANCH, TARBALL_URL, Settings, tarball_url
+from skills_intros.data import (
+    _newest_tag,
+    load_skills,
+    read_marker,
+    read_skill_md,
+    skill_md_path,
+    sync_data,
+)
 from skills_intros.outputs import load_hashes, write_hashes
+
+TAGS_FEED = b"""<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <id>tag:github.com,2008:https://github.com/skill-one/skills-sh-scraper/releases</id>
+  <title>Tags from skills-sh-scraper</title>
+  <entry>
+    <id>tag:github.com,2008:Repository/1/dist-2026-09-09</id>
+    <title>dist-2026-09-09</title>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Repository/1/dist-2026-09-08</id>
+    <title>dist-2026-09-08</title>
+  </entry>
+</feed>
+"""
 
 
 def test_loads_only_valid_skills_sorted_by_installs(settings):
@@ -120,6 +142,88 @@ def test_sync_unpacks_only_what_a_run_reads(tmp_path, monkeypatch):
     assert pruned == 0
     assert load_skills(settings)[0].name == "s"
     assert read_skill_md(settings, load_skills(settings)[0]) is not None
+
+
+def test_newest_tag_picks_newest_from_feed():
+    assert _newest_tag(TAGS_FEED) == "dist-2026-09-09"
+
+
+def test_newest_tag_ignores_the_feed_title_and_unrelated_entries():
+    feed = TAGS_FEED.replace(b"dist-2026-09-09", b"released-2026-09-09")
+    assert _newest_tag(feed) == "dist-2026-09-08"
+
+
+def test_newest_tag_returns_none_on_a_bad_feed():
+    assert _newest_tag(b"<not-xml") is None
+
+
+def _seed_dataset(settings) -> None:
+    settings.data_dir.mkdir(parents=True)
+    (settings.data_dir / "skills.jsonl").write_text("[]\n", encoding="utf-8")
+
+
+def test_sync_skips_download_when_the_tag_is_unchanged(tmp_path, monkeypatch):
+    """A local snapshot already at the newest tag is not downloaded or pruned."""
+    settings = make_settings(tmp_path)
+    _seed_dataset(settings)
+    (settings.data_dir / "SNAPSHOT.json").write_text(json.dumps({"ref": "dist-2026-09-09"}))
+    monkeypatch.setattr(data_mod, "latest_dist_tag", lambda: "dist-2026-09-09")
+
+    called = []
+    def no_download(url: str, dest: Path) -> bool:
+        called.append(url)
+        raise AssertionError("sync should not download when the tag is unchanged")
+    monkeypatch.setattr(data_mod, "_download", no_download)
+
+    data_dir, pruned = sync_data(settings)
+    assert called == []
+    assert pruned == 0
+
+
+def _serve(seen: list[str], entry: dict):
+    """Stand-in for data._download: writes a real tarball at any url."""
+    def _download(url: str, dest: Path) -> bool:
+        seen.append(url)
+        make_tarball(Path(dest), [entry])
+        return True
+    return _download
+
+
+def test_sync_redownloads_when_the_tag_changed(tmp_path, monkeypatch):
+    settings = make_settings(tmp_path)
+    _seed_dataset(settings)
+    (settings.data_dir / "SNAPSHOT.json").write_text(json.dumps({"ref": "dist-2026-09-08"}))
+    monkeypatch.setattr(data_mod, "latest_dist_tag", lambda: "dist-2026-09-09")
+    entry = {"id": "o/r/s", "name": "s", "installs": "1", "source": "o/r", "hash": "h"}
+    seen: list[str] = []
+    monkeypatch.setattr(data_mod, "_download", _serve(seen, entry))
+    sync_data(settings)
+    assert seen == [tarball_url("dist-2026-09-09")]
+    assert read_marker(settings.data_dir).get("ref") == "dist-2026-09-09"
+
+
+def test_sync_refresh_forces_a_download(tmp_path, monkeypatch):
+    settings = make_settings(tmp_path)
+    _seed_dataset(settings)
+    (settings.data_dir / "SNAPSHOT.json").write_text(json.dumps({"ref": "dist-2026-09-09"}))
+    monkeypatch.setattr(data_mod, "latest_dist_tag", lambda: "dist-2026-09-09")
+    entry = {"id": "o/r/s", "name": "s", "installs": "1", "source": "o/r", "hash": "h"}
+    seen: list[str] = []
+    monkeypatch.setattr(data_mod, "_download", _serve(seen, entry))
+    sync_data(settings, refresh=True)
+    assert seen == [tarball_url("dist-2026-09-09")]
+    assert read_marker(settings.data_dir).get("ref") == "dist-2026-09-09"
+
+
+def test_sync_without_tags_always_downloads(tmp_path, monkeypatch):
+    """Fallback to the branch when upstream publishes no tags: always re-fetch."""
+    settings = make_settings(tmp_path)
+    entry = {"id": "o/r/s", "name": "s", "installs": "1", "source": "o/r", "hash": "h"}
+    seen: list[str] = []
+    monkeypatch.setattr(data_mod, "_download", _serve(seen, entry))
+    sync_data(settings)
+    assert seen == [TARBALL_URL]
+    assert read_marker(settings.data_dir).get("ref") == DIST_BRANCH
 
 
 def test_sync_replaces_the_previous_snapshot(tmp_path, monkeypatch):

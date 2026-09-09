@@ -20,12 +20,21 @@ app = typer.Typer(help="Generate multi-angle Chinese introductions for agent ski
 
 
 @app.command()
-def sync() -> None:
-    """Download the whole dist branch (skills.jsonl + every SKILL.md) as one
-    tarball into the data dir, and prune results that went stale."""
+def sync(
+    refresh: bool = typer.Option(
+        False, "--refresh",
+        help="Download the snapshot again even when it is already the newest tag",
+    ),
+) -> None:
+    """Download the newest dist snapshot (skills.jsonl + every SKILL.md) as one
+    tarball into the data dir, and prune results that went stale.
+
+    Upstream tags each daily scrape; a sync whose tag is already on disk does
+    nothing, so repeat syncs cost one small request instead of a download.
+    """
     setup_logging()
     try:
-        data_dir, pruned = sync_data(Settings())
+        data_dir, pruned = sync_data(Settings(), refresh)
     except RuntimeError as e:
         logger.error("%s", e)
         raise typer.Exit(1)
