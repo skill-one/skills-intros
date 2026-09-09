@@ -23,6 +23,7 @@ skills-profiles run --limit 0           # every skill with missing prompts
 skills-profiles run --prompts tagline   # generate just this one prompt
 skills-profiles run --limit 5 --dry-run # offline smoke test (fake LLM, no API calls)
 skills-profiles run --limit 5 --debug   # print the rendered prompts to stderr
+skills-profiles run --concurrency 3     # cap parallel LLM calls (default 2)
 skills-profiles run --verbose           # DEBUG logging
 ```
 
@@ -117,7 +118,7 @@ defaults.
 | `SKILLS_PROFILES_BASE_URL` | – | OpenAI-compatible endpoint |
 | `SKILLS_PROFILES_API_KEY` | – | API key for the endpoint |
 | `SKILLS_PROFILES_LIMIT` | `10` | Skills to generate per run (`0` = all; cached skills are skipped, not counted) |
-| `SKILLS_PROFILES_CONCURRENCY` | `8` | Max concurrent LLM calls, shared across skills and prompts |
+| `SKILLS_PROFILES_CONCURRENCY` | `2` | Max concurrent LLM calls, shared across skills and prompts (also `--concurrency`) |
 | `SKILLS_PROFILES_OUTPUT_DIR` | `output` | Artifacts directory |
 | `SKILLS_PROFILES_DATA_DIR` | `cache/skills-sh` | Upstream data directory |
 | `SKILLS_PROFILES_PROMPTS_DIR` | `prompts` | Prompt markdown directory (plus `_system.md`) |

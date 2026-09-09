@@ -103,6 +103,11 @@ def run(
              "(0 = every skill with missing prompts). Skills whose selected prompts "
              "are all cached are skipped and do not count",
     ),
+    concurrency: int | None = typer.Option(
+        None, "--concurrency",
+        help="Max concurrent LLM calls shared across skills and prompts "
+             "(defaults to SKILLS_PROFILES_CONCURRENCY or 2)",
+    ),
     prompts_opt: str | None = typer.Option(
         None, "--prompts",
         help="Comma-separated prompt ids to fill in, e.g. 'tagline'. Cached outputs are "
@@ -122,6 +127,8 @@ def run(
     settings = Settings()
     if limit is not None:
         settings.limit = limit
+    if concurrency is not None:
+        settings.concurrency = concurrency
 
     prompt_set = load_prompt_set(settings.prompts_dir)
     only = None

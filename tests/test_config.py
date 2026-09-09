@@ -24,7 +24,7 @@ def test_built_in_defaults(tmp_path, monkeypatch):
     assert settings.base_url is None
     assert settings.api_key is None
     assert settings.limit == 10
-    assert settings.concurrency == 8
+    assert settings.concurrency == 2
 
 
 def test_env_var_overrides_dotenv(tmp_path, monkeypatch):

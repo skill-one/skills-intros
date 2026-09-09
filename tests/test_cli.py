@@ -31,6 +31,16 @@ def test_run_limit_counts_only_skills_that_generate(settings, monkeypatch):
     assert "Processing 0 of 4 skills" in result.output
 
 
+def test_run_concurrency_overrides_settings(settings, monkeypatch):
+    """`--concurrency` caps LLM parallelism like `--limit` does the budget."""
+    settings.concurrency = 8
+    monkeypatch.setattr("skills_profiles.cli.Settings", lambda: settings)
+
+    result = runner.invoke(app, ["run", "--limit", "1", "--concurrency", "3", "--dry-run"])
+    assert result.exit_code == 0, result.output
+    assert settings.concurrency == 3
+
+
 def test_invalidated_prompt_is_regenerated(settings, monkeypatch):
     monkeypatch.setattr("skills_profiles.cli.Settings", lambda: settings)
     runner.invoke(app, ["run", "--limit", "2", "--dry-run"])

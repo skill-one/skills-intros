@@ -27,6 +27,9 @@ on:
       limit:
         description: How many skills to generate this run
         default: "10"
+      concurrency:
+        description: Max concurrent LLM calls
+        default: "8"
   schedule:
     # Every 20 minutes
     - cron: "*/20 * * * *"
@@ -93,7 +96,17 @@ jobs:
         run: uv run skills-profiles invalidate --stale
 
       - name: Generate profiles
-        run: uv run skills-profiles run --limit "${{ inputs.limit }}"
+        # inputs exist only on workflow_dispatch; scheduled runs pass nothing and
+        # fall back to the CLI defaults (limit 10, concurrency 2)
+        run: |
+          args=()
+          if [ -n "${{ inputs.limit }}" ]; then
+            args+=(--limit "${{ inputs.limit }}")
+          fi
+          if [ -n "${{ inputs.concurrency }}" ]; then
+            args+=(--concurrency "${{ inputs.concurrency }}")
+          fi
+          uv run skills-profiles run "${args[@]}"
 
       - name: Publish to dist
         env:

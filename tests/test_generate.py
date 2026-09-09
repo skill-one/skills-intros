@@ -450,6 +450,7 @@ async def test_run_all_tallies_stats(settings, prompt_set):
 async def test_prompts_within_a_skill_share_the_concurrency_pool(settings, prompt_set):
     """Independent prompts of one skill run in parallel, bounded by the shared pool;
     the per-skill record separates wall time from summed LLM seconds."""
+    settings.concurrency = 8  # standalone run_one bounds itself by settings
     skill = load_skills(settings)[0]
     llm = ConcurrencyTrackingLLM(FakeLLM())
     record, reused = await run_one(llm, settings, prompt_set, skill)

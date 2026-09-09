@@ -23,6 +23,7 @@ skills-profiles run --limit 0           # 所有缺 prompt 的 skill
 skills-profiles run --prompts tagline   # 只生成这一个 prompt
 skills-profiles run --limit 5 --dry-run # 离线冒烟测试（假 LLM，无 API 调用）
 skills-profiles run --limit 5 --debug   # 打印渲染后的 prompt 到 stderr
+skills-profiles run --concurrency 3     # 限制 LLM 并发调用数（默认 2）
 skills-profiles run --verbose           # DEBUG 日志
 ```
 
@@ -110,7 +111,7 @@ skills-profiles run --prompts my_angle --limit 0
 | `SKILLS_PROFILES_BASE_URL` | 无 | OpenAI 兼容端点 |
 | `SKILLS_PROFILES_API_KEY` | 无 | 端点 API key |
 | `SKILLS_PROFILES_LIMIT` | `10` | 每次 run 生成的 skill 数（`0` = 全部；已缓存的跳过不计数） |
-| `SKILLS_PROFILES_CONCURRENCY` | `8` | LLM 最大并发调用数（跨 skill 及 skill 内 prompt 共享） |
+| `SKILLS_PROFILES_CONCURRENCY` | `2` | LLM 最大并发调用数（跨 skill 及 skill 内 prompt 共享；也可用 `--concurrency`） |
 | `SKILLS_PROFILES_OUTPUT_DIR` | `output` | 产物目录 |
 | `SKILLS_PROFILES_DATA_DIR` | `cache/skills-sh` | 上游数据目录 |
 | `SKILLS_PROFILES_PROMPTS_DIR` | `prompts` | prompt markdown 目录（含 `_system.md`） |
