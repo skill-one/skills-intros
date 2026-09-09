@@ -66,7 +66,8 @@ def test_run_writes_a_stats_summary(settings, monkeypatch):
     assert "Done in" in result.output
     assert "14 prompt(s) generated for 2/2 skill(s)" in result.output  # 2 skills x 7 prompts
     assert "Coverage:" in result.output
-    # every generating skill's line carries its generation seconds
+    # progress lines list only the newly generated prompts, with seconds, no markers
+    assert "*" not in result.output
     assert re.search(r"owner-a/repo-a/alpha: \S+ \d+\.\d+s", result.output)
 
     stats = json.loads((settings.output_dir / "stats.json").read_text(encoding="utf-8"))
