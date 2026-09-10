@@ -1,0 +1,10 @@
+# wan-3-0-prime-reference-to-video (`genmedia-labs/skills/wan-3-0-prime-reference-to-video`)
+
+## comments
+
+- user: 电商运营, category: 妙用, comment: prompt 和 seed 固定不动,只换参考数组里那张服装图,就能低成本 A/B 测试新款上身效果,脸和场景都不跑。
+- user: 第一次用的新手, category: 坑, comment: 只写 prompt 没传任何参考直接跑,报错 65 被拒。这个端点强制至少要一张参考图/视频/音频,纯文字生视频请去 text-to-video。
+- user: 短视频创作者, category: 坑, comment: 图省事挂了 10 秒运镜参考「以防万一」,结果计费秒数=成片 8 秒+参考 10 秒=18 秒,账单接近翻倍。现在只截最有用的两三秒。
+- user: 品牌方市场部, category: 注意, comment: prompt_extend 默认开启会自动改写扩写,我的品牌口号被润色走样。要逐字保留文案、或想快点出片,记得手动设为 false。
+- user: 广告片剪辑师, category: 启发, comment: 用下来最大的心得:长相、服装、产品外观全交给参考图,prompt 只写动作和运镜。一句「Image 1 转身回眸」比我堆 300 字外貌描写稳得多。
+- user: 短剧工作室主理人, category: 注意, comment: 多张参考图时 Image 1/2/3 严格按数组顺序对应。我调换了两张图的位置没改 prompt,主角服装直接互换,白白重跑一次。

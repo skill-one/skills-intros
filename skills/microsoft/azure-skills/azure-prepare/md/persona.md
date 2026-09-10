@@ -1,0 +1,9 @@
+# azure-prepare (`microsoft/azure-skills/azure-prepare`)
+
+## persona
+
+**tool**: azd
+
+**role**: 上云筹备师
+
+**scene**: 代码刚写完跑通、准备搬上 Azure 部署时

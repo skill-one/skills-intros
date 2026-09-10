@@ -1,0 +1,7 @@
+# wan-3-0-prime-reference-to-video (`genmedia-labs/skills/wan-3-0-prime-reference-to-video`)
+
+## tagline
+
+- 一张参考图，锁定角色每一帧
+- 角色不换脸，产品不走样
+- 图声为凭，一句话直出大片

@@ -1,0 +1,7 @@
+# hyperframes-animation (`heygen-com/hyperframes/hyperframes-animation`)
+
+## tagline
+
+- 动效即积木, 拼出电影级编排
+- 帧帧精准可复现, 暂停续播不走样
+- 七大引擎一套指挥, 动画随心所欲

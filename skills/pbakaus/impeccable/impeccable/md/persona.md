@@ -1,0 +1,9 @@
+# impeccable (`pbakaus/impeccable/impeccable`)
+
+## persona
+
+**tool**: browser
+
+**role**: 界面设计师
+
+**scene**: 页面做出来了、却总觉得差点意思时

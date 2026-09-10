@@ -1,0 +1,9 @@
+# media-use (`heygen-com/hyperframes/media-use`)
+
+## persona
+
+**tool**: resolve
+
+**role**: 片场剧务
+
+**scene**: 你盯着干巴巴的片子说「总觉得还差点什么」时

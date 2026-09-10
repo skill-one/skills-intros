@@ -1,21 +1,21 @@
 {
   "prompts": {
-    "blackbox": 334,
-    "comments": 334,
-    "domain": 334,
-    "persona": 334,
-    "scenario": 334,
-    "tagline": 334,
-    "whitebox": 334
+    "blackbox": 326,
+    "comments": 326,
+    "domain": 326,
+    "persona": 326,
+    "scenario": 326,
+    "tagline": 326,
+    "whitebox": 326
   },
   "skills": {
-    "complete": 334,
-    "remaining": 8625,
+    "complete": 326,
+    "remaining": 8592,
     "stale": 0,
-    "total": 8959
+    "total": 8918
   },
   "snapshot": {
-    "fetched_at": "2026-09-09T02:01:24Z",
-    "ref": "dist-2026-09-09"
+    "fetched_at": "2026-09-10T07:22:00Z",
+    "ref": "dist-2026-09-10"
   }
 }

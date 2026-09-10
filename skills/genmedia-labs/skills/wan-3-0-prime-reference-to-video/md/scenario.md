@@ -1,0 +1,5 @@
+# wan-3-0-prime-reference-to-video (`genmedia-labs/skills/wan-3-0-prime-reference-to-video`)
+
+## scenario
+
+同一个角色,换个镜头就换了张脸?AI 视频最痛的是"一致性"。给我参考图/视频/音频,我让角色的脸、产品的样子、场景从头到尾不变,一次出 2–30 秒成片 🎬

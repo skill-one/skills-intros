@@ -1,0 +1,7 @@
+# wind-mcp-skill (`wind-alice/alicemarket/wind-mcp-skill`)
+
+## tagline
+
+- 权威金融数据，一问即达
+- 全球市场行情，对话间尽在掌握
+- 让每个判断，都有真实数据背书

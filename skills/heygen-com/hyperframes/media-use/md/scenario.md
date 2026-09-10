@@ -1,0 +1,5 @@
+# media-use (`heygen-com/hyperframes/media-use`)
+
+## scenario
+
+做视频最耗时的不是剪,是找:配乐、配音、音效、图标、调色,到处搜半天还不搭,画面还暗沉发灰。我一个 resolve 指令全搞定——曲库直接选或现场生成,还能调色、配音、加字幕、去背景。

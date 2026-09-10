@@ -1,0 +1,13 @@
+# hyperframes-creative (`heygen-com/hyperframes/hyperframes-creative`)
+
+## whitebox
+
+- 第一步: 检查项目是否有设计规范, 按优先级 frame.md → design.md → DESIGN.md 解析, frontmatter 字段 (颜色/字体/间距/语气) 作为品牌真相
+- 第二步: 任何非平凡构图, 先读两份必读文档 references/house-style.md 和 references/video-composition.md, 避免'网页感'的平庸输出
+- 第三步: 按任务查路由表, 只按需加载对应 references/ 文档 (配色、排版、节拍、旁白、音频联动等), 简单改动不读全量
+- 第四步: 多场景先规划节拍与节奏; 运动模式/转场/场景蓝图交给 hyperframes-animation 技能处理, 且不覆盖 hyperframes-core 的技术规则
+- 第五步: 需要时运行本地脚本收尾: contrast-report.mjs 检查渲染帧的对比度告警, extract-audio-data.py 预提取音频数据供音画联动
+
+- 设计规范解析: 按固定优先级 (frame.md → design.md → DESIGN.md) 读取, frontmatter = 规范性 token (强制遵守), 正文散文 = 仅作上下文; 解析细则统一收敛在 references/design-spec.md
+- 路由表懒加载: 所有需求点一一映射到 references/ 下的 markdown 文档 (构图模式、视觉风格、数据展示、脚本节奏等), 按任务定向读取而非全文通读; 无设计规范时按四条路线选型 (预设模板/具名风格/快速默认/交互式挑选)
+- 本地工具链 + 技能边界: 核心依赖是 markdown 参考文档和本地 Node/Python 脚本 (contrast-report.mjs 优先从当前项目解析依赖包, 否则引导加载捆绑的 HyperFrames 包, 可用 HYPERFRAMES_SKILL_PKG_VERSION 钉版本; package-loader.mjs 为配套支持脚本); 动画相关整体外包给 hyperframes-animation, 技术契约归 hyperframes-core

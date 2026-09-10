@@ -1,0 +1,10 @@
+# hyperframes-animation (`heygen-com/hyperframes/hyperframes-animation`)
+
+## comments
+
+- user: 第一次做网页视频的新手, category: 坑, comment: 粒子坐标我直接用 Math.random，预览一拖进度条位置就变，渲染出来和预览对不上。改成开头算好一次存成常量才稳。
+- user: 后端老兵, category: 坑, comment: 我把时间线写在 await 拿数据之后，结果页面全不动。时间线必须在同步代码里建，数据要提前备好。
+- user: 独立开发者, category: 启发, comment: 上来就套 brand-reveal 蓝图，三百行难改。多数场景 2-4 条原子规则加一条 GSAP 时间线更省，蓝图留给复杂编排。
+- user: 动效师转前端, category: 注意, comment: 两条红线先记住：宽高位移别 tween，用 scale；display/visibility 不能动，淡入淡出改用 autoAlpha。
+- user: AE 出身视频民工, category: 妙用, comment: AE 导出的 Lottie 素材别用 GSAP 硬仿，直接挂 Lottie adapter，和主时间线共存，一次 seek 全同步。
+- user: 前端组长, category: 妙用, comment: 长片写完跑一遍 animation-map.mjs，输出的 json 直接标出中段 4 秒 dead zone，照着补 stagger，不用肉眼逐帧看。

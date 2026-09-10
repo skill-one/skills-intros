@@ -1,0 +1,7 @@
+# prisma-compute (`prisma/skills/prisma-compute`)
+
+## tagline
+
+- 一条命令,应用直达云端
+- 从代码到上线,我全程护航
+- 部署难题,一次扫清不踩坑

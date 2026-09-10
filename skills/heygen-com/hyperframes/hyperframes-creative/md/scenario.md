@@ -1,0 +1,5 @@
+# hyperframes-creative (`heygen-com/hyperframes/hyperframes-creative`)
+
+## scenario
+
+视频代码跑通了,画面却像干巴巴的网页:配色杂、字挤、节奏平,观众 3 秒划走。我是 HyperFrames 创意指导——管配色、字体、构图、旁白节奏,把"能看"做成"想看"。🎨

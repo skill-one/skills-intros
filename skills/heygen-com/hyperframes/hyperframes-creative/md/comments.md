@@ -1,0 +1,10 @@
+# hyperframes-creative (`heygen-com/hyperframes/hyperframes-creative`)
+
+## comments
+
+- user: 第一次做宣传片的运营, category: 坑, comment: 我直接说"做个产品介绍", 出来像网页截图——居中标题加大片空白。后来开头补一句"先读 house-style 和 video-composition 再动手", 画面立刻有了层次。
+- user: 品牌设计负责人, category: 注意, comment: 品牌色写在 design.md 说明段落里, 成片居然没照用; 挪进文件头 frontmatter 才被严格执行。硬约束放头部, 正文只是背景参考, 别搞反了。
+- user: 独立开发者, category: 妙用, comment: 它很克制: 我说做 3 屏就真做 3 屏, 不擅自加场景配乐字幕。想要扩展得自己先提。把范围写清进需求, 一次成稿, 返工几乎为零。
+- user: 播客主播, category: 注意, comment: 做音频律动前必须先跑 extract-audio-data.py 预提取频段, 它不会凭空听音频; 而且要在仓库根目录带路径跑, 我在子目录里跑直接报错。
+- user: 短视频剪辑师, category: 妙用, comment: 成片前我必跑 contrast-report.mjs 过一遍渲染帧, 抓到过深色背景上的深灰小字; 当场改色重渲, 省掉一轮客户返工。
+- user: 十年前端老兵, category: 启发, comment: 它要求直接生成真实文案, 不用占位文本——demo 显假多半因为 Lorem ipsum。像写代码不写伪代码, 自从照做, 客户第一稿过审率明显变高。

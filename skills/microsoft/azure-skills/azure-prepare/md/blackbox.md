@@ -1,0 +1,9 @@
+# azure-prepare (`microsoft/azure-skills/azure-prepare`)
+
+## blackbox
+
+**function**: 帮你的应用项目做好「部署上云」的全部准备：生成部署所需的配置文件和云端资源定义，让你能用 azd（Azure 官方的一键部署命令行工具）把项目发布到 Azure 云 ☁️ — 全程会先给你一份部署计划过目、确认后才动手。
+
+- input: 一个本地应用代码文件夹（如 Node.js / Python 网站或接口服务）+ 一句「用 azd 部署到 Azure」, output: 项目里新增：azure.yaml（部署配置）、infra/ 目录下的云端资源定义、各服务的 Dockerfile，外加一份供你确认的部署计划文档 — 拿到手即可执行 azd up 一键上线
+- input: 一个 Azure Functions 定时任务 / 消息触发的函数项目，要求「部署成定时触发的云函数」, output: 对应的函数应用云端配置与基础设施文件（托管方案、触发器设置等）+ 部署计划文档
+- input: 一个已有 azure.yaml 的项目 + 「再加一个 SQL 数据库」或「改用 Terraform（另一种云资源描述格式）」, output: 更新后的 azure.yaml，以及新增 / 替换后的云资源定义文件，与项目其余部分配套可用
