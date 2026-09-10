@@ -1,0 +1,7 @@
+# caveman-review (`juliusbrussee/caveman/caveman-review`)
+
+## tagline
+
+- 一行一评, 位置、问题、修法全齐
+- 代码评审零废话, 复制即用
+- 短到极致, 准到见血

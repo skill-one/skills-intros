@@ -1,0 +1,10 @@
+# image-outpainting (`prime-skills/runcomfy-agent-skills/image-outpainting`)
+
+## comments
+
+- user: 剪辑小哥, category: 妙用, comment: 同一张 1:1 方图连出三版:16:9 发 B 站、9:16 发抖音、1:1 发小红书,prompt 只改画布方向,素材一次拍够。
+- user: 第一次用的新手, category: 坑, comment: 第一次扩图没在 prompt 末尾加 'Keep the original exactly as in the input',结果原图人脸也被重新生成了。加上这句就稳。
+- user: 电商美工, category: 注意, comment: 只靠 prompt 里写 '改成 16:9' 不行,必须在 input 里显式设 aspect_ratio 字段锁画布,不然出来的宽高比经常飘。
+- user: 后端老兵, category: 注意, comment: CI 里必设 RUNCOMFY_TOKEN,否则 exit 77 才发现没登录;限流报 75,直接重试,别把任务标成失败。
+- user: 风光摄影党, category: 妙用, comment: 做超宽全景别一次扩 100%:每轮只扩 30~50%,拿上轮结果当输入接着扩,边界画质不崩,两三轮就出电影级横幅。
+- user: 老照片修复爱好者, category: 注意, comment: 修复老照片时给 GPT Image 2 塞几张同年代参考图,补出的衣领发型年代感才对。另外它只往外扩,补图内破洞要用 inpainting。

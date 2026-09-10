@@ -1,0 +1,13 @@
+# supabase-postgres-best-practices (`supabase/agent-skills/supabase-postgres-best-practices`)
+
+## whitebox
+
+- 接收 Postgres 任务:写 SQL、建表改列、索引、RLS 策略、迁移,或排查慢查询/高 CPU/锁等待——触发范围由 skill 的 When to Apply 定义
+- 将任务映射到适用的规则类别,并按优先级排序:查询性能/连接管理/安全与 RLS 是 CRITICAL 级,最先处理
+- 按需从 references/ 目录加载对应规则文件(如 references/query-missing-indexes.md、references/_sections.md)
+- 对照规则内的 incorrect vs correct SQL 示例及 EXPLAIN 计划/性能指标,编写或修正 SQL
+- 输出结果,适用时附上 Supabase 专项说明
+
+- 文件式规则库 + 按需加载:知识被拆成 references/ 下每条规则一个 markdown 文件,按文件名按需读取,运行时不依赖任何外部模型 API
+- 优先级路由:8 个类别按影响力排序(query-、conn-、security- → schema- → lock- → data- → monitor- → advanced-),决定任务命中哪些规则、以什么顺序应用;跨类别任务先解决高影响力问题
+- 正误示例锚定校验:每条规则含 incorrect vs correct SQL 对照、EXPLAIN 计划和具体性能指标,作为生成 SQL 的基线;规则覆盖 pg_cron/pgmq 队列与定时任务、pgvector 向量检索、pg_restore 恢复等扩展域,知识参考源为 PostgreSQL 官方文档、Supabase 文档与 PostgreSQL wiki

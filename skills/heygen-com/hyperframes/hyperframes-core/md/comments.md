@@ -1,0 +1,10 @@
+# hyperframes-core (`heygen-com/hyperframes/hyperframes-core`)
+
+## comments
+
+- user: 第一次用的新手, category: 坑, comment: 根 div 忘写宽高,子元素全塌进左上角,check 不一定拦得住。现在先给根固定 px 尺寸,再 snapshot 截帧亲眼确认。
+- user: 十年前端转做视频, category: 坑, comment: 在 CSS 写了初始位移,GSAP 又动同一属性,lint 直接报 transform 冲突。初值全挪进 fromTo 里就过了。
+- user: 从剪映转来的剪辑师, category: 注意, comment: 以为轨道号定先后,纠结半天。其实 data-track-index 只是 Studio 显示用的,时间全看 data-start,轨道不用抢。
+- user: 全栈老兵, category: 妙用, comment: data-duration 才是真出点,timeline 写超会被裁。我故意把补间拉长,调节奏只改这一个数;想定格画面就提前结束 timeline。
+- user: 做组件复用的独立开发者, category: 坑, comment: 子组合的 <style> 放在 head 里,组装时整个被丢掉,预览直接裸奔。样式一律写进 template 内部,<link> 会自动提升没事。
+- user: 视频工作室主理人, category: 启发, comment: 流程改成 check → snapshot 抽帧自检 → preview --background 给客户边看边改,点头才 render。服务后台常驻,不用反复重启。

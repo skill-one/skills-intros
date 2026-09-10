@@ -1,0 +1,13 @@
+# ace-step (`prime-skills/runcomfy-agent-skills/ace-step`)
+
+## whitebox
+
+- 匹配触发词 (如 "ace step"/"inpaint audio"/"extend music") 与用户意图, 判定是生成、修复区间还是延长音轨
+- 按意图选定四个端点之一: text-to-audio (base 或 1.5) / audio-inpaint / audio-outpaint
+- 按该端点 schema 组装 JSON 输入体 (tags 必填, 外加 lyrics/duration/seed 或时间区间参数)
+- 通过 Bash 执行 runcomfy run <端点> --input '<JSON>' --output-dir ./out
+- CLI 向 RunComfy Model API 发请求 → 轮询请求状态 → 把生成的音频下载到 --output-dir
+
+- 意图路由: 四个端点各有一套 schema — inpaint 用 start_time/end_time 定义编辑区 (可锚定到曲目开头或结尾, 无 mask), outpaint 用 extend_before/after_duration 向前后扩展
+- 参数校验: duration 限 5–240 s; outpaint 新增+原曲总长 ≤ 4 min; lyrics 用 [Verse]/[Chorus]/[Bridge] 段落标记, [inst] 表示无人声; tags (逗号分隔的风格/情绪/乐器标签) 是必填且驱动整个作曲
+- 外部依赖: runcomfy CLI (allowed-tools 限定为 Bash(runcomfy *)); 后端是 RunComfy Model API 上的 ACE Step 开源权重模型 (Apache 2.0); 认证走 runcomfy login 或 RUNCOMFY_TOKEN 环境变量; prompt 内容以 JSON 经 HTTPS 直传, 不经 shell 展开, 无 shell 注入面

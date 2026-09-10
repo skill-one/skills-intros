@@ -1,0 +1,7 @@
+# caveman-review (`juliusbrussee/caveman/caveman-review`)
+
+## domain
+
+**domain**: 🧪 测试与质量
+
+**reason**: 专做代码审查：一行一条意见, 定位+问题+修法

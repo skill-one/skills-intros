@@ -1,0 +1,13 @@
+# runcomfy-cli (`prime-skills/runcomfy-agent-skills/runcomfy-cli`)
+
+## whitebox
+
+- 触发: 用户要求调用 RunComfy 模型 (文生图/视频/口型同步等), skill 通过声明的 Bash(runcomfy *) 执行 `runcomfy` 子命令
+- 鉴权: 读取 ~/.config/runcomfy/token.json 或环境变量 RUNCOMFY_TOKEN; 未登录/被拒则退出码 77, 需先 `runcomfy login` (设备码流程) 并用 whoami 验证
+- 提交: `runcomfy run <vendor>/<model>/<endpoint> --input '<JSON体>'` 把 JSON body 经 HTTPS POST 到 model-api.runcomfy.net (bearer token)
+- 轮询: 每 ~2s GET 请求状态直到 completed/failed/canceled; --no-wait 则立即返回 request_id 事后用 `runcomfy status` 查; 超时/429 返回退出码 75, --timeout 限制等待
+- 下载: 对结果中 *.runcomfy.net / *.runcomfy.com 的每个输出 URL 抓取到 --output-dir (默认 cwd); --no-download 跳过, 单文件超 2 GiB 中止
+
+- 单二进制 + 受限工具面: skill 的 allowed-tools 仅 Bash(runcomfy *), 除一次性安装外只执行 runcomfy 子命令; prompt 以 JSON 字符串直接经 HTTPS 传输, CLI 不做 shell 展开, 故 prompt 内容无 shell 注入面
+- 外部依赖: RunComfy Model API — model-api.runcomfy.net (提交) + *.runcomfy.net / *.runcomfy.com (下载白名单); 鉴权为 bearer token (0600 权限的 token 文件, 或 RUNCOMFY_TOKEN 环境变量覆盖, 供 CI/容器); 无遥测、无第三方回调
+- 脚本化协议: --output json 输出机器可读 JSON 供管道 (配合 jq 提取 images[0]/request_id); 退出码语义化 (65 输入 JSON/schema 不符不重试, 69 上游 5xx 可退避重试, 75 超时/429 可重试→shell 指数退避, 77 需重新登录); Ctrl-C 退出前先发 DELETE 取消远端任务, 避免为废弃工作计费

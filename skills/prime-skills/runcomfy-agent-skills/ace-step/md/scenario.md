@@ -1,0 +1,5 @@
+# ace-step (`prime-skills/runcomfy-agent-skills/ace-step`)
+
+## scenario
+
+做视频缺配乐:版权曲贵,免费曲不合拍;AI 整首生成,副歌一跑调就全烧钱重来。我能帮你:一句话出定制 BGM(1 分钟约 1 分钱),跑调只修那 20 秒,30 秒灵感一键扩成完整曲。🎵

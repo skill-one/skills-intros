@@ -1,0 +1,10 @@
+# kling-3-0 (`prime-skills/runcomfy-agent-skills/kling-3-0`)
+
+## comments
+
+- user: 第一次用的新手博主, category: 坑, comment: i2v 直接把本地图片路径填进 image_url,一直报错,后来才明白只认公网 HTTPS 链接。先把图传到图床拿到 https 地址,再跑就通了。
+- user: 独立剪辑师, category: 妙用, comment: i2v 的 tail_image_url 填同一张源图,首尾帧一致,生成出来就是无缝循环素材,拿来做直播间背景和网页头图刚刚好。
+- user: 电商内容运营, category: 注意, comment: Standard/Pro 开音频单价涨五成,我出纯画面循环素材都不开;4K 档反而音频不另收费,要配音就放心开 generate_audio。
+- user: 后端老兵, category: 坑, comment: 提示词写 20 秒直接 422,单条上限 15 秒。我把脚本按镜头切段分开生成再拼接;另外提交后发现写错,趁生成中 Ctrl-C 取消不计费。
+- user: 广告片导演, category: 启发, comment: 把分镜编号写进提示词:Shot 1 全景、Shot 2 特写,一条生成里角色脸和服装全程不漂移。以前分三段生成再对脸,现在一次出片。
+- user: 接单的自由职业视频师, category: 妙用, comment: 先用 Standard 低成本筛提示词,固定 seed 才好对比变量;方向定了再上 4K 出终稿。别一上来就烧 4K,差价差不多 5 倍。

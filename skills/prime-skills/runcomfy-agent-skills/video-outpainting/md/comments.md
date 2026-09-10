@@ -1,0 +1,10 @@
+# video-outpainting (`prime-skills/runcomfy-agent-skills/video-outpainting`)
+
+## comments
+
+- user: 新媒体运营小鹿, category: 妙用, comment: 竖版转横版时,别只写"加匹配环境",要具体:"两侧延伸出同款沙滩和椰树"。补出来的区域基本能直接用,省了返工。
+- user: 第一次用的新手阿俊, category: 坑, comment: 装完 CLI 没登录直接跑,报 77 一头雾水。查了文档才知道 77=未登录,先 runcomfy login 就好,别像我瞎排查半天。
+- user: 广告导演老魏, category: 注意, comment: 客户交付别指望 CLI,Wan 的接缝大屏一看就穿帮。正式活我上 RunComfy 网页开 LTX 2-3 outpaint 工作流——那是 GUI,CLI 摸不到。
+- user: 后端老兵 Kevin, category: 注意, comment: CI 里跑记得 export RUNCOMFY_TOKEN,不然每次 77。产物单文件超 2 GiB 会被直接掐断,长视频切短再跑更稳。
+- user: 老素材修复党, category: 坑, comment: 想把 30 秒素材变 60 秒,错拿 outpaint 试,结果画面变宽、时长没变。要加帧数得走 video-extend,空间扩展和时间扩展是两码事。
+- user: 短视频创业者 Mia, category: 启发, comment: 三段式写法:先说画布怎么扩,再说延伸区保持什么,最后加一句保护中心主体。有次漏了末句,主角被重新调色,现在都按模板写。

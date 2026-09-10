@@ -1,0 +1,7 @@
+# writing-fragments (`mattpocock/skills/writing-fragments`)
+
+## tagline
+
+- 写作卡壳？先把碎片聊出来
+- 你随口一说，我替你留住金句
+- 一个好词，撑得起整篇文章

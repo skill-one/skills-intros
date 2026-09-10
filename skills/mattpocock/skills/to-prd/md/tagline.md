@@ -1,0 +1,7 @@
+# to-prd (`mattpocock/skills/to-prd`)
+
+## tagline
+
+- 聊完即成 PRD，需求零采访落地
+- 对话变文档，AI 看板直接开工
+- 少开会少记录，需求自动上板

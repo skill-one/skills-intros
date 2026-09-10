@@ -1,0 +1,7 @@
+# elevenlabs-music-generation (`prime-skills/runcomfy-agent-skills/elevenlabs-music-generation`)
+
+## tagline
+
+- 文字进,音乐出
+- 你写故事,我来唱
+- 5 秒到 5 分钟,好歌随叫随到

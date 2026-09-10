@@ -1,0 +1,7 @@
+# setup-pre-commit (`mattpocock/skills/setup-pre-commit`)
+
+## tagline
+
+- 脏代码，止步于提交前
+- 格式、类型、测试，提交前自动把关
+- 一次配好，每次提交都安心

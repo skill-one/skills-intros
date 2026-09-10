@@ -1,0 +1,7 @@
+# setup-pre-commit (`mattpocock/skills/setup-pre-commit`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 为代码仓库搭建提交前钩子, 属于工程化工具配置

@@ -1,0 +1,7 @@
+# controlnet-pose (`prime-skills/runcomfy-agent-skills/controlnet-pose`)
+
+## domain
+
+**domain**: 🎨 设计多媒体
+
+**reason**: AI 图像/视频生成, 按姿势参考图或动作视频生成视觉内容

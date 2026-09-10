@@ -1,0 +1,5 @@
+# azure-cost (`microsoft/azure-skills/azure-cost`)
+
+## scenario
+
+月底 Azure 账单又爆了?💰 闲置资源没人管、服务器配置买太大、费用暴涨查不出原因——钱就这么白白烧掉。我能查清每笔开销、预测下月支出、揪出浪费,帮你把账单打下来。

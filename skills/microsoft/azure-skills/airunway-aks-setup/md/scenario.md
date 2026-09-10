@@ -1,0 +1,5 @@
+# airunway-aks-setup (`microsoft/azure-skills/airunway-aks-setup`)
+
+## scenario
+
+想让大模型跑在自己的 AKS 集群里,却被装环境、配 GPU、连环报错卡到崩溃?我从空集群到模型上线一条龙:装控制器、查显卡兼容、选推理引擎、部署首个模型。每步先确认,出错即修。🚢

@@ -1,0 +1,7 @@
+# reddit-automation (`flowkit-labs/skills/reddit-automation`)
+
+## domain
+
+**domain**: 📈 商业运营
+
+**reason**: 在 Reddit 找高意向用户并代写诚实的营销回复，本质是市场营销与增长获客。

@@ -1,0 +1,10 @@
+# controlnet-pose (`prime-skills/runcomfy-agent-skills/controlnet-pose`)
+
+## comments
+
+- user: 短视频工作室主理人, category: 坑, comment: 带运镜切换、双人同框的跳舞视频直接丢进 Kling, 迁出来的动作全乱。换成单人、单一连续动作、不切镜头的参考, 一次就稳。参考视频质量占一半成败。
+- user: 第一次用 CLI 的前端, category: 坑, comment: 直接把照片当 control_image 想让它自己提姿势, 报错 65。骨架图得先用 DWPose 之类工具生成、传网上拿 URL 再喂进来, CLI 只消费不提取。
+- user: 广告分镜师, category: 妙用, comment: 我用 standard 档出草稿定运镜构图, 客户点头才换 Pro 重跑终稿, 改十版不心疼。想叠加 pose+depth 的别折腾 CLI, 直接开 ComfyUI 工作流。
+- user: 独立游戏美术, category: 注意, comment: 写实人脸经 Kling 迁动作后, 五官'像但不是她', 交付前得再叠一道 face-swap。插画/二次元角色就没这问题, 一步到位。
+- user: 运维老哥, category: 注意, comment: CI 里报 77 未登录, 容器里没人能交互式 login, 要先 export RUNCOMFY_TOKEN。另外单文件超 2 GiB 下载会中断, 长视频留意。
+- user: 想做虚拟主播的独立开发者, category: 启发, comment: 最大转变: 参考视频本身就是提示词。以前费劲用文字描述'转身、抬手', 现在直接演一遍让角色照做, 比任何 prompt 都准。

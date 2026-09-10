@@ -1,0 +1,7 @@
+# skill-creator (`anthropics/skills/skill-creator`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 创建/优化 skill 本质是面向 AI 的工程: 写结构化指令与脚本, 再用测试评估迭代, 类似"给 AI 写代码"

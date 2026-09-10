@@ -1,0 +1,7 @@
+# ai-avatar-video (`prime-skills/runcomfy-agent-skills/ai-avatar-video`)
+
+## tagline
+
+- 一张照片一段声音,视频开口说话
+- 让任何肖像开口,口型分毫不差
+- 写好台词,数字人替你出镜

@@ -1,0 +1,13 @@
+# high-end-visual-design (`leonxlnx/taste-skill/high-end-visual-design`)
+
+## whitebox
+
+- 静默掷 Variance Engine (第3节): 按需求语境各选 1 个 Vibe 原型 (如 Ethereal Glass) + 1 个布局原型 (如 Asymmetrical Bento)
+- SCAFFOLD: 定背景纹理、宏观留白 (py-24 起步) 与超大字号排版骨架
+- ARCHITECT: 所有卡片/输入框/功能区用 Double-Bezel 双层嵌套构建 (外壳 div + 内核容器, 同心圆角)
+- CHOREOGRAPH: 注入自定义 cubic-bezier 动效 — 错峰导航 reveal、按钮内嵌图标悬停位移、滚动进场 fade-up
+- OUTPUT: 交付前按第 8 节 checklist 逐项自检, 输出不含通用降级方案的成品代码
+
+- 反模式硬校验 (第2节 'ABSOLUTE ZERO'): 出现禁用字体 (Inter/Roboto/Arial 等)、粗描边图标库 (Lucide/FontAwesome)、通用 1px 灰边框、硬投影、贴顶吸顶导航、linear/ease-in-out 缓动中任一项即判失败
+- 外部依赖: 输出 React + Tailwind CSS 代码; 高端字体 (Geist / Clash Display / PP Editorial New / Plus Jakarta Sans) 假定可用; 滚动进场用 IntersectionObserver 或 Framer Motion 的 whileInView, 明确禁用 window scroll 监听 (避免移动端重排掉帧)
+- 强制转换/护栏规则: 视口 <768px 时布局必须降级为单列 w-full + px-4, 移除旋转与负 margin 重叠; 动画只允许 transform/opacity; backdrop-blur 仅限 fixed/sticky 元素; 噪点纹理挂 fixed + pointer-events-none 层

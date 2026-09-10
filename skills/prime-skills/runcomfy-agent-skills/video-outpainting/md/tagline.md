@@ -1,0 +1,7 @@
+# video-outpainting (`prime-skills/runcomfy-agent-skills/video-outpainting`)
+
+## tagline
+
+- 竖屏秒变横屏,主角始终居中
+- 画面不够宽?让镜头外自然生长
+- 不裁不切,把世界延伸进画布

@@ -1,0 +1,7 @@
+# git-guardrails-claude-code (`mattpocock/skills/git-guardrails-claude-code`)
+
+## tagline
+
+- 给 AI 的 git 操作,上一道安全锁
+- 误删、强推、清空——执行前统统拦下
+- 让 Claude 大胆干活,代码毫发无损

@@ -1,0 +1,10 @@
+# lipsync (`prime-skills/runcomfy-agent-skills/lipsync`)
+
+## comments
+
+- user: 第一次用的新手, category: 坑, comment: 直接把本地文件路径塞进 video_url 报 65, 才知道只收公网可访问的 URL——先把视频和音频传到 CDN/网盘, 再把链接填进 --input。
+- user: 出海品牌运营, category: 妙用, comment: 同一张肖像配 5 条不同语言的音频连跑 5 次 OmniHuman, 人物形象口型完全一致, 多国市场的内容一条龙搞定, 不用重拍。
+- user: 自动化工程师, category: 注意, comment: CI 里记得 export RUNCOMFY_TOKEN, 不然报 77。75 是限流/超时, 直接重试就行; 69 才是上游服务真挂了, 别搞混白等。
+- user: 配音工作室主理人, category: 注意, comment: 带背景音乐的配音嘴型发糊, 抽出纯人声再跑立刻准了。另外音频比视频长的那段会漂移, 跑之前先剪到两边等长。
+- user: 独立接单剪辑师, category: 妙用, comment: 草稿全部走 sync v2, 客户定稿才换 v2 Pro, 批量试错的成本少一半, 成片嘴型质量看不出差别, 只在交付时烧 Pro。
+- user: 带货短视频剪辑, category: 坑, comment: 拿自录的配音喂 Kling 文生视频, 结果它每轮重新生成声音, 根本不是我的音色。要锁指定音频, 得走音频驱动那条线。

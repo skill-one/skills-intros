@@ -1,0 +1,7 @@
+# scaffold-exercises (`mattpocock/skills/scaffold-exercises`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 创建目录结构、跑 lint、git 提交, 本质是代码仓库的脚手架工程操作

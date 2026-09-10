@@ -1,0 +1,10 @@
+# supabase-postgres-best-practices (`supabase/agent-skills/supabase-postgres-best-practices`)
+
+## comments
+
+- user: 审了十年 PR 的后端老兵, category: 妙用, comment: 我把每条规则的「错误示例→正确示例」当 review 清单, AI 生成的 migration 执行前先对照过一遍, 已经抓到过漏建的索引和空着没写策略的 RLS。
+- user: Supabase 新手, 独立开发, category: 坑, comment: 我以为它是查询慢了才用的救火手册。按自己的习惯建表上线, 之后回头补索引、改列类型, 比一开始按规则设计费劲得多。现在动任何表之前先问它一句。
+- user: 自建 PG 的运维老哥, category: 注意, comment: 自建 PG 也能用: 规则里 Supabase 专属的注意事项会单独标出, 跳过即可, 剩下的连接池、锁、膨胀都是通用 Postgres 问题。别被名字劝退。
+- user: 半路写 SQL 的数据分析师, category: 坑, comment: 起初只丢一句「查询很慢」, 得到的建议正确但没法落地; 改成把 SQL 连同 EXPLAIN 输出原文贴上后, 直接定位到缺索引。喂原始材料, 别喂症状。
+- user: 小团队技术负责人, category: 启发, comment: 那张优先级表改变了我的还债顺序: 我总想先玩 pgvector 这类高级特性 (LOW), 其实连接管理、RLS 才是 CRITICAL。基础没打牢, 花哨功能白搭。
+- user: 第一次接多租户的全栈, category: 妙用, comment: 出过一次用户看到别家租户数据的事故。把表结构和 RLS 策略原文贴给它, 按 security- 开头的规则逐条过, 指出策略里没限定租户字段, 比人肉读策略快。

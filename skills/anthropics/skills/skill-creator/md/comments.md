@@ -1,0 +1,10 @@
+# skill-creator (`anthropics/skills/skill-creator`)
+
+## comments
+
+- user: 第一次做技能的产品经理, category: 坑, comment: 错误做法：description 写得太谦虚 → 平时提需求根本不触发。把用户会说的原话、场景词全塞进 description 才稳定命中，别怕显得主动。
+- user: 后端老兵, category: 妙用, comment: 带技能和对照组两路子任务务必同一轮一起发，别跑完一路再发另一路；等结果的空档正好把断言写完，整轮时间直接省一半。
+- user: 运维老哥, category: 注意, comment: 服务器没桌面就加 --static 出静态页面；点提交后下载的是 feedback.json 文件，要手动拷回 workspace，下一轮迭代才读得到反馈。
+- user: 靠写作技能吃饭的撰稿人, category: 坑, comment: 我给写作风格技能硬写断言，结果要么全过要么全挂，benchmark 看着热闹却毫无区分度。主观输出人工逐个看、留反馈更实在。
+- user: 在意运行成本的数据工程师, category: 坑, comment: 子任务完成通知里的耗时和 token 数只出现一次，没当场存成 timing.json 就永久丢了。我第二轮想对比成本，数字全对不上。
+- user: 修自己旧技能的独立开发者, category: 启发, comment: 只在我那三个测试例子上调到全过，换种说法就翻车。现在每改一条规则都先问：换个用户、换个措辞，这条修改还成立吗？

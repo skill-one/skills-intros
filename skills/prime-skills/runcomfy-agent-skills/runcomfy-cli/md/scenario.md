@@ -1,0 +1,5 @@
+# runcomfy-cli (`prime-skills/runcomfy-agent-skills/runcomfy-cli`)
+
+## scenario
+
+想做AI图/视频,却要一个个装软件、学工具、排队渲染?🖥️ 我一条命令搞定:生图、改图、图生视频、对口型、换脸,提交后自动等结果、自动下载文件。你只管说想要什么,跑模型的脏活我来。

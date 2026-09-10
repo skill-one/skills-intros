@@ -1,0 +1,5 @@
+# git-guardrails-claude-code (`mattpocock/skills/git-guardrails-claude-code`)
+
+## scenario
+
+让 AI 帮你写代码时,它可能执行 git push --force、reset --hard 这类命令,一次误操作就能吞掉你的提交和未保存的改动。我能给 Claude Code 装上"刹车":在命令执行前拦截并阻止危险的 git 操作,让代码零丢失。🔧

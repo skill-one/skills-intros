@@ -1,0 +1,7 @@
+# video-extend (`prime-skills/runcomfy-agent-skills/video-extend`)
+
+## tagline
+
+- 一段不够长？让好镜头继续演。
+- 一颗种子，长成完整故事。
+- 镜头延续，光影不变，人物不走样。

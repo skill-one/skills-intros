@@ -1,0 +1,10 @@
+# git-guardrails-claude-code (`mattpocock/skills/git-guardrails-claude-code`)
+
+## blackbox
+
+**function**: 给 Claude Code 装一道「git 安全闸」: 装好之后, 危险的 git 命令 (推送、硬重置、强制删除分支、清空未跟踪文件等) 会在执行前被自动拦下, 防止代码被误推或误删; 普通 git 操作不受影响。
+
+- input: 「帮我防止 Claude 在这个项目里乱推乱删代码」, output: 配置完成后, 此后在这个项目里 Claude 执行 git push、git reset --hard、git clean 等命令时会看到「BLOCKED - 无权执行」的提示, 命令不会真的运行; 日常的 git add / commit 照常可用
+- input: 「我希望所有项目都生效」, output: 改为全局配置, 之后无论在哪个项目里用 Claude Code, 这些危险 git 命令都会被统一拦截
+- input: 「git push 放行, 其余照旧拦截」, output: 拦截图清单被按需调整: git push 恢复正常可用, 其他危险命令依然被拦
+- input: 「怎么确认真的装好了?」, output: 跑一次模拟测试: 拦截生效的表现是返回「BLOCKED」提示而不是真的执行命令

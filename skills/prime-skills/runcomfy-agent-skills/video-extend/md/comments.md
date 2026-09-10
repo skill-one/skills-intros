@@ -1,0 +1,10 @@
+# video-extend (`prime-skills/runcomfy-agent-skills/video-extend`)
+
+## comments
+
+- user: 第一次玩AI视频的新手, category: 坑, comment: 我把本地视频路径直接填进 video_url, 报错才发现必须是公开可访问的网址。传到云存储拿直链就跑通了。
+- user: 短视频博主, category: 妙用, comment: 重roll一次生成, 得到的是完全不同的画面; extend 才是在同一场景里多要几秒的办法。把输出再当输入链下去, 一条种子滚完整段分镜。
+- user: 广告片剪辑师, category: 坑, comment: 开头我把原场景重新描述了一遍, 续出的动作跟原片重复。后来只写"接下来发生什么", 并加一句镜头指令, 画面才不乱飘。
+- user: 写脚本跑批的运维老哥, category: 注意, comment: Ctrl-C 不只是退出, 会连远程任务一起取消, 别想着"先断开等结果"。退出码 75 是超时, 重跑即可; 77 是没登录, 先 runcomfy login。
+- user: 独立动画创作者, category: 注意, comment: 链到第4段人物脸开始变了。后来每段控制在3-5秒, 到临界就拿末帧重新 i2v 锚定再续, 长片才不崩。
+- user: 自由职业导演, category: 启发, comment: 被"一次只写一个动作"的规则倒逼, 我现在写任何视频 prompt 都先拆成一句一拍的分镜。这比堆一大段描述有效得多。

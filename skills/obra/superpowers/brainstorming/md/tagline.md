@@ -1,0 +1,7 @@
+# brainstorming (`obra/superpowers/brainstorming`)
+
+## tagline
+
+- 先想清楚, 再动手
+- 把模糊想法, 变成能落地的方案
+- 问对问题, 少走弯路

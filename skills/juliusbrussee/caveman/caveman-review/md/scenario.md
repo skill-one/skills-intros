@@ -1,0 +1,5 @@
+# caveman-review (`juliusbrussee/caveman/caveman-review`)
+
+## scenario
+
+你提交代码后, 评审意见又长又虚, 翻半天不知道哪行坏、怎么修. 我一行一条: 行号+问题+改法, 复制即可贴回 PR. 🔴会出事 🟡有隐患 🔵小毛病, 分级标清, 不说废话.

@@ -1,0 +1,7 @@
+# image-inpainting (`prime-skills/runcomfy-agent-skills/image-inpainting`)
+
+## domain
+
+**domain**: 🎨 设计多媒体
+
+**reason**: 图像局部编辑与修复，属视觉图像处理

@@ -1,0 +1,13 @@
+# caveman-commit (`juliusbrussee/caveman/caveman-commit`)
+
+## whitebox
+
+- 触发: 识别 "write a commit" / "commit message" / /commit 等触发词, 拿到用户提供的 diff
+- 读 diff, 判定变更意图 → 选定 type (feat/fix/refactor…) 与可选 scope
+- 压缩成主题行 `<type>(<scope>): <祈使式摘要>`, 目标 ≤50 字符 (硬顶 72), 不带句号
+- 决定 body: 主题行自解释则整段省略; 破坏性变更/安全修复/数据迁移/回滚则强制附 body (why、迁移说明、issue 引用)
+- 以代码块输出成品消息即止——不执行 git commit/stage/amend, 全程无外部依赖
+
+- 格式硬约束: 严格套 Conventional Commits 模板, 动词统一祈使式 ("add" 而非 "added"), 长度双限 (50 目标 / 72 硬顶), 无尾句号, 逐条对照规则表校验
+- 噪音黑名单过滤: 剔除 "This commit does X"、第一人称、"now/currently"、"As requested by"、AI 署名、emoji、与 scope 重复的文件名复述——diff 已说明 what, 消息只留 why
+- Auto-Clarity 强制扩写: 破坏性变更、安全修复、数据迁移、回滚类提交禁止压成单行, 必须带 body 给未来排查留上下文

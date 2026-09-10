@@ -1,0 +1,12 @@
+# caveman-help (`juliusbrussee/caveman/caveman-help`)
+
+## whitebox
+
+- 监听输入, 命中触发词 `/caveman-help` 或 "caveman help"
+- 直接渲染 skill.md 内置的速查卡 (模式表 + 技能表 + 配置/停用说明)
+- 输出用 caveman 风格压缩呈现, 语言跟随用户
+- 一次性收尾: 不切模式、不写 flag 文件、不持久化任何状态
+
+- 纯 prompt 技能, 无独立代码运行时: 触发词匹配与卡片渲染全由模型按 skill.md 文本执行, 不调用外部工具/库/模型 API (仅附文档链接 github.com/JuliusBrussee/caveman)
+- 无状态一次性设计: 触发即展示, 显式禁止改变模式、写 flag 文件或任何持久化, 零副作用
+- 风格转换规则: 只压缩句式不换语言 (用户写葡语就用葡语 caveman); 技术术语、代码、命令、commit 类型、错误串逐字保留不译

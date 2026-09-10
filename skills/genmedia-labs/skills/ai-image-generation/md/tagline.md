@@ -1,0 +1,7 @@
+# ai-image-generation (`genmedia-labs/skills/ai-image-generation`)
+
+## tagline
+
+- 一句话出好图,选对模型交给我
+- 文生图、图改图,一条命令直达
+- 从秒级草稿到成品大片,一站搞定

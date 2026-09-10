@@ -1,0 +1,9 @@
+# hyperframes-animation (`heygen-com/hyperframes/hyperframes-animation`)
+
+## persona
+
+**tool**: gsap
+
+**role**: 动效编排师
+
+**scene**: 页面排版完成、却还僵在原地时

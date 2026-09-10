@@ -1,0 +1,9 @@
+# ace-step (`prime-skills/runcomfy-agent-skills/ace-step`)
+
+## persona
+
+**tool**: runcomfy
+
+**role**: AI 配乐师
+
+**scene**: 视频剪好了、就差一段背景音乐时

@@ -1,0 +1,7 @@
+# high-end-visual-design (`leonxlnx/taste-skill/high-end-visual-design`)
+
+## tagline
+
+- 让网站一眼贵气, 比肩百万级设计
+- 拒绝模板感, 每个像素经得起放大
+- 不止做页面, 造值得被记住的体验

@@ -1,0 +1,13 @@
+# controlnet-pose (`prime-skills/runcomfy-agent-skills/controlnet-pose`)
+
+## whitebox
+
+- 意图分类: 判断用户要视频动作迁移 (video pose transfer) 还是图像姿态条件生成
+- 按 视频/静态 × 写实/风格化 选路由: Kling 2-6 Motion Control Pro/Standard、Wan 2-2 Animate 或 Z-Image Turbo ControlNet LoRA
+- 组装输入 JSON, 以 runcomfy run <vendor>/<model> --input '{...}' 执行, CLI POST 到 RunComfy Model API
+- CLI 轮询请求状态直至生成完成
+- 下载结果到 --output-dir, 退出码 0 即成功
+
+- 路由决策表内置于 skill: 视频默认 Kling Motion Control Pro (Standard 用于草稿, 风格化角色用 Wan 2-2 Animate); 静态图走 Z-Image ControlNet LoRA (需 control image + prompt, control image 类型 OpenPose/DWPose/canny/depth 须与 LoRA 匹配); 多条件堆叠超出 CLI 能力, 转指 RunComfy ComfyUI 云端 workflow
+- 输入边界: prompt 与素材 URL 均作为 JSON 字符串经 --input 传入, CLI 不做 shell 展开 (无注入面); 参考素材只接受用户显式提供的 URL, 输出偏离 prompt 时视为参考素材不可信
+- 依赖链与校验: npm 包 @runcomfy/cli (token 存 ~/.config/runcomfy/token.json mode 0600, CI 用 RUNCOMFY_TOKEN); 端点白名单 model-api.runcomfy.net / *.runcomfy.net/.com; 单文件下载上限 2 GiB; 错误由退出码表达 (75=超时/429 可重试, 69=上游 5xx)

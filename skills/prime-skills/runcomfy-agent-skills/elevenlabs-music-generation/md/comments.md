@@ -1,0 +1,10 @@
+# elevenlabs-music-generation (`prime-skills/runcomfy-agent-skills/elevenlabs-music-generation`)
+
+## comments
+
+- user: 第一次用的新手, category: 坑, comment: 没 login 就跑, 一直报 77; 登录才好。另外 music_length_ms 是毫秒, 60 秒要写 60000, 我第一次填 60 被拒。
+- user: 播客主理人, category: 妙用, comment: 片头固定 15 秒: force_instrumental 打开, prompt 里再加 loop-friendly, clean ending, 基本一条过, 尾音收得很干净。
+- user: 短视频剪辑师, category: 启发, comment: 现在先渲 35 秒小样给客户定风格, 确认后再渲全曲。之前直接渲 3 分钟, 客户要换风格就全废, 废稿钱省下不少。
+- user: 写中文歌的独立音乐人, category: 注意, comment: 中文歌词每行字数拉齐、韵脚明确再投喂, 演唱断句顺很多。我贴过口语长句进去, 唱出来节奏乱七八糟。
+- user: 独立游戏开发者, category: 注意, comment: 纯 BGM 双保险别省: force_instrumental 设 true, prompt 里也写 no vocals; 要循环再加 seamless loop 字样, 循环感明显更好。
+- user: 接商单的音乐外包, category: 成本, comment: 按秒计费, 5 分钟约 $2.49, 报价前先按 music_length_ms 算一遍。要进 DAW 做后期, 记得把 output_format 换成 WAV, 默认只给 mp3。

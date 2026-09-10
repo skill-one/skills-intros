@@ -1,0 +1,7 @@
+# writing-fragments (`mattpocock/skills/writing-fragments`)
+
+## domain
+
+**domain**: ✍️ 内容创作
+
+**reason**: 写作探索技能: 通过访谈挖掘文章素材碎片, 纯文字创作

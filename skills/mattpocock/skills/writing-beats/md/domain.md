@@ -1,0 +1,7 @@
+# writing-beats (`mattpocock/skills/writing-beats`)
+
+## domain
+
+**domain**: ✍️ 内容创作
+
+**reason**: 把素材组装成一步步带读者前行的文章, 本质是文字创作。

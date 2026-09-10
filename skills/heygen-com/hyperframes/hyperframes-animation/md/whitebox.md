@@ -1,0 +1,13 @@
+# hyperframes-animation (`heygen-com/hyperframes/hyperframes-animation`)
+
+## whitebox
+
+- 接任务先分流：零散动效 → 组合 2-4 条原子规则 (rules)；多阶段完整场景 → 加载现成蓝图 (blueprint)；查特定运行时 API → 按路由表直接定位文档
+- 只读索引文件 (rules-index / blueprints-index) 锁定条目，选定后才按需加载具体 recipe（rules/<name>.md、blueprints/<id>.md），不做预读
+- 用单一 paused GSAP 时间轴把规则粘合成组合；3D、Lottie、粒子等需求再叠加对应 runtime 适配器（Three.js / Lottie / TypeGPU / Anime.js / CSS / WAAPI），多个 runtime 可共存
+- 施加动画工艺硬约束：确定性（禁 Math.random / Date.now / performance.now）、布局常量预计算（禁 tween 时 getBoundingClientRect）、空间位移只用 x/y/scale/rotation 别名
+- 跑 scripts/animation-map.mjs 审计编排，输出 animation-map.json（死区、stagger 一致性、生命周期警告）；必要时走 hyperframes CLI lint / check / render
+
+- 惰性分层路由：知识分四层 —— rules（原子配方）/ blueprints（多阶段场景模板）/ transitions / techniques，外加 7 个 runtime 适配器文档；索引只给指针，命中后才读全文，避免上下文浪费
+- 确定性渲染契约（继承 hyperframes-core）：全组合单一 paused 时间轴，data-duration 决定长度，禁 repeat:-1、禁 async/setTimeout 内建时间轴；各 runtime 实例统一注册到 window.__timelines / __hfLottie / __hfAnime 等全局，供 HyperFrames 一次 pass 内 seek 全部——保证 seek 安全、逐帧可复现
+- 外部依赖与工具链：GSAP 为默认 runtime（覆盖 95% 场景）；审计脚本 animation-map.mjs 读取 window.__timelines 上全部 GSAP 时间轴，枚举 tween、采样 bbox、计算 flags 后落盘 JSON，可自动 bootstrap bundled HyperFrames 包（用 HYPERFRAMES_SKILL_PKG_VERSION 钉版本）；渲染/校验走 hyperframes-cli，24 种文字动效经外部 animate-text skill 提供

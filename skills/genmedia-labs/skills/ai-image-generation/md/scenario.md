@@ -1,0 +1,5 @@
+# ai-image-generation (`genmedia-labs/skills/ai-image-generation`)
+
+## scenario
+
+做海报，AI 图里的字总写错；想改图，人脸却被改变形；模型太多，不知选哪个。我懂 11+ 款图像模型的绝活：文字准、人像真、改图不变形 🎨 一条命令帮你选对模型，出图即用。

@@ -1,0 +1,13 @@
+# migrate-to-shoehorn (`mattpocock/skills/migrate-to-shoehorn`)
+
+## whitebox
+
+- 收集需求: 确认哪些测试文件有 `as` 断言、场景是只传部分数据还是故意传错数据
+- `npm i @total-typescript/shoehorn` 安装依赖
+- 用 grep 在 *.test.ts / *.spec.ts 中定位 ` as [A-Z]` 断言
+- 逐条改写: `as Type` → `fromPartial()`, `as unknown as Type` → `fromAny()`, 并补上 import
+- 运行类型检查, 验证迁移无误
+
+- 两条固定改写规则: `as Type` → `fromPartial()` (部分数据、仍通过类型检查); `as unknown as Type` → `fromAny()` (故意传错数据); 备选 `fromExact()` 强制完整对象
+- 定位靠 grep 正则 `" as [A-Z]"`, 且只扫测试文件 — 硬约束: shoehorn 仅用于测试代码, 绝不进生产代码
+- 外部依赖仅一个 npm 包 @total-typescript/shoehorn (提供 fromPartial/fromAny/fromExact); 无模型或其他 API, 最终由 TypeScript 类型检查完成校验闭环

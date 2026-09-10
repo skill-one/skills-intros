@@ -1,0 +1,7 @@
+# writing-great-skills (`mattpocock/skills/writing-great-skills`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 技能编写本质是构建可预测的 Agent 行为的工程工作。

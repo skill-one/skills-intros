@@ -1,0 +1,15 @@
+# caveman-commit (`juliusbrussee/caveman/caveman-commit`)
+
+## blackbox
+
+**function**: 你用一句话告诉我这次改了什么, 我还你一条短而准、可直接贴进 git 的提交信息 (commit message)。
+
+- input: 一句话改动描述, 如「加了拉黑用户的接口, 因为运营要封违规号」, output: 可直接粘贴的提交信息:
+feat(api): add user-block endpoint
+
+Ops team needs to ban accounts without deleting user data.
+
+Closes #42
+- input: 一段 git diff (改动前后的代码对照), output: 一行式简短提交信息, 如:
+fix: reject expired tokens before session reuse
+- input: 「把接口 /v1/orders 改名成 /v1/checkout, 老路径会挂」, output: 带迁移提醒的提交信息, 标注 BREAKING CHANGE: 老客户端要改到哪个新路径、旧路径何时失效

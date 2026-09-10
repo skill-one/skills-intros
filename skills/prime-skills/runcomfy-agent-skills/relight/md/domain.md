@@ -1,0 +1,7 @@
+# relight (`prime-skills/runcomfy-agent-skills/relight`)
+
+## domain
+
+**domain**: 🎨 设计多媒体
+
+**reason**: 专做静态图片重新打光(改光线方向/色温/氛围), 属于图像编辑与视觉制作

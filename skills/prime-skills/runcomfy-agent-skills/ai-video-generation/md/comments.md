@@ -1,0 +1,10 @@
+# ai-video-generation (`prime-skills/runcomfy-agent-skills/ai-video-generation`)
+
+## comments
+
+- user: 第一次做视频的新手, category: 坑, comment: 堆形容词(高清、唯美、震撼)出来的画面很空。改成"主语+一个动作"("红风筝在海滩翻滚")第一版就能用,动词比形容词重要。
+- user: 电商详情页运营, category: 妙用, comment: 产品图转视频认准 Veo 3-1:"rotates 180 degrees, no other motion"——真只转180度,其他元素纹丝不动,角度和详情页图完全对得上。
+- user: 口播课博主, category: 注意, comment: Wan 2-7 对口型别把台词写进 prompt,嘴会和音频打架。prompt 只写场景和神态,台词全交给 audio_url 的配音文件,一次过。
+- user: 广告公司混剪师, category: 注意, comment: Seedance v2 Pro 跑简单的"一句话出片"又慢又亏。先用 Fast 定构图,锁定再上 Pro 出成片;21:9 宽银幕和镜头语言它真会照做。
+- user: 全职短视频个体户, category: 妙用, comment: HappyHorse 音频是生成时自带的:prompt 末尾加 "Audio: 海浪、海鸥、笑声",不用找音效不用配音,9:16 六秒直接发,省一整道工序。
+- user: 后端老兵, category: 启发, comment: 价值在"意图→模型"决策表:要口型选 Wan、要物理准选 Veo、多镜头角色一致性选 Kling。先想清要什么再选模型,别无脑用默认。

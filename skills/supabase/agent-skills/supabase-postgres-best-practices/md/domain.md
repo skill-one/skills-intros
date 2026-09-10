@@ -1,0 +1,7 @@
+# supabase-postgres-best-practices (`supabase/agent-skills/supabase-postgres-best-practices`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 数据库设计与优化(建表、索引、迁移、RLS 安全、慢查询排查)是后端开发刚需

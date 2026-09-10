@@ -1,0 +1,7 @@
+# elevenlabs-music-generation (`prime-skills/runcomfy-agent-skills/elevenlabs-music-generation`)
+
+## domain
+
+**domain**: 🎨 设计多媒体
+
+**reason**: 生成完整歌曲与器乐音频(配乐、jingle、BGM), 属音视频制作

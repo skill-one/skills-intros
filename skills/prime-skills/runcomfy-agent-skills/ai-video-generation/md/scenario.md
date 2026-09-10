@@ -1,0 +1,5 @@
+# ai-video-generation (`prime-skills/runcomfy-agent-skills/ai-video-generation`)
+
+## scenario
+
+想发短视频,却不会拍、不会剪,请团队又贵又慢?给我一句话或一张图,我直接生成成片——产品旋转展示、人物开口说话、自带音效配音,十分钟出片,零设备零剪辑。🎬

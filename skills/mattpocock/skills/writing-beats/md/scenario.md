@@ -1,0 +1,5 @@
+# writing-beats (`mattpocock/skills/writing-beats`)
+
+## scenario
+
+手握一堆素材,却开不了头?写完了,读者半路走丢?术语没落地,越写越像文档?把原料丢给我:先定读者已懂什么,再一拍一拍(beat)铺路。每步给你 2-3 个方向选,我只写你选的那一步,落地即停。📝

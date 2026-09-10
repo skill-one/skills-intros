@@ -1,0 +1,7 @@
+# caveman-help (`juliusbrussee/caveman/caveman-help`)
+
+## tagline
+
+- 砍掉废话, 只留干货
+- 省下的每个字, 都是省下的钱
+- 原始人说话, 现代人事半功倍

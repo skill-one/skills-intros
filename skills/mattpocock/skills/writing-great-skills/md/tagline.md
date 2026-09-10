@@ -1,0 +1,7 @@
+# writing-great-skills (`mattpocock/skills/writing-great-skills`)
+
+## tagline
+
+- 一次写对, 次次可预测
+- 删繁就简, 字字有用
+- 让 AI 每次都走同一条路

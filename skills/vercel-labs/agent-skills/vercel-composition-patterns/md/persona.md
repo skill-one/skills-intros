@@ -1,0 +1,9 @@
+# vercel-composition-patterns (`vercel-labs/agent-skills/vercel-composition-patterns`)
+
+## persona
+
+**tool**: React
+
+**role**: 组件架构师
+
+**scene**: 组件每加一个需求就要多塞一个 boolean prop、越写越乱时

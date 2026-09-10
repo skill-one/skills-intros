@@ -1,0 +1,9 @@
+# writing-shape (`mattpocock/skills/writing-shape`)
+
+## blackbox
+
+**function**: 把你给的一份原始素材 (零散笔记、碎片想法、文字记录都行), 和你一起逐段敲定、磨成一篇结构完整的文章, 存成新文件。
+
+- input: notes.md —— 一堆零散的灵感和想法碎片, output: 一篇有论点、有顺序的文章草稿 (另存为新文件, 原笔记一字不动)
+- input: transcript.md —— 一小时会议或访谈的文字记录, output: 一篇成形的成文, 每写一段都和你确认一段, 你说跑题了就只重写那一段
+- input: 素材文件 + 一句「想发博客」, 没别的了, output: 先给你 3 个不同角度的开头让你挑, 选定后文章一段段长出来, 随时可见进度

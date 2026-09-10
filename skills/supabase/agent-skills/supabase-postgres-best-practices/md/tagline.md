@@ -1,0 +1,7 @@
+# supabase-postgres-best-practices (`supabase/agent-skills/supabase-postgres-best-practices`)
+
+## tagline
+
+- 让每条 SQL 都跑在快车道上 🚀
+- 建表调优安防,数据库一步到位
+- 慢查询终结者,数据安全卫士 🛡️

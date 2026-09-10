@@ -1,0 +1,7 @@
+# ai-avatar-video (`prime-skills/runcomfy-agent-skills/ai-avatar-video`)
+
+## domain
+
+**domain**: 🎨 设计多媒体
+
+**reason**: 技能核心是生成 AI 数字人视频、口型同步与音视频制作, 属视觉音视频创作

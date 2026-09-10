@@ -1,0 +1,7 @@
+# airunway-aks-setup (`microsoft/azure-skills/airunway-aks-setup`)
+
+## domain
+
+**domain**: 🛡️ 运维与安全
+
+**reason**: 在 AKS 云集群上部署运维 AI 推理服务, 属于云基础设施部署范畴

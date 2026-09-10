@@ -1,0 +1,5 @@
+# high-end-visual-design (`leonxlnx/taste-skill/high-end-visual-design`)
+
+## scenario
+
+创业要做官网:外包报价十几万,自己用 AI 做,又土又像模板,客户一眼就掉价。我按一线设计公司标准打磨——克制留白、丝滑动效、精致细节,让网站第一眼就"贵"得让人信任。

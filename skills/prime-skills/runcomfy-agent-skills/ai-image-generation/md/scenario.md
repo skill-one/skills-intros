@@ -1,0 +1,5 @@
+# ai-image-generation (`prime-skills/runcomfy-agent-skills/ai-image-generation`)
+
+## scenario
+
+做推广的你: 约摄影师又贵又慢, 自己 AI 出图总选错模型, 海报上的字还全是乱码. 我一条命令搞定: 写真→Seedream, 精准文字→GPT Image, 换背景改图→Nano Banana 📸

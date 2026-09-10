@@ -1,0 +1,7 @@
+# face-swap (`prime-skills/runcomfy-agent-skills/face-swap`)
+
+## tagline
+
+- 一张照片, 让任何人成为视频主角
+- 换脸不换戏, 动作光影原样保留
+- 从单图到批量, 同一身份张张如一

@@ -1,0 +1,5 @@
+# image-inpainting (`prime-skills/runcomfy-agent-skills/image-inpainting`)
+
+## scenario
+
+电商拍图最痛:背景杂乱、路人入镜、水印难除——重拍费钱,PS又不会。你只需圈出要改的区域,我几秒内换背景、抹路人、去水印,其余画面原样不动 🖼️

@@ -1,0 +1,13 @@
+# analyze-project (`lllllllama/rigorpilot-skills/analyze-project`)
+
+## whitebox
+
+- 触发判定：请求是“读懂深度学习仓库”类只读分析（模型结构、训练/推理入口、配置关系），且不改代码、不跑重任务；不匹配则不启用。
+- 静态扫描：只做轻量静态检查，建立仓库地图——模型结构、训练与推理入口、配置间的引用关系。
+- 对照规则手册：按 references/analysis-policy.md 和共享的 research-pitfall-checklist.md 逐项检查，标出可疑实现模式与建议插入点。
+- 落盘产出：把地图与风险写入 analysis_outputs/ 下的 SUMMARY.md、RISKS.md、status.json 三个文件。
+- 收尾守界：可疑点一律标为启发式猜测而非确认 bug；不打补丁、不接管最终复现产出。
+
+- 只读约束机制：全程 read-mostly——只允许轻量静态检查辅助，明确禁止修改仓库代码、禁止重执行；这既是能力边界也是防误操作闸门。
+- 引用驱动的审查框架：分析策略与陷阱清单来自两个外部参考文件（references/analysis-policy.md、../ai-research-reproduction/references/research-pitfall-checklist.md），保证结论口径一致；SKILL.md 未声明其他外部工具/库/模型 API。
+- 结构化输出契约：结果强制落在固定的三个 analysis_outputs 文件，且可疑模式必须标注为 heuristic（启发式）而非 confirmed bug（确认缺陷），防止过度断言。

@@ -1,0 +1,7 @@
+# lipsync (`prime-skills/runcomfy-agent-skills/lipsync`)
+
+## tagline
+
+- 一张照片一段声音，让TA开口说话
+- 配音换语言，嘴型不穿帮
+- 声音到哪，嘴型跟到哪

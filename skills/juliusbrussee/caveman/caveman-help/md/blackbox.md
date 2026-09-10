@@ -1,0 +1,11 @@
+# caveman-help (`juliusbrussee/caveman/caveman-help`)
+
+## blackbox
+
+**function**: 把你给的任何东西改写成「原始人风格」——砍掉废话客套, 只留硬核内容; 也像一个菜单, 能列出我全部模式和技能。
+
+- input: 输入 /caveman-help, output: 一张速查手册: 列出所有可用模式 (lite/full/ultra/文言文…) 和技能清单
+- input: /caveman + 一大段啰嗦的报告或说明文字, output: 同样的内容, 但删掉虚词、客套、铺垫, 只剩短句和要点, 一眼看完
+- input: /caveman-compress + 一个 .md 文件路径, output: 一份压缩后的同内容文档, 字数省下约 46%
+- input: /caveman-commit + 你的改动描述, output: 一条 ≤50 字符的简短提交信息 (git commit message), 符合标准格式
+- input: /caveman-review + 一段代码改动, output: 每处问题一行点评, 如: L42: bug: user null. Add guard.

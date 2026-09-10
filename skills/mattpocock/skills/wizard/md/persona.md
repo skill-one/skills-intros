@@ -1,0 +1,9 @@
+# wizard (`mattpocock/skills/wizard`)
+
+## persona
+
+**tool**: bash
+
+**role**: 配置向导
+
+**scene**: 第一次给项目配密钥, 面对陌生后台不知点哪时

@@ -1,0 +1,7 @@
+# runcomfy-cli (`prime-skills/runcomfy-agent-skills/runcomfy-cli`)
+
+## domain
+
+**domain**: 🎨 设计多媒体
+
+**reason**: 一行命令调用 AI 模型生成/编辑图像、视频、换脸、对口型, 属于音视频与视觉制作

@@ -1,0 +1,5 @@
+# elevenlabs-music-generation (`prime-skills/runcomfy-agent-skills/elevenlabs-music-generation`)
+
+## scenario
+
+视频剪好了,却找不到合适的背景音乐?曲库千篇一律、怕侵权、请人写歌又太贵🎵 一句话告诉我风格、情绪和歌词,几分钟内生成专属歌曲或纯音乐,可商用,5秒到5分钟随意。
