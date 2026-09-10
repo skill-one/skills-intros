@@ -1,5 +1,0 @@
-# media-use (`heygen-com/hyperframes/media-use`)
-
-## scenario
-
-做视频最烦素材:配乐、配音、图片、图标散落十几个网站,下载慢、格式乱、还不合规。我来:一句话 resolve,音乐音效图标配音调色一步到位,直接产出可用文件并登记复用。素材的事,交给我。🎯

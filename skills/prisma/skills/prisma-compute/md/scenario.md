@@ -1,5 +1,0 @@
-# prisma-compute (`prisma/skills/prisma-compute`)
-
-## scenario
-
-代码本地跑得好好的, 一部署就翻车: 构建日志看不懂, 端口绑定不对, 配置文件一团乱麻 🌀 我专管 Prisma Compute 部署, 从鉴权、配置检查到上线验证, 帮你把应用稳稳发布上线。

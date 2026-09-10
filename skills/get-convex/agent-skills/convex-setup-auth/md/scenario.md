@@ -1,5 +1,0 @@
-# convex-setup-auth (`get-convex/agent-skills/convex-setup-auth`)
-
-## scenario
-
-用 Convex(后端数据库服务)做应用,卡在登录?账号系统五花八门选不明白,用户数据裸奔,谁都能看能改。我帮你接好登录、守住数据大门:只有本人能动自己的数据。🔓

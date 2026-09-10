@@ -1,7 +1,0 @@
-# convex-performance-audit (`get-convex/agent-skills/convex-performance-audit`)
-
-## domain
-
-**domain**: 💻 开发编程
-
-**reason**: 审计 Convex 应用的读放大、写冲突与订阅开销, 属于数据库性能调试与重构

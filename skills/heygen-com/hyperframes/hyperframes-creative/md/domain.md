@@ -1,7 +1,0 @@
-# hyperframes-creative (`heygen-com/hyperframes/hyperframes-creative`)
-
-## domain
-
-**domain**: 🎨 设计多媒体
-
-**reason**: 做视频视觉与听觉方向 — 配色、字体、构图、镜头节奏、旁白与音乐卡点, 属音视频制作而非纯文字创作。

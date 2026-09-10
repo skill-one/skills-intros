@@ -1,5 +1,0 @@
-# remotion-saas (`remotion-dev/skills/remotion-saas`)
-
-## scenario
-
-想给1000个客户各发一条专属视频？手工剪到猴年马月🎬。我用 Remotion 把视频做成"模板+数据"：填个表单，服务器自动批量出片，网页里还能实时预览。营销视频、个性化内容，一键生成。

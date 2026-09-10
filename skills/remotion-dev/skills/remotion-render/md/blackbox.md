@@ -1,9 +1,0 @@
-# remotion-render (`remotion-dev/skills/remotion-render`)
-
-## blackbox
-
-**function**: 把你用 Remotion 代码做好的动画, 导出成品——变成能直接播放、发布的视频文件, 或一张定格图片。
-
-- input: 一个 Remotion 视频项目 (用代码写好的动画工程), output: 一个 mp4 视频文件, 可直接上传到社交平台或嵌入网页
-- input: 同一个项目 + 指定导出某一帧, output: 一张高清定格图 (png/jpg), 适合当视频封面或海报
-- input: 需要透明背景的动画 (如水印、贴纸动效), output: 带透明通道的视频文件, 能无缝叠加到其他视频画面上

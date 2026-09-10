@@ -1,9 +1,0 @@
-# product-launch-video (`heygen-com/hyperframes/product-launch-video`)
-
-## persona
-
-**tool**: hyperframes
-
-**role**: 宣传片导演
-
-**scene**: 用户攥着产品链接、想发一支上线视频却不知从哪下手时

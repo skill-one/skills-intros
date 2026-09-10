@@ -1,7 +1,0 @@
-# convex-setup-auth (`get-convex/agent-skills/convex-setup-auth`)
-
-## domain
-
-**domain**: 💻 开发编程
-
-**reason**: 为 Convex 应用写代码搭建登录认证、用户体系与权限控制, 属于 API/框架集成开发

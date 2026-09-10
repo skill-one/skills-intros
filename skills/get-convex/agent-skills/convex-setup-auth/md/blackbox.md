@@ -1,9 +1,0 @@
-# convex-setup-auth (`get-convex/agent-skills/convex-setup-auth`)
-
-## blackbox
-
-**function**: 给 Convex 应用 (一种后端服务) 装上「门禁」：让用户能注册、登录、退出，并确保只有登录过、有权限的人才能访问对应的数据和功能。
-
-- input: 一个还没有登录功能的 Convex 项目路径 + 一句话需求，如「我想让用户用 Clerk 账号登录」, output: 配置好的登录/登出功能，用户可以注册、登录、退出，前端登录状态正常工作
-- input: 一段不设防的后端函数代码，例如「任何人都能查到所有用户的资料」的查询函数, output: 改好的代码：未登录调用会报「Not authenticated」，登录后也只能查到自己的资料，别人的看不到
-- input: 一句权限需求，如「管理后台只有管理员能进」, output: 带角色判断的代码：普通用户调用管理功能会被拒绝并提示「Unauthorized」，管理员正常使用

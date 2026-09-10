@@ -1,7 +1,0 @@
-# hyperframes-core (`heygen-com/hyperframes/hyperframes-core`)
-
-## tagline
-
-- 你说想法,我出成片。
-- 用代码写视频,每一帧精准可控。
-- 从构思到成片,一步到位。

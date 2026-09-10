@@ -1,9 +1,0 @@
-# convex-migration-helper (`get-convex/agent-skills/convex-migration-helper`)
-
-## persona
-
-**tool**: @convex-dev/migrations
-
-**role**: 数据迁移工程师
-
-**scene**: 改了 schema 一部署、被 Convex 以「旧数据没有这个字段」拒收时

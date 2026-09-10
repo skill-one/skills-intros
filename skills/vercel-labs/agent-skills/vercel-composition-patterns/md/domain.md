@@ -1,7 +1,0 @@
-# vercel-composition-patterns (`vercel-labs/agent-skills/vercel-composition-patterns`)
-
-## domain
-
-**domain**: 💻 开发编程
-
-**reason**: 专注 React 组件重构与组件 API 设计, 纯前端代码技能

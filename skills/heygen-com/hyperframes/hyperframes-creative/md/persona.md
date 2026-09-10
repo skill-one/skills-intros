@@ -1,9 +1,0 @@
-# hyperframes-creative (`heygen-com/hyperframes/hyperframes-creative`)
-
-## persona
-
-**tool**: frame.md
-
-**role**: 美术指导
-
-**scene**: 视频的技术骨架搭完、要决定它长什么样——配色、字体、构图——的那一刻

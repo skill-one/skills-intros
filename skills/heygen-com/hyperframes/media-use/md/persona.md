@@ -1,9 +1,0 @@
-# media-use (`heygen-com/hyperframes/media-use`)
-
-## persona
-
-**tool**: resolve
-
-**role**: 媒体道具师
-
-**scene**: 片子拼完了,只差配乐音效,用户盯着屏幕说「总觉得差点什么」时

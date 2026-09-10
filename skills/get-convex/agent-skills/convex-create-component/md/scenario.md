@@ -1,5 +1,0 @@
-# convex-create-component (`get-convex/agent-skills/convex-create-component`)
-
-## scenario
-
-团队要加"站内通知"这类独立功能,却只能把表和逻辑塞进主代码:越写越乱、不敢改动、换项目无法复用。我能把它拆成带独立数据表的组件(可插拔的后端模块),边界清晰、即装即用。📦
