@@ -1,0 +1,7 @@
+# industrial-brutalist-ui (`leonxlnx/taste-skill/industrial-brutalist-ui`)
+
+## tagline
+
+- 粗粝如钢,精确如蓝图
+- 数据高密度,秩序零妥协
+- 让界面像军用终端一样锋利

@@ -1,0 +1,10 @@
+# full-output-enforcement (`leonxlnx/taste-skill/full-output-enforcement`)
+
+## comments
+
+- user: 刚上手的新手, category: 注意, comment: 输出停在「PAUSED — 2 of 5 complete」别慌, 原样回复 continue 就接着写。千万别重新描述需求, 那等于让它从头再来。
+- user: 后端老兵, category: 妙用, comment: 需求里直接写死数量, 比如「共 5 个文件」, 它会先锁定交付清单, 交完逐项核对。我核对过三次, 一次没漏。
+- user: 运维老哥, category: 坑, comment: 我以前懒得强调「要完整的」, 拿默认生成结果就部署, 配置里一句「// 其余同上」让服务直接起不来。现在开口必先说完整版。
+- user: 接外包的前端, category: 启发, comment: 以前总说「先给框架, 细节我自己补」, 半夜全耗在补代码上。才想明白: 省字数的是 AI, 费时间的是我。现在一律要全量。
+- user: 写标书的产品经理, category: 注意, comment: 续写不回读前文, 接缝处不会有任何重复交代。长文档要自己往上翻核对衔接, 我现在都是收到一段就存一段。
+- user: 程序员, category: 坑, comment: 我以为开了它就能一口气拿 5000 行, 结果每段到 token (输出长度) 上限照样停。它保证不偷工减料, 不是突破上限, 长活儿备好连点几次 continue。

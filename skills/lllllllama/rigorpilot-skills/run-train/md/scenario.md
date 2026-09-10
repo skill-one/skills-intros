@@ -1,0 +1,5 @@
+# run-train (`lllllllama/rigorpilot-skills/run-train`)
+
+## scenario
+
+🌙 训练挂到半夜,醒来发现第一步就崩,却查无可查?我来规范跑:先验证能启动,短跑确认稳定,再全量开跑;日志、断点(可续训存档)、指标统一存好——崩了能定位,断了能续跑。

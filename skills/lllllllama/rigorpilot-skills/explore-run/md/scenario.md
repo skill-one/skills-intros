@@ -1,0 +1,5 @@
+# explore-run (`lllllllama/rigorpilot-skills/explore-run`)
+
+## scenario
+
+研究员想快试新点子，痛点：GPU 紧张，直接跑重实验太烧时间，小跑结果又怕不能比。我来规划小样本、短周期试跑，按成本/成功率/预期收益排序，输出 TOP_RUNS 与公平对比报告——省时省钱探路，只认有边界的证据。🧪

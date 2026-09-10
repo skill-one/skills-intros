@@ -1,0 +1,7 @@
+# safe-debug (`lllllllama/rigorpilot-skills/safe-debug`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 技能核心是调试: 诊断报错 (traceback/CUDA OOM/NaN loss/shape 不匹配) 并给出最小修复, 属开发编程范畴

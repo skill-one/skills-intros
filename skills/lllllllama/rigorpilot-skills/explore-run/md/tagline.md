@@ -1,0 +1,7 @@
+# explore-run (`lllllllama/rigorpilot-skills/explore-run`)
+
+## tagline
+
+- 小样先试跑, 大跑不白跑
+- 排序候选实验, 算力花在刀刃上
+- 证据有边界, 结论不夸口

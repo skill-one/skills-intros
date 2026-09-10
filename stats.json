@@ -1,16 +1,16 @@
 {
   "prompts": {
-    "blackbox": 124,
-    "comments": 124,
-    "domain": 124,
-    "persona": 124,
-    "scenario": 124,
-    "tagline": 124,
-    "whitebox": 124
+    "blackbox": 134,
+    "comments": 134,
+    "domain": 134,
+    "persona": 134,
+    "scenario": 134,
+    "tagline": 134,
+    "whitebox": 134
   },
   "skills": {
-    "complete": 124,
-    "remaining": 8835,
+    "complete": 134,
+    "remaining": 8825,
     "stale": 0,
     "total": 8959
   },

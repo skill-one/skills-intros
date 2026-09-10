@@ -1,0 +1,10 @@
+# entra-agent-id (`microsoft/azure-skills/entra-agent-id`)
+
+## comments
+
+- user: 第一次用的新手, category: 坑, comment: 建完 Blueprint 就去建 Agent 实例, 400 说 Blueprint Principal 不存在——它不会自动创建, 第二步必须手动执行, 脚本记得写成幂等。
+- user: Python 脚本后端, category: 坑, comment: 用 az cli 登录的 token 调 Graph 直接 403, 里面的 Directory.AccessAsUser.All 被硬拒。换专门的 app registration + client_credentials 才通。
+- user: 安全合规运维, category: 妙用, comment: 权限能按实例挂: 三个 agent 各自 appRoleAssignments, 出事只撤一个, 审计日志分得清谁干的。以前全家共用一个 SP 根本做不到。
+- user: 多租户 SaaS 开发, category: 坑, comment: 跨租户换 token 第一步我填了 Blueprint 所在租户, 报 AADSTS700211。得用 Agent Identity 的 home tenant, 两个 id 写反查了一下午。
+- user: CI 流水线维护者, category: 注意, comment: admin consent 跑完权限不会立即生效, 我 CI 紧接着授权直接 403。留 30–120 秒, 脚本加指数退避重试, 间歇失败才消失。
+- user: 混合语言团队 Lead, category: 妙用, comment: Python/Go/Node 混着写, 上 sidecar 后各服务发 localhost HTTP 就能拿 token, 没人再各自实现 OAuth。切记别把它挂到 Ingress 暴露。

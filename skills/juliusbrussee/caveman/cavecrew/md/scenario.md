@@ -1,0 +1,5 @@
+# cavecrew (`juliusbrussee/caveman/cavecrew`)
+
+## scenario
+
+你连着让 AI 查代码、改代码,它每一步都回大段长文,几轮后上下文(对话记忆)🧠被塞爆,开始"失忆"、丢进度,只能重来。换我用 cavecrew:定位、小改、审改三件套,答复压缩到约 1/3,同样的记忆容量,干完更多活。

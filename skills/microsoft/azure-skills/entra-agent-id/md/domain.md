@@ -1,0 +1,7 @@
+# entra-agent-id (`microsoft/azure-skills/entra-agent-id`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 核心是通过 Microsoft Graph API 写代码(调用、鉴权、令牌交换)为 AI 代理配置身份, 属于 API/框架集成开发

@@ -1,0 +1,7 @@
+# explore-code (`lllllllama/rigorpilot-skills/explore-code`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 在隔离分支上移植模块、加 LoRA/适配层、改 backbone 等探索性代码改动, 本质是写代码与重构

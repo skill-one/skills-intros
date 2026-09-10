@@ -1,0 +1,7 @@
+# full-output-enforcement (`leonxlnx/taste-skill/full-output-enforcement`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 专治代码生成"半途而废": 强制完整输出, 封杀 // ... 等占位符, 长代码自动断点续写。

@@ -1,0 +1,5 @@
+# full-output-enforcement (`leonxlnx/taste-skill/full-output-enforcement`)
+
+## scenario
+
+让 AI 写完整代码或文档,它却回你"此处省略……"?追着喊"继续",结果前后接不上,还得自己补窟窿。我保证:要多少给多少,零省略、零占位符,交付即完整。
