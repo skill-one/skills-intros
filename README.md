@@ -164,8 +164,7 @@ curl -sL https://codeload.github.com/skill-one/skills-profiles/tar.gz/refs/heads
 Each publish is tagged, and tags are immutable — pin one and your view never changes under you:
 `dist-YYYY-MM-DD` is a day's dataset baseline (written by `sync`, force-updated within the day),
 `dist-YYYY-MM-DD-N` the Nth batch of profiles on top of it (written by `generate`). Retention is a
-rolling window (default one month); publishes predating the sync/generate split carry a
-`dist-YYYYMMDDHHMM` form instead, which the resolver below handles the same way.
+rolling window (default one month).
 
 ```bash
 # newest published tag

@@ -135,7 +135,7 @@ curl -sL https://codeload.github.com/skill-one/skills-profiles/tar.gz/refs/heads
 每次发布都会打 tag，而 tag 是不可变的——钉住一个，你看到的内容就不会在脚下变化：
 `dist-YYYY-MM-DD` 是某一天的数据集基准（`sync` 写入，同日内的发布 force 覆盖），
 `dist-YYYY-MM-DD-N` 是这个基准之上的第 N 批档案（`generate` 写入）。历史按滚动时间窗剪枝
-（默认一个月）；在 sync/generate 拆分之前的发布用的是 `dist-YYYYMMDDHHMM` 形式，下面的解析命令同样适用。
+（默认一个月）。
 
 ```bash
 # 最新的已发布 tag
