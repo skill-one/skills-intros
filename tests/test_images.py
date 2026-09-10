@@ -15,7 +15,7 @@ from typer.testing import CliRunner
 import skills_profiles.images as images_mod
 from skills_profiles.cli import app
 from skills_profiles.config import Settings
-from skills_profiles.data import load_skills
+from skills_profiles.data import load_skills, portfolio
 from skills_profiles.images import (
     CHARACTER,
     FAKE_PNG,
@@ -228,6 +228,12 @@ def test_settings_reject_values_the_docs_do_not_allow(kwargs, message):
         Settings(**kwargs)
 
 
+def test_settings_reject_a_negative_total_limit():
+    """The dataset ceiling is a size, so a negative is a config mistake, not "all"."""
+    with pytest.raises(ValueError, match="total_limit must be >= 0"):
+        Settings(total_limit=-1)
+
+
 def test_zero_is_the_documented_way_to_omit_a_knob():
     settings = Settings(image_steps=0, image_guidance=0)
     assert (settings.image_steps, settings.image_guidance) == (0, 0)
@@ -335,6 +341,28 @@ def test_selection_default_limit_comes_from_settings(settings, with_profiles):
     skills = load_skills(settings)
     settings.image_limit = 1
     assert select_cover_skills(settings, skills) == [skills[0]]
+
+
+def test_portfolio_is_a_rank_window_not_a_count_of_done_work(settings):
+    """The ceiling is the top N by installs; 0 or N past the end serves everyone."""
+    skills = load_skills(settings)  # alpha, beta, gamma, hotel — installs descending
+    assert [s.id for s in portfolio(Settings(total_limit=2), skills)] == [
+        skills[0].id, skills[1].id]
+    assert portfolio(Settings(total_limit=0), skills) == skills
+    assert portfolio(Settings(total_limit=99), skills) == skills
+
+
+def test_covers_never_reach_past_the_window_even_with_a_recipe(settings, with_profiles):
+    """beta holds a cover recipe but sits outside a top-1 window: it is never drawn.
+
+    The window is positional, so a filled-in slot never hands its turn to a skill
+    the total cap excludes — that is what bounds the dataset, not just one run.
+    """
+    skills = load_skills(settings)
+    settings.total_limit = 1
+    window = portfolio(settings, skills)
+    assert with_profiles[1].id not in [s.id for s in window], "beta has a recipe but is outside"
+    assert select_cover_skills(settings, window, limit=0) == [skills[0]]
 
 
 async def test_run_covers_renders_each_pending_skill_once(settings, with_profiles):

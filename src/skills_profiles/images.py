@@ -305,10 +305,12 @@ def select_cover_skills(
 ) -> list[SkillRecord]:
     """The first `limit` skills (install order) that have a recipe but no picture.
 
-    The budget rule of `generate.select_skills` carries over: skills with nothing
-    to do are passed over without consuming any of it, so repeated `covers` runs
-    keep walking down the list instead of re-scanning the same head. limit=None
-    uses settings.image_limit; limit <= 0 renders every pending skill.
+    `skills` is the pipeline's window (see `data.portfolio`), so covers never reach
+    past `settings.total_limit` however many runs happen. The budget rule of
+    `generate.select_skills` carries over: skills with nothing to do are passed over
+    without consuming any of it, so repeated `covers` runs keep walking down the list
+    instead of re-scanning the same head. limit=None uses settings.image_limit;
+    limit <= 0 renders every pending skill in the window.
     """
     limit = settings.image_limit if limit is None else limit
     ready = [s for s in skills if cover_needed(settings, s.id)]

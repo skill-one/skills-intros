@@ -39,6 +39,14 @@ failures — quota, connection — are isolated: the run continues, finished pro
 get published, and only a total washout (every selected skill failed) exits non-zero. `covers`
 follows the same rules for the same reasons.
 
+Both commands work inside one dataset ceiling, `SKILLS_PROFILES_TOTAL_LIMIT` (default 1000): only
+the most installed N skills are ever profiled or drawn, however large a run's `--limit` is. It is a
+rank window, not a count of finished work — a top skill whose recipe is not filled in yet, or whose
+render failed, keeps its slot rather than promoting a lower one, so re-runs and `invalidate` redraws
+reuse the same N. Being one setting, it bounds profiles and pictures at once (and, since each cover
+is ~1.7 MB, the total cover weight `dist` can hold); `--limit` and `SKILLS_PROFILES_IMAGE_LIMIT`
+stay per-run budgets *within* it, and CI inherits the ceiling from the default.
+
 ## How it works
 
 ```
@@ -178,6 +186,7 @@ Resolution order (highest first): `SKILLS_PROFILES_*` env vars → local `.env` 
 | `SKILLS_PROFILES_BASE_URL` | – | OpenAI-compatible endpoint |
 | `SKILLS_PROFILES_API_KEY` | – | API key for the endpoint |
 | `SKILLS_PROFILES_LIMIT` | `10` | Skills per run (`0` = all; cached ones are skipped, not counted) |
+| `SKILLS_PROFILES_TOTAL_LIMIT` | `1000` | Skills the whole pipeline serves, most installed first — a ceiling on the dataset, not on one run: `run` and `covers` both stop at it (`0` = all) |
 | `SKILLS_PROFILES_CONCURRENCY` | `2` | Max concurrent LLM calls / image requests, shared across skills and prompts |
 | `SKILLS_PROFILES_OUTPUT_DIR` | `output` | Artifacts directory |
 | `SKILLS_PROFILES_DATA_DIR` | `cache/skills-sh` | Upstream data directory |
@@ -188,7 +197,7 @@ Resolution order (highest first): `SKILLS_PROFILES_*` env vars → local `.env` 
 | `SKILLS_PROFILES_IMAGE_SIZE` | `1024x1024` | Checked against the sizes the endpoint documents per model |
 | `SKILLS_PROFILES_IMAGE_STEPS` | `20` | `num_inference_steps` (1–100); `0` omits the field |
 | `SKILLS_PROFILES_IMAGE_GUIDANCE` | `7.5` | `guidance_scale` (≤ 20, documented as Kolors-only); `0` omits it for other models |
-| `SKILLS_PROFILES_IMAGE_LIMIT` | `10` | Covers rendered per run (`0` = every pending one) |
+| `SKILLS_PROFILES_IMAGE_LIMIT` | `10` | Covers rendered per run (`0` = every pending one); the dataset ceiling is `SKILLS_PROFILES_TOTAL_LIMIT` |
 
 ## Publishing (GitHub Actions)
 
@@ -211,9 +220,11 @@ and `covers` just read the dataset the last `sync` published and never fetch. Hi
 rolling window (default `1 month`; the newest commit and the newest tag of each pattern are always
 kept as a floor).
 
-`covers` is the only workflow that adds binary weight: an existing `cover.png` is restored and kept
-(never re-rendered), and its `limit` input is therefore also the size policy — each picture is
-~1.7 MB each as measured at 1024x1024, and every later run fetches the whole branch back.
+`covers` is the only workflow that adds binary weight, and it is bounded twice: the `limit` input
+caps one batch, while `SKILLS_PROFILES_TOTAL_LIMIT` caps the dataset (`covers` only ever renders the
+most installed N skills). Each picture is ~1.7 MB as measured at 1024x1024 and every later run fetches
+the whole branch back, so it is that ceiling — not any single run — that bounds how many covers `dist`
+can ever hold: an existing `cover.png` is restored and kept, never re-rendered.
 
 ```bash
 gh workflow run generate.yml -f limit=50 -f concurrency=8   # one batch of profiles
@@ -230,6 +241,7 @@ Required configuration (Settings → Secrets and variables → Actions):
 | Variable | `SKILLS_PROFILES_BASE_URL` | `https://api.b.ai/v1` |
 | Variable | `SKILLS_PROFILES_MODEL` | `GLM-5.3-Flash` |
 | Variable | `SKILLS_PROFILES_IMAGE_BASE_URL`, `SKILLS_PROFILES_IMAGE_MODEL`, `SKILLS_PROFILES_IMAGE_SIZE` | optional; default to the documented Kolors endpoint at `1024x1024` |
+| Variable | `SKILLS_PROFILES_TOTAL_LIMIT` | optional; the built-in `1000` already bounds local and CI alike, so set it only to change the ceiling |
 
 ## Testing
 

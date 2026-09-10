@@ -37,6 +37,13 @@ skills-profiles covers --limit 10       # 渲染它们的封面配图，按安�
 run 继续，已完成的 prompt 保留并随本轮发布，只有全军覆没（所有选中 skill 都失败）才以非零码退出。
 `covers` 出于同样的原因，遵循同样的规则。
 
+两条命令都工作在同一道数据集封顶之内，即 `SKILLS_PROFILES_TOTAL_LIMIT`（默认 1000）：无论单次 run 的
+`--limit` 多大，只有安装量最高的前 N 个 skill 会被生成档案或绘制配图。它是一个排名窗口，而非「已完成了多少个」
+的计数——排在前面但配方还没写好、或渲染失败的 skill 会占着名额而不让位给后面的，所以重跑和 `invalidate`
+重画都复用同一批 N 个。由于它只是一个设置，它就同时封顶了档案与配图（也封顶了 `dist` 能装下的配图总重量，
+因为每张约 1.7 MB）；而 `--limit` 与 `SKILLS_PROFILES_IMAGE_LIMIT` 仍是这道封顶*之内*的单次预算，
+CI 则从默认值继承这道封顶。
+
 ## 工作原理
 
 ```
@@ -159,6 +166,7 @@ tests/                 # 离线 fixture + 端到端 CLI 测试
 | `SKILLS_PROFILES_BASE_URL` | 无 | OpenAI 兼容端点 |
 | `SKILLS_PROFILES_API_KEY` | 无 | 端点 API key |
 | `SKILLS_PROFILES_LIMIT` | `10` | 每次 run 生成的 skill 数（`0` = 全部；已缓存的跳过不计数） |
+| `SKILLS_PROFILES_TOTAL_LIMIT` | `1000` | 整条管道服务的 skill 数，按安装量从高到低——是对数据集的封顶、不是单次 run：`run` 和 `covers` 都止步于此（`0` = 全部） |
 | `SKILLS_PROFILES_CONCURRENCY` | `2` | LLM 调用 / 图像请求的最大并发数，跨 skill 及 skill 内 prompt 共享 |
 | `SKILLS_PROFILES_OUTPUT_DIR` | `output` | 产物目录 |
 | `SKILLS_PROFILES_DATA_DIR` | `cache/skills-sh` | 上游数据目录 |
@@ -169,7 +177,7 @@ tests/                 # 离线 fixture + 端到端 CLI 测试
 | `SKILLS_PROFILES_IMAGE_SIZE` | `1024x1024` | 会对照端点按模型文档化的尺寸来校验 |
 | `SKILLS_PROFILES_IMAGE_STEPS` | `20` | `num_inference_steps`（1–100）；填 `0` 表示不发送该字段 |
 | `SKILLS_PROFILES_IMAGE_GUIDANCE` | `7.5` | `guidance_scale`（≤ 20，接口文档标注仅 Kolors 支持）；换其他模型时填 `0` 省略该字段 |
-| `SKILLS_PROFILES_IMAGE_LIMIT` | `10` | 每次 run 渲染的配图数（`0` = 所有待渲染的） |
+| `SKILLS_PROFILES_IMAGE_LIMIT` | `10` | 每次 run 渲染的配图数（`0` = 所有待渲染的）；对数据集的封顶由 `SKILLS_PROFILES_TOTAL_LIMIT` 决定 |
 
 ## 发布（GitHub Actions）
 
@@ -189,8 +197,10 @@ tests/                 # 离线 fixture + 端到端 CLI 测试
 `covers` 只读上一次 `sync` 发布的数据集，绝不回源。历史按滚动时间窗剪枝（默认 `1 month`；无论多久没更新，最新 1 条
 commit 和每种 pattern 最新 1 个 tag 始终保底）。
 
-`covers` 是唯一会往快照里增加二进制体积的工作流：已存在的 `cover.png` 会被恢复并保留（绝不重新渲染），
-因此它的 `limit` 输入也就同时是体积策略——每张配图实测约 1.7 MB（1024x1024），而之后每一轮都会把整棵分支再拉回来。
+`covers` 是唯一会往快照里增加二进制体积的工作流，而它被双重封顶：`limit` 输入封顶单批数量，
+`SKILLS_PROFILES_TOTAL_LIMIT` 封顶数据集（`covers` 只为安装量最高的前 N 个 skill 绘图）。每张配图实测约
+1.7 MB（1024x1024），且之后每一轮都会把整棵分支再拉回来——所以是这道封顶（而非任何单次 run）决定了
+`dist` 最多能装多少张配图：已存在的 `cover.png` 会被恢复并保留，绝不重新渲染。
 
 ```bash
 gh workflow run generate.yml -f limit=50 -f concurrency=8   # 跑一批档案
@@ -207,6 +217,7 @@ gh workflow run sync.yml                                    # 刷新上游，丢
 | Variable | `SKILLS_PROFILES_BASE_URL` | `https://api.b.ai/v1` |
 | Variable | `SKILLS_PROFILES_MODEL` | `GLM-5.3-Flash` |
 | Variable | `SKILLS_PROFILES_IMAGE_BASE_URL`、`SKILLS_PROFILES_IMAGE_MODEL`、`SKILLS_PROFILES_IMAGE_SIZE` | 可选；默认用文档里那个 Kolors 端点、`1024x1024` |
+| Variable | `SKILLS_PROFILES_TOTAL_LIMIT` | 可选；内置的 `1000` 已经同时封顶了本地和 CI，只有想改动这道封顶时才需要设置 |
 
 ## 测试
 

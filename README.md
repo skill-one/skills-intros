@@ -100,7 +100,7 @@ what the profiles were built against:
     "tagline": 334,
     "whitebox": 334
   },
-  "skills": { "complete": 334, "remaining": 8625, "stale": 0, "total": 8959 },
+  "skills": { "complete": 334, "remaining": 666, "stale": 0, "total": 1000 },
   "snapshot": { "ref": "dist-2026-09-09", "fetched_at": "2026-09-09T02:01:24Z" }
 }
 ```
@@ -111,11 +111,13 @@ counts the pictures actually drawn from them. They are apart because a picture i
 treat `cover.png` as
 present-or-absent per skill, and fall back to nothing when it is absent.
 
-`skills.total` is the upstream snapshot's size, `skills.complete` the part already profiled — the
-rest is still queued. `snapshot.ref` names the mirror tag these hashes belong to (see
-[Join with the mirror](#join-with-the-mirror)). The counters are rewritten at the end of each
-`generate` publish, so a `sync` that only drops invalidated profiles can leave them slightly ahead
-of the tree; when an exact count matters, count `skills.jsonl` lines.
+`skills.total` is not the whole upstream: the pipeline serves a deliberately capped window — the most
+installed skills up to `SKILLS_PROFILES_TOTAL_LIMIT` (default 1000) — and `skills.total` is that
+window's size, `skills.complete` the part already profiled, the rest of the window still queued.
+Skills past the window are never generated, by design, not waiting in line. `snapshot.ref` names the
+mirror tag these hashes belong to (see [Join with the mirror](#join-with-the-mirror)). The counters are
+rewritten at the end of each `generate` publish, so a `sync` that only drops invalidated profiles can
+leave them slightly ahead of the tree; when an exact count matters, count `skills.jsonl` lines.
 
 Two guarantees the layout itself enforces:
 
@@ -146,7 +148,8 @@ re-drawing a picture costs no LLM call.
 
 Published to the [`dist` branch](../../tree/dist) — the branch root _is_ the profile snapshot, so every
 commit is a complete state, and the same tree is browsable on the web. Coverage grows publish by
-publish — count `skills.jsonl` lines for the exact number — and the text profiles are under 1 MB
+publish toward the capped window described above (the most installed ~1000 skills, not every upstream
+one) — count `skills.jsonl` lines for the exact number — and the text profiles are under 1 MB
 compressed; rendered covers are not part of that figure, since one is ~1.7 MB and only
 skills rendered so far have one. Individual files pull over HTTP; the whole branch clones in one
 request. Note that `dist` also carries an internal `cache/skills-sh/` dataset mirror (the upstream

@@ -9,7 +9,10 @@ name: generate
 # back (one codeload request) — both the existing profiles (so `run` treats them
 # as cache and only fills what's missing) and the dataset mirror (so `run` can
 # read SKILL.md). Generate never touches upstream: the dataset is exactly what
-# the last `sync` published; `limit` bounds how much new work happens per run.
+# the last `sync` published; `limit` bounds how much new work happens per run,
+# while the CLI's `SKILLS_PROFILES_TOTAL_LIMIT` (default 1000, not set here so the
+# default holds) is a ceiling on the dataset: only the most installed N skills are
+# ever profiled, so repeated runs walk down that window and never past it.
 #
 # Repository configuration (Settings -> Secrets and variables -> Actions):
 #   Secret:   SKILLS_PROFILES_API_KEY

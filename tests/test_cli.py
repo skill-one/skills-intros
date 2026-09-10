@@ -31,6 +31,30 @@ def test_run_limit_counts_only_skills_that_generate(settings, monkeypatch):
     assert "Processing 0 of 4 skills" in result.output
 
 
+def test_run_serves_only_the_top_installed_skills(settings, monkeypatch):
+    """`total_limit` is a ceiling on the dataset, not one run: `run --limit 0`
+    ("all") still stops at the window, says so, and reports coverage over it.
+
+    The two skills outside a top-2 window stay untouched on disk — the cap is the
+    only thing that keeps them from being profiled, since --limit 0 means "every
+    skill with gaps".
+    """
+    settings.total_limit = 2
+    monkeypatch.setattr("skills_profiles.cli.Settings", lambda: settings)
+    result = runner.invoke(app, ["run", "--limit", "0", "--dry-run"])
+    assert result.exit_code == 0, result.output
+    assert "Serving the top 2 of 4 installed skills" in result.output
+    assert "Processing 2 of 2 skills" in result.output
+
+    stats = json.loads((settings.output_dir / "stats.json").read_text(encoding="utf-8"))
+    assert stats["skills"] == {"total": 2, "complete": 2, "remaining": 0, "stale": 0}
+
+    from skills_profiles.outputs import prompt_result_path
+
+    assert prompt_result_path(settings, "owner-c/repo-c/gamma", "domain").exists() is False
+    assert prompt_result_path(settings, "owner-h/repo-h/hotel:sub", "domain").exists() is False
+
+
 def test_run_concurrency_overrides_settings(settings, monkeypatch):
     """`--concurrency` caps LLM parallelism like `--limit` does the budget."""
     settings.concurrency = 8

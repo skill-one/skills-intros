@@ -98,7 +98,7 @@ English: [README.md](README.md) · 开发指南（生产 / 扩展这份数据）
     "tagline": 334,
     "whitebox": 334
   },
-  "skills": { "complete": 334, "remaining": 8625, "stale": 0, "total": 8959 },
+  "skills": { "complete": 334, "remaining": 666, "stale": 0, "total": 1000 },
   "snapshot": { "ref": "dist-2026-09-09", "fetched_at": "2026-09-09T02:01:24Z" }
 }
 ```
@@ -108,8 +108,10 @@ English: [README.md](README.md) · 开发指南（生产 / 扩展这份数据）
 ——把 `cover.png` 当作每个
 skill 上「有则有、无则无」的东西来对待，缺失时不做任何兜底。
 
-`skills.total` 是上游快照的规模，`skills.complete` 是已经生成档案的部分，剩下的都在队列里。
-`snapshot.ref` 指出这些 hash 属于镜像的哪个 tag（见[与镜像数据关联](#与镜像数据关联)）。这些计数在每轮
+`skills.total` 不是上游的全量：整条管道服务的是一个刻意设了封顶的窗口——安装量最高、至多
+`SKILLS_PROFILES_TOTAL_LIMIT`（默认 1000）个 skill——`skills.total` 就是这个窗口的规模，
+`skills.complete` 是已经生成档案的部分，窗口里剩下的都在队列里。超出窗口的 skill 是有意永不生成，
+而不是在排队。`snapshot.ref` 指出这些 hash 属于镜像的哪个 tag（见[与镜像数据关联](#与镜像数据关联)）。这些计数在每轮
 `generate` 发布结束时重写，因此只做丢弃的 `sync` 发布之后，它可能略高于树上的实际数量；要精确计数时，
 以 `skills.jsonl` 的行数为准。
 
@@ -135,7 +137,8 @@ skill 上「有则有、无则无」的东西来对待，缺失时不做任何�
 ## 如何获取数据
 
 发布在 [`dist` 分支](../../tree/dist)上——分支根目录**就是**档案快照，因此每个 commit 都是一个完整
-状态，同一棵树也可以在网页上直接浏览。覆盖率随每次发布增长（要精确数字就数 `skills.jsonl` 的行数），
+状态，同一棵树也可以在网页上直接浏览。覆盖率随每次发布增长，逐步逼近上文那道设了封顶的窗口（安装量最高的约 1000 个 skill，而非上游全部；
+要精确数字就数 `skills.jsonl` 的行数），
 文字档案本身压缩后不到 1 MB；渲染出的配图不计入这个数字，因为单张约 1.7 MB、且只有已经渲染过的
 skill 才有。可以按需拉单个文件，也能整包克隆。注意 `dist` 还附带一个内部
 `cache/skills-sh/` 数据集镜像（上游的 `SKILL.md`），供 CI 恢复、让 `generate` 不必再回上游拉取——

@@ -9,15 +9,18 @@ name: covers
 # Every run starts on a fresh runner. `restore-dist` pulls the `dist` snapshot
 # back (one codeload request) — both the existing profiles, so an already
 # rendered `cover.png` is kept as the cache it is, and the dataset mirror the
-# index is read from. `image-limit` bounds how many new pictures one run adds:
-# a cover is a megabyte-scale artifact, and the whole branch is fetched back by
-# every later run, so the budget is the size policy.
+# index is read from. Two things bound the pictures: the `limit` input caps one
+# batch, while the CLI's `SKILLS_PROFILES_TOTAL_LIMIT` (default 1000, not set here)
+# caps the dataset — `covers` only ever draws the most installed N skills. A cover
+# is a megabyte-scale artifact and the whole branch is fetched back by every later
+# run, so it is that ceiling, not any single run, that is the size policy.
 #
 # Repository configuration (Settings -> Secrets and variables -> Actions):
 #   Secret:   SKILLS_PROFILES_IMAGE_API_KEY
 #   Variable: SKILLS_PROFILES_IMAGE_BASE_URL, SKILLS_PROFILES_IMAGE_MODEL,
 #             SKILLS_PROFILES_IMAGE_SIZE (all optional: the CLI defaults to the
-#             documented SiliconFlow Kolors endpoint at 1024x1024)
+#             documented SiliconFlow Kolors endpoint at 1024x1024), and optionally
+#             SKILLS_PROFILES_TOTAL_LIMIT to change the dataset ceiling
 
 on:
   workflow_dispatch:

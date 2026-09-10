@@ -110,8 +110,9 @@ def select_skills(
 ) -> list[SkillRecord]:
     """The skills of this run: the first `limit` ones that still need work.
 
-    Skills are considered in install order; one whose every selected prompt is
-    already cached is skipped without spending any of the budget, so repeated
+    Skills are considered in install order (the list handed in is already the
+    `settings.total_limit` window, see `data.portfolio`); one whose every selected
+    prompt is already cached is skipped without spending any of the budget, so repeated
     runs keep moving down the list instead of re-scanning the same head.
     Skills without a SKILL.md in the snapshot can never generate anything, so
     they are passed over the same way — otherwise they would sit at the head
