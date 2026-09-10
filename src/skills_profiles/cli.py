@@ -102,7 +102,8 @@ def run(
         None, "--limit",
         help="How many skills to generate this run, most installed first "
              "(0 = every skill with missing prompts). Skills whose selected prompts "
-             "are all cached are skipped and do not count",
+             "are all cached, or that have no SKILL.md in the snapshot, are skipped "
+             "and do not count",
     ),
     concurrency: int | None = typer.Option(
         None, "--concurrency",

@@ -28,7 +28,7 @@ class Settings(BaseSettings):
     model: str = "gpt-4.1-mini"
     base_url: str | None = None  # override for OpenAI-compatible endpoints
     api_key: str | None = None
-    limit: int = 10  # skills to generate per run; cached ones are skipped, not counted
+    limit: int = 10  # skills to generate per run; cached/sourceless ones are skipped, not counted
     concurrency: int = 2
     max_retries: int = 3
     # generated profiles: skills.jsonl + skills/<id>/<prompt>.json (with md/ copies)

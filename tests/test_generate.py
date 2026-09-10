@@ -127,6 +127,18 @@ async def test_limit_zero_selects_every_skill(settings, prompt_set):
     assert select_skills(settings, prompt_set, skills, limit=0) == skills
 
 
+async def test_limit_skips_skills_without_skill_md(settings, prompt_set):
+    """A skill the snapshot has no SKILL.md for can never generate: selection
+    passes it over, so it never sits at the head of the list burning budget."""
+    skills = load_skills(settings)
+    skill_md_path(settings, skills[0]).unlink()
+
+    picked = select_skills(settings, prompt_set, skills, limit=1)
+    assert [s.id for s in picked] == [skills[1].id]
+
+    assert select_skills(settings, prompt_set, skills, limit=0) == skills[1:]
+
+
 async def test_limit_defaults_to_settings(settings, prompt_set):
     skills = load_skills(settings)
     settings.limit = 1

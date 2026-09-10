@@ -62,6 +62,8 @@ cache/skills-sh/                             # 上游数据，与产物分离
   `sync` 汇报对齐的 tag 与下载耗时。
 - 单个 skill 的失败（余额、连接等）会被隔离：run 继续执行，已完成的 prompt 保留并随
   本轮发布；只有全军覆没（所有选中 skill 都失败）才以非零码退出。
+- 快照里没有 SKILL.md 的 skill（scraper 未能保存内容，如名称/大小写与仓库不一致）会在
+  选择阶段被跳过，不占用 `--limit` 名额。
 
 ## 持续生成（GitHub Actions）
 

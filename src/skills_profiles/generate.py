@@ -11,7 +11,7 @@ from typing import Any, Callable
 from pydantic import ValidationError
 
 from .config import Settings
-from .data import read_marker, read_skill_md, stale_result_ids
+from .data import read_marker, read_skill_md, skill_md_path, stale_result_ids
 from .models import SkillRecord
 from .outputs import (
     load_index,
@@ -122,16 +122,25 @@ def select_skills(
     Skills are considered in install order; one whose every selected prompt is
     already cached is skipped without spending any of the budget, so repeated
     runs keep moving down the list instead of re-scanning the same head.
+    Skills without a SKILL.md in the snapshot can never generate anything, so
+    they are passed over the same way — otherwise they would sit at the head
+    of the list and burn the budget on every run (the run_one-level skip stays
+    as a fallback for callers that hand skills over directly).
     limit=None uses settings.limit; limit <= 0 selects every skill.
     """
     limit = settings.limit if limit is None else limit
+
+    def _needs_work(skill: SkillRecord) -> bool:
+        return (skill_md_path(settings, skill).is_file()
+                and bool(_load_cached(settings, prompts, skill, only)[1]))
+
     if limit <= 0:
-        return list(skills)
+        return [s for s in skills if skill_md_path(settings, s).is_file()]
     picked: list[SkillRecord] = []
     for skill in skills:
         if len(picked) == limit:
             break
-        if _load_cached(settings, prompts, skill, only)[1]:
+        if _needs_work(skill):
             picked.append(skill)
     return picked
 

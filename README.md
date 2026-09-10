@@ -67,6 +67,9 @@ Built-in prompts: `domain`, `scenario`, `blackbox`, `whitebox`, `tagline`, `pers
 - Skill-level failures (quota, connection) are isolated: the run continues, completed
   prompts stay on disk and get published, and only a total washout (every selected
   skill failed) exits non-zero.
+- Skills whose SKILL.md is missing from the snapshot (the scraper could not save it,
+  e.g. a name/case mismatch with the repo) are passed over during selection and never
+  consume the `--limit` budget.
 
 ## Continuous generation (GitHub Actions)
 
