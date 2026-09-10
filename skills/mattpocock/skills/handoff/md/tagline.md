@@ -1,0 +1,7 @@
+# handoff (`mattpocock/skills/handoff`)
+
+## tagline
+
+- 长对话一键收束, 新会话无缝接棒
+- 千言万语, 收进一页交接文档
+- 上下文不丢, 接手即上手

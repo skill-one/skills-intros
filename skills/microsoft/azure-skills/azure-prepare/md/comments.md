@@ -1,0 +1,10 @@
+# azure-prepare (`microsoft/azure-skills/azure-prepare`)
+
+## comments
+
+- user: 后端老兵, category: 妙用, comment: 它动手前会先把架构方案写进 .azure/deployment-plan.md 给我确认，我当场把 Cosmos 换成 PostgreSQL，避免生成完再返工。
+- user: 第一次用的新手, category: 坑, comment: 我以为跑完就有网址能访问，结果它只生成配置文件就停了。它只负责准备，真正部署要交给 azure-deploy 那步，不是坏了。
+- user: 运维老哥, category: 注意, comment: 要 SQL Server 时它拒写管理员密码进 Bicep，强制 Entra-only 登录。用账号密码连库的老脚本要先改造，否则上线连不上。
+- user: 前端转全栈, category: 坑, comment: 我随口说"Flask 发布到 App Service"，被转给另一个专用技能，没走 azd。想生成 azure.yaml 就在需求里明写"用 azd"。
+- user: 接手遗留项目的顾问, category: 妙用, comment: 在别人遗留项目里加服务，它只改现有文件，不会拿模板重初始化覆盖代码。每步做完还更新计划文件，交接时能看清进度。
+- user: 带 AI 干活的老程序员, category: 启发, comment: 它强制先写计划、我确认、再动手。以前我习惯边聊边改边返工，现在把这套流程搬回自己的评审，省了不少推倒重来。

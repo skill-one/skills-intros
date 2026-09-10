@@ -1,0 +1,7 @@
+# codebase-design (`mattpocock/skills/codebase-design`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 核心是代码设计: 模块接口、重构、可测试性, 属于写代码与架构优化场景

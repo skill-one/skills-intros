@@ -1,0 +1,7 @@
+# agent-browser (`vercel-labs/agent-browser/agent-browser`)
+
+## tagline
+
+- 让 AI 长出双手, 玩转每个网页
+- 一句指令, 网页任务全自动完成
+- 快如原生, 稳如老手, 指哪打哪

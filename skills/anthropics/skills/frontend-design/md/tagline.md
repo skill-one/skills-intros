@@ -1,0 +1,7 @@
+# frontend-design (`anthropics/skills/frontend-design`)
+
+## tagline
+
+- 给你的产品, 一眼记住的脸
+- 拒绝模板感, 每个像素有主意
+- 不做默认, 只做属于你的设计

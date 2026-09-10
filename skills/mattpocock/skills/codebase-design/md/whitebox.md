@@ -1,0 +1,13 @@
+# codebase-design (`mattpocock/skills/codebase-design`)
+
+## whitebox
+
+- 识别触发: 请求落在设计/改进模块接口、找深化机会、定 seam 位置、提升可测试性, 或另一 skill 需要 deep-module 词汇。
+- 换用统一词汇: 把口语中的 component/API/boundary 等说法映射到固定术语表 (Module、Interface、Seam、Adapter、Depth、Leverage、Locality), 禁止同义替换。
+- 评估深浅: 用删除测试 + 三个问题 (能否减方法/减参数/藏更多复杂度) 判定模块是 deep 还是 shallow。
+- 套用设计原则: 接口即测试面 — 接受依赖而非创建、返回结果而非副作用、小表面积; 只有一个 adapter 的 seam 视为假设性 seam。
+- 输出设计: 全程用同一套词汇表述; 需要更深入时转入 DEEPENING.md 或 DESIGN-IT-TWICE.md。
+
+- 术语表强制 (转换层): 输出被约束在 Glossary 精确用词上, 并用 Rejected framings 清单排除三种错误框架 — depth=代码行数比、interface=TS 关键字、boundary=DDD 限界上下文。纯提示词机制, 无代码执行。
+- 深浅校验启发式 (校验层): 删除测试 (删掉模块后复杂度在 N 个调用点重现 = 它在挣钱, 复杂度消失 = 纯透传应删) + 可测试性三原则, 快速给模块形状定性。
+- 依赖: 无外部工具/库/模型 API; 仅引用两份随附文档 — DEEPENING.md (依赖分类、seam 纪律、replace-don't-layer 测试) 与 DESIGN-IT-TWICE.md (并行子代理把接口按几种 radically different 方式设计多遍, 再按 depth/locality/seam 对比)。

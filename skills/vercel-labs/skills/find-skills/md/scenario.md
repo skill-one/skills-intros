@@ -1,0 +1,5 @@
+# find-skills (`vercel-labs/skills/find-skills`)
+
+## scenario
+
+AI 帮不上忙,你只能自己熬夜摸索?其实很多难题早有现成「技能包」(别人封装好的经验),只是你不知道。我帮你找到、甄别、一键装上,让 AI 立刻变行家。🔍

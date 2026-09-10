@@ -1,0 +1,21 @@
+{
+  "prompts": {
+    "blackbox": 24,
+    "comments": 24,
+    "domain": 24,
+    "persona": 24,
+    "scenario": 24,
+    "tagline": 24,
+    "whitebox": 24
+  },
+  "skills": {
+    "complete": 24,
+    "remaining": 8935,
+    "stale": 0,
+    "total": 8959
+  },
+  "snapshot": {
+    "fetched_at": "2026-09-09T02:01:24Z",
+    "ref": "dist-2026-09-09"
+  }
+}

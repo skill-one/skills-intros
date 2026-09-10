@@ -1,0 +1,13 @@
+# azure-deploy (`microsoft/azure-skills/azure-deploy`)
+
+## whitebox
+
+- 读 .azure/deployment-plan.md, 确认状态为 Validated 且 Validation Proof 已填实; 缺任一项立即停止, 转交 azure-prepare / azure-validate
+- 逐项执行 Pre-Deploy 检查清单, 按计划中 recipe.type 加载对应部署配方; Container Apps + ACR 场景先跑 azd provision --no-prompt, 确认 AcrPull 角色已传播
+- 按配方执行部署命令: azd up / azd deploy / terraform apply / az deployment
+- 如适用做部署后配置 (SQL 托管标识、EF Core 迁移), 再验证部署完成、端点可访问, 并实查 Azure 确认线上 RBAC 角色正确
+- 向用户汇报结果, 端点一律输出补全 https:// 前缀的完整 URL
+
+- 计划文件门禁 (校验): 执行前校验 plan 状态与 Validation Proof 段 (须含实际命令+时间戳), 且禁止自行把状态改成 Validated — 只有 azure-validate 技能授权写入; recipe.type 决定加载哪条部署配方
+- 命令执行管道 (转换/执行): 所有部署命令统一走本技能的错误恢复与验证管线, 出错查配方 errors.md, 破坏性操作强制 ask_user; 依赖外部 CLI: azd (Azure Developer CLI)、terraform、az (Azure CLI)
+- 实况核查 (验证): 经 Azure MCP 工具 (mcp_azure_mcp_azd 执行 azd、azure__role 查角色分配、subscription/group 列表查询) 核对线上状态 — 部署前核 AcrPull 权限传播, 部署后核 RBAC 角色与端点可达性

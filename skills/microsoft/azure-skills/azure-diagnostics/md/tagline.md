@@ -1,0 +1,7 @@
+# azure-diagnostics (`microsoft/azure-skills/azure-diagnostics`)
+
+## tagline
+
+- 云上故障,直击根因
+- 别猜了,让日志说话
+- 应用、容器、VM,一键全排查

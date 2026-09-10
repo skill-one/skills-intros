@@ -1,0 +1,5 @@
+# agent-browser (`vercel-labs/agent-browser/agent-browser`)
+
+## scenario
+
+每天手动填表、登录后台核对数据、盯网页改没改——重复又易错,占满你的时间。一句指令,我就能替你打开页面、点击、填表、截图、抓数据,整套流程自动跑完。浏览器里的脏活累活,交给我 🤖

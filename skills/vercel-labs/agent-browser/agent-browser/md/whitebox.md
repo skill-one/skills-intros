@@ -1,0 +1,13 @@
+# agent-browser (`vercel-labs/agent-browser/agent-browser`)
+
+## whitebox
+
+- 任务触发: 用户提出浏览器类需求 (打开网页/填表/截图/抓取/测试), 命中 skill 的触发词
+- 加载真指南: 本 stub 只是发现入口, 先经 Bash 执行 `agent-browser skills get core` 拿到当前版本的实际工作流
+- 准备环境: 未安装则 `npm i -g agent-browser && agent-browser install` (装 CLI + 浏览器)
+- 驱动浏览器: 逐条下发 agent-browser 命令 (navigate/click/fill/screenshot 等)
+- 读取快照决策: 每步解析可访问性快照中的 @eN 元素引用, 决定下一步动作, 循环至任务完成
+
+- CDP 直连: 原生 Rust CLI 通过 CDP (Chrome DevTools Protocol, Chrome 官方调试协议) 控制 Chrome/Chromium, 不依赖 Playwright/Puppeteer; 所有调用走 Bash 工具执行 agent-browser 命令
+- 可访问性树定位: 页面被解析成 accessibility-tree 快照, 元素附带紧凑的 @eN 引用, 用引用而非脆弱的 CSS 选择器做点击/填写, 这是解析与交互的核心
+- 指令自举防陈旧: skill.md 内容会随版本失效, 故真实用法由已安装 CLI 自身下发 (`skills get core`), 指令永远与安装版本一致; 另有 electron/slack/dogfood 等专项技能按需加载, 及 session 持久化、认证库、录像与 4848 端口观测面板

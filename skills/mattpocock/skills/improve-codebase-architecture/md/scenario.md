@@ -1,0 +1,5 @@
+# improve-codebase-architecture (`mattpocock/skills/improve-codebase-architecture`)
+
+## scenario
+
+项目越写越难改：动一处崩三处，bug 藏在模块缝里，测试写不动，连 AI 都读不懂代码？🩺 我给你的代码库做"架构体检"：扫描越用越乱的病灶，出一份带图的可视化报告，再陪你逐个落地，让代码好改、好测、好导航。

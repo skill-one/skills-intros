@@ -1,0 +1,7 @@
+# azure-deploy (`microsoft/azure-skills/azure-deploy`)
+
+## tagline
+
+- 代码就绪, 上云交我
+- 部署出错, 自动修复
+- 一键发布, 稳上生产

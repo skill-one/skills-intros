@@ -1,0 +1,5 @@
+# azure-ai (`microsoft/azure-skills/azure-ai`)
+
+## scenario
+
+千份合同、扫描件、会议录音散落各处,想找一句话翻遍全盘,又慢又心累😤 我能秒搜全库文档、录音转文字、扫描件一键识读,信息随叫随到。

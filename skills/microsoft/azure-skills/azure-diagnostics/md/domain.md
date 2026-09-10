@@ -1,0 +1,7 @@
+# azure-diagnostics (`microsoft/azure-skills/azure-diagnostics`)
+
+## domain
+
+**domain**: 🛡️ 运维与安全
+
+**reason**: 专治 Azure 云上生产故障: 资源健康检查、日志指标分析、虚机/容器/消息排障, 属于云运维监控范畴

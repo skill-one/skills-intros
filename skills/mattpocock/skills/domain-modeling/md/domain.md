@@ -1,0 +1,7 @@
+# domain-modeling (`mattpocock/skills/domain-modeling`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 为代码库构建领域模型、维护术语表与架构决策记录, 属软件开发设计活动

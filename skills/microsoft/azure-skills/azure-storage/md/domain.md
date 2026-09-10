@@ -1,0 +1,7 @@
+# azure-storage (`microsoft/azure-skills/azure-storage`)
+
+## domain
+
+**domain**: 🛡️ 运维与安全
+
+**reason**: 管理云存储账号与数据(上传/下载/分层/生命周期), 属云基础设施运维.

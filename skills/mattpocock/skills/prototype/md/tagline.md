@@ -1,0 +1,7 @@
+# prototype (`mattpocock/skills/prototype`)
+
+## tagline
+
+- 先试后建, 疑虑当场见分晓
+- 逻辑跑给你看, 方案摆给你挑
+- 一小时原型, 省一月返工

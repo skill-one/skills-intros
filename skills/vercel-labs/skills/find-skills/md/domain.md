@@ -1,0 +1,7 @@
+# find-skills (`vercel-labs/skills/find-skills`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 核心是帮开发者检索、评估并安装 agent 技能包 (npx skills 命令行 + GitHub 源), 属于开发工具链场景

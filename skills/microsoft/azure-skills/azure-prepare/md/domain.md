@@ -1,0 +1,7 @@
+# azure-prepare (`microsoft/azure-skills/azure-prepare`)
+
+## domain
+
+**domain**: 🛡️ 运维与安全
+
+**reason**: 核心是为 Azure 部署准备基础设施(Bicep/Terraform/Dockerfile), 属于部署与云基础设施范畴

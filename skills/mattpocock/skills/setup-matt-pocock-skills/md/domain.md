@@ -1,0 +1,7 @@
+# setup-matt-pocock-skills (`mattpocock/skills/setup-matt-pocock-skills`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 为代码仓库配置工程技能的基础设施 (issue 跟踪、标签、架构文档), 属于开发工具链。

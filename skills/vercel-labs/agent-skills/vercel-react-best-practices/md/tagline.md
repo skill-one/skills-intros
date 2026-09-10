@@ -1,0 +1,7 @@
+# vercel-react-best-practices (`vercel-labs/agent-skills/vercel-react-best-practices`)
+
+## tagline
+
+- 70 条实战规则, 让 React 快到极致
+- Vercel 官方经验, 性能优化不走弯路
+- 少一行冗余代码, 快一秒用户等待

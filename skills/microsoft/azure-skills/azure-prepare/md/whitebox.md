@@ -1,0 +1,13 @@
+# azure-prepare (`microsoft/azure-skills/azure-prepare`)
+
+## whitebox
+
+- 第一个动作就把 .azure/deployment-plan.md 骨架写到工作区磁盘, 之后随分析渐进填充 —— 先于任何代码生成
+- 分析工作区 (NEW/MODIFY/MODERNIZE)、扫描代码库、收集需求, 选定部署配方 (AZD 默认 / AZCLI / Bicep / Terraform), 计划定稿交用户审批 —— 未批准前不生成任何产物
+- 批准后: 加载 references/ 服务参考, 用 ask_user 确认 Azure 订阅与区域, 生成 azure.yaml + infra/ (Bicep/Terraform) + Dockerfile
+- 安全加固 + 功能验证 (尽量本地跑通), 再用 edit 把计划状态改为 'Ready for Validation'
+- 移交 azure-validate → azure-deploy 完成校验和部署; 本 skill 只备料, 从不直接执行 azd up / terraform apply
+
+- 计划文件即契约: .azure/deployment-plan.md 是唯一事实来源, 每步执行后更新状态; 下游 azure-validate / azure-deploy 依赖它, 状态未标 'Ready for Validation' 就移交会直接失败
+- 关键词前置路由: 先扫 prompt 关键词 —— Python+App Service → 转给 python-appservice-deploy, Lambda/AWS/GCP 迁移 → azure-cloud-migrate, AI 网关 → azure-aigateway; Durable 编排则强制加载 durable/durable-task-scheduler 参考后留在本流程; 命中专用 skill 处理完后, 回到本流程『选配方』一步继续
+- 参考驱动生成 + 硬安全约束: 产物严格按 references/ 模板产出, 内置不可违反项 —— SQL Server Bicep 永不生成 administratorLogin/Password, 无条件 Entra-only 认证 (azureADOnlyAuthentication: true); 破坏性操作必须 ask_user; 已有项目只改现有文件、绝不删项目目录。外部依赖: azd CLI (Azure Developer CLI)、Bicep/Terraform (IaC)、Docker; 无模型 API

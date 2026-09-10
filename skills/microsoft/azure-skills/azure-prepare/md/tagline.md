@@ -1,0 +1,7 @@
+# azure-prepare (`microsoft/azure-skills/azure-prepare`)
+
+## tagline
+
+- 先规划后部署，上云每步可控
+- 基础设施一键生成，告别手工配置
+- 先验证再上线，部署不踩坑

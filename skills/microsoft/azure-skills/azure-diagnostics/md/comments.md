@@ -1,0 +1,10 @@
+# azure-diagnostics (`microsoft/azure-skills/azure-diagnostics`)
+
+## comments
+
+- user: 运维值班老哥, category: 妙用, comment: 半夜 CPU 告警我先埋头翻日志, 它却让我先查资源健康——结果是平台侧维护事件, 省了一小时。现在口诀: 先排除 Azure 的锅。
+- user: 第一次用的新手, category: 注意, comment: 别只说「网站挂了」。把报错原文、开始时间、最近改了什么一起给它, 能直接对上对应的排查指南, 我试过一次定位。
+- user: 后端老兵, category: 坑, comment: App Service 高 CPU, 我上来就重启实例, 指标和现场全清了。应先按流程查日志留证据再动手, 重启会销毁现场。
+- user: 半夜值班的 SRE, category: 妙用, comment: Pod CrashLoop 我以前 kubectl describe 一通乱翻, 现在直接让它按 AKS 专项文档走, 从节点 NotReady 锁到镜像拉取失败。
+- user: 创业公司兼职运维, category: 注意, comment: VM 连不上别急着重置密码, 先看 NSG 有没有放行 22/3389 端口。它把「连不上」拆成网络、凭据、agent 三类, 按序排查才准。
+- user: DevOps 小组长, category: 启发, comment: 五步流程 (症状→资源健康→日志→指标→改动) 抄进了值班手册, 新人照着走也能出结论。先排外因再查自己代码, 思路换过来了。

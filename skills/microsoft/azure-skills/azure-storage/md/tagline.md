@@ -1,0 +1,7 @@
+# azure-storage (`microsoft/azure-skills/azure-storage`)
+
+## tagline
+
+- 文件上云, 一步到位
+- 冷热分层, 存储省钱有一手
+- 选型、备份、大数据, 存储难题全接住

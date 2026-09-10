@@ -1,0 +1,7 @@
+# handoff (`mattpocock/skills/handoff`)
+
+## domain
+
+**domain**: 🧠 知识管理
+
+**reason**: 把对话浓缩成可交接的总结文档, 本质是信息沉淀与资料整理

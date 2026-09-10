@@ -1,0 +1,7 @@
+# grilling (`mattpocock/skills/grilling`)
+
+## domain
+
+**domain**: 🧠 知识管理
+
+**reason**: 连环追问压力测试你的计划与决策, 本质是思维梳理与深度调研, 而非代码/文档/设计产出

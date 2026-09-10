@@ -1,0 +1,7 @@
+# frontend-design (`anthropics/skills/frontend-design`)
+
+## domain
+
+**domain**: 🎨 设计多媒体
+
+**reason**: 为界面设计独特的视觉方向: 配色、字体、排版, 让 UI 不落模板俗套。

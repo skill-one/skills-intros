@@ -1,0 +1,7 @@
+# triage (`mattpocock/skills/triage`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 服务于项目 issue/PR 的分诊: 验证 bug、审查 diff、产出面向编码 agent 的任务简报, 全程围绕代码仓库工作流

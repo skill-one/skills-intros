@@ -1,0 +1,10 @@
+# web-design-guidelines (`vercel-labs/agent-skills/web-design-guidelines`)
+
+## comments
+
+- user: 前端实习新手, category: 坑, comment: 第一次没传文件，它只反问我审哪个，白跑一轮。直接发组件路径如 src/pages/checkout.tsx，一次出结果。
+- user: 刚接手祖传代码的前端, category: 注意, comment: 别一上来扫全仓库，祖传项目会吐一长串，反而没头绪。我按页面分批审，file:line 照着改一遍就完。
+- user: 带两个前端的技术负责人, category: 妙用, comment: 我当发版前 checklist：跑完把结果贴进 PR 描述，让提交人按行号逐条勾掉，评审少吵一轮。
+- user: 设计师转前端的跨界者, category: 注意, comment: 它审的是代码文件，不是渲染后的页面。只在特定窗宽才出现的溢出它没报，视觉问题还得开浏览器确认。
+- user: 接活做官网的自由职业者, category: 妙用, comment: 它每次联网拉最新规范，规则会更新：上月干净的下月可能冒新问题。我顺便当规范更新器，不用追文档。
+- user: 后端被赶鸭子上架写前端, category: 启发, comment: 报的大半是我从没听过的键盘焦点、表单提示问题。现在写完先照它清单自查一遍，返工少多了。
