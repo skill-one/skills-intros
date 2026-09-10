@@ -1,0 +1,5 @@
+# caveman (`juliusbrussee/caveman/caveman`)
+
+## cover
+
+A trim editor in rolled sleeves and leather apron, holding a worn skill manual and long pruning shears, snipping excess pages off a long paper reply spilling across a desk beside an old terminal, cut strips piling below

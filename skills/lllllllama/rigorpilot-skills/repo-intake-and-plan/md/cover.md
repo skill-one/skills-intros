@@ -1,0 +1,5 @@
+# repo-intake-and-plan (`lllllllama/rigorpilot-skills/repo-intake-and-plan`)
+
+## cover
+
+A bespectacled coder in a hoodie, headphones around his neck, holding an open printed manual, his other hand hovering hesitantly over the keyboard, facing a monitor glowing with a branching folder tree and a dark idle terminal window, coffee mug and sticky notes on the desk

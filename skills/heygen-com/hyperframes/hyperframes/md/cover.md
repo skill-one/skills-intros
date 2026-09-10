@@ -1,0 +1,5 @@
+# hyperframes (`heygen-com/hyperframes/hyperframes`)
+
+## cover
+
+A motion designer in a hoodie, headphones around his neck, sketching storyboard frames beside dual monitors, one screen showing a glowing animation timeline with moving clip blocks, sticky notes and rough sketches scattered on the desk

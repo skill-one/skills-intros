@@ -1,0 +1,5 @@
+# azure-kusto (`microsoft/azure-skills/azure-kusto`)
+
+## cover
+
+A weary log analyst in headphones and a hoodie sits alone before a curved wall of glowing monitors in a dark night-time operations room, typing intently, screens filled with cascading charts and heatmaps, towering server racks blinking behind him

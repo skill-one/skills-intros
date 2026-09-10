@@ -1,0 +1,5 @@
+# azure-ai (`microsoft/azure-skills/azure-ai`)
+
+## cover
+
+A bespectacled retrieval engineer in rolled-up sleeves, typing at a glowing laptop, headphones around neck, one hand holding a magnifying glass, surrounded by towering stacks of paper files and cassette tapes in an office buried under documents
