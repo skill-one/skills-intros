@@ -1,138 +1,205 @@
 # skills-profiles
 
-Generate multi-angle Chinese profiles for [agent skills](https://www.skills.sh)
-collected by [skill-one/skills-sh-mirror](https://github.com/skill-one/skills-sh-mirror).
+Chinese multi-angle profiles for the [agent skills](https://www.skills.sh) collected by
+[skill-one/skills-sh-mirror](https://github.com/skill-one/skills-sh-mirror): a queryable index
+(`skills.jsonl`) carrying each skill's category and persona, plus all seven written profiles per
+skill (`skills/`). Profiles are LLM-generated from each skill's `SKILL.md` and published as whole
+snapshots — a snapshot is self-contained, so nothing else is needed to read it.
 
-> 中文文档: [README.zh-CN.md](README.zh-CN.md)
+中文: [README.zh-CN.md](README.zh-CN.md) · Dev guide (produce / extend this data): [DEVELOPING.md](DEVELOPING.md)
 
-## Quickstart
+## What the data is
 
-Requires Python 3.12+ and [uv](https://docs.astral.sh/uv/); LLM credentials go in a
-local `.env` (see `.env.example`).
+```
+├── skills.jsonl   one row per profiled skill, sorted by id — filter / join / rank here
+├── stats.json     how far generation has got: per-prompt coverage, complete/remaining/stale
+└── skills/        one directory per skill, named after its id
+    └── vercel-labs/skills/find-skills/   ({owner}/{repo}/{slug})
+        ├── domain.json  scenario.json  blackbox.json  whitebox.json
+        ├── tagline.json persona.json   comments.json
+        └── md/          the same seven rendered as markdown, for reading
+```
+
+Each `skills.jsonl` row (a real one):
+
+```json
+{
+  "id": "vercel-labs/skills/find-skills",
+  "hash": "b146008599c31057cef1c145774cea5d5afb30e8f43fa802e47a4b461419aaaf",
+  "domain": {
+    "domain": "开发编程",
+    "reason": "面向开发者的技能包检索与安装工具, 属于 agent 开发工具链生态"
+  },
+  "persona": {
+    "tool": "npx skills",
+    "role": "技能猎头",
+    "scene": "你说「这活你不会吧」时,我出门找一个现成的技能装上"
+  }
+}
+```
+
+| Field     | Meaning                                                                                        |
+| --------- | ---------------------------------------------------------------------------------------------- |
+| `id`      | the skills.sh skill id, `{owner}/{repo}/{slug}` — identical to the mirror's ids                |
+| `hash`    | SHA-256 of the skill's files, as recorded upstream: the profile describes exactly this content |
+| `domain`  | `domain`: one of 13 fixed usage-scenario categories; `reason`: one line of justification       |
+| `persona` | the skill as an occupation — `tool` it lives by, `role` it plays, `scene` it shows up in       |
+
+`domain.domain` is a closed enum, so it is directly filterable: 开发编程 · 测试与质量 · 数据分析 ·
+运维与安全 · 办公效率 · 内容创作 · 设计多媒体 · 知识管理 · 商业运营 · 支付金融 · 教育学习 · 生活服务 · 其他.
+
+The index folds in only the two angles you actually filter on. The other five are per-skill files,
+each with its own schema — seven angles in total:
+
+| Prompt     | Shape                                    | Content                                                               |
+| ---------- | ---------------------------------------- | --------------------------------------------------------------------- |
+| `domain`   | `{domain, reason}`                       | category + why — also in the index                                    |
+| `persona`  | `{tool, role, scene}`                    | occupational portrait — also in the index                             |
+| `scenario` | `{text}`                                 | one ≤100-character pitch, built on the user's pain point              |
+| `tagline`  | `{taglines[3]}`                          | three slogans, ≤20 characters each                                    |
+| `blackbox` | `{function, input_output[3–5]}`          | outside view: what you hand it → what you get back, no internals      |
+| `whitebox` | `{execution_flow[3–5], mechanisms[2–3]}` | inside view: happy path, key mechanisms, real dependencies            |
+| `comments` | `{comments[4–6]}`                        | first-person user notes; `category` typically 妙用 / 坑 / 注意 / 启发 |
+
+`{...[n–m]}` = an array of that many entries; `input_output` items are `{input, output}`, `comments`
+items `{user, category, comment}`. An excerpt of one `comments.json`:
+
+```json
+{
+  "comments": [
+    {
+      "user": "后端老兵",
+      "category": "妙用",
+      "comment": "用 --owner 锁定官方源: npx skills find react --owner vercel-labs, 结果只剩 Vercel 家的, 不会被野包污染。"
+    },
+    {
+      "user": "团队技术负责人",
+      "category": "坑",
+      "comment": "只看搜索第一页就装, 换来个 80 安装量的弃坑包, 出问题没人管。现在先看安装量和 GitHub stars, 低于 100 的直接 pass。"
+    }
+  ]
+}
+```
+
+Every published skill carries all seven angles; `stats.json` adds how many skills there are and says
+what the profiles were built against:
+
+```json
+{
+  "prompts": {
+    "blackbox": 334,
+    "comments": 334,
+    "domain": 334,
+    "persona": 334,
+    "scenario": 334,
+    "tagline": 334,
+    "whitebox": 334
+  },
+  "skills": { "complete": 334, "remaining": 8625, "stale": 0, "total": 8959 },
+  "snapshot": { "ref": "dist-2026-09-09", "fetched_at": "2026-09-09T02:01:24Z" }
+}
+```
+
+`skills.total` is the upstream snapshot's size, `skills.complete` the part already profiled — the
+rest is still queued. `snapshot.ref` names the mirror tag these hashes belong to (see
+[Join with the mirror](#join-with-the-mirror)). The counters are rewritten at the end of each
+`generate` publish, so a `sync` that only drops invalidated profiles can leave them slightly ahead
+of the tree; when an exact count matters, count `skills.jsonl` lines.
+
+Two guarantees the layout itself enforces:
+
+- The index is a projection of the per-skill files, re-derived from disk on every rewrite: a row
+  exists if and only if its directory exists, and its `domain` / `persona` can never disagree with
+  the json on disk.
+- `hash` is the content the profiles were generated from. When upstream rewrites a skill, its
+  profiles are dropped rather than left describing something else — a published row is always
+  honest about which version of the skill it talks about.
+
+`*.json` is the machine form and the cache marker; `md/*.md` is the same text laid out for humans.
+Everything but ids, paths and field names is Chinese.
+
+## How to get the data
+
+Published to the [`dist` branch](../../tree/dist) — the branch root _is_ the profile snapshot, so every
+commit is a complete state, and the same tree is browsable on the web. Coverage grows publish by
+publish — count `skills.jsonl` lines for the exact number — and the profiles are under 1 MB
+compressed. Individual files pull over HTTP; the whole branch clones in one request. Note that `dist`
+also carries an internal `cache/skills-sh/` dataset mirror (the upstream `SKILL.md` files) that CI
+restores so `generate` never re-fetches upstream — it is not part of the profile API, but a full
+branch clone/tarball does include it (~120 MB of text). Fetching files by path is unaffected.
+
+### Fetch individual files
+
+No clone, no auth. Start from the index to pick ids, then fetch any angle of any skill by path:
 
 ```bash
-uv sync
-skills-profiles sync            # download the upstream snapshot (skipped when the tag is unchanged)
-skills-profiles run --limit 10  # generate profiles, most installed first; cached skills are skipped for free
+curl -sO https://raw.githubusercontent.com/skill-one/skills-profiles/dist/skills.jsonl
+
+# dist/skills/<id>/<prompt>.json — or md/<prompt>.md to read it in the terminal
+curl -s https://raw.githubusercontent.com/skill-one/skills-profiles/dist/skills/vercel-labs/skills/find-skills/md/persona.md
 ```
 
-More `run` options:
+The index is small (≈130 KB at today's coverage), so pulling it whole is cheap.
+GitHub serves these with a ~5-minute cache, so `dist` URLs always track the latest publish.
+
+Filtering needs nothing beyond jq — every 设计多媒体 skill with its persona's role:
 
 ```bash
-skills-profiles run --limit 0           # every skill with missing prompts
-skills-profiles run --prompts tagline   # generate just this one prompt
-skills-profiles run --limit 5 --dry-run # offline smoke test (fake LLM, no API calls)
-skills-profiles run --limit 5 --debug   # print the rendered prompts to stderr
-skills-profiles run --concurrency 3     # cap parallel LLM calls (default 2)
-skills-profiles run --verbose           # DEBUG logging
+curl -s https://raw.githubusercontent.com/skill-one/skills-profiles/dist/skills.jsonl |
+  jq -r 'select(.domain.domain == "设计多媒体") | [.id, .persona.role] | @tsv'
 ```
 
-Re-runs resume for free: each prompt is committed to disk as soon as it is generated,
-so only missing prompts cost LLM calls — even after a crash mid-run. To redo work,
-invalidate first:
+### Clone the whole snapshot
 
 ```bash
-skills-profiles invalidate --prompts whitebox        # one prompt, for every skill
-skills-profiles invalidate --skill owner/repo/name   # every prompt of one skill
-skills-profiles invalidate --stale                   # skills whose upstream content changed (or vanished)
-skills-profiles invalidate --all                     # everything (needs --all)
+git clone --depth 1 -b dist https://github.com/skill-one/skills-profiles.git
+
+# or one request, no git history at all:
+curl -sL https://codeload.github.com/skill-one/skills-profiles/tar.gz/refs/heads/dist |
+  tar -xz --strip-components=1
 ```
 
-## Artifacts
+### Pin a snapshot
 
-```
-output/                                      # generated profiles, publishable on their own
-├── skills.jsonl                             # the skill index: id, upstream hash, aggregated domain/persona
-├── stats.json                               # artifact state: complete/remaining/stale skills, per-prompt coverage
-└── skills/<owner>/<repo>/<skill>/           # the directory name is the skills.jsonl id
-    ├── domain.json                          # one json per prompt, committed on generation (cache marker)
-    └── md/domain.md                         # markdown copy for browsing
-
-cache/skills-sh/                             # upstream data, kept separate from the artifacts
-├── skills.jsonl                             # the index: one json line per skill
-└── skills/<owner>/<repo>/<skill>/SKILL.md   # each skill's source
-```
-
-Built-in prompts: `domain`, `scenario`, `blackbox`, `whitebox`, `tagline`, `persona`, `comments`.
-
-- `sync` only downloads data and never touches the artifacts: one tarball request,
-  unpacking just the index and the SKILL.md files; the newest tag is recorded in
-  `cache/skills-sh/SNAPSHOT.json` and the download is skipped while it is unchanged.
-- Invalidation is explicit: `invalidate --stale` drops every skill whose recorded hash
-  no longer matches the snapshot (or that vanished from it — run `sync` first);
-  `run` itself just reuses whatever is on disk.
-- Every `run` prints a timed summary and overwrites `stats.json` — the artifact's
-  current state, not the run's; `sync` reports the tag it aligned to and the download
-  duration.
-- Skill-level failures (quota, connection) are isolated: the run continues, completed
-  prompts stay on disk and get published, and only a total washout (every selected
-  skill failed) exits non-zero.
-- Skills whose SKILL.md is missing from the snapshot (the scraper could not save it,
-  e.g. a name/case mismatch with the repo) are passed over during selection and never
-  consume the `--limit` budget.
-
-## Continuous generation (GitHub Actions)
-
-Two manually-triggered workflows share the same `dist` publish lock and are
-separated by concern:
-
-| Workflow | Pipeline | Tag |
-|---|---|---|
-| `sync` | restore dist → sync upstream → invalidate --stale → publish | `dist-YYYY-MM-DD` (force-updated within a day) |
-| `generate` | restore dist → run --limit <input, default 10> → publish | `dist-<base>-N` (base = newest sync tag, N increments) |
-
-The bare date tag is the day's dataset baseline; suffixed tags are output
-iterations on top of it. `dist` is both the published artifact and the cache —
-its root mirrors `output/`, and history is pruned to a rolling retention window
-(default `1 month`; the newest commit and the newest tag of each pattern are
-always kept as a floor). Required configuration (Settings → Secrets and
-variables → Actions):
-
-| Where | Name | Example |
-|---|---|---|
-| Secret | `SKILLS_PROFILES_API_KEY` | the endpoint's API key |
-| Variable | `SKILLS_PROFILES_BASE_URL` | `https://api.b.ai/v1` |
-| Variable | `SKILLS_PROFILES_MODEL` | `GLM-5.3-Flash` |
-
-## Adding a prompt
-
-One markdown file under `prompts/` is one prompt; the file name is the prompt id.
-`_system.md` is the shared system prompt (it provides `{{ skill.name }}`,
-`{{ skill.description }}` and the full `{{ skill_md }}`), so prompt files only
-describe the task:
-
-```markdown
----
-description: one line
-output: IntroText          # a pydantic schema registered in models.py
-depends_on: [scenario]     # DAG edges; omit for root prompts
----
-
-请为下面的 skill 写……
-{{ deps.scenario.text }}   # deps maps prompt ids to their parsed output objects
-```
-
-Then generate it for every skill (cached prompts are reused, only missing ones are
-generated — invalidate first to redo):
+Each publish is tagged, and tags are immutable — pin one and your view never changes under you:
+`dist-YYYY-MM-DD` is a day's dataset baseline (written by `sync`, force-updated within the day),
+`dist-YYYY-MM-DD-N` the Nth batch of profiles on top of it (written by `generate`). Retention is a
+rolling window (default one month); publishes predating the sync/generate split carry a
+`dist-YYYYMMDDHHMM` form instead, which the resolver below handles the same way.
 
 ```bash
-skills-profiles run --prompts my_angle --limit 0
+# newest published tag
+latest=$(git ls-remote --tags --refs https://github.com/skill-one/skills-profiles.git 'refs/tags/dist-*' \
+         | awk -F/ '{print $NF}' | sort -Vr | head -1)
+curl -sO "https://raw.githubusercontent.com/skill-one/skills-profiles/$latest/skills.jsonl"
+git clone --depth 1 -b "$latest" https://github.com/skill-one/skills-profiles.git
 ```
 
-## Configuration
+Cache by tag and re-fetch only when a newer one appears — a tag's content never changes, so this is
+the cheap way to stay near-current without re-downloading on every poll.
 
-Resolution order (highest first): `SKILLS_PROFILES_*` env vars → local `.env` → built-in
-defaults.
+### Join with the mirror
 
-| Variable | Default | Description |
-|---|---|---|
-| `SKILLS_PROFILES_MODEL` | `gpt-4.1-mini` | Any OpenAI-compatible chat model |
-| `SKILLS_PROFILES_BASE_URL` | – | OpenAI-compatible endpoint |
-| `SKILLS_PROFILES_API_KEY` | – | API key for the endpoint |
-| `SKILLS_PROFILES_LIMIT` | `10` | Skills to generate per run (`0` = all; cached skills are skipped, not counted) |
-| `SKILLS_PROFILES_CONCURRENCY` | `2` | Max concurrent LLM calls, shared across skills and prompts (also `--concurrency`) |
-| `SKILLS_PROFILES_OUTPUT_DIR` | `output` | Artifacts directory |
-| `SKILLS_PROFILES_DATA_DIR` | `cache/skills-sh` | Upstream data directory |
-| `SKILLS_PROFILES_PROMPTS_DIR` | `prompts` | Prompt markdown directory (plus `_system.md`) |
+Install counts, stars, descriptions and the `SKILL.md` sources themselves are deliberately not
+duplicated here — they live in [skills-sh-mirror](https://github.com/skill-one/skills-sh-mirror),
+whose dataset this one was generated from. The keys are the same: `id` joins the rows, `hash`
+proves the content matches. To join on hash too, pin upstream to the tag named in `stats.json`
+(`snapshot.ref`) — against a moving `dist` branch, a few hashes will always have drifted:
 
-To develop this software, see [CONTRIBUTING.md](CONTRIBUTING.md).
+```bash
+curl -sO https://raw.githubusercontent.com/skill-one/skills-profiles/dist/stats.json
+up=$(jq -r .snapshot.ref stats.json)   # e.g. dist-2026-09-09
+curl -s "https://raw.githubusercontent.com/skill-one/skills-sh-mirror/$up/skills.jsonl" -o up.jsonl
+curl -s https://raw.githubusercontent.com/skill-one/skills-profiles/dist/skills.jsonl -o mine.jsonl
+
+# id  installs  category  role
+jq -r --slurpfile up up.jsonl '($up | map({(.id): .installs}) | add) as $i
+  | [.id, $i[.id], .domain.domain, .persona.role] | @tsv' mine.jsonl
+```
+
+The same `id` also resolves to the skill's skills.sh page
+(`https://www.skills.sh/<id>`) and, in the mirror, to its upstream files.
+
+Profiles are built by this repository's `sync` and `generate` workflows (manually triggered on
+GitHub Actions: `gh workflow run generate.yml -f limit=50`). To run the pipeline yourself, add an
+angle, or regenerate a skill: [DEVELOPING.md](DEVELOPING.md).

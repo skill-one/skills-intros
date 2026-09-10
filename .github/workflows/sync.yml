@@ -1,9 +1,18 @@
 name: sync
 
 # Manual: refresh the upstream dataset, invalidate cached outputs whose upstream
-# content hash changed, and publish the pruned snapshot as `dist-YYYY-MM-DD`
-# (force-updated within a day, so the bare date tag always points at the newest
-# sync of that day).
+# content hash changed, and publish the result (profiles + the dataset mirror) as
+# `dist-YYYY-MM-DD` (force-updated within a day, so the bare date tag always
+# points at the newest sync of that day).
+#
+# The `dist` branch is the single atomic snapshot: profiles at its root plus the
+# `cache/skills-sh` dataset mirror. Restoring it back is what lets a later
+# `generate` run without ever touching upstream. `sync` re-downloads only when
+# the restored snapshot's marker lags the newest upstream tag.
+#
+# Repository configuration (Settings -> Secrets and variables -> Actions):
+#   Secret:   SKILLS_PROFILES_API_KEY
+#   Variable: SKILLS_PROFILES_BASE_URL, SKILLS_PROFILES_MODEL
 
 on:
   workflow_dispatch:
@@ -34,34 +43,11 @@ jobs:
       - name: Install
         run: uv sync
 
-      - name: Resolve upstream snapshot tag
-        id: ref
-        # Reuses the CLI's own resolver so the cache key and `sync` agree on the
-        # newest tag; falls back to "dist" when upstream publishes no tags.
-        run: |
-          set -euo pipefail
-          tag=$(uv run python -c 'from skills_profiles.data import latest_dist_tag; print(latest_dist_tag() or "")')
-          echo "tag=${tag}" >> "$GITHUB_OUTPUT"
-
-      - uses: actions/cache@v4
-        with:
-          path: cache/skills-sh
-          # One cache entry per upstream tag: hit within a day -> `sync` is a no-op.
-          key: dataset-${{ steps.ref.outputs.tag || 'dist' }}
-
-      - name: Restore published profiles
-        run: |
-          set -euo pipefail
-          mkdir -p output
-          if curl -fsSL "https://codeload.github.com/${GITHUB_REPOSITORY}/tar.gz/dist" \
-              -o "${RUNNER_TEMP}/dist.tar.gz"; then
-            tar -xzf "${RUNNER_TEMP}/dist.tar.gz" -C output --strip-components=1
-            echo "Restored $(find output/skills -name '*.json' 2>/dev/null | wc -l) prompt outputs"
-          else
-            echo "No dist branch yet: starting from an empty output/"
-          fi
+      - name: Restore dist snapshot (profiles + dataset)
+        uses: ./.github/actions/restore-dist
 
       - name: Sync dataset
+        # pulls the newest upstream tag only when the restored snapshot lags it
         run: uv run skills-profiles sync
 
       - name: Invalidate stale results

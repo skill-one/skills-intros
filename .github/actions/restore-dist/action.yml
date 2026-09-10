@@ -1,0 +1,51 @@
+name: restore-dist
+description: >-
+  Pull the published `dist` branch back into the working directories: profiles
+  at the branch root go to `output-dir`, the dataset mirror (`cache/…`) goes to
+  `data-dir`. One codeload request; no-op when the branch does not exist yet.
+
+inputs:
+  output-dir:
+    description: Where the published profiles land (mirrors the CLI's output dir)
+    default: output
+  data-dir:
+    description: Where the dataset mirror lands (the CLI's data dir, e.g. cache)
+    default: cache
+
+outputs:
+  restored:
+    description: "true when a dist branch was pulled back, false on a cold start"
+    value: ${{ steps.r.outputs.restored }}
+
+runs:
+  using: composite
+  steps:
+    - id: r
+      env:
+        OUTPUT_DIR: ${{ inputs.output-dir }}
+        DATA_DIR: ${{ inputs.data-dir }}
+      shell: bash
+      run: |
+        set -euo pipefail
+        mkdir -p "$OUTPUT_DIR" "$DATA_DIR"
+        tmp="${RUNNER_TEMP}/dist-restore"
+        rm -rf "$tmp"
+        mkdir -p "$tmp"
+        if curl -fsSL "https://codeload.github.com/${GITHUB_REPOSITORY}/tar.gz/dist" \
+            -o "${RUNNER_TEMP}/dist.tar.gz" \
+           && tar -xzf "${RUNNER_TEMP}/dist.tar.gz" -C "$tmp" --strip-components=1; then
+          # the dataset mirror (e.g. cache/) -> DATA_DIR, everything else -> OUTPUT_DIR
+          if [ -d "$tmp/$DATA_DIR" ]; then
+            cp -a "$tmp/$DATA_DIR/." "$DATA_DIR/"
+            rm -rf "${tmp:?}/${DATA_DIR:?}"
+          fi
+          for item in "$tmp"/*; do
+            [ -e "$item" ] || continue
+            cp -a "$item" "$OUTPUT_DIR/"
+          done
+          echo "restored=true" >> "$GITHUB_OUTPUT"
+          echo "Restored $(find "$OUTPUT_DIR" -name '*.json' 2>/dev/null | wc -l) profile(s), $(find "$DATA_DIR" -name 'SKILL.md' 2>/dev/null | wc -l) SKILL.md"
+        else
+          echo "restored=false" >> "$GITHUB_OUTPUT"
+          echo "No dist branch yet: starting from empty $OUTPUT_DIR/ and $DATA_DIR/"
+        fi

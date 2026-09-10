@@ -11,8 +11,13 @@ inputs:
     description: "'date' or 'date-counter'"
     required: true
   output-dir:
-    description: Local directory whose contents mirror the dist branch root
+    description: Local directory whose contents become the dist branch root (profiles)
     default: output
+  data-dir:
+    description: >-
+      Optional local directory (the dataset mirror, e.g. cache) published into
+      dist under the same name, beside the profiles. Skipped when it is absent.
+    default: cache
   retention:
     description: >-
       Time window for dist commits and tags, in GNU date syntax
@@ -36,6 +41,7 @@ runs:
       env:
         GH_TOKEN: ${{ inputs.token }}
         OUTPUT_DIR: ${{ inputs.output-dir }}
+        DATA_DIR: ${{ inputs.data-dir }}
         TAG_MODE: ${{ inputs.tag-mode }}
         RETENTION: ${{ inputs.retention }}
       shell: bash
@@ -54,6 +60,11 @@ runs:
         fi
         find "$dist" -mindepth 1 -maxdepth 1 -not -name .git -exec rm -rf {} +
         cp -a "${OUTPUT_DIR}/." "$dist/"
+        # mirror the dataset (e.g. cache/skills-sh) beside the profiles, when present
+        if [ -n "$DATA_DIR" ] && [ -d "$DATA_DIR" ] && [ -n "$(ls -A "$DATA_DIR" 2>/dev/null)" ]; then
+          mkdir -p "$dist/$DATA_DIR"
+          cp -a "${DATA_DIR}/." "$dist/$DATA_DIR/"
+        fi
         cd "$dist"
         git config user.name "github-actions[bot]"
         git config user.email "41898282+github-actions[bot]@users.noreply.github.com"

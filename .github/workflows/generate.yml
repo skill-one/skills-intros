@@ -1,13 +1,15 @@
 name: generate
 
-# Manual: produce more profiles against the current dataset and publish as
-# `dist-<base>-N`, where base is the newest bare `dist-YYYY-MM-DD` sync tag (or
-# today, if none exists yet) and N increments across that base's publishes.
+# Manual: produce more profiles against the dataset already published in `dist`
+# and publish as `dist-<base>-N`, where base is the newest bare
+# `dist-YYYY-MM-DD` sync tag (or today, if none exists yet) and N increments
+# across that base's publishes.
 #
-# Every run starts on a fresh runner. The published outputs are pulled back from
-# the `dist` branch (one tarball request) so `run` sees existing prompts as
-# cache and only fills in what's missing; `limit` therefore bounds how much is
-# generated per run — the branch is both the artifact and the cache.
+# Every run starts on a fresh runner. `restore-dist` pulls the `dist` snapshot
+# back (one codeload request) — both the existing profiles (so `run` treats them
+# as cache and only fills what's missing) and the dataset mirror (so `run` can
+# read SKILL.md). Generate never touches upstream: the dataset is exactly what
+# the last `sync` published; `limit` bounds how much new work happens per run.
 #
 # Repository configuration (Settings -> Secrets and variables -> Actions):
 #   Secret:   SKILLS_PROFILES_API_KEY
@@ -49,17 +51,8 @@ jobs:
       - name: Install
         run: uv sync
 
-      - name: Restore published profiles
-        run: |
-          set -euo pipefail
-          mkdir -p output
-          if curl -fsSL "https://codeload.github.com/${GITHUB_REPOSITORY}/tar.gz/dist" \
-              -o "${RUNNER_TEMP}/dist.tar.gz"; then
-            tar -xzf "${RUNNER_TEMP}/dist.tar.gz" -C output --strip-components=1
-            echo "Restored $(find output/skills -name '*.json' 2>/dev/null | wc -l) prompt outputs"
-          else
-            echo "No dist branch yet: starting from an empty output/"
-          fi
+      - name: Restore dist snapshot (profiles + dataset)
+        uses: ./.github/actions/restore-dist
 
       - name: Generate profiles
         run: |
