@@ -1,21 +1,13 @@
 name: generate
 
-# Incremental generation + publishing:
+# Manual: produce more profiles against the current dataset and publish as
+# `dist-<base>-N`, where base is the newest bare `dist-YYYY-MM-DD` sync tag (or
+# today, if none exists yet) and N increments across that base's publishes.
 #
-#   resolve tag -> restore cache (dataset) -> restore (dist tarball, output)
-#              -> sync (dataset) -> invalidate --stale -> run -> publish
-#
-# A successful publish also tags the dist commit as `dist-YYYYMMDDHHmm` (UTC).
-# dist keeps exactly the 10 newest publish commits and the 10 newest dist-* tags
-# — one commit per publish, each tagged, so dist history and tags correspond 1:1.
-#
-# Every run starts on a fresh runner. The dataset is restored from actions/cache
-# (keyed by the upstream daily tag, resolved by the CLI's own resolver), so within
-# a day `sync` has nothing to download; the published outputs are pulled back from
-# the `dist` branch (one tarball request) and order matters because `invalidate
-# --stale` compares the recorded hashes against what was just restored. `run`
-# never redoes cached work, so the `limit` input bounds how much is generated per
-# run — the branch is both the artifact and the cache.
+# Every run starts on a fresh runner. The published outputs are pulled back from
+# the `dist` branch (one tarball request) so `run` sees existing prompts as
+# cache and only fills in what's missing; `limit` therefore bounds how much is
+# generated per run — the branch is both the artifact and the cache.
 #
 # Repository configuration (Settings -> Secrets and variables -> Actions):
 #   Secret:   SKILLS_PROFILES_API_KEY
@@ -30,15 +22,12 @@ on:
       concurrency:
         description: Max concurrent LLM calls
         default: "8"
-  schedule:
-    # Every 20 minutes
-    - cron: "*/20 * * * *"
 
 permissions:
   contents: write
 
 concurrency:
-  group: generate-dist
+  group: publish-dist
   cancel-in-progress: false # never cancel a run that is about to push
 
 env:
@@ -60,21 +49,6 @@ jobs:
       - name: Install
         run: uv sync
 
-      - name: Resolve upstream snapshot tag
-        id: ref
-        # Reuses the CLI's own resolver so the cache key and `sync` agree on the
-        # newest tag; falls back to "dist" when upstream publishes no tags.
-        run: |
-          set -euo pipefail
-          tag=$(uv run python -c 'from skills_profiles.data import latest_dist_tag; print(latest_dist_tag() or "")')
-          echo "tag=${tag}" >> "$GITHUB_OUTPUT"
-
-      - uses: actions/cache@v4
-        with:
-          path: cache/skills-sh
-          # One cache entry per upstream tag: hit within a day -> `sync` is a no-op.
-          key: dataset-${{ steps.ref.outputs.tag || 'dist' }}
-
       - name: Restore published profiles
         run: |
           set -euo pipefail
@@ -87,17 +61,7 @@ jobs:
             echo "No dist branch yet: starting from an empty output/"
           fi
 
-      - name: Sync dataset
-        run: uv run skills-profiles sync
-
-      - name: Invalidate stale results
-        # results whose upstream content hash changed (or whose skill vanished)
-        # are dropped here, explicitly — sync itself never touches results
-        run: uv run skills-profiles invalidate --stale
-
       - name: Generate profiles
-        # inputs exist only on workflow_dispatch; scheduled runs pass nothing and
-        # fall back to the CLI defaults (limit 10, concurrency 2)
         run: |
           args=()
           if [ -n "${{ inputs.limit }}" ]; then
@@ -109,59 +73,6 @@ jobs:
           uv run skills-profiles run "${args[@]}"
 
       - name: Publish to dist
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          set -euo pipefail
-          remote="https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
-          dist="${RUNNER_TEMP}/dist"
-          rm -rf "$dist"
-          # Full history clone: the branch is pruned to 10 commits, so it stays small
-          if ! git clone --branch dist "$remote" "$dist" 2>/dev/null; then
-            # first publish: the branch does not exist yet
-            mkdir -p "$dist"
-            git -C "$dist" init -q
-            git -C "$dist" checkout -q -b dist
-            git -C "$dist" remote add origin "$remote"
-          fi
-          find "$dist" -mindepth 1 -maxdepth 1 -not -name .git -exec rm -rf {} +
-          cp -a output/. "$dist/"
-          cd "$dist"
-          git -C "$dist" config user.name "github-actions[bot]"
-          git -C "$dist" config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A
-          if git diff --cached --quiet; then
-            echo "Nothing new to publish"
-            exit 0
-          fi
-          git commit -q -m "profiles: ${GITHUB_RUN_ID} at $(date -u +%Y-%m-%dT%H:%M:%SZ)"
-
-          # Keep dist history at 10 commits, one per publish. Every commit is a
-          # full snapshot, so the oldest kept commit becomes a squashed root and
-          # the 9 newer ones are replayed on top; older commits are dropped.
-          keep=10
-          if [ "$(git rev-list --count HEAD)" -gt "$keep" ]; then
-            first_keep=$(git rev-list HEAD | sed -n "${keep}p")
-            new_root=$(git commit-tree "$first_keep^{tree}" \
-              -m "$(git log -1 --format=%B "$first_keep")")
-            git rebase -q --onto "$new_root" "$first_keep" dist
-            git push --force origin dist
-          else
-            git push origin dist
-          fi
-
-          # Tag the release (UTC timestamp; lexicographic order == chronological)
-          run_tag="dist-$(date -u +%Y%m%d%H%M)"
-          git tag -f "$run_tag" HEAD
-          git push -f origin "refs/tags/${run_tag}"
-
-          # Prune: keep only the 10 newest dist-* tags (1:1 with dist commits)
-          old_tags=$(git ls-remote --tags origin 'refs/tags/dist-*' \
-            | awk -F'refs/tags/' '{print $2}' | grep -v '\^{}' \
-            | sort -r | tail -n +11)
-          for t in $old_tags; do
-            git push origin --delete "refs/tags/$t"
-          done
-
-          echo "Published $(find skills -name '*.json' | wc -l) prompt outputs as ${run_tag}" \
-              >> "$GITHUB_STEP_SUMMARY"
+        uses: ./.github/actions/publish-dist
+        with:
+          tag-mode: date-counter

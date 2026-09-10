@@ -67,14 +67,18 @@ cache/skills-sh/                             # 上游数据，与产物分离
 
 ## 持续生成（GitHub Actions）
 
-`.github/workflows/generate.yml` 手动触发（Actions → generate → Run workflow）：
+两条手动触发的工作流共用同一个 `dist` 发布锁，按职责拆分：
 
-```
-恢复 dist 分支 → sync → invalidate --stale → run --limit <输入，默认 10> → 发布到 dist
-```
+| 工作流 | 流水线 | Tag |
+|---|---|---|
+| `sync` | 恢复 dist → 同步上游 → invalidate --stale → 发布 | `dist-YYYY-MM-DD`（同日内 force 覆盖） |
+| `generate` | 恢复 dist → run --limit <输入，默认 10> → 发布 | `dist-<base>-N`（base = 最近一次 sync 的 tag，N 递增） |
 
-`dist` 分支既是发布产物也是缓存，根目录与 `output/` 一致。需在
-Settings → Secrets and variables → Actions 配置：
+裸日期 tag 是当日的数据集基准；带后缀的 tag 是基准之上的输出迭代。`dist`
+分支既是发布产物也是缓存——根目录与 `output/` 一致，历史按滚动时间窗
+剪枝（默认 `1 month`；无论多久未更新，最新的 1 条 commit 和每种 pattern
+最新的 1 个 tag 始终保底）。需在 Settings → Secrets and variables →
+Actions 配置：
 
 | 位置 | 名称 | 示例 |
 |---|---|---|

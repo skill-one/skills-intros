@@ -1,0 +1,75 @@
+name: sync
+
+# Manual: refresh the upstream dataset, invalidate cached outputs whose upstream
+# content hash changed, and publish the pruned snapshot as `dist-YYYY-MM-DD`
+# (force-updated within a day, so the bare date tag always points at the newest
+# sync of that day).
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: publish-dist
+  cancel-in-progress: false # never cancel a run that is about to push
+
+env:
+  # credentials only; every tunable is passed as a CLI argument
+  SKILLS_PROFILES_API_KEY: ${{ secrets.SKILLS_PROFILES_API_KEY }}
+  SKILLS_PROFILES_BASE_URL: ${{ vars.SKILLS_PROFILES_BASE_URL }}
+  SKILLS_PROFILES_MODEL: ${{ vars.SKILLS_PROFILES_MODEL }}
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - name: Install
+        run: uv sync
+
+      - name: Resolve upstream snapshot tag
+        id: ref
+        # Reuses the CLI's own resolver so the cache key and `sync` agree on the
+        # newest tag; falls back to "dist" when upstream publishes no tags.
+        run: |
+          set -euo pipefail
+          tag=$(uv run python -c 'from skills_profiles.data import latest_dist_tag; print(latest_dist_tag() or "")')
+          echo "tag=${tag}" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/cache@v4
+        with:
+          path: cache/skills-sh
+          # One cache entry per upstream tag: hit within a day -> `sync` is a no-op.
+          key: dataset-${{ steps.ref.outputs.tag || 'dist' }}
+
+      - name: Restore published profiles
+        run: |
+          set -euo pipefail
+          mkdir -p output
+          if curl -fsSL "https://codeload.github.com/${GITHUB_REPOSITORY}/tar.gz/dist" \
+              -o "${RUNNER_TEMP}/dist.tar.gz"; then
+            tar -xzf "${RUNNER_TEMP}/dist.tar.gz" -C output --strip-components=1
+            echo "Restored $(find output/skills -name '*.json' 2>/dev/null | wc -l) prompt outputs"
+          else
+            echo "No dist branch yet: starting from an empty output/"
+          fi
+
+      - name: Sync dataset
+        run: uv run skills-profiles sync
+
+      - name: Invalidate stale results
+        # results whose upstream content hash changed (or whose skill vanished)
+        # are dropped here, explicitly — sync itself never touches results
+        run: uv run skills-profiles invalidate --stale
+
+      - name: Publish to dist
+        uses: ./.github/actions/publish-dist
+        with:
+          tag-mode: date

@@ -73,14 +73,20 @@ Built-in prompts: `domain`, `scenario`, `blackbox`, `whitebox`, `tagline`, `pers
 
 ## Continuous generation (GitHub Actions)
 
-`.github/workflows/generate.yml` runs on demand (Actions → generate → Run workflow):
+Two manually-triggered workflows share the same `dist` publish lock and are
+separated by concern:
 
-```
-restore dist branch → sync → invalidate --stale → run --limit <input, default 10> → publish to dist
-```
+| Workflow | Pipeline | Tag |
+|---|---|---|
+| `sync` | restore dist → sync upstream → invalidate --stale → publish | `dist-YYYY-MM-DD` (force-updated within a day) |
+| `generate` | restore dist → run --limit <input, default 10> → publish | `dist-<base>-N` (base = newest sync tag, N increments) |
 
-The `dist` branch is both the published artifact and the cache; its root mirrors
-`output/`. Required configuration (Settings → Secrets and variables → Actions):
+The bare date tag is the day's dataset baseline; suffixed tags are output
+iterations on top of it. `dist` is both the published artifact and the cache —
+its root mirrors `output/`, and history is pruned to a rolling retention window
+(default `1 month`; the newest commit and the newest tag of each pattern are
+always kept as a floor). Required configuration (Settings → Secrets and
+variables → Actions):
 
 | Where | Name | Example |
 |---|---|---|
