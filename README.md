@@ -64,6 +64,9 @@ Built-in prompts: `domain`, `scenario`, `blackbox`, `whitebox`, `tagline`, `pers
 - Every `run` prints a timed summary and overwrites `stats.json` — the artifact's
   current state, not the run's; `sync` reports the tag it aligned to and the download
   duration.
+- Skill-level failures (quota, connection) are isolated: the run continues, completed
+  prompts stay on disk and get published, and only a total washout (every selected
+  skill failed) exits non-zero.
 
 ## Continuous generation (GitHub Actions)
 

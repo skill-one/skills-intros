@@ -177,9 +177,8 @@ def invalidate(settings: Settings, skill_ids: Iterable[str] | None = None,
 
 
 def _stored_jsons(settings: Settings, skill_id: str) -> list[Path]:
-    """The prompt jsons cached for one skill (a legacy result.json is not one)."""
-    return sorted(p for p in skill_result_dir(settings, skill_id).glob("*.json")
-                  if p.name != "result.json")
+    """The prompt jsons cached for one skill."""
+    return sorted(skill_result_dir(settings, skill_id).glob("*.json"))
 
 
 def _unlink(path: Path) -> int:

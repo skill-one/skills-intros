@@ -6,7 +6,6 @@ import logging
 import sys
 import time
 from dataclasses import dataclass
-from pathlib import Path
 from typing import Any, Callable
 
 from pydantic import ValidationError
@@ -17,7 +16,6 @@ from .models import SkillRecord
 from .outputs import (
     load_index,
     prompt_result_path,
-    skill_result_dir,
     write_index,
     write_prompt_output,
     write_stats,
@@ -32,7 +30,9 @@ class RunStats:
     """Aggregated counters for one `run`, tallied by `run_all`.
 
     `prompts_stale` counts reused-cached outputs that failed schema validation
-    and were regenerated; `llm_seconds` sums the per-prompt LLM seconds, so
+    and were regenerated; `skills_failed` counts skills whose generation raised
+    (LLM quota/connection errors are isolated per skill and never abort the
+    run); `llm_seconds` sums the per-prompt LLM seconds, so
     `llm_seconds / prompts_generated` is the average per-prompt latency (the
     sum can exceed the wall time, prompts run concurrently).
     """
@@ -40,6 +40,7 @@ class RunStats:
     selected: int = 0  # skills handed to run_all
     skills_generated: int = 0
     skills_skipped: int = 0  # no SKILL.md in the snapshot
+    skills_failed: int = 0  # generation raised; retried whole on the next run
     prompts_generated: int = 0
     prompts_reused: int = 0
     prompts_stale: int = 0
@@ -48,6 +49,9 @@ class RunStats:
 
 def _tally(stats: RunStats, record: dict) -> None:
     """Fold one skill's record into the run stats."""
+    if record.get("failed"):
+        stats.skills_failed += 1
+        return
     generated = record.get("generated", ())
     stats.skills_generated += 1 if generated else 0
     stats.skills_skipped += 1 if record.get("skipped") else 0
@@ -234,7 +238,6 @@ async def run_one(
     `seconds` (wall time of the generation phase), `prompt_seconds` (per-prompt
     LLM seconds) and `skipped` (no SKILL.md).
     """
-    skill_dir = skill_result_dir(settings, skill.id)
     outputs, generated, stale = _load_cached(settings, prompts, skill, only)
     if not generated:
         return {"skill": skill.model_dump(), "intros": _dump(outputs)}, True
@@ -272,11 +275,6 @@ async def run_one(
         await asyncio.gather(*tasks.values(), return_exceptions=True)
         raise
 
-    # a legacy single-file record has no meaning next to the per-prompt layout
-    legacy = skill_dir / "result.json"
-    if legacy.exists():
-        legacy.unlink()
-
     return {
         "skill": skill.model_dump(),
         "intros": _dump(outputs),
@@ -302,14 +300,24 @@ async def run_all(
     One semaphore bounds the whole run: at most `settings.concurrency` LLM
     calls in flight, shared across skills and across the prompts of each skill
     (see run_one). Skills whose every requested prompt is already cached and
-    valid are skipped; `only` narrows work to a subset of prompts. When
-    anything was generated, skills.jsonl is updated once, at the end. When
-    `stats` is given, the run's counters are tallied into it.
+    valid are skipped; `only` narrows work to a subset of prompts. A skill
+    whose generation raises (quota, connection, ...) is isolated: the error is
+    logged, its completed prompts stay on disk, and the run continues — a
+    failed skill keeps all its prompts pending for the next run. When anything
+    was generated, skills.jsonl is updated once, at the end. When `stats` is
+    given, the run's counters are tallied into it. An unknown id in `only` is
+    a caller error, not a skill failure: it raises KeyError before any work.
     """
+    if only is not None and (unknown := only - prompts.by_id.keys()):
+        raise KeyError(f"unknown prompt(s) {sorted(unknown)}")
     sem = asyncio.Semaphore(settings.concurrency)
 
     async def _one(skill: SkillRecord) -> dict:
-        record, reused = await run_one(llm, settings, prompts, skill, only, debug, sem=sem)
+        try:
+            record, reused = await run_one(llm, settings, prompts, skill, only, debug, sem=sem)
+        except Exception as e:
+            logger.error("%s: generation failed, continuing with the rest: %s", skill.id, e)
+            record, reused = {"skill": skill.model_dump(), "failed": True}, False
         if on_skill_done:
             on_skill_done(skill, record, reused)
         if stats is not None:
@@ -340,27 +348,3 @@ def _update_index(settings: Settings, records: list[dict]) -> None:
         line["hash"] = record["skill"]["hash"]
         index[skill_id] = line
     write_index(settings, index)
-
-
-def load_results(settings: Settings) -> list[dict]:
-    """Load all per-skill result records, sorted by skill id.
-
-    A directory counts as a result if skills.jsonl has the skill on record
-    (the record `invalidate --stale` compares against); its outputs are
-    reassembled from the per-prompt json files. A stray legacy result.json is
-    not an output.
-    """
-    results: list[dict] = []
-    for skill_id, line in sorted(load_index(settings).items()):
-        entry = {"id": skill_id, "hash": line.get("hash", "")}
-        skill_dir = skill_result_dir(settings, skill_id)
-        intros: dict[str, Any] = {}
-        for json_file in sorted(skill_dir.glob("*.json")):
-            if json_file.name == "result.json":
-                continue
-            try:
-                intros[json_file.stem] = json.loads(json_file.read_text(encoding="utf-8"))
-            except json.JSONDecodeError:
-                logger.warning("Skipping unreadable %s", json_file)
-        results.append({"skill": entry, "intros": intros})
-    return results

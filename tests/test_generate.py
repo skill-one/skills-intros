@@ -9,7 +9,6 @@ from skills_profiles.data import load_skills, skill_md_path
 from skills_profiles.generate import (
     RunStats,
     coverage,
-    load_results,
     run_all,
     run_one,
     select_skills,
@@ -329,19 +328,33 @@ async def test_run_one_rejects_unknown_only(settings, prompt_set):
         await run_all(FakeLLM(), settings, skills[:1], prompt_set, only={"nope"})
 
 
-async def test_results_persisted_and_reloadable(settings, prompt_set):
+class FailingForAlpha:
+    """Delegates to FakeLLM but raises for Alpha (matched via its SKILL.md text)."""
+
+    def __init__(self):
+        self.inner = FakeLLM()
+
+    async def create(self, response_model=None, messages=None, **kwargs):
+        system = messages[0]["content"] if messages else ""
+        if "Alpha does useful things." in system:
+            raise RuntimeError("quota exceeded")
+        return await self.inner.create(response_model, messages, **kwargs)
+
+
+async def test_run_all_isolates_skill_failures(settings, prompt_set):
+    """One skill's LLM failure (quota, connection) does not abort the run:
+    the other skills still generate, the failure is tallied, the index records
+    only the healthy skills, and the failed skill stays fully pending."""
     skills = load_skills(settings)
-    await run_all(FakeLLM(), settings, skills, prompt_set)
-    results = load_results(settings)
-    assert len(results) == 4
-    # sorted by skill id
-    assert [r["skill"]["id"] for r in results] == [
-        "owner-a/repo-a/alpha", "owner-b/repo-b/beta",
-        "owner-c/repo-c/gamma", "owner-h/repo-h/hotel:sub",
-    ]
-    record = results[0]
-    assert record["intros"]["domain"]["domain"] == "办公效率"
-    assert record["intros"]["tagline"]["taglines"]
+    stats = RunStats(selected=len(skills))
+    records = await run_all(FailingForAlpha(), settings, skills, prompt_set, stats=stats)
+
+    assert stats.skills_failed == 1
+    assert stats.skills_generated == 3
+    assert [r.get("failed") for r in records].count(True) == 1
+
+    assert set(load_hashes(settings)) == {s.id for s in skills[1:]}
+    assert stored_outputs(settings, skills[0].id) == {}
 
 
 async def test_crash_mid_run_keeps_completed_prompts(settings, prompt_set):
@@ -371,21 +384,6 @@ async def test_crash_mid_run_keeps_completed_prompts(settings, prompt_set):
     llm = CountingLLM(FakeLLM())
     await run_one(llm, settings, prompt_set, skill)  # cache rules apply
     assert llm.calls == 5  # only the remaining five were regenerated
-    assert len(stored_outputs(settings, skill.id)) == 7
-
-
-async def test_legacy_result_json_removed_on_regeneration(settings, prompt_set):
-    """A pre-split result.json is ignored as a cache and deleted once the skill
-    regenerates under the new layout."""
-    skill = load_skills(settings)[0]
-    legacy = skill_result_dir(settings, skill.id) / "result.json"
-    legacy.parent.mkdir(parents=True)
-    legacy.write_text(json.dumps({"skill": {"id": skill.id}, "intros": {}}), encoding="utf-8")
-
-    llm = CountingLLM(FakeLLM())
-    await run_one(llm, settings, prompt_set, skill)
-    assert llm.calls == 7  # the legacy file did not count as a cache
-    assert not legacy.exists()
     assert len(stored_outputs(settings, skill.id)) == 7
 
 

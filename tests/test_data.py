@@ -295,22 +295,3 @@ def test_stale_result_ids_needs_a_snapshot(tmp_path):
     """Without a synced snapshot there is nothing to compare against."""
     with pytest.raises(FileNotFoundError):
         stale_result_ids(make_settings(tmp_path))
-
-
-def test_sync_leaves_legacy_result_json_dirs_alone(tmp_path, monkeypatch):
-    """Dirs predating the split layout (result.json only, not on record) are
-    not pruned by sync; the next run converts them in place."""
-    settings = make_settings(tmp_path)
-    results_root = settings.output_dir / "skills"
-    legacy_dir = results_root / "o_r_legacy"
-    legacy_dir.mkdir(parents=True)
-    (legacy_dir / "result.json").write_text(
-        json.dumps({"skill": {"id": "o/r/legacy", "hash": "stale"}, "intros": {}}),
-        encoding="utf-8",
-    )
-
-    monkeypatch.setattr(data_mod, "_download", fake_download([
-        {"id": "o/r/other", "name": "x", "installs": "1", "source": "o/r", "hash": "h9"},
-    ]))
-    sync_data(settings)
-    assert (legacy_dir / "result.json").exists()

@@ -205,3 +205,56 @@ def test_invalidate_rejects_unknown_prompt(settings, monkeypatch):
     result = runner.invoke(app, ["invalidate", "--prompts", "nope"])
     assert result.exit_code != 0
     assert "unknown prompt" in result.output
+
+
+class FailingForAlpha:
+    """LLM that raises for Alpha (matched via its SKILL.md text), delegates the rest."""
+
+    def __init__(self):
+        from skills_profiles.llm import FakeLLM
+
+        self.inner = FakeLLM()
+
+    async def create(self, response_model=None, messages=None, **kwargs):
+        system = messages[0]["content"] if messages else ""
+        if "Alpha does useful things." in system:
+            raise RuntimeError("quota exceeded")
+        return await self.inner.create(response_model, messages, **kwargs)
+
+
+class DeadLLM:
+    """LLM that fails for every call: a systemic error (bad key, endpoint down)."""
+
+    async def create(self, response_model=None, messages=None, **kwargs):
+        raise RuntimeError("endpoint down")
+
+
+def test_run_survives_partial_skill_failures(settings, monkeypatch):
+    """A skill whose generation fails is isolated: the run still exits 0 so CI
+    publishes the completed skills; the failure is counted and reported."""
+    monkeypatch.setattr("skills_profiles.cli.Settings", lambda: settings)
+    monkeypatch.setattr("skills_profiles.cli.make_llm", lambda s: FailingForAlpha())
+
+    result = runner.invoke(app, ["run", "--limit", "0"])
+    assert result.exit_code == 0, result.output
+    assert "1 failed" in result.output
+    assert "owner-a/repo-a/alpha: (failed)" in result.output
+
+    from skills_profiles.outputs import load_hashes, prompt_result_path
+
+    assert set(load_hashes(settings)) == {
+        "owner-b/repo-b/beta", "owner-c/repo-c/gamma", "owner-h/repo-h/hotel:sub",
+    }
+    assert prompt_result_path(settings, "owner-b/repo-b/beta", "domain").exists()
+
+
+def test_run_exits_nonzero_when_every_skill_fails(settings, monkeypatch):
+    """A total washout (every selected skill failed) is a systemic error:
+    the run reports it and exits non-zero so CI does not publish."""
+    monkeypatch.setattr("skills_profiles.cli.Settings", lambda: settings)
+    monkeypatch.setattr("skills_profiles.cli.make_llm", lambda s: DeadLLM())
+
+    result = runner.invoke(app, ["run", "--limit", "0"])
+    assert result.exit_code != 0
+    assert "4 failed" in result.output
+    assert "Every selected skill failed" in result.output

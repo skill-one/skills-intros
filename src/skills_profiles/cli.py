@@ -28,7 +28,8 @@ def sync(
     ),
 ) -> None:
     """Download the newest dist snapshot (skills.jsonl + every SKILL.md) as one
-    tarball into the data dir, and prune results that went stale.
+    tarball into the data dir. Sync never touches the generated results; invalidating
+    stale ones is `invalidate --stale`'s explicit job.
 
     Upstream tags each daily scrape; a sync whose tag is already on disk does
     nothing, so repeat syncs cost one small request instead of a download.
@@ -154,7 +155,9 @@ def run(
     def on_done(_skill, _record, reused: bool) -> None:
         nonlocal done
         done += 1
-        if _record.get("skipped"):
+        if _record.get("failed"):
+            detail = "(failed)"
+        elif _record.get("skipped"):
             detail = "(skipped: no SKILL.md)"
         elif reused:
             detail = "(cached)"
@@ -177,10 +180,11 @@ def run(
     avg = stats.llm_seconds / stats.prompts_generated if stats.prompts_generated else 0.0
     logger.info(
         "Done in %.1fs (setup %.1fs, generate %.1fs): %d prompt(s) generated for %d/%d "
-        "skill(s), %d reused, %d stale cache(s), %d skipped (no SKILL.md)",
+        "skill(s), %d reused, %d stale cache(s), %d skipped (no SKILL.md), %d failed",
         total_seconds, setup_seconds, generate_seconds,
         stats.prompts_generated, stats.skills_generated, len(selected),
         stats.prompts_reused, stats.prompts_stale, stats.skills_skipped,
+        stats.skills_failed,
     )
     if stats.prompts_generated:
         logger.info("LLM: %d call(s), %.1fs total, %.2fs average per prompt",
@@ -194,6 +198,15 @@ def run(
         cov["complete"], cov["skills"], cov["remaining"], artifact["skills"]["stale"],
         ", ".join(f"{pid} {n}/{cov['skills']}" for pid, n in cov["prompts"].items()),
     )
+    # partial failure is not an error: completed prompts are on disk and get
+    # published, the rest regenerates on the next run. A total washout (every
+    # selected skill failed) is one: it almost always means a systemic problem
+    # (bad key, endpoint down) and retrying here would not help.
+    if stats.skills_failed:
+        logger.warning("%d skill(s) failed - see the errors above", stats.skills_failed)
+    if stats.skills_failed and stats.skills_failed == len(selected):
+        logger.error("Every selected skill failed - refusing to report success")
+        raise typer.Exit(1)
 
 
 def main() -> None:  # pragma: no cover

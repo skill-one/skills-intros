@@ -60,6 +60,8 @@ cache/skills-sh/                             # 上游数据，与产物分离
   skill 全部失效（先 `sync` 保证快照最新）；`run` 只信任磁盘上现有的输出。
 - 每次 `run` 结束打印计时汇总并覆盖 `stats.json`——它描述产物现状而非单次执行；
   `sync` 汇报对齐的 tag 与下载耗时。
+- 单个 skill 的失败（余额、连接等）会被隔离：run 继续执行，已完成的 prompt 保留并随
+  本轮发布；只有全军覆没（所有选中 skill 都失败）才以非零码退出。
 
 ## 持续生成（GitHub Actions）
 
