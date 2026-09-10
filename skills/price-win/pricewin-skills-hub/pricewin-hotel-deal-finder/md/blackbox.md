@@ -1,0 +1,9 @@
+# pricewin-hotel-deal-finder (`price-win/pricewin-skills-hub/pricewin-hotel-deal-finder`)
+
+## blackbox
+
+**function**: 一句话: 你给我城市和日期, 我帮你比遍各大订房平台的实时房价, 直接告诉你哪家酒店最便宜、最划算, 附上预订链接。
+
+- input: 「东京 8月12–15日, 2 个大人」, output: 一张比价卡片: 🥇最划算、🥈最便宜、🥉品质款各一家酒店, 每家列出各平台每晚美元价, 点酒店名直达最便宜平台的预订页
+- input: 「曼谷有没有一晚 100 美元以下的酒店?」, output: 符合条件的酒店清单, 每家标注最低价出自哪个平台、多少钱一晚, 名字可直接点进预订页
+- input: 「新宿这家酒店, Booking 和 Agoda 哪个订更便宜?」, output: 同一家酒店在两个平台的实时价格对比, 明确标出哪个便宜、能省多少美元

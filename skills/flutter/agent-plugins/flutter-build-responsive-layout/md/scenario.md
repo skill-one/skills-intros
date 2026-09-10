@@ -1,0 +1,5 @@
+# flutter-build-responsive-layout (`flutter/agent-plugins/flutter-build-responsive-layout`)
+
+## scenario
+
+App 在手机上很精致, 换到平板或电脑上却拉伸变形、留白尴尬? 😵 我能让界面随窗口大小自动换布局: 手机单栏、大屏加侧边栏, 折叠屏也不黑边, 一套代码处处好看。

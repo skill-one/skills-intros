@@ -1,0 +1,10 @@
+# higgsfield-youtube-thumbnail (`higgsfield-ai/skills/higgsfield-youtube-thumbnail`)
+
+## comments
+
+- user: 全职 YouTuber, category: 妙用, comment: 挑表情别整张重做. 让它拿已生成那张的图做定点编辑, 只换表情、其他像素不动. 我一张图连换三种表情再挑, 省了近一半生成费.
+- user: 第一次用的新手, category: 坑, comment: 我把别人的爆款封面直接当素材传想抄构图, 被告知参考图只用来分析风格, 不能复刻. 改成口述"左脸大特写+高饱和背景"后一次过.
+- user: 运维老哥, category: 坑, comment: 旧版 CLI 拿生成结果的编号做二次编辑会报 data.type 错. 别急着升级, 把结果图下载到本地, 用本地路径重传同一个编辑就通了.
+- user: Shorts 博主, category: 注意, comment: 默认出的是干净无字图, 想带标题必须明说. 烙进图里的字后期改不了, 要反复改字就用文字叠加, 前提是环境能渲染 HTML canvas.
+- user: Instagram 运营, category: 注意, comment: 竖版注意: 4:5 出主图没问题, 但后期定点编辑不支持 4:5, 只会问你要不要改 3:4, 等于重新裁切. 想省事主图直接选 9:16.
+- user: 知识区UP主, category: 启发, comment: 我让封面暗示"七天见效"这种视频里没验证过的结论, 被拒了. 它只做真实的钩子, 反过来逼我把内容先做扎实, 是好事.

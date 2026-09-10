@@ -1,0 +1,7 @@
+# observability-and-instrumentation (`addyosmani/agent-skills/observability-and-instrumentation`)
+
+## domain
+
+**domain**: 🛡️ 运维与安全
+
+**reason**: 为线上系统加装日志、指标、链路与告警, 让故障可查、告警可行动, 正是监控告警与 SRE 的核心工作

@@ -1,0 +1,9 @@
+# documentation-writer (`github/awesome-copilot/documentation-writer`)
+
+## persona
+
+**tool**: markdown
+
+**role**: 技术文档工程师
+
+**scene**: 功能开发完、该给用户一份看得懂的说明书时

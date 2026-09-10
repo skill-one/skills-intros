@@ -1,0 +1,10 @@
+# firecrawl-build-onboarding (`firecrawl/skills/firecrawl-build-onboarding`)
+
+## blackbox
+
+**function**: 帮你把 Firecrawl (一个"让你的程序能抓取网页"的云端服务) 接入到你的项目中:拿到访问密钥、写进配置文件、装好对应语言的工具包,并跑通第一次真实的网页抓取。
+
+- input: 一个还没配过 Firecrawl 的项目文件夹,外加一句「我要在应用里抓网页」, output: 项目的 .env 配置文件里多了一行可用的 FIRECRAWL_API_KEY=fc-...
+- input: 「我还没有 Firecrawl 账号」, output: 自动弹出浏览器让你注册/登录,登录完成后项目里就有了可用的 API 密钥
+- input: 告诉我项目用的语言,如 Python / Node.js / Java, output: 项目里装好对应的 SDK (开发工具包),并附带一段能成功抓下一个真实网页的最小示例代码,运行即见结果
+- input: 「Firecrawl 是我们自己部署的」+ 自建服务的网址, output: 配置文件里同时写好 API 密钥和自建服务地址 (FIRECRAWL_API_URL),程序改连你自己的服务

@@ -1,0 +1,7 @@
+# agentix-ceo (`agentix-cloud/skills/agentix-ceo`)
+
+## domain
+
+**domain**: 🗂️ 办公效率
+
+**reason**: 我是 AI 团队管家: 建角色、派任务、盯进度, 本质是任务与项目管理。

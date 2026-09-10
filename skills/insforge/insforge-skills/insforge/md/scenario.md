@@ -1,0 +1,5 @@
+# insforge (`insforge/insforge-skills/insforge`)
+
+## scenario
+
+深夜改了三小时,登录、存数据、收款还是接不通——文档看不懂,密钥配不对 😩 我熟 @insforge/sdk:登录、数据库、文件上传、AI、支付一次接好,让你专注做产品,不困在后端。

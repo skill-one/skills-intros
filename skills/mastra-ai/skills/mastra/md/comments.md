@@ -1,0 +1,10 @@
+# mastra (`mastra-ai/skills/mastra`)
+
+## comments
+
+- user: 第一次用的新手, category: 坑, comment: 凭 AI 记忆直接写 agent 代码, 报 `Property X does not exist`, 还以为是包装错了. 其实是我的知识过期——按流程先查内嵌文档再写, 一次就跑通.
+- user: 后端老兵, category: 妙用, comment: 内嵌文档最值钱: node_modules 里的文档和装的版本严格一致, 比官网还准. 我的规矩是报错先按"知识过期"排查, 不急着怀疑业务代码.
+- user: 前端转全栈, category: 注意, comment: tsconfig 必须是 ES2022 module, 我项目还是 CommonJS, 第一步就起不来, 误以为依赖坏了. 上手前先改模块配置.
+- user: 运维老哥, category: 坑, comment: 让 AI 凭记忆报模型名, 一半已下线, 跑起来就报错. 先跑 provider-registry 脚本验证模型名再写进代码, 一次通过.
+- user: AI 产品经理, category: 启发, comment: npm run dev 打开 localhost:4111 的 Studio, 能可视化看 agent 和 workflow 的执行过程. 拿来给非技术同事演示, 评审不再鸡同鸭讲.
+- user: v0.x 老用户, category: 坑, comment: v0.x 升 v1.x 后我手改老代码耗了半天, 错在没先读迁移指南. 按 migration-guide 走, 该换的 API 一次列清, 别硬改.

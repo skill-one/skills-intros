@@ -1,0 +1,7 @@
+# graphic-overlays (`heygen-com/hyperframes/graphic-overlays`)
+
+## domain
+
+**domain**: 🎨 设计多媒体
+
+**reason**: 为已有视频叠加同步的图形卡片(标题条/数据/引言)并渲染成 MP4, 属于视频包装制作。

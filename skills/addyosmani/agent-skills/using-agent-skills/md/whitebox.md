@@ -1,0 +1,13 @@
+# using-agent-skills (`addyosmani/agent-skills/using-agent-skills`)
+
+## whitebox
+
+- 任务到达, 先查决策树: 按任务所处的开发阶段 (定义/计划/构建/验证/评审/交付) 定位分支
+- 沿分支匹配出对应 skill (如"写代码" → incremental-implementation; "东西坏了" → debugging-and-error-recovery)
+- 把任务交给该 skill, 按顺序执行其完整工作流, 验证步骤不得跳过
+- 全程并行套用 6 条核心行为: 声明假设、遇歧义即停、有理则反对、强制简单、范围克制、验证而非假设
+- 验证通过 (有证据: 测试/构建/运行时数据) 才算完成, 否则任务未结束
+
+- 静态决策树分发: 一张固定的文本映射表 (任务/阶段 → skill 名), 本技能自身无任何外部 API 或库依赖, 纯规则路由
+- 链式编排: 多个 skill 可按生命周期顺序串联 (如 idea-refine → spec-driven-development → planning → 实现 → 测试 → 评审 → 发布); 被调度的子技能自带各自的外部依赖 (如浏览器测试依赖 Chrome DevTools MCP)
+- 双重验证门禁: 每个 skill 有自己的本地验证步骤, 叠加项目级 Definition of Done (测试通过、无回归、运行时行为验证、文档更新) 对所有变更强制生效; "看起来对"不通过, 必须有证据

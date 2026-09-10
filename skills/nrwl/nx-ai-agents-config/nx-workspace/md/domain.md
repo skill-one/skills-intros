@@ -1,0 +1,7 @@
+# nx-workspace (`nrwl/nx-ai-agents-config/nx-workspace`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: Nx 工作区探索属于前端工程化工具链, 服务于项目配置、构建与依赖分析等开发场景

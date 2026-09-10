@@ -1,0 +1,13 @@
+# decision-mapping (`mattpocock/skills/decision-mapping`)
+
+## whitebox
+
+- 输入是松散想法或已有地图路径; 新想法先跑 /grilling + /domain-modeling, 一次一个问题, 挖出待决策项。
+- 把决策项写成一份 git 跟踪的 markdown 决策地图: ticket (短 slug 作 id) + `Blocked by` 依赖边, 首版大部分留白 (fog of war); 建图会话只建图, 不解题。
+- 解题会话: 整张地图加载为 context → 选定 ticket (用户点名或取第一个未被阻塞的 `open`) → 先改 `Status: in-progress` 并落盘, 再开始干活。
+- 按 ticket 类型用对应手段解决, 答案写回 ticket 正文、置 `resolved`; 解题中新暴露的问题补成新 ticket 并挂上依赖边, 被推翻的旧节点就地更新或删除。
+- 每个会话只解一个 ticket, 结尾必做 Handoff: 输出 Next steps 复制粘贴块, 指引用户开新窗口继续 (单个或多个并行); open 清零即完成, 建议直接实施或转 /to-prd。
+
+- 单一有状态文件: 一份紧凑 markdown 地图是唯一事实源 (canonical artifact), 每个会话全量读入 context, 过程资产只链接不内联 —— 这强制地图必须保持 token 紧凑。
+- 依赖图 + 状态机调度: slug 是唯一 id, `Blocked by` 列表全为 resolved 才算就绪; claim 协议 (先写 in-progress 并保存再动手) 支持多个 agent 会话并行互不撞车。
+- 按信息来源路由到四种 ticket: Research (读外部文档/知识库, 产出摘要资产) / Prototype (用 /prototype 造廉价实物供反应) / Task (纯人工活, 能自动则自动, 否则给精确清单) / Grilling (默认, 一次一问)。外部依赖仅: git、slash skills (/grilling, /domain-modeling, /prototype, /to-prd)、多 agent 会话窗口; 无特定外部库或模型 API。

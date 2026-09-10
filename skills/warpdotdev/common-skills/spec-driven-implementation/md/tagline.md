@@ -1,0 +1,7 @@
+# spec-driven-implementation (`warpdotdev/common-skills/spec-driven-implementation`)
+
+## tagline
+
+- 想清楚再动手，复杂功能稳落地
+- 蓝图先行，代码不跑偏，评审更省心
+- 规格、代码、测试，同频演进齐交付

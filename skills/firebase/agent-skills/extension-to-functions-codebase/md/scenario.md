@@ -1,0 +1,6 @@
+# extension-to-functions-codebase (`firebase/agent-skills/extension-to-functions-codebase`)
+
+## scenario
+
+痛点:装了 Firebase 扩展,却改不动、拆不走、旧触发器还面临弃用 ⚠️
+我能把扩展完整转成你项目里的云函数,或打包成可复用的 npm 包,自动升级到 V2、配好权限与参数,部署即用。

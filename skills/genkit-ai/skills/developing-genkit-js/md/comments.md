@@ -1,0 +1,10 @@
+# developing-genkit-js (`genkit-ai/skills/developing-genkit-js`)
+
+## comments
+
+- user: 第一次用的新手, category: 坑, comment: 我按 AI 凭记忆写的代码跑, 全是 configureGenkit、response.text() 这类废弃 API, 报错连片。改成先让助手 docs:read 查最新文档再动手, 一次通过。
+- user: 后端老兵, category: 妙用, comment: 调试 AI 调用别再 console.log: 用 genkit start -- 包住启动命令, 再 trace:get 能看到完整 prompt、返回、工具是否真被调用, --format json 还能接 jq。
+- user: 运维老哥, category: 注意, comment: CI 里别用 genkit start, 它不会自己退出。用 flow:run 加 --non-interactive, 跑完自动退出并打印 Trace ID, 也不会被首次运行的统计提示卡住流水线。
+- user: 前端转 AI 的开发, category: 坑, comment: flow:run 只认 flow 不认 agent, 想测 agent 得包一层临时 flow 再跑。另外 agent 要 genkit>=1.39 且 import 自 genkit/beta, 入口用错全是类型报错。
+- user: 独立全栈开发, category: 坑, comment: flow:run 不传输入 JSON 时拿到的是 undefined, schema 里的 .default() 不会兜底, 直接报错。必须显式传, 比如 '{"data":"AI"}'。
+- user: 接手老项目的维护者, category: 注意, comment: 动手前先 genkit --version, 低于 1.29 先 npm i -g genkit-cli@^1.29.0 升级。我用旧 CLI 跑, 行为和文档对不上, 白折腾一小时才定位到是版本问题。

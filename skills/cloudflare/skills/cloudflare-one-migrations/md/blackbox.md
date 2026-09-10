@@ -1,0 +1,9 @@
+# cloudflare-one-migrations (`cloudflare/skills/cloudflare-one-migrations`)
+
+## blackbox
+
+**function**: 帮你评估「把现有的 VPN、Zscaler、Palo Alto 防火墙等网络安全设备迁移到 Cloudflare One」要怎么搬: 每条旧规则对应什么新配置、哪些搬不动、先做什么后做什么。
+
+- input: Zscaler ZIA 导出的策略配置文件 (上网过滤、防火墙规则、SSL 解密等), output: 一份迁移评估报告: 逐条列出原规则 → Cloudflare One 对应配置、能直接搬/要改/搬不了、搬不了的安全影响, 以及试点和回退方案
+- input: Zscaler ZPA 私有应用导出清单 (应用段、连接器分组、访问策略), output: Cloudflare 侧的搭建清单: 要建几个应用入口和隧道、每条访问策略怎么对应、上线前必须先准备的事项 (如员工账号同步、出网 IP 决策)
+- input: Palo Alto 防火墙配置导出 (安全规则、地址对象、各规则命中次数), output: 逐条规则映射表 + 风险标注: 哪些规则太宽泛需要人工拍板、哪些设备合规检查要先接入才能生效、哪些长期没流量的规则可以趁机清理

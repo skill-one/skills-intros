@@ -1,0 +1,7 @@
+# dbs-report (`dontbesilent2025/dbskill/dbs-report`)
+
+## tagline
+
+- 让诊断结论不再漂在聊天里
+- 多份存档，一份可交付的报告
+- 每条结论可追溯，带版本随时回顾

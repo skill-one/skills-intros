@@ -1,0 +1,5 @@
+# golang-project-layout (`samber/cc-skills-golang/golang-project-layout`)
+
+## scenario
+
+新起 Go 项目时,代码随手乱放:入口、业务、工具全堆在一起,越写越乱,后期重构伤筋动骨。我按项目体量帮你定好目录结构:入口、私有代码、公共库各归其位,配好模块名与工程配置,项目从第一天就清爽可扩展 📁

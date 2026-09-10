@@ -1,0 +1,7 @@
+# golang-continuous-integration (`samber/cc-skills-golang/golang-continuous-integration`)
+
+## tagline
+
+- 一键配好 Go 流水线, 测试到发版全自动
+- 提交即质检, 漏洞隐患挡在上线前
+- 生产级 CI/CD, 开箱即用少踩坑

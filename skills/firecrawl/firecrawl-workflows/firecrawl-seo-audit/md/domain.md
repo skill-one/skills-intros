@@ -1,0 +1,7 @@
+# firecrawl-seo-audit (`firecrawl/firecrawl-workflows/firecrawl-seo-audit`)
+
+## domain
+
+**domain**: 📈 商业运营
+
+**reason**: 专注于网站 SEO 审计, 直接服务营销与增长

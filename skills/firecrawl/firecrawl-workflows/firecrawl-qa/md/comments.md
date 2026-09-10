@@ -1,0 +1,10 @@
+# firecrawl-qa (`firecrawl/firecrawl-workflows/firecrawl-qa`)
+
+## comments
+
+- user: 后端老兵, category: 妙用, comment: 别每次跑全量, 开头就说清 focus=forms 或 navigation, 快很多。报告末尾的 Rerun Inputs 存下来, 修完发回去就是现成的回归测试。
+- user: 第一次用的新手, category: 坑, comment: 没配 FIRECRAWL_API_KEY 就开测, 白等一轮。要测登录后的页面得主动给测试账号, 否则它只测公开页, 登录流程全漏掉。
+- user: 独立接活的开发者, category: 注意, comment: 它走 Firecrawl 托管浏览器, 够不到我本机 localhost 和内网 staging。先部署到公网可访问的环境, 再把链接发它。
+- user: 创业公司产品经理, category: 妙用, comment: 上线评审直接用它的报告: 健康分给老板定夺, 每条问题自带 URL 和复现步骤, 我原样贴进 Jira 就行, 格式都不用调。
+- user: QA 从业者, category: 启发, comment: 表单那组会把我没试过的边界输入全跑一遍, 才发现我平时手测太浅。但它只报有证据的问题, 偶现 bug 还得人工盯。
+- user: 非技术的站长, category: 注意, comment: 第一句就说清网址和想测什么(表单/链接/手机端)。我只丢一句『帮我看看网站』, 被来回追问才开测, 费时间。

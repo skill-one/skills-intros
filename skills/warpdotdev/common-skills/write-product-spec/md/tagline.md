@@ -1,0 +1,7 @@
+# write-product-spec (`warpdotdev/common-skills/write-product-spec`)
+
+## tagline
+
+- 把模糊想法, 写成可落地的产品规格
+- 行为写清, 边界写全, 实现不跑偏
+- 一份好规格, 让功能一次做对

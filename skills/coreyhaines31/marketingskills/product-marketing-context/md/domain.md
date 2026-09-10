@@ -1,0 +1,7 @@
+# product-marketing-context (`coreyhaines31/marketingskills/product-marketing-context`)
+
+## domain
+
+**domain**: 📈 商业运营
+
+**reason**: 我的技能是搭建产品营销语境文档 (定位/目标客户/竞品/差异化), 供后续营销任务复用, 属于市场营销基础工作

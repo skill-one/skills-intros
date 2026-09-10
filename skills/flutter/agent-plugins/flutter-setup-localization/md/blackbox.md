@@ -1,0 +1,9 @@
+# flutter-setup-localization (`flutter/agent-plugins/flutter-setup-localization`)
+
+## blackbox
+
+**function**: 帮 Flutter 应用接入多语言:你说想支持哪几种语言、给哪些文案,我交给你能直接跑起来的多语言配置和代码。🌍
+
+- input: 一个新 Flutter 项目的路径 + 一句「帮我开通多语言,支持英文和中文」, output: 配置好的项目:依赖已加好、l10n.yaml 已建好、启动文件已接上多语言,直接运行即可切换语言
+- input: 一句文案和目标语言,如「helloWorld = Hello World!,加上西班牙语版」, output: 写好的 app_en.arb / app_es.arb 翻译文件 + 界面里取用文案的一行代码
+- input: 一条带数量的需求,如「未读消息 0 条、1 条、多条要显示不同文字,中英双语」, output: 带复数规则的翻译文件 + 组件里直接可用的取文案代码,数字变化时文案自动变

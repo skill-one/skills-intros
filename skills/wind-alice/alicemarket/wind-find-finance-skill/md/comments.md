@@ -1,0 +1,10 @@
+# wind-find-finance-skill (`wind-alice/alicemarket/wind-find-finance-skill`)
+
+## comments
+
+- user: 第一次用的新手, category: 坑, comment: 问它算DCF, 它不直接算, 先停下来问装不装dcf-model, 我一度以为卡死了。其实它是路由器: 必需skill没装就先走安装确认, 不会急着给简化答案。
+- user: 券商金融分析师, category: 注意, comment: 以为装了wind-mcp-skill就万事大吉, 问估值还是被要求装dcf-model。数据底座只管取数, 估值/复盘这类流程得另装工作流skill, 两个缺一不可。
+- user: 量化开发, category: 妙用, comment: 我把它当能力目录用: 丢一句模糊需求'想每天盘后复盘', 它按catalog归类并标出必需和可选skill, 照单安装, 免得乱装一堆用不上的。
+- user: 非技术产品经理, category: 注意, comment: 赶时间要结论就明确回'先不装', 它才会降级给简化分析; 同意装的话直接说装当前还是全部agent, 命令它自己执行, 不用复制粘贴。
+- user: 运维老哥, category: 坑, comment: 在内网环境直接让它装, GitHub和Gitee都测不通, 安装卡住。先搞定代理再装; 正常网络下它会自动测速选快的源, 不用手动换。
+- user: 投研实习生, category: 启发, comment: 以前习惯网页搜数据凑合分析。现在明白金融事实不能用网页搜替代, 先装数据底座取正经数据再谈分析, 复盘结论才立得住。

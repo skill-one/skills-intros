@@ -1,0 +1,7 @@
+# mcp-apps-builder (`mcp-use/mcp-use/mcp-apps-builder`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 用 TypeScript 编写、调试和搭建 MCP 服务器与应用, 属于代码开发

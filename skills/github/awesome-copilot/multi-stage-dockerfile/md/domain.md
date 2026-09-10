@@ -1,0 +1,7 @@
+# multi-stage-dockerfile (`github/awesome-copilot/multi-stage-dockerfile`)
+
+## domain
+
+**domain**: 🛡️ 运维与安全
+
+**reason**: 专注构建优化、安全的容器镜像, 属于部署发布范畴

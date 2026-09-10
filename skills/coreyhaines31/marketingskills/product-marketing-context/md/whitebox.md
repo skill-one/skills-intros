@@ -1,0 +1,13 @@
+# product-marketing-context (`coreyhaines31/marketingskills/product-marketing-context`)
+
+## whitebox
+
+- 检测 `.agents/product-marketing-context.md` 是否已存在 (同时检查旧路径 `.claude/`, 发现则提示迁移); 已存在则只询问要更新哪些章节, 不全量重来
+- 文档不存在时, 扫描代码库 (README、落地页/营销文案、package.json、meta 描述、已有文档) 自动起草 V1
+- 向用户展示草稿, 询问"哪里需要修正、缺了什么", 按反馈迭代直到满意
+- 按固定 12 章节 markdown 模板整理内容, 写入 `.agents/product-marketing-context.md`
+- 展示最终文档供确认微调, 并告知其他营销 skill 之后会自动引用这份上下文
+
+- 存在性检测 + 增量更新: 优先读 `.agents/product-marketing-context.md`, 兼容旧路径 `.claude/product-marketing-context.md`; 文档已存在时进入增量模式, 仅采集用户指定章节的信息
+- 代码库挖掘起草 (parsing → transformation): 从仓库内 README、落地页文案、package.json、meta 描述等文件中提取信息生成草稿; 依赖仅限本地文件读写, 无外部工具、库或模型 API
+- 固定模板 + 逐节校验闭环: 输出严格套用 12 章节 markdown 模板保证其他 skill 可引用; 采集时逐节问答、每节确认后才继续, 且强制收集客户原话而非润色表述

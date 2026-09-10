@@ -1,0 +1,9 @@
+# baoyu-infographic (`jimliu/baoyu-skills/baoyu-infographic`)
+
+## blackbox
+
+**function**: 把你的文字内容变成一张排版精美、信息密度高、可直接分享发布的信息图 (一张图文并茂的 PNG 大图), 可选 21 种版式 × 22 种画风。
+
+- input: 一段文章内容或一个主题 (如「咖啡冲煮方法入门」) + 一句话说明想要的效果, output: 一张成品信息图 PNG 文件, 带标题、分区、图标, 可直接发社交媒体或放进 PPT
+- input: 一份 .md 笔记或报告原文, 要求「做成高密度信息长图」, output: 一张竖版 (9:16) 大图, 原文要点一字不漏地排进分栏模块里
+- input: 一条命令, 如「用 chalkboard 风格做一张 16:9 的教学信息图」, output: 一张黑板手绘风格的横版 PNG, 配上生成过程说明和文件保存路径

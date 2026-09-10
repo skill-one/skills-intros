@@ -1,0 +1,5 @@
+# ai-image-generation (`101-skills/superpowers/ai-image-generation`)
+
+## scenario
+
+晚上十点赶新品上架,设计师已下班,外包报价贵还要等三天?😤 把需求一句话丢给我:产品图、海报、改背景、文字排版,50+ AI 模型几分钟出图,改到满意为止。

@@ -1,0 +1,9 @@
+# golang-stay-updated (`samber/cc-skills-golang/golang-stay-updated`)
+
+## blackbox
+
+**function**: 你问 Go 语言去哪儿学、看什么、关注谁、混哪些社区, 我直接给你一份现成的可靠清单。
+
+- input: 「我想学 Go, 从哪开始?」, output: 一份入门资源清单: 官方交互教程、在线练习场 (写代码试运行的地方)、官方博客等, 附直达链接
+- input: 「Go 开发者都混在哪些社区?」, output: 一份社区渠道列表: Reddit 版块、官方 Slack、讨论论坛、邮件组, 附加入方式链接
+- input: 「有没有值得长期关注的 Go 大佬和博客?」, output: 一份名单: 语言核心团队成员、知名库作者、教育者, 标注各自的 GitHub / X / Bluesky 账号, 外加必读博客和 YouTube 频道

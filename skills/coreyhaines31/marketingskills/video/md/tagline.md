@@ -1,0 +1,7 @@
+# video (`coreyhaines31/marketingskills/video`)
+
+## tagline
+
+- 想法一句话, 视频直接出
+- 不用拍摄剪辑, 成片即可发布
+- 一个模板, 批量造视频

@@ -1,0 +1,12 @@
+# vite (`antfu/skills/vite`)
+
+## whitebox
+
+- 识别任务归属：配置 / 核心特性 / 插件 API / 构建与 SSR / Environment API / Rolldown 迁移，命中即接管
+- 按主题加载 references/ 下对应的参考文档，取具体写法与细节
+- 遵循硬性偏好生成代码：TypeScript 优先的 vite.config.ts + defineConfig，全程 ESM
+- 涉及构建或迁移时，用 Vite CLI（vite / vite build / vite build --ssr）实际运行验证结果
+
+- 索引式知识组织：skill.md 本体只是主题索引 + 快查表，深度内容按需从 6 个 references/*.md 拉取，而非一次性全量加载
+- 外部依赖明确：基于 Vite 8 beta，底层依赖 Rolldown（打包器）与 Oxc（转换器）；框架支持靠官方插件选型（@vitejs/plugin-vue、plugin-react / plugin-react-swc、plugin-legacy 等）
+- 约束优先生成：所有输出受 Preferences 强约束（TypeScript、ESM、禁 CommonJS），防止风格漂移

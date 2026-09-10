@@ -1,0 +1,7 @@
+# golang-lint (`samber/cc-skills-golang/golang-lint`)
+
+## tagline
+
+- 百项检查, 一次体检, 隐患清零
+- 能查能修能定规, 代码质量守门员
+- 提交前先体检, 上线安心睡好觉

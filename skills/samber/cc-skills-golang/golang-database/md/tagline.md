@@ -1,0 +1,7 @@
+# golang-database (`samber/cc-skills-golang/golang-database`)
+
+## tagline
+
+- 参数化查询，注入无处遁形
+- 拒绝 ORM 魔法，SQL 一等公民
+- 事务锁行稳如磐石，从容上生产

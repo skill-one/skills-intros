@@ -1,0 +1,10 @@
+# golang-documentation (`samber/cc-skills-golang/golang-documentation`)
+
+## comments
+
+- user: 开源库维护者, category: 妙用, comment: 让它批量补 ExampleXxx 测试函数,意外收获:例子会被 go test 真实编译执行,接口一改或示例输出写错,测试直接红。文档从此不烂尾。建议新库起步就做,别攒到发布前。
+- user: 第一次接手老 Go 仓库的新手, category: 坑, comment: 上来就说'帮我完善文档',它对整个老仓库全面动笔,diff 大到没法审。改成先要'只审查,列缺口清单',再按包分批补,好审多了。另外 Example 测试需本机装了 go 才能验证。
+- user: 接手前任代码的团队开发, category: 坑, comment: 让它'改进 README',它按自己的模板把章节全重排,团队惯用结构没了。错误做法是只丢文件不给约束。现在每次都先交代:'保留现有章节顺序,只补缺的内容'。
+- user: 写内部服务的后端, category: 注意, comment: 私有项目先把背景说清:不需要 Playground 链接、llms.txt、文档站,不说明它会按开源库全套清单产出一堆用不上的东西。只补导出注释、README 和 CHANGELOG 就够。
+- user: 管发版的 tech lead, category: 妙用, comment: 发版写 CHANGELOG 必用:把 commit 记录丢给它,按 Keep a Changelog 分类,还会主动剔掉'内部重构'这种读者无感的条目。以前'优化若干'式糊弄条目从此绝迹。
+- user: 后端老兵, category: 启发, comment: '注释只写代码没说的'这点戳到我——自己十年注释一半在复读函数签名。现在审 PR 只问:讲 why/约束/坑了吗?没有就删。反模式清单(禁'无缝''企业级')我顺手当文案体检表。

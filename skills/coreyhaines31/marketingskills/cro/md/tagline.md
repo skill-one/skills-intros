@@ -1,0 +1,7 @@
+# cro (`coreyhaines31/marketingskills/cro`)
+
+## tagline
+
+- 别让好产品, 毁在差页面上
+- 让访客变客户, 点击不再浪费
+- 一眼看出问题, 马上能改方案

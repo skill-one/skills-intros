@@ -1,0 +1,7 @@
+# convex-test (`get-convex/agent-skills/convex-test`)
+
+## tagline
+
+- 自动为后端功能写好测试
+- 成功失败权限, 一一测到位
+- 测试快而稳, 改代码不心慌

@@ -1,0 +1,7 @@
+# extension-email-calendar-events (`caffeinelabs/skills/extension-email-calendar-events`)
+
+## domain
+
+**domain**: 🗂️ 办公效率
+
+**reason**: 提供日历事件管理与邮件邀请发送, 属于邮件与日历场景

@@ -1,0 +1,7 @@
+# compress (`juliusbrussee/caveman/compress`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 压缩 CLAUDE.md 等开发记忆文件省 token, 服务 AI 编程工作流

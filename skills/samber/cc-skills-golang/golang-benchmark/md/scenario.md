@@ -1,0 +1,5 @@
+# golang-benchmark (`samber/cc-skills-golang/golang-benchmark`)
+
+## scenario
+
+性能优化靠猜？跑一次就说"快了50%"，可能只是运气好；新版本悄悄变慢，上线才发现，用户已流失。📊 我用基准测试+统计学对比+性能画像，找出真实瓶颈，让每次优化和发版都有数据背书。

@@ -1,0 +1,5 @@
+# frontend-design (`anthropics/claude-code/frontend-design`)
+
+## scenario
+
+你让 AI 做网页,打开一看:又是千篇一律的模板脸,产品毫无记忆点 😮‍💨 我是界面设计师,不套模板——从配色、字体到版式,为你的产品量身定制独特视觉,让人一眼就记住你。

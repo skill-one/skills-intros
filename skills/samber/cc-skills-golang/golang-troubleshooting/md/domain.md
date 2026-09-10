@@ -1,0 +1,7 @@
+# golang-troubleshooting (`samber/cc-skills-golang/golang-troubleshooting`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 核心是调试 Go 代码、定位并修复 bug 根因，属于写代码调试范畴。

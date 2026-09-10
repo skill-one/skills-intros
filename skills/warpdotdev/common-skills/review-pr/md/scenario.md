@@ -1,0 +1,5 @@
+# review-pr (`warpdotdev/common-skills/review-pr`)
+
+## scenario
+
+深夜 PR 挂了三天没人审, 草草放行, 线上事故才爆发 💥。痛点: 改动看不全、问题标不准、反馈零散。我按严重度逐行标注问题, 附修改建议, 覆盖安全与边界, 隐患合并前拦住。

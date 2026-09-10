@@ -1,0 +1,7 @@
+# pricewin-hotel-deal-finder (`price-win/pricewin-skills-hub/pricewin-hotel-deal-finder`)
+
+## domain
+
+**domain**: 🏠 生活服务
+
+**reason**: 比价全球酒店价格并给出预订链接, 属旅行规划场景。

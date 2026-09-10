@@ -1,0 +1,10 @@
+# frontend-design (`anthropics/claude-code/frontend-design`)
+
+## comments
+
+- user: 独立接单的前端, category: 妙用, comment: 我先让它出方案:色板 hex、字体分工、ASCII 布局图,确认了再写代码。改方向只改一句方案,不用整页重写。
+- user: 第一次做官网的创业者, category: 坑, comment: 需求只写"做个好看的官网",出来还是模板脸。第二次把真实栏目文案、用户是谁都给它,版式配色立刻不一样了。
+- user: 十年老派 UI 设计师, category: 注意, comment: 它默认会绕开黑底荧光绿、米色底衬线大标题这类 AI 味套路。你若就好这口,必须写明"我就要这风格",它才照做。
+- user: 一人全栈公司, category: 妙用, comment: 写完我会让它自查:"这页哪三处最像 AI 模板?"砍掉后第二版明显干净,比我自己盯半天截图管用。
+- user: 赶工期的小团队前端, category: 注意, comment: 别笼统要"有设计感",它的大胆只花在一处焦点上,其余收着。你若每屏都要亮点,它反而劝你收敛——这是对的,信它。
+- user: 互联网产品经理, category: 启发, comment: 它写按钮文案的规矩:动词开头、全流程同名,"发布"对应"已发布"。我把这套规矩抄进了我们团队的设计规范。

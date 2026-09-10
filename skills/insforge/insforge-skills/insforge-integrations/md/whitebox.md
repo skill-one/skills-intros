@@ -1,0 +1,12 @@
+# insforge-integrations (`insforge/insforge-skills/insforge-integrations`)
+
+## whitebox
+
+- 识别项目要接的提供商: auth 类 (Clerk/Auth0/WorkOS/Kinde/Stytch/Better Auth) 或支付类 (OKX x402)
+- 按表格读取对应的 references/<provider>.md 参考指南
+- 按指南依次落地: 提供商控制台配置 → 服务端/客户端代码 → 数据库设置 → 环境变量
+- 套用通用模式收尾: auth 走 JWT→RLS, 支付走 402→签名→结算→落库, 并核对最佳实践与常见错误清单
+
+- JWT→RLS 机制: 提供商签发含用户 ID 的 JWT, 经 createClient() 的 accessToken 传入 InsForge; InsForge 在 SQL 用 auth.jwt() 暴露 claims, RLS 策略靠预建的 requesting_user_id() 函数校验 (用户 ID 一律 TEXT 列)
+- x402 链上支付机制: 服务端返回 402 + base64 编码的 PAYMENT-REQUIRED 头; 客户端按稳定币 EIP-712 domain 签 EIP-3009 授权; 服务端转发给 facilitator 的 /verify + /settle; 结算落库时 tx_hash 加 UNIQUE 防重, 并检查 insert 的 error (钱已链上转移)
+- 外部依赖: 各提供商的 references/*.md 指南; @insforge/cli (取 JWT_SECRET); jsonwebtoken (WorkOS 服务端签名); OKX Web3 facilitator 接口; InsForge Postgres + realtime 触发器; MOCK_OKX_FACILITATOR 环境变量支持本地无真实资金演练

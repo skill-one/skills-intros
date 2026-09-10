@@ -1,0 +1,10 @@
+# python-design-patterns (`wshobson/agents/python-design-patterns`)
+
+## comments
+
+- user: 后端老兵, category: 妙用, comment: 我把「列出所有会改这个类的原因」做成 PR 评审清单: 原因一跨域(HTTP 解析+业务规则)就打回拆分, 拆不拆、往哪拆, 不再靠吵架定。
+- user: 第一次接手祖传代码的新手, category: 坑, comment: 重复出现两次我就抽了公共基类, 结果第三个需求根本套不进抽象, 回滚重写了两天。教训: 等第三次出现再动手, 先老实复制。
+- user: 带新人的 Tech Lead, category: 注意, comment: 构造函数 7 个参数不是依赖注入用错了, 是这个类干了太多事。先拆职责再注入, 参数自然变少, 别急着硬砍参数。
+- user: 自动化测试工程师, category: 启发, comment: 以前写单测要 mock 半个世界, 把 I/O 和业务逻辑分层后各测各的才明白: 难测不是测试工具的锅, 是职责缠在一起了。
+- user: 接盘外包项目的救火队员, category: 坑, comment: service 层 import 了 API 的请求模型, 加个新入口就连环报错。后来补了个共享 types 层, 规定依赖只能朝下指, 一次治好。
+- user: 从 C++ 转来的 OOP 老信徒, category: 注意, comment: 别死守三次法则: 两份复制体各修各的 bug、开始分叉时, 就该立刻抽公共函数, 顺手补个测试盖住这段共享逻辑。

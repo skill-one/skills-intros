@@ -1,0 +1,14 @@
+# baoyu-youtube-transcript (`jimliu/baoyu-skills/baoyu-youtube-transcript`)
+
+## whitebox
+
+- 解析输入: 接受任意形式的 YouTube URL (watch/短链/embed/shorts) 或视频 ID, 提取视频 ID
+- 查缓存 (.index.json 映射视频 ID → 目录), 命中则跳过网络请求直接进入格式化; 未命中才拉取
+- 首次拉取: 用脚本 main.ts (经 bun/npx 运行) 调 YouTube InnerTube API 直接拿字幕与元数据, 缓存 meta.json / transcript-raw.json / transcript-sentences.json / imgs/cover.jpg
+- 格式化输出: text/md 用句子级数据 (transcript-sentences.json), SRT 用原始片段 (transcript-raw.json); --chapters 按视频简介里的时间戳切分章节并生成目录
+- --speakers 模式: 脚本输出含元数据+原始字幕的 .md 后, 由 AI 子代理按提示词模板 (prompts/speaker-transcript.md) 识别说话人、标注 **Speaker:**、切章节并覆盖该文件
+
+- 双通道抓取: 优先直连 YouTube InnerTube API (无需 API key、无需浏览器), 被反爬拦截时先换客户端身份重试, 再降级到 yt-dlp 兜底 (可经 YOUTUBE_TRANSCRIPT_COOKIES_FROM_BROWSER 带浏览器 cookie)
+- 句子切分与时间戳估算: 原始片段按句末标点 (.?!…。？！等) 切分并跨片段合并 (CJK 感知), 时间戳按字符长度比例分配到句
+- 缓存复用: 首次抓取后原始数据落盘, 同视频再换格式 (如先 md 后 srt) 零网络请求; 换语言或 --refresh 才重新抓取
+- 运行时依赖 bun (或 npx -y bun); --speakers 的说话人识别依赖 AI 模型后处理 (建议子代理用较便宜的模型如 Sonnet)

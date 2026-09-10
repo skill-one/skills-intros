@@ -1,0 +1,13 @@
+# turnstile-spin (`cloudflare/skills/turnstile-spin`)
+
+## whitebox
+
+- 运行 scripts/auth-probe.sh 探测 Cloudflare API 鉴权与账号, 按 JSON status 分支 (ok / 缺 token / 多账号 / 网络失败等)
+- 静默扫描代码库: 识别前端框架、后端 handler 位置、是否已有 reCAPTCHA/hCaptcha, 并确认要注册的域名 (localhost + 生产域名)
+- 列出可选插入点 (signup/login/contact 等) 供用户确认, 然后用已批准的 Wrangler 执行 turnstile widget create 创建小组件
+- 按所选表面嵌入前端 widget 代码, 在现有后端 handler 内插入 siteverify 校验逻辑, 密钥写入用户自己的 env/secret store
+- 用 scripts/validate.sh 做端到端验证: 真实 token 请求成功 + 重放被拒, 最后输出结构化报告
+
+- 确定性逻辑全部下沉到 scripts/ 下的 shell 脚本 (auth-probe / widget-create / validate / persist-skill), 脚本输出 JSON, agent 层只做编排和按 status 分支
+- 密钥零暴露管道: curl 调 api.cloudflare.com, 在 set +x 子 shell 内用 jq 解析 sitekey 与 secret, secret 只写入用户 env/secret store, 校验时仅从 stdin 读取; 凭证类命令禁止走 npx/项目内二进制, 必须用已批准的绝对路径 Wrangler
+- 服务端校验契约固定为 浏览器→用户现有后端→challenges.cloudflare.com/turnstile/v0/siteverify, 要求 success===true + action 匹配 + hostname 在白名单内, 任何失败一律 fail closed 返回 403; 前端嵌入片段按检测到的框架读取 references/*.md 生成

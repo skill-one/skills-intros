@@ -1,0 +1,12 @@
+# cloudflare-one (`cloudflare/skills/cloudflare-one`)
+
+## whitebox
+
+- 分类请求: 判断属于架构设计、配置、排障、迁移还是评审
+- 按评估清单收集上下文 (账号 ID、身份源/IdP、流量路径、变更影响面), 只问与任务相关的
+- 检索当前 Cloudflare One 文档 (覆盖涉及的产品, 如 Access/Gateway/Tunnel/DLP), 若有账号权限则先盘点现有资源再动手
+- 给出变更方案, 附前置条件、验证方法、回滚路径; 高风险变更默认停用状态、限定试点范围上线
+
+- 文档保鲜闸门: 任何限额、设置项、API 字段、分类 ID、UI 路径, 引用前必须从 Cloudflare One 官方文档 / Cloudflare docs MCP server / Cloudflare API schema 实时获取, 不凭记忆作答
+- 现有状态优先: 有账号访问权限时, 先读取既有 Access 应用/策略、Gateway 规则、设备配置/姿态检查、隧道/路由, 再提变更; 若依赖 IdP 组但组同步缺失, 不会虚构组选择器
+- 护栏校验 + 渐进发布: 校验语义边界 (如 Access 默认拒绝、策略须用可复用策略 API 而非内联、Split Tunnel 条目与隧道路由双向对齐), 宽泛的封禁/DLP/TLS 解密策略一律先停用、限定试点用户或站点, 除非用户明确批准扩大范围

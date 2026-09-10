@@ -1,0 +1,13 @@
+# golang-samber-ro (`samber/cc-skills-golang/golang-samber-ro`)
+
+## whitebox
+
+- 被触发: 任务契合 description 中的适用条件——构建异步事件驱动管道/实时数据流, 或代码库已 import github.com/samber/ro
+- 分流决策: 按场景表判断该用 ro 还是简单方案——有限切片转 samber/lo, 有界并发转 errgroup, 无限/多源/需重试超时的流才用 ro
+- 设计管道: 在冷/热 Observable、5 种 Subject、合并算子之间做架构选型, 避免资源泄漏或丢事件
+- 写代码: go get 安装库, 用类型化 Pipe2~Pipe25 链接 150+ 算子, 按最佳实践处理 onNext/onError/onComplete 三回调、绑定无限流、传播 context
+- 验证与查证: 借助 go、golangci-lint 检查, 用 godig/gopls/Context7 查包文档与符号定义
+
+- 声明式管道模型: Observable→算子→Observer, 链式组合通过 Pipe2~Pipe25 获得编译期类型安全; 背压、错误传播、context 取消、资源清理由库本身提供
+- 冷热流架构: 默认冷流 (每次订阅独立执行), 多消费者共享时用 Share/ShareReplay/Connectable 或 5 种 Subject 转热流; 算子、Subject、插件细节查 skill 自带 references (operators-guide / subjects-guide / plugin-ecosystem / patterns)
+- 外部依赖: Go 工具链 (go), github.com/samber/ro 库; 辅助工具 golangci-lint (静态检查)、godig (pkg.go.dev 包事实查询)、gopls (跳转定义/诊断), Context7 作为文档兜底

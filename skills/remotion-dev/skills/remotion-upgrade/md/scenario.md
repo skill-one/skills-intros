@@ -1,0 +1,5 @@
+# remotion-upgrade (`remotion-dev/skills/remotion-upgrade`)
+
+## scenario
+
+用 Remotion (React 做视频工具) 的人最怕升级: 十几个包必须版本完全一致, 差一个就构建报错, 排查到深夜. 我来: 一键对齐全部包版本, 校验依赖匹配, 跑通验证, 升级不再靠运气 🎬

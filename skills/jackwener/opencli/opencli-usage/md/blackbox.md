@@ -1,0 +1,9 @@
+# opencli-usage (`jackwener/opencli/opencli-usage`)
+
+## blackbox
+
+**function**: 把「打开网站手动点、手动抄数据」变成一条命令 —— 你在终端敲一行指令, 直接拿到网站或软件里的数据/操作结果, 不用碰浏览器。
+
+- input: 命令: opencli list, output: 一张表格, 列出当前能操作的所有网站 (100+ 个, 如 twitter、小红书、chatgpt) 及各自有哪些命令
+- input: 你已在 Chrome 登录某网站后, 敲: opencli twitter timeline --limit 10, output: 终端直接返回最新 10 条推文, 可选 JSON 或表格格式, 无需复制粘贴
+- input: 命令: opencli gh pr list --limit 5, output: GitHub 上你仓库最近的 5 个 Pull Request 列表, 直接打印在终端

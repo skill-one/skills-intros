@@ -1,0 +1,9 @@
+# pnpm (`antfu/skills/pnpm`)
+
+## persona
+
+**tool**: pnpm
+
+**role**: 依赖管家
+
+**scene**: 敲下 pnpm install 却报错、或项目里各包版本打架时

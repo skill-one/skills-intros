@@ -1,0 +1,7 @@
+# python-performance-optimization (`wshobson/agents/python-performance-optimization`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 专注 Python 代码的性能分析 (profiling) 与优化，属于写代码与调试范畴

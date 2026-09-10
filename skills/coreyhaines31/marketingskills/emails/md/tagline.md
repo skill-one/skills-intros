@@ -1,0 +1,7 @@
+# emails (`coreyhaines31/marketingskills/emails`)
+
+## tagline
+
+- 让每封邮件,都为成交铺路
+- 自动邮件序列,睡着也有客户转化
+- 从陌生到下单,邮件替你全程跟进

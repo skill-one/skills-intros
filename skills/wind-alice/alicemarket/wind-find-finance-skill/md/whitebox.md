@@ -1,0 +1,13 @@
+# wind-find-finance-skill (`wind-alice/alicemarket/wind-find-finance-skill`)
+
+## whitebox
+
+- 触发后先执行本目录下的 node 脚本 update-check.mjs 做静默更新检查（失败不阻塞），随后读取本地技能目录快照 references/skills-catalog.md
+- 将用户问题归类为取数/查询、分析/决策、探索三类，从 catalog 匹配 1-5 个相关 skill 并标注角色：必需工作流 / 必需数据底座 / 可选补充
+- 按 3 个固定路径逐个检测每个必需 skill 是否已安装（以 SKILL.md 文件存在为准，不做递归搜索）
+- 全部已装 → 把任务移交给必需工作流 skill 继续处理；有缺失 → 停止执行，向用户展示缺失项并询问安装范围（当前 agent / 全部 agent）
+- 用户确认后：5 秒超时测试 GitHub 与 Gitee 连通性，选更快的源，直接执行 npx skills add 安装（命令对用户隐藏），校验 SKILL.md 已落盘后回到原任务
+
+- 静默更新机制：node 运行 scripts/update-check.mjs，记录本次使用后后台拉起自身副本，等待 quiet window 后按安装范围读锁文件、比对远端 HEAD、每日成功态去重；网络不通或无更新时静默退出，不影响主流程
+- 工作流硬门禁：估值/DCF/盘后复盘/市场主线/选股/仓位/交易计划/回测类任务，必须先经 catalog 匹配到工作流 skill；若缺失，禁止用通用推理、网页搜索或其他数据 skill 降级替代，只能先走安装交互，用户明确拒绝后才允许降级为简化分析
+- 安装路由与校验：安装命令体对用户隐藏，npx skills add 支持 GitHub（Wind-Information-Co-Ltd/wind-skills）与 Gitee 镜像双源，-g 标志区分全部 agent/当前 agent；安装完成后必须检查目标 SKILL.md 真实存在才继续原任务。外部依赖：node/npx、GitHub/Gitee 远端、本地 catalog 快照；全程不需要 API Key

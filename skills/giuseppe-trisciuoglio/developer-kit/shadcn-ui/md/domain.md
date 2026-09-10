@@ -1,0 +1,7 @@
+# shadcn-ui (`giuseppe-trisciuoglio/developer-kit/shadcn-ui`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 提供 React UI 组件库 (shadcn/ui) 的搭建、集成与实现模式, 属于前端开发编程

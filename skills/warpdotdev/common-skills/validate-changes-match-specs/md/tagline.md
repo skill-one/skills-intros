@@ -1,0 +1,7 @@
+# validate-changes-match-specs (`warpdotdev/common-skills/validate-changes-match-specs`)
+
+## tagline
+
+- 规格即承诺, 代码逐行核对
+- 偏差无处藏身, 对齐一目了然
+- 让代码忠于规格, 让安全不留死角

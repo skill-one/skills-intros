@@ -1,0 +1,7 @@
+# seedance-2-5-reference-to-video (`genmedia-labs/skills/seedance-2-5-reference-to-video`)
+
+## tagline
+
+- 九图锁角色,风格不漂移
+- 参考即剧本,直出1080P大片
+- 声画同步,成片即交付

@@ -1,0 +1,7 @@
+# ponytail-help (`dietrichgebert/ponytail/ponytail-help`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 让代码用最简方案跑通: 极简编码模式 + 过度设计审查/审计/重构。

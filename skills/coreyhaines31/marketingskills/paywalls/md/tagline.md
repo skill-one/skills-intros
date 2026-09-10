@@ -1,0 +1,7 @@
+# paywalls (`coreyhaines31/marketingskills/paywalls`)
+
+## tagline
+
+- 让免费用户, 心甘情愿为价值买单
+- 抓准价值时刻, 转化自然发生
+- 升级之路越顺, 付费越水到渠成

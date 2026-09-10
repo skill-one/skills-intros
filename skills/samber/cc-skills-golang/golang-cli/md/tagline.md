@@ -1,0 +1,7 @@
+# golang-cli (`samber/cc-skills-golang/golang-cli`)
+
+## tagline
+
+- Go CLI，从零到发布一手包办
+- 让工具像 Unix 原生命令般可靠
+- 补全、信号、退出码，细节全拿捏

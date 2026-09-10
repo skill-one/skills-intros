@@ -1,0 +1,7 @@
+# dbs-xhs-title (`dontbesilent2025/dbskill/dbs-xhs-title`)
+
+## tagline
+
+- 不瞎编标题，只匹配 75 个爆款公式
+- 每条标题，都有爆款公式撑腰
+- 75 个验证公式，精准配对你的话题

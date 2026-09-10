@@ -1,0 +1,7 @@
+# vue-best-practices (`antfu/skills/vue-best-practices`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: Vue.js 前端开发最佳实践: 写组件、管理状态、重构代码, 纯编程场景

@@ -1,0 +1,7 @@
+# convex-domains (`get-convex/agent-skills/convex-domains`)
+
+## domain
+
+**domain**: 🛡️ 运维与安全
+
+**reason**: 帮已部署的应用绑定自有域名: 配置 DNS 记录、挂载自定义域名、重绑认证源

@@ -1,0 +1,7 @@
+# api-and-interface-design (`addyosmani/agent-skills/api-and-interface-design`)
+
+## tagline
+
+- 契约先行, 接口稳如磐石
+- 让正确的事容易, 错误的事难发生
+- 今天多想一步, 明天少破一次

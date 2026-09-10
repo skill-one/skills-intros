@@ -1,0 +1,7 @@
+# flutter-add-widget-test (`flutter/agent-plugins/flutter-add-widget-test`)
+
+## domain
+
+**domain**: 🧪 测试与质量
+
+**reason**: 专为 Flutter 组件级 UI 测试而生, 用 WidgetTester 验证界面渲染与点击、输入等交互行为

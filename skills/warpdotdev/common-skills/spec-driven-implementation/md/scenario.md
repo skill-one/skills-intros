@@ -1,0 +1,5 @@
+# spec-driven-implementation (`warpdotdev/common-skills/spec-driven-implementation`)
+
+## scenario
+
+大功能开发,AI 写码总跑偏:返工三轮还错,评审像猜谜,文档永远过时。我先写清产品规格再动手,实现全程对照规格,文档随代码同步,验收有据可依。📋

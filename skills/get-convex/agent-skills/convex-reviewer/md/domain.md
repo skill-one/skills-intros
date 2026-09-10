@@ -1,0 +1,7 @@
+# convex-reviewer (`get-convex/agent-skills/convex-reviewer`)
+
+## domain
+
+**domain**: 🧪 测试与质量
+
+**reason**: 专做 Convex 代码审查: 安全/鉴权/校验器/性能检查, 按严重度输出问题与修复建议

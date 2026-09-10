@@ -1,0 +1,7 @@
+# baoyu-comic (`jimliu/baoyu-skills/baoyu-comic`)
+
+## domain
+
+**domain**: 🎨 设计多媒体
+
+**reason**: 产出知识漫画, 核心是图像生成与分镜视觉创作, 成品是图片/PDF

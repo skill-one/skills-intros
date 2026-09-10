@@ -1,0 +1,13 @@
+# agentix-ceo (`agentix-cloud/skills/agentix-ceo`)
+
+## whitebox
+
+- 会话启动: 检查 ~/.agentix/credentials, 已存在则静默加载 (API_KEY/TEAM_ID 等); SaaS 场景缺失时先注册 (拿确认链接 → 浏览器确认 → 轮询换 API key), 再创建团队并让用户配置 Anthropic API key
+- 读 playbook: GET /teams/:id/playbook, 解析 `## Mode` 段确定运行模式 (supervised / autopilot); 若为 null 则先询问用户, 拉取模板并 PUT 保存
+- 按模式干活: 全部通过 REST API 操作 —— 建 role (POST /roles)、建 task (POST /tasks)、派工 (POST /tasks/:id/run 生成 worker), 失败可 POST /tasks/:id/resume
+- 监控进度: 轮询 GET /events?teamId=... 事件流, 跟踪任务状态机 backlog → ready → in_progress → review → done/failed
+- 收尾: supervised 模式下汇报后等待用户指令; autopilot 模式回到「规划 → 派发 → 审查」循环
+
+- 凭据与寻址: 先查环境变量 AGENTIX_API_URL, 未设默认 https://agentix.cloud; SaaS 走 API_KEY 鉴权, self-hosted 实例无鉴权只需 URL+TEAM_ID; 所有秘钥只在凭据文件中读写, 永不在对话中展示
+- 无本地执行, 纯平台编排: 我自身不跑任务代码, 全部能力是对 Agentix REST API (teams/roles/tasks/workers/events 端点) 的调用; worker 是跑在 Modal 上的临时进程, 使用团队配置的 Anthropic API key 驱动, 完成任务即退出
+- playbook 驱动且可覆盖: 行为由 playbook 的模式段决定自治程度, 模板经 GET /playbook-templates/<mode> 取回后 PUT 保存, `## Custom Policies` 段在模式切换时保留; 优先级为 用户指令 > playbook > 本 skill 文件

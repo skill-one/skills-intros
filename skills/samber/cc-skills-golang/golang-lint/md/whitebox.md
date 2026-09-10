@@ -1,0 +1,13 @@
+# golang-lint (`samber/cc-skills-golang/golang-lint`)
+
+## whitebox
+
+- 按任务选模式: 配置 .golangci.yml 走配置章节顺序; 修 lint 告警走'解读输出/抑制告警'章节
+- 运行 golangci-lint run ./... 收集问题, 可自动修的用 --fix
+- 按输出格式 文件:行:列: 消息 (linter名) 定位问题, 对照 linter 参考文档判断真问题还是误报
+- 修根因; 确需抑制时写 //nolint:linter名 // 理由 (nolintlint 会检查格式)
+- 提交前跑 golangci-lint fmt 格式化
+
+- 解析: golangci-lint 是聚合 100+ linter 的单一二进制, 并行运行, 全部开关集中在 .golangci.yml (项目的唯一配置源); 括号里的 linter 名决定去哪份参考文档查'它检查什么'
+- 校验: //nolint 必须指定具体 linter 名并附理由, 由 nolintlint 强制; gosec/bodyclose/sqlclosecheck 等安全类告警原则上禁止抑制
+- 外部依赖: 需要 go 和 golangci-lint 两个二进制 (brew 安装或 go install ...@latest); 遗留代码大规模清理时用 5 个并行子代理按类别分工 (自动修复/安全/错误处理/风格/代码质量)

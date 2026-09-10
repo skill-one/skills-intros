@@ -1,0 +1,7 @@
+# animate (`emilkowalski/skills/animate`)
+
+## tagline
+
+- 先问该不该动,再谈怎么动
+- 克制,是动效的最高级
+- 毫秒与曲线之间,是产品手感

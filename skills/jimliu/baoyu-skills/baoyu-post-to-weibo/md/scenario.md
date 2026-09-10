@@ -1,0 +1,5 @@
+# baoyu-post-to-weibo (`jimliu/baoyu-skills/baoyu-post-to-weibo`)
+
+## scenario
+
+写好长文配了10张图,还得手动开微博、逐段粘贴、逐张传图?烦到想放弃。我用一条命令搞定:标题、导语、正文、图片全部自动填好,你只管最后点发布。🖼️✅

@@ -1,0 +1,7 @@
+# momentic-mobile-test (`momentic-ai/skills/momentic-mobile-test`)
+
+## tagline
+
+- 自然语言写测试, 真机自动跑通
+- 你负责造产品, 我负责守质量
+- 一句话, 覆盖安卓 iOS 每次发布

@@ -1,0 +1,7 @@
+# golang-security (`samber/cc-skills-golang/golang-security`)
+
+## domain
+
+**domain**: 🛡️ 运维与安全
+
+**reason**: 核心是 Go 代码的安全审计与漏洞防护(注入、加密、密钥管理等), 属应用安全防护 🔒

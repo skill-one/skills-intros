@@ -1,0 +1,11 @@
+# wecomcli-doc (`wecomteam/wecom-cli/wecomcli-doc`)
+
+## blackbox
+
+**function**: 帮你把 Word 文件变成企业微信在线文档，以及读取、追加或改写这些在线文档的内容。
+
+- input: 本地一个 Word 文件（如 C:/会议纪要.docx 或 .doc / .txt）, output: 一份企业微信在线 doc 文档，给你可直接打开的文档链接
+- input: 「帮我新建一个 Word 在线文档，标题是《项目周报》」, output: 新建好的在线 doc 文档链接
+- input: 一条企微 doc 链接（https://doc.weixin.qq.com/doc/xxx）, output: 该文档的正文内容（纯文本或 Markdown 格式）
+- input: 「把这段总结加到《项目周报》末尾」+ 一段文字, output: 原内容保留，该在线文档末尾追加了这段文字
+- input: 「把《项目周报》整个替换成下面这份新内容」+ 新内容, output: 原文档内容被清空并写成新内容

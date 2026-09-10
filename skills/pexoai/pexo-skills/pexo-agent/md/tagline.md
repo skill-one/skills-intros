@@ -1,0 +1,7 @@
+# pexo-agent (`pexoai/pexo-skills/pexo-agent`)
+
+## tagline
+
+- 一句话,出成片:音乐字幕转场全配齐
+- 不写提示词,不碰剪辑,开口即大片
+- 10+模型自动选,最快8分钟交片

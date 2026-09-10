@@ -1,0 +1,10 @@
+# onboarding-cro (`coreyhaines31/marketingskills/onboarding-cro`)
+
+## comments
+
+- user: 冷启动期的独立开发者, category: 坑, comment: 第一次没备数据,被追问激活率、流失点,答不上只得泛泛建议。第二次把漏斗各步转化率先整理好贴进去,直接出了可执行清单。先备数据。
+- user: B2B SaaS 增长 PM, category: 妙用, comment: 拿来审计现有引导而不是重做:它按发现→影响→建议→优先级输出,我把高优先级项直接复制进迭代排期当需求单,研发不用我二次翻译。
+- user: 内容社区运营, category: 注意, comment: 我们的用户其实死在注册页,一开始找错了药——它只管注册之后的事,注册前优化要找 signup-flow-cro 技能。先确认流失发生在哪一步。
+- user: 第一次做产品的新手, category: 启发, comment: 它反问留存用户和流失用户的最早行为差异,我才发现自己从没定义过产品的 aha 时刻。这一问比后面的方案更值钱:先定激活事件,再谈优化。
+- user: 工具 App 创始人, category: 妙用, comment: 首屏空白页最劝退。照它的思路给新用户预填示例数据,再把 12 步引导清单砍到 5 步、最容易的放最前,次周激活率涨了将近一成。
+- user: 邮件触达运营, category: 注意, comment: 它给的是触发时机:欢迎、24/72h 挽回、激活后庆祝加下一步。要整套邮件文案序列,它会推荐你转 email-sequence 技能。想清楚要策略还是文案。

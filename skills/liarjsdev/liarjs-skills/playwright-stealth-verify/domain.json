@@ -1,0 +1,1 @@
+{"domain": "测试与质量", "reason": "它是对自动化浏览器 (Playwright/Puppeteer/Selenium) 做指纹一致性质检的工具, 以评分和断言形式嵌入测试套件与 CI 门禁, 本质是质量检查而非自动化或编码本身"}

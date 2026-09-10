@@ -1,0 +1,7 @@
+# create-pr (`warpdotdev/common-skills/create-pr`)
+
+## tagline
+
+- 你写代码，我包 PR 全流程
+- 检查、测试、描述，一次到位
+- 从分支到合并，每步都规范

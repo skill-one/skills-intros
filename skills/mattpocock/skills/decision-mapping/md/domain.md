@@ -1,0 +1,7 @@
+# decision-mapping (`mattpocock/skills/decision-mapping`)
+
+## domain
+
+**domain**: 🧠 知识管理
+
+**reason**: 把模糊想法拆成一张待调查问题地图, 通过调研/原型/追问逐个拍板, 结论沉淀为决策文档。

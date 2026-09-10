@@ -1,0 +1,10 @@
+# analytics (`coreyhaines31/marketingskills/analytics`)
+
+## comments
+
+- user: 独立开发者, category: 妙用, comment: 先回答指南里那句"这数据要支持什么决定", 把想埋的40多个事件砍到12个再动手, 上线后报表没人再问"这个数干嘛用的"。
+- user: 刚接手GA的运营, category: 坑, comment: GTM里配好了表单提交事件, 忘了去GA4后台"管理"里把它标记为关键事件, 报表看得到事件但转化列全空, 返工一下午。
+- user: 前端工程师, category: 注意, comment: 上线前用GTM预览模式加GA4 DebugView逐个点一遍验证, 我就是这样发现页面同时装了gtag.js和GA4标签, 所有事件都记了两遍。
+- user: 付费投放专员, category: 坑, comment: 链接里utm_source一会儿写Google一会儿写google, GA4当成两个来源分开算, 渠道报表直接没法看。现在全小写, 且每条链接先登记到共享表格。
+- user: 出海SaaS增长负责人, category: 注意, comment: 没配同意模式前, 欧洲访客的数据几乎收不到, 流量看着像暴跌其实是被合规拦了。出海业务上线追踪前先挂cookie同意横幅。
+- user: 数据分析师, category: 启发, comment: 按"对象_动作"命名、把按钮文案和位置放进参数而不是事件名里, 事件种类少一半, 事后查数不用翻文档猜cta_hero_clicked是啥。

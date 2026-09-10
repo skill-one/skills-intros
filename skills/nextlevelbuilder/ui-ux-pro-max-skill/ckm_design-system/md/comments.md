@@ -1,0 +1,10 @@
+# ckm:design-system (`nextlevelbuilder/ui-ux-pro-max-skill/ckm:design-system`)
+
+## comments
+
+- user: 接手祖传项目的前端, category: 妙用, comment: 拿 validate-tokens.cjs 扫老项目, 揪出两百多处写死的色值, 按报错清单逐个替换成 token, 比肉眼翻代码快太多, 重构范围一目了然。
+- user: 第一次写幻灯片的新手, category: 坑, comment: 我在幻灯片里图省事直接写 background: #FF6B6B, 跑校验脚本全报错。色值只能进 design-tokens.json, 页面上必须写 var(--color-primary) 这类变量。
+- user: 售前经理, category: 妙用, comment: --context 参数被低估: 加上 --position 2 --prev-emotion frustration, 会按叙事位置推荐版式和情绪节奏, 稿子前段压情绪后段给希望, 比凭感觉排页顺。
+- user: 后端转全栈, category: 注意, comment: 先备好 brand-guidelines.md 和 design-tokens.json 再开工, 它围绕已有品牌 token 干活, 不负责从零帮你定品牌色。我先补了这两个文件, 产出才贴品牌。
+- user: 独立开发者, category: 启发, comment: 三层结构 (原始值→语义→组件) 让我真正会换肤了: 暗色模式只需替换语义层, 组件层一行不动。我把博客样式照此重写, 换主题只改一个文件。
+- user: 常出差做现场演示的, category: 注意, comment: 幻灯片图表走 Chart.js 的 CDN, 演示现场断网会白屏一块。我提前把 chart.umd.min.js 下载到本地改引用, 当天才没翻车。

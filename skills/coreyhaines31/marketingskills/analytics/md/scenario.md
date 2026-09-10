@@ -1,0 +1,5 @@
+# analytics (`coreyhaines31/marketingskills/analytics`)
+
+## scenario
+
+广告费花了, 却说不清用户从哪来、在哪一步流失、哪条渠道真带来成交——凭感觉做营销, 钱打水漂💸。我是埋点分析师: 帮你搭建 GA4 埋点、理清转化数据, 让每个决策都有数可依。

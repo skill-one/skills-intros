@@ -1,0 +1,7 @@
+# stitch-loop (`google-labs-code/stitch-skills/stitch-loop`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 用 Stitch (AI 界面生成工具) 自主迭代生成网页并集成为可运行站点, 本质是前端建站自动化

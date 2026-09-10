@@ -1,0 +1,7 @@
+# convex-deploy-guard (`get-convex/agent-skills/convex-deploy-guard`)
+
+## domain
+
+**domain**: 🛡️ 运维与安全
+
+**reason**: Convex 部署目标识别、发布前确认与只读防护, 属部署发布安全纪律。

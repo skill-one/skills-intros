@@ -1,0 +1,5 @@
+# remotion-multimedia (`remotion-dev/skills/remotion-multimedia`)
+
+## scenario
+
+做视频网站常遇坑:用户上传的视频/音频,时长和画面尺寸未知,页面进度条没法显示、布局没法适配,手动解析格式代码繁琐易错。我能在浏览器里直接读出视频时长、宽高、音频时长,无需上传服务器,一行代码搞定。🎬

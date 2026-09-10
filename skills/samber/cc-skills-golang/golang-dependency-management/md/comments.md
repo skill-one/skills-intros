@@ -1,0 +1,10 @@
+# golang-dependency-management (`samber/cc-skills-golang/golang-dependency-management`)
+
+## comments
+
+- user: 刚学Go的新手, category: 坑, comment: 一上来就 go get -u ./... 全量升级，间接依赖跟着跳新版本，接口变了编译直接挂。后来只敢用 -u=patch 升补丁版，稳多了。
+- user: 内网运维老哥, category: 妙用, comment: 部署机不联网，我把 go mod vendor 生成的 vendor/ 提交进仓库，CI 构建完全不碰外网。但每次动依赖后记得重跑一遍 vendor。
+- user: 金融行业安全审计, category: 注意, comment: go.sum 千万别嫌它吵就进 .gitignore，它记着每个依赖的校验和，删了等于放弃防投毒校验，go mod verify 也没东西可比了。
+- user: 开源库维护者, category: 妙用, comment: 审阅者问我「为什么引入这个包」，go mod why -m 一句话给出完整依赖链，比我口头解释有说服力；删依赖前我也先跑它确认没人用。
+- user: 赶版本的小组长, category: 坑, comment: 赶版本没跑 govulncheck 就发版，带已知漏洞的依赖直接上了生产，被安全部门通报。现在它是我发版清单里固定的五分钟。
+- user: 十年后端老兵, category: 启发, comment: 现在我每次想 go get 前先停一下：标准库能不能干？依赖少一个，攻击面、维护成本和二进制体积就都跟着小一分。

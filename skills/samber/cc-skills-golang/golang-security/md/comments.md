@@ -1,0 +1,10 @@
+# golang-security (`samber/cc-skills-golang/golang-security`)
+
+## comments
+
+- user: 后端老兵 (Go 十年), category: 妙用, comment: 审出 SQL 拼接它没直接喊改,而是顺调用链确认上游已有校验,降为 Medium 并留 // security 注释,后人不会重复误报。
+- user: 第一次用的新手, category: 注意, comment: 开跑前先确认装了 go 和 govulncheck,我机器缺后者,扫到那步直接卡住,补装完才通过。
+- user: 渗透测试工程师, category: 妙用, comment: 只给它 PR 改动,它会顺数据流追出 diff 外的问题:我新加的参数绕过校验进了命令拼接,靠这招提前揪出来的。
+- user: 创业公司全栈, category: 注意, comment: 全库审计别指望一个大 PR:它按严重度拆成多个独立可回滚的修复分支,我当天只来得及合并 Critical 那几条。
+- user: 运维老哥, category: 坑, comment: 拿它当依赖漏洞扫描器是搞错了,查 CVE 归 govulncheck/依赖管理管;这个管的是代码本身怎么写才安全。
+- user: 大三实习生, category: 启发, comment: 落笔前先问三件事:不可信数据从哪进、攻击者能控什么、出事波及多大。过一遍这仨问题,好几个隐患提前避掉了。

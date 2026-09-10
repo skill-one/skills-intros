@@ -1,0 +1,7 @@
+# diagnose-ci-failures (`warpdotdev/common-skills/diagnose-ci-failures`)
+
+## tagline
+
+- CI 红灯?我帮你定位根因
+- 失败日志秒提取,修复方案先审后改
+- 不猜不盲改,只出可审核的修复计划

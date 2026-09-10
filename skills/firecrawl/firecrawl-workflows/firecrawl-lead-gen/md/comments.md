@@ -1,0 +1,10 @@
+# firecrawl-lead-gen (`firecrawl/firecrawl-workflows/firecrawl-lead-gen`)
+
+## comments
+
+- user: 第一次做客户开发的新手销售, category: 坑, comment: 一开始抓 LinkedIn 个人页邮箱，结果全打码。它只拿公开可见信息，不绕登录和验证码。要联系方式就去邮箱明文展示的公开名录。
+- user: B2B SaaS 创始人, category: 妙用, comment: 用「A轮 + 用 Next.js」这种组合条件筛，比翻行业名录快太多。JSON 直接导入 CRM，公司名、URL、融资阶段都是齐的。
+- user: 外贸业务员, category: 注意, comment: 跑之前先抽查目标网站邮箱是否明文。目录类站点常打码，结果里 Data Gaps 会标出来，但提前看一眼能省一次跑批。
+- user: 增长运营, category: 妙用, comment: 意外发现会议嘉宾页是宝藏来源：姓名、头衔、公司、个人主页一条条摆着，抓下来就是现成名单，比通用搜索精准得多。
+- user: 数据工程师, category: 注意, comment: 一开始就说清要多少条、输出 json 还是 csv，不然得自己再转格式。跑完它会给出重跑参数，直接复制就能换条件再跑。
+- user: 带团队的老销售总监, category: 启发, comment: 别一上来就要 500 条。先跑 30 条看字段质量，再调筛选条件复跑，比一次拿一堆垃圾数据慢慢清洗划算。

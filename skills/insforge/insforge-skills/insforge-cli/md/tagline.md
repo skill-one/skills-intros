@@ -1,0 +1,7 @@
+# insforge-cli (`insforge/insforge-skills/insforge-cli`)
+
+## tagline
+
+- 你说需求, 我建后端
+- 从建库到上线, 一条命令搞定
+- 后端杂事全托管, 你只管造产品

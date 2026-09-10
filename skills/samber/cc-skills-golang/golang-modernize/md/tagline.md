@@ -1,0 +1,7 @@
+# golang-modernize (`samber/cc-skills-golang/golang-modernize`)
+
+## tagline
+
+- 老代码用新语法，安全优雅两不误
+- 废弃API一扫清，升级Go不踩坑
+- 守住安全底线，跟上Go每一次进化

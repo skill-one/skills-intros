@@ -1,0 +1,9 @@
+# golang-project-layout (`samber/cc-skills-golang/golang-project-layout`)
+
+## persona
+
+**tool**: go.mod
+
+**role**: Go 项目架构师
+
+**scene**: 新建 Go 项目、对着空仓库不知道 cmd、internal、pkg 怎么摆时

@@ -1,0 +1,7 @@
+# weread-skills (`tencent/wechatreading/weread-skills`)
+
+## tagline
+
+- 一句话,搜书、笔记、书评全搞定
+- 你读过的每一页,都值得被记住
+- 懂你的书架,更懂你的阅读

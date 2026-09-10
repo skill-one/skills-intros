@@ -1,0 +1,12 @@
+# convex-env (`get-convex/agent-skills/convex-env`)
+
+## whitebox
+
+- 确认要写入的 KEY/value 及目标 deployment，逐条执行 `npx convex env set KEY value`。
+- 改应用代码：在 actions 里用 process.env.KEY 读取（需要时给 action 加 'use node'），不在 queries/mutations 里读。
+- 检查秘密不入代码/git：只存 Convex 环境变量，本地开发另存 .env.local。
+- 执行 `npx convex env list` 确认变量已就位。
+
+- 依赖外部工具 Convex CLI（npx convex env set / env list）完成写入与确认，环境变量按 deployment 隔离，不同部署各有自己的值。
+- 读取边界校验：process.env 只允许在 actions 中使用（必要时标记 'use node'），queries/mutations 中一律不读。
+- 秘密隔离机制：秘密与代码、git 严格分离，本地场景仅用 .env.local 承载。

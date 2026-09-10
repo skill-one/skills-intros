@@ -1,0 +1,13 @@
+# golang-continuous-integration (`samber/cc-skills-golang/golang-continuous-integration`)
+
+## whitebox
+
+- 判断模式: 项目首次配 CI 走 Setup, 已有流水线要补强走 Improve
+- Setup: 按 Quick Reference 表依序生成 workflow (test → lint → security → release); Improve: 先读现有 .github/workflows/*.yml, 对照表找缺口
+- 从 skill 内置的 assets 参考文件 (test.yml / lint.yml / security.yml / docker.yml / release.yml 等) 生成或增补文件, 按 go.mod 调整 Go 版本矩阵, Action 锁主版本号 @vN, 每个 job 写最小权限 permissions
+- 用本地工具链验证产物: go / golangci-lint / goreleaser / gh (通过 Bash 白名单执行)
+- 视项目形态补外围配置: codecov.yml、codeql-config.yml、dependabot.yml 或 renovate.json、仓库分支保护设置、AI PR review workflow
+
+- 双模式分流: Setup 走固定生成顺序 (test→lint→security→release); Improve 必须先读现状文件再对标 Quick Reference 表, 只做增量补丁、不重复已有步骤
+- 模板驱动: 全部产出源自 skill 自带的 assets 配置文件, 再按项目适配 — 如 go 1.23/1.24/1.25 各自对应的版本矩阵、GHCR/Docker Hub 双 registry 裁剪、库 vs CLI vs monorepo 的 goreleaser 配置分型
+- 工具链依赖与边界: 本地需预装 go、goreleaser、gh, 执行受 allowed-tools 白名单约束 (Bash(go:*)/Bash(golangci-lint:*)/Bash(git:*)/Bash(goreleaser:*)/Bash(gh:*) + Read/Write/Edit/Glob/Grep/WebFetch); 参考版本可能过时, 生成前用 WebFetch/习惯优先最新稳定主版本; 只负责把工具接进流水线, 不负责解读安全扫描结果或选型依赖版本

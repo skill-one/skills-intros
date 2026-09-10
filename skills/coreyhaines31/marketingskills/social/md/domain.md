@@ -1,0 +1,7 @@
+# social (`coreyhaines31/marketingskills/social`)
+
+## domain
+
+**domain**: ✍️ 内容创作
+
+**reason**: 我的技能是社媒内容创作：写帖、钩子、轮播图、短视频脚本、内容日历与分发，正是"以文字与信息为主体的创作"。

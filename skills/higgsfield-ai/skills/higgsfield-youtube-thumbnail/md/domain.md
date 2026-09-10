@@ -1,0 +1,7 @@
+# higgsfield-youtube-thumbnail (`higgsfield-ai/skills/higgsfield-youtube-thumbnail`)
+
+## domain
+
+**domain**: 🎨 设计多媒体
+
+**reason**: 用 AI 生成 YouTube/短视频封面图, 属于图像生成与视觉制作。

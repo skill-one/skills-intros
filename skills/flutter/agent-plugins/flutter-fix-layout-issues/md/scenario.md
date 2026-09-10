@@ -1,0 +1,5 @@
+# flutter-fix-layout-issues (`flutter/agent-plugins/flutter-fix-layout-issues`)
+
+## scenario
+
+深夜赶工,App 界面突然爆红、出现黄黑条纹,内容挤成一团 🫠——改了半天没头绪,上线时间却在逼近。把报错信息发给我:定位问题、改代码、热重载验证,几分钟还你一个正常界面。

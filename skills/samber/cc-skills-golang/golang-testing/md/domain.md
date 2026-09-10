@@ -1,0 +1,7 @@
+# golang-testing (`samber/cc-skills-golang/golang-testing`)
+
+## domain
+
+**domain**: 🧪 测试与质量
+
+**reason**: 专注 Go 测试: 表驱动测试、覆盖率、并发竞态与 flaky 排查

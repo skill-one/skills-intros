@@ -1,0 +1,13 @@
+# gemini-api-dev (`google-gemini/gemini-skills/gemini-api-dev`)
+
+## whitebox
+
+- 接收任务, 判断是否属于本技能领域 (调用 Gemini API 写代码)
+- 写代码前强制抓取技能内列出的官方文档页 (ai.google.dev 下的 .md.txt) 作为参数与边界情况的唯一事实来源
+- 基于 Interactions API (client.interactions.create) 编写代码, 只选当前模型 (如 gemini-3.8-flash) 和当前 SDK
+- 按硬性规则自检: 弃用模型/旧 SDK 一律替换或标注 (gemini-2.x → gemini-3.8-flash 并注明), agent 场景补齐 environment="remote" / background=True
+- 输出可运行的代码与说明
+
+- 知识强制更新机制: skill.md 的 Critical Rules 优先于模型自身训练数据 — 模型名与 SDK 版本走白名单 (gemini-3.8-flash 等; google-genai >= 2.3.0 / @google/genai >= 2.3.0), legacy 模型和 google-generativeai / @google/generative-ai 旧 SDK 直接禁止使用
+- 文档先行校验: 不凭训练记忆写代码, 每次生成前按任务类型匹配托管文档页 (如 function-calling、streaming、image-generation), 用文档补全参数与边界情况
+- 外部依赖统一收敛到 Gemini API: 多轮对话靠 previous_interaction_id, 流式靠 stream=True 的事件流 (step.delta / interaction.completed), Deep Research agent 需 background=True 轮询状态, 托管 agent 需 environment="remote" 沙箱; 代码载体为 Python google-genai 或 TS @google/genai

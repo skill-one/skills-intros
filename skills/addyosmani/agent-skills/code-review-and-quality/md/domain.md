@@ -1,0 +1,7 @@
+# code-review-and-quality (`addyosmani/agent-skills/code-review-and-quality`)
+
+## domain
+
+**domain**: 🧪 测试与质量
+
+**reason**: 核心职能是代码审查与质量门禁: 五轴评审(正确性/可读性/架构/安全/性能), 合并前把关每一处变更

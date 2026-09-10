@@ -1,0 +1,13 @@
+# firecrawl-research-papers (`firecrawl/firecrawl-workflows/firecrawl-research-papers`)
+
+## whitebox
+
+- 推断主题/篇数/输出格式, 仅在信息不足时问 1~3 个简短问题
+- 用语义检索在 Firecrawl 论文索引中搜索, 得到锚点论文
+- 从强锚点出发用 related-papers 扩展出论文家族, 必要时换措辞搜索、再播种
+- 用 read-paper/inspect-paper 校验关键论断与元数据, 论文语料外走 search/scrape 兜底
+- 按固定模板合成带来源的文献综述 markdown
+
+- 语料与依赖: Firecrawl Research 论文索引 (语义检索 abstracts, 全文按篇可达), 覆盖 PubMed、bioRxiv/medRxiv、arXiv (CS/物理/数学); 经 MCP 或 CLI 调用, 必须提供 FIRECRAWL_API_KEY
+- 扩展策略: related-papers 按 similar/citers/references 三种模式沿引文关系扩展; 枚举类问题用多措辞搜索 + 多锚点扩展 + 新发现再播种, 避免停在单一命中
+- 校验机制: read-paper 带具体问题进正文核实承重论断 (方法/分数/对比/局限), inspect-paper 核对规范元数据; 白皮书/排行榜/博客用 firecrawl_search、firecrawl_scrape, 输出中区分同行评审与博客/厂商报告

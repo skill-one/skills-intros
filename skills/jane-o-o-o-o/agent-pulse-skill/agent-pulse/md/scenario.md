@@ -1,0 +1,5 @@
+# agent-pulse (`jane-o-o-o-o/agent-pulse-skill/agent-pulse`)
+
+## scenario
+
+月底账单一出吓一跳🤯 你同时用 Claude Code、Cursor 等好几个 AI 助手,钱花在哪、哪个最烧钱?两眼一抹黑。我一条命令扫清全部本地记录:费用、用量、异常一目了然,还能预算预警。

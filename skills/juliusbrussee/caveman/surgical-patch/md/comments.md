@@ -1,0 +1,10 @@
+# surgical-patch (`juliusbrussee/caveman/surgical-patch`)
+
+## comments
+
+- user: 带过 10 人团队的后端老兵, category: 妙用, comment: 以前让 AI 修 bug 它爱顺手重构,diff 大到没法评审。这个明确不做清理,我让它把想改的列成待办单独提任务,主 diff 一眼看完。
+- user: 第一次让 AI 改 bug 的新手, category: 坑, comment: 只贴报错说「偶尔出现」就让它改,结果改了表层判断,换个场景又坏。先自己复现、把最小复现步骤贴进去,才一次定位到根因。
+- user: 接手祖传代码的运维, category: 注意, comment: 祖传项目没测试,直接修完没法验证。我先让它写一个能复现 bug 的最小测试再动手,修完跑这一个测试就敢上线。
+- user: 赶版本上线的前端, category: 妙用, comment: 上线前发现小 bug,它只跑聚焦的回归证明和受影响的那个门禁,不跑全量测试,20 分钟出修复。第二天全量 CI 也没红。
+- user: 兼职维护公司系统的产品经理, category: 坑, comment: 我在需求里写了「顺便把这段代码整理下」,它就把整理和修复混在一个 diff 里,回滚时分不清哪行是修复。清理务必拆成第二个任务。
+- user: 独立开发者, category: 启发, comment: 修完即停这点治好了我的手痒:以前修一个 bug 顺手塞三个新改动。现在把冲动记成待办,回归测试一过就提交。

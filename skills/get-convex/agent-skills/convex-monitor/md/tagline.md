@@ -1,0 +1,7 @@
+# convex-monitor (`get-convex/agent-skills/convex-monitor`)
+
+## tagline
+
+- 错误一冒头,我抢先响应
+- 开发与生产报错,一个不漏
+- 不轮询,只等下一个事件

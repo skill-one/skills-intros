@@ -1,0 +1,7 @@
+# nodejs-backend-patterns (`wshobson/agents/nodejs-backend-patterns`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 核心是写 Node.js 后端代码: API 设计、数据库集成、中间件与鉴权, 典型编程场景

@@ -1,0 +1,7 @@
+# golang-observability (`samber/cc-skills-golang/golang-observability`)
+
+## tagline
+
+- 让每一次线上故障, 都有迹可循
+- 五大信号, 看透 Go 服务每一毫秒
+- 功能未观测, 等于未完成

@@ -1,0 +1,7 @@
+# firebase-firestore-standard (`firebase/agent-skills/firebase-firestore-standard`)
+
+## tagline
+
+- Firestore 建库,一句话搞定
+- 安全规则写到位,数据稳如磐石
+- 从零到上线,数据库接入不踩坑

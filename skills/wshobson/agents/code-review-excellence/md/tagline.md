@@ -1,0 +1,7 @@
+# code-review-excellence (`wshobson/agents/code-review-excellence`)
+
+## tagline
+
+- 提前揪隐患，上线更安心
+- 审查不挑刺，反馈助成长
+- 每次 Review，都是一堂团队课

@@ -1,0 +1,7 @@
+# performance-optimization (`addyosmani/agent-skills/performance-optimization`)
+
+## tagline
+
+- 先测量,后优化,快有据可依
+- 找准真瓶颈,慢秒变快
+- 每一毫秒提速,都有数据证明

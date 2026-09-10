@@ -1,0 +1,7 @@
+# seo (`addyosmani/web-quality-skills/seo`)
+
+## tagline
+
+- 让好内容被搜索引擎看见
+- 细节抠到位, 排名自然来
+- 数据说话, 不做空谈

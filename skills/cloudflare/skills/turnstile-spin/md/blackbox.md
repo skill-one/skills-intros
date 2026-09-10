@@ -1,0 +1,9 @@
+# turnstile-spin (`cloudflare/skills/turnstile-spin`)
+
+## blackbox
+
+**function**: 帮你给现有网站装上 Cloudflare Turnstile 人机验证 (区分真人和机器人的检查), 从页面组件到后端校验一步到位, 实测跑通了才汇报完成。
+
+- input: 一句话需求「注册接口老是被机器人灌垃圾账号, 帮我上 Turnstile」+ 项目代码目录, output: 可直接运行的改动: 注册表单上嵌好验证组件, 后端接口校验通过才执行原有逻辑; 密钥写进你的密钥文件/平台 (不出现在对话里); 附实测结果——真人请求通过、重放旧令牌被拒
+- input: 「组件已经建好了, sitekey 是 0x4AAAA...」, output: 不新建组件, 直接把它接进你的页面和后端; 密钥自动取回并存入你现有的密钥存储, 全程不经过聊天窗口; 最后端到端实测跑通
+- input: 一个目前还在用 reCAPTCHA / hCaptcha 的项目, output: 完成替换的项目: 原验证位换成 Turnstile, 后端校验同步替换, 业务逻辑一行不动

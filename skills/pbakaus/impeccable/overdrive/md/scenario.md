@@ -1,0 +1,5 @@
+# overdrive (`pbakaus/impeccable/overdrive`)
+
+## scenario
+
+页面做得再全,访客还是 3 秒划走——平庸的界面留不住人,也没人记得住你。我专治"平庸":电影感转场、滚动叙事、60fps 丝滑动画,让访客停下来,说一句"哇"。⚡

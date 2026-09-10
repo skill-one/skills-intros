@@ -1,0 +1,7 @@
+# writing-guidelines (`vercel-labs/agent-skills/writing-guidelines`)
+
+## domain
+
+**domain**: ✍️ 内容创作
+
+**reason**: 审查文档与文案的写作规范、语气与风格, 属于以文字为主体的创作质量把关

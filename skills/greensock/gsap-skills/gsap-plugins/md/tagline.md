@@ -1,0 +1,7 @@
+# gsap-plugins (`greensock/gsap-skills/gsap-plugins`)
+
+## tagline
+
+- 让页面动起来，动得恰到好处
+- 滚动、拖拽、形变，动效全拿捏
+- 每个像素的律动，都有灵魂

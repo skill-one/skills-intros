@@ -1,0 +1,7 @@
+# clerk-webhooks (`clerk/skills/clerk-webhooks`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 核心是编写 Next.js/Express 等 webhook 处理代码, 属于 API/框架集成开发

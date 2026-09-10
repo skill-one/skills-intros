@@ -1,0 +1,7 @@
+# firecrawl-research-papers (`firecrawl/firecrawl-workflows/firecrawl-research-papers`)
+
+## domain
+
+**domain**: 🧠 知识管理
+
+**reason**: 核心能力是文献检索、调研与深度研究, 输出有出处的综述, 属于信息检索与资料沉淀场景

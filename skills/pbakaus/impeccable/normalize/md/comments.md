@@ -1,0 +1,10 @@
+# normalize (`pbakaus/impeccable/normalize`)
+
+## comments
+
+- user: 十年老前端, category: 妙用, comment: 别一上来就丢整个项目。我先用它跑最乱的遗留页, 拿到偏差清单 (硬编码颜色、该换的组件) 再批量推, 每次 review 范围小、可回滚。
+- user: 接手祖传代码的新人, category: 坑, comment: 项目里没有设计系统文档就直接跑, 它会停下来问我原则和 token, 白等一轮。先用 teach 建好设计上下文, 再 normalize 才动得了手。
+- user: 保守派团队负责人, category: 注意, comment: 它是真动手: 会替换一次性组件、删掉废弃样式文件, 不是只出报告。跑之前先开分支, 否则 diff 大到不敢合。
+- user: 只想快速美化页面的产品经理, category: 注意, comment: 别指望只调颜色间距。它优先改信息层级和交互模式, 我只想微调视觉, 结果页面动线也被重排。诉求提前说清, review 时盯着行为变化看。
+- user: 设计系统维护者, category: 启发, comment: 它会把漂移的根因挖出来——某页硬编码颜色, 是因为缺一个状态色 token。看完我学会先补 token 再修页面, 漂移才不复发。
+- user: 赶工期的独立开发者, category: 妙用, comment: 交付前拿它当设计系统体检用: 就算不全采纳改动, 它列出的偏差项和对比度、焦点态这类无障碍问题, 足够我手动修掉最关键的几处。

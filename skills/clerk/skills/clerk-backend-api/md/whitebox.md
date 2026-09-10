@@ -1,0 +1,13 @@
+# clerk-backend-api (`clerk/skills/clerk-backend-api`)
+
+## whitebox
+
+- 按用户 prompt 判定模式: help(空/含 help)/browse(tags 或标签名)/execute(具体端点或自然语言动作)/detail(端点+help)
+- 常见操作(建组织+邀请成员、更新元数据、列用户、删用户)命中 FAST PATH, 直接用内置模板; 其余先跑 api-specs-context.sh 拉取规格, 再用 extract-endpoint-detail.sh 定位端点
+- 若是写操作(POST/PATCH/PUT/DELETE), 强制三查: CLERK_SECRET_KEY 非空 → CLERK_BAPI_SCOPES 权限足够(不足则先询问, 不硬试) → DELETE 额外警告不可逆并要求确认
+- 用 curl 直接调 https://api.clerk.com/v1(带 Bearer $CLERK_SECRET_KEY), 不经 execute-request.sh 等包装脚本
+- 用 python3 解析 JSON 响应, 摘要关键字段(id、email 等)展示给用户
+
+- 模式路由 + FAST PATH 短路: 四种模式决定后续步骤; 高频操作内置精确 curl 模板并附带 SDK (TypeScript) 等价写法, 跳过 spec 拉取; spec 上下文在同一会话内缓存复用, 不重复请求
+- 参数约定转换: REST 端点用 snake_case (如 public_metadata), SDK 用 camelCase (publicMetadata); 组织角色必须带 org: 前缀; 元数据更新前必须先讲清 public/private/unsafe 三类区别并推荐合适的类型
+- 外部依赖: Clerk Backend REST API (api.clerk.com/v1, 用 CLERK_SECRET_KEY sk_* 认证); 规格解析靠仓库内 bash/node 脚本 (api-specs-context.sh、extract-tags.js 需 node、extract-endpoint-detail.sh) 从 GitHub 的 clerk/openapi-specs 拉取 OpenAPI 文件; 执行用 curl, 解析用 python3

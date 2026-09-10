@@ -1,0 +1,5 @@
+# performance (`addyosmani/web-quality-skills/performance`)
+
+## scenario
+
+页面转圈 3 秒, 访客已关页走人 💨 慢网站正悄悄赶走流量与订单. 我先测真实用户数据, 揪出卡慢元凶 (大图/脚本/服务器), 只改有问题的部分, 改完用前后对比数据证明快了多少.

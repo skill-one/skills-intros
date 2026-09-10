@@ -1,0 +1,7 @@
+# self-hosted-funnel-launch (`autonnel/autonnel-skills/self-hosted-funnel-launch`)
+
+## tagline
+
+- 漏斗自建, 月费归零, 数据归你
+- 从空装到上线收款, 一气呵成
+- 智能体动手建漏斗, 你只管收钱

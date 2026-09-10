@@ -1,0 +1,7 @@
+# hallmark (`nutlope/hallmark/hallmark`)
+
+## tagline
+
+- 让界面像手工打造，而非批量生成
+- 拒绝模板脸，每个页面都不重样
+- 真实数据，克制用色，拒绝浮夸

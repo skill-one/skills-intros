@@ -1,0 +1,7 @@
+# form-cro (`coreyhaines31/marketingskills/form-cro`)
+
+## domain
+
+**domain**: 📈 商业运营
+
+**reason**: 表单优化本质是提升转化率与获客, 直接服务营销增长

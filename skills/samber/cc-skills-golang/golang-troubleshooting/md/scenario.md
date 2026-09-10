@@ -1,0 +1,5 @@
+# golang-troubleshooting (`samber/cc-skills-golang/golang-troubleshooting`)
+
+## scenario
+
+凌晨三点, Go 服务莫名崩溃或卡死, 日志看得一头雾水, 瞎改代码越改越糟? 我专治"找不到病因": 先复现、再定位、只修根因不贴膏药. 崩溃、死锁、内存泄漏, 把现场交给我, 还你一个能睡整觉的服务. 🔍

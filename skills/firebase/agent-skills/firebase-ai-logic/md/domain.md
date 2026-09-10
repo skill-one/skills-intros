@@ -1,0 +1,7 @@
+# firebase-ai-logic (`firebase/agent-skills/firebase-ai-logic`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 核心是给 Web/App 集成 Firebase AI Logic SDK 调用 Gemini, 属于典型的 API/框架集成开发

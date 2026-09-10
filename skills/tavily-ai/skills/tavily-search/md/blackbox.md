@@ -1,0 +1,9 @@
+# tavily-search (`tavily-ai/skills/tavily-search`)
+
+## blackbox
+
+**function**: 帮你在网上搜索任何话题的信息, 直接给你整理好的相关网页结果: 链接、摘要、来源, 不用你自己翻遍搜索引擎。
+
+- input: 「帮我查一下最近一周 AI 领域有什么大新闻」, output: 一组最新新闻报道列表, 每条带标题、来源网站和内容摘要
+- input: 「react hooks 怎么入门, 找几篇靠谱的教程」, output: 几篇教程文章的链接 + 每篇讲了什么的一段概括, 方便你挑着读
+- input: 「只要 gov.cn 和 reuters.com 上的结果: 某某政策原文」, output: 只来自指定网站的结果列表, 每条附相关度高的内容片段, 杂音网站被排除

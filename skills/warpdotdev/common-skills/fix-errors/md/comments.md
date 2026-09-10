@@ -1,0 +1,10 @@
+# fix-errors (`warpdotdev/common-skills/fix-errors`)
+
+## comments
+
+- user: 第一次给 warp 提 PR 的新手, category: 坑, comment: 本地 cargo test 全绿,提 PR 时 WASM clippy 却报 dead code——忘了给用到文件系统的测试加 #[cfg(feature = "local_fs")] 门控。WASM 环境不认文件操作,必须单独跑那条 wasm32 的 clippy 才能提前暴露。
+- user: 后端老兵, category: 妙用, comment: 我不每次都跑全套 presubmit:改代码时用 cargo check 快速验证,只重跑挂掉的那一项检查,提 PR 前才跑一次 ./script/presubmit 全量。迭代快很多,也保证上线前全过。
+- user: 测试工程师, category: 注意, comment: 用 nextest 排查失败用例时记得加 --nocapture,否则 println! 输出全被吞掉,日志看不到只能干瞪眼。这个参数是看测试打印的唯一入口。
+- user: 前端转 Rust 半年, category: 启发, comment: 以前我一口气改所有报错,越改越乱。现在一次只修一类错,改完立刻 cargo check,经常发现修一个连带好几个都消了——报错之间常常是同一个根因。
+- user: 开源贡献者, category: 注意, comment: workspace 那条 clippy 命令带 --exclude warp_completer,它的警告要靠单独的第二条命令查。我漏跑过,带着问题代码就推上去了,后来被 CI 拦下很尴尬。
+- user: 效率党运维老哥, category: 妙用, comment: 改一处代码只想验证相关逻辑时,用 -E 'test(名字片段)' 只跑匹配的用例,不用等整个包跑完。还能加 -p 指定包,反馈速度完全不是一个量级。

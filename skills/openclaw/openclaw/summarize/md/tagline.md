@@ -1,0 +1,7 @@
+# summarize (`openclaw/openclaw/summarize`)
+
+## tagline
+
+- 链接一丢,精华到手
+- 长文视频,秒变要点
+- 网页 PDF 视频,读得快,懂更透

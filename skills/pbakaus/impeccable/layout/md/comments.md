@@ -1,0 +1,10 @@
+# layout (`pbakaus/impeccable/layout`)
+
+## comments
+
+- user: 组件库模板党, category: 坑, comment: 我让它把每个模块都包成卡片,被拒了——嵌套卡片、万物皆卡是它明确不做的。后来改说"用间距分组就行",页面反而更透气。
+- user: 独立开发全栈, category: 妙用, comment: 我让它用眯眼测试审查首页,它指出所有间距相等导致没有层级。改成组内 8px、组间 64px 后,重点一眼可见,没动一行配色。
+- user: 刚入职的初级前端, category: 注意, comment: 直接甩页面过去会被要求先跑 teach 补设计背景。先花两分钟说清项目定位和受众,后面的间距建议才贴合业务,不然是通用模板话。
+- user: 后端转前端的程序员, category: 妙用, comment: 照它的建议把卡片列表改成 auto-fit + minmax(280px,1fr),删掉了全部断点媒体查询,窗口拉伸自动换列,响应式一行搞定。
+- user: 接手祖传项目的前端, category: 启发, comment: 祖传代码 z-index 全是 999 叠罗汉,它带着我换成 dropdown→modal→toast 的语义层级。学到一点:层级按用途命名,不是按数字赌运气。
+- user: B 端产品经理, category: 注意, comment: 它只管布局和间距,不碰颜色字体。我们后台数据页留白过多,明确告诉它"数据密集型要紧凑"后行距收紧,一屏能多看两行数据。

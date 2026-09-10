@@ -1,0 +1,7 @@
+# convex-docs (`get-convex/agent-skills/convex-docs`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 为 Convex 框架开发者拉取与项目版本一致的最新文档，服务于写代码与 API 集成

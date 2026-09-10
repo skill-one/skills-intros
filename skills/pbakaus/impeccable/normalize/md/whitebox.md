@@ -1,0 +1,12 @@
+# normalize (`pbakaus/impeccable/normalize`)
+
+## whitebox
+
+- 强制先调用 /impeccable 拿到设计原则、反模式和上下文收集协议；若仓库尚无设计上下文，先跑 /impeccable teach
+- 摸底规划：grep 检索仓库内设计系统文档并通读，对照分析目标 feature 的偏离点（外观性 vs 功能性、根因是缺 token / 一次性实现 / 概念跑偏），产出具体改造计划
+- 执行改造：按维度逐项修正——排版、颜色、间距、组件、动效、响应式、可访问性、渐进披露，用设计 token 替换硬编码值，用设计系统组件替换自造实现
+- 清理收尾：新组件归入共享路径，删除改造后废弃的孤儿代码，按 repo 规范跑 lint / 类型检查 / 测试，合并重复代码
+
+- 上下文协议：设计原则的唯一来源是 /impeccable（外部依赖 skill），缺上下文必须先 teach，明确禁止凭模型先验猜测设计系统原则（'If something isn't clear, ask'）
+- 文档发现：靠 grep 按关键词（'design system'、'ui guide'、'style guide' 等）检索仓库文档，而非假设性推断
+- 约束式替换 + 回归校验：核心转换是 token 化与组件替换，带硬红线（不新建一次性组件、不硬编码 token 该管的值、不牺牲可访问性）；最终用仓库已有的 lint / 类型检查 / 测试工具链验证无回归

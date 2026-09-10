@@ -1,0 +1,7 @@
+# tavily-search (`tavily-ai/skills/tavily-search`)
+
+## tagline
+
+- 一句话,搜尽全网答案
+- 最新资讯,实时为你捕获
+- 精准检索,过滤全网噪音

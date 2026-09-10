@@ -1,0 +1,7 @@
+# improve (`shadcn/improve/improve`)
+
+## tagline
+
+- 代码体检, 只诊断不动刀
+- 直击要害, 计划拿来即用
+- 我出方案, 换个模型也能照做

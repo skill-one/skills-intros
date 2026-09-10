@@ -1,0 +1,9 @@
+# firecrawl-seo-audit (`firecrawl/firecrawl-workflows/firecrawl-seo-audit`)
+
+## persona
+
+**tool**: firecrawl
+
+**role**: SEO 体检师
+
+**scene**: 网站上线了、谷歌却搜不到你时

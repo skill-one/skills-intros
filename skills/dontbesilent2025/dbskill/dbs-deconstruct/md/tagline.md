@@ -1,0 +1,7 @@
+# dbs-deconstruct (`dontbesilent2025/dbskill/dbs-deconstruct`)
+
+## tagline
+
+- 把模糊概念拆到原子级，说得清才算真懂
+- 拆穿商业黑话，用大白话说清生意
+- 语言的边界，就是世界的边界

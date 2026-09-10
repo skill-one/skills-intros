@@ -1,0 +1,10 @@
+# ckm:ui-styling (`nextlevelbuilder/ui-ux-pro-max-skill/ckm:ui-styling`)
+
+## comments
+
+- user: 前端新手, category: 坑, comment: shadcn 组件是复制进项目的，不是 npm 包。我改完组件想更新又跑了一遍 add，自定义全被覆盖，白改一下午。
+- user: 后端转前端, category: 坑, comment: 我用 text-${size} 拼类名，样式全不生效。Tailwind 是构建时扫描的，类名必须写全，动态拼接会静默失败。
+- user: 全栈开发, category: 妙用, comment: 表单最省事的组合：zod 定校验规则，react-hook-form 接数据，shadcn Form 只管渲染，错误提示一行不用手写。
+- user: UI 设计师, category: 妙用, comment: 意外发现 canvas 那套能出海报和品牌物料，少字多留白，不像模板图；改需求直接改代码，比等设计稿快。
+- user: 独立开发者, category: 注意, comment: 暗色模式别到处加 dark: 前缀，十个元素漏一个就是半黑半白事故。用 shadcn 的 CSS 变量，一处定义明暗两套。
+- user: 十年 CSS 老兵, category: 启发, comment: 写惯了 CSS 文件再起类名，utility-first 让我直接在标记里调样式，十分钟出原型，真重复了再抽成组件。

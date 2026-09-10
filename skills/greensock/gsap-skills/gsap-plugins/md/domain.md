@@ -1,0 +1,7 @@
+# gsap-plugins (`greensock/gsap-skills/gsap-plugins`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: GSAP 插件 (网页动画库) 属于前端代码开发范畴

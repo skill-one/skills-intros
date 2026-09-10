@@ -1,0 +1,11 @@
+# baoyu-url-to-markdown (`jimliu/baoyu-skills/baoyu-url-to-markdown`)
+
+## blackbox
+
+**function**: 给我任何网址 (URL), 我把网页内容抓下来, 整理成一份干净的 markdown 文档 (一种通用纯文本格式, 任何编辑器都能打开) 交给你。
+
+- input: 一篇新闻报道或博客文章的链接 → output: 一个排版干净的 .md 文件, 只有正文内容, 去掉了广告、弹窗、导航栏等杂物, output: 
+- input: 一条 X (推特) 帖子的链接 → output: 包含帖子正文和评论串的 markdown 文件, output: 
+- input: 一个 YouTube 视频链接 → output: 该视频的完整文字稿 (字幕全文), 方便快速浏览或检索, output: 
+- input: 一个 Hacker News 讨论帖的链接 → output: 原帖 + 所有评论完整保留的 markdown 文件, output: 
+- input: 一个需要登录才能看的页面链接 → output: 我会停下来等你手动登录/过验证码, 你完成后我自动继续, 最终仍交给你一份完整的文档, output:

@@ -1,0 +1,7 @@
+# upgrading-expo (`expo/skills/upgrading-expo`)
+
+## tagline
+
+- Expo 升级,坑我踩平,你只管上线
+- 告别依赖地狱,版本升级一步到位
+- 跨版迁移不返工,老代码焕新跑

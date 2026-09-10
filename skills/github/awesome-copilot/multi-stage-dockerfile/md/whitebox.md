@@ -1,0 +1,14 @@
+# multi-stage-dockerfile (`github/awesome-copilot/multi-stage-dockerfile`)
+
+## whitebox
+
+- 接收用户的项目信息（语言/框架/现有 Dockerfile），确认构建产物与运行时依赖
+- 搭多阶段骨架：builder 阶段做编译和依赖安装，独立 runtime 阶段只保留运行所需
+- 选基础镜像：官方最小镜像 + 精确版本 tag（如 python:3.11-slim），runtime 视兼容性用 alpine/distroless
+- 排布指令层：低频变更（依赖安装）在前、高频变更（源码 COPY）在后，相关 RUN 用 && 合并，配 .dockerignore
+- 加固收尾：非 root USER、HEALTHCHECK、build args、NODE_ENV=production 等，输出最终 Dockerfile
+
+- 结构转换：按 dependencies → build → test → runtime 顺序组织阶段，用 AS 命名，runtime 只 COPY 必要产物（可 --chown 一步设权限），构建工具和 secrets 不进最终镜像
+- 缓存优先的分层规则：按变更频率从低到高排序指令，最大化 layer cache 复用
+- 安全/性能校验清单收口：非 root、文件权限收紧、镜像漏洞扫描、按应用类型设 HEALTHCHECK
+- 零外部依赖：不调用任何外部工具/库/模型 API，纯 skill.md 内的规则与最佳实践清单驱动

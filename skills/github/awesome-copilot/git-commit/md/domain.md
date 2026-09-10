@@ -1,0 +1,7 @@
+# git-commit (`github/awesome-copilot/git-commit`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: git 提交是代码开发的核心工作流, 属版本管理工具

@@ -1,0 +1,7 @@
+# agents-sdk (`cloudflare/skills/agents-sdk`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 专注用 Cloudflare Agents SDK 构建、调试、审查 AI Agent 应用, 属于框架/API 集成与代码开发

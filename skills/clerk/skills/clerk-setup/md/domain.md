@@ -1,0 +1,7 @@
+# clerk-setup (`clerk/skills/clerk-setup`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 为项目集成 Clerk 登录认证, 属于框架/API 集成

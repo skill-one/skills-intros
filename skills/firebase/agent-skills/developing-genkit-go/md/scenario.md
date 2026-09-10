@@ -1,0 +1,5 @@
+# developing-genkit-go (`firebase/agent-skills/developing-genkit-go`)
+
+## scenario
+
+想给应用加 AI?痛点:各家模型接口互不兼容,换个模型重写一遍;AI 调用像黑盒,出错只能干瞪眼。我用 Genkit Go 帮你:一套代码切换多家模型,流程全程可追踪,浏览器里即可调试 AI 功能。🔧

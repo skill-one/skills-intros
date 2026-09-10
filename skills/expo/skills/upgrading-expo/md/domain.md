@@ -1,0 +1,7 @@
+# upgrading-expo (`expo/skills/upgrading-expo`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 专为升级 Expo SDK 版本、修复依赖与破坏性变更而生，是纯移动端开发技能。

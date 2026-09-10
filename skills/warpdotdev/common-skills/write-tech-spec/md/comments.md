@@ -1,0 +1,10 @@
+# write-tech-spec (`warpdotdev/common-skills/write-tech-spec`)
+
+## comments
+
+- user: 带新人的 Tech Lead, category: 注意, comment: 先让 PRODUCT.md 落地。我跳过它硬写, 验证一节只能空泛; 补上编号 Behavior 后, 它逐条映射成测试步骤, 评审快多了。
+- user: 后端老兵, category: 妙用, comment: 它写前先读真代码, 引用钉在 commit SHA 上, 点链接就是调研那版的实现, 代码漂移也不怕。内网仓库没 GitHub 远端就只剩纯文本。
+- user: 赶工期的独立开发者, category: 启发, comment: 单文件小改动它直接建议跳过 spec, 多模块才写 80–150 行。以前我啥都写文档, 现在只给值得评审的东西写, 省的时间拿去写代码。
+- user: 用 Linear 管需求的产品工程师, category: 坑, comment: 没给票号就让它写, 它不会猜, 只会反问目录叫啥, 白等一轮。开工先定 specs/APP-1234/ 这种 id; 它也不会自动建票, 要明确说。
+- user: 跨团队协作的架构师, category: 坑, comment: 方案太不确定时别硬写。错误示范: 新功能代码没动就让它出 spec, 实现时全推翻。它其实会建议先做 e2e 原型再回头写, 听劝。
+- user: 开源项目维护者, category: 妙用, comment: 方案中途变了, 让它在同一 PR 里更新 TECH.md, 不然仓库里的 spec 会骗后来的人。大功能它还提议 DECISIONS.md 记拍板理由, 值得开。

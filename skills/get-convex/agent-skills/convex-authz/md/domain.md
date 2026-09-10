@@ -1,0 +1,7 @@
+# convex-authz (`get-convex/agent-skills/convex-authz`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 核心工作是改写 Convex 后端/数据库代码并过 tsc 验证, 属于应用层代码加固而非基础设施运维。

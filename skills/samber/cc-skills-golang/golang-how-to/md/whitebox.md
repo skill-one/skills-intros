@@ -1,0 +1,12 @@
+# golang-how-to (`samber/cc-skills-golang/golang-how-to`)
+
+## whitebox
+
+- 读取任务上下文, 识别 Go 任务意图 (写代码/评审/调试/搭建等)
+- 查内置路由表, 定位 1 个主技能 + 所有适用的次要技能, 开工时一次性同时加载 (明确要求 'Do not wait')
+- 若两个技能簇看似重叠, 用 references/disambiguation.md 的边界对照表消歧
+- 按已加载技能的规范, 借 allowed-tools (文件读写、go/git 命令、LSP/gopls) 执行并落地
+
+- 意图→技能路由表: 约 30 条 '意图 → 主技能 + 次要技能' 的静态映射, 一次并行加载而非逐个等待; 技能实体全部来自 samber/cc-skills-golang 库
+- 消歧边界表: 对性能/DI/错误处理/风格等易混簇, 用 disambiguation.md 的对照表划归属 (如 performance=优化手法, benchmark=测量, troubleshooting=根因)
+- 分工明确的外部工具链: gopls (语言服务器, 需 go install golang.org/x/tools/gopls@latest, 原生 LSP 工具另需 ENABLE_LSP_TOOL=1) 只回答'本地构建内'的事实 (跳转/引用/诊断/单次漏洞可达性); godig 调 pkg.go.dev 远程 API 回答'已发布生态'的事实 (版本/符号/CVE/被谁引用); govulncheck CLI 做全树可达漏洞审计 (CI 门禁用)

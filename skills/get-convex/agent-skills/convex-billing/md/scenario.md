@@ -1,0 +1,5 @@
+# convex-billing (`get-convex/agent-skills/convex-billing`)
+
+## scenario
+
+你的应用想收费,却被支付卡住:手动对接 Stripe,webhook(支付回调)验签复杂,订阅状态同步不上,有人白嫖会员。我一次搞定:结账页 + 回调自动验证 + 服务端会员校验,谁付费谁免费,后端说了算 💳

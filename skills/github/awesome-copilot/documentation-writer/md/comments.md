@@ -1,0 +1,10 @@
+# documentation-writer (`github/awesome-copilot/documentation-writer`)
+
+## comments
+
+- user: 第一次用的新手, category: 坑, comment: 第一次只说「帮我写个文档」,它先追问文档类型、读者、目标、范围。我含糊作答,产出很空;第二回先想好这四点再答,大纲直接能用。
+- user: 开源项目维护者, category: 妙用, comment: 先粘上项目现有 README 再动笔,术语和口吻能对齐。但不点名说「引用这段」它绝不抄旧文,想复用得明说。
+- user: 后端老兵, category: 启发, comment: 让它把我的旧文档按四象限归类,才发现教程里混着参数速查表,新人喊乱不冤。一份文档只服务一种阅读目的。
+- user: 文档外包写手, category: 注意, comment: 它不主动上网查证,只认我给的链接和粘贴的原文。涉及版本号的细节,务必把官方文档相关段落一并喂给它。
+- user: 产品经理, category: 坑, comment: 我曾想一份文档既当入门教程又当速查手册,大纲两边打架,写出来两头不讨好。一次请求只写一种类型最稳。
+- user: 带新人组长, category: 妙用, comment: 把「等你确认大纲」这一步当评审闸口用:先拿目录过组会砍掉超纲内容,再让它写正文,省掉整篇返工。

@@ -1,0 +1,7 @@
+# expo-deployment (`expo/skills/expo-deployment`)
+
+## tagline
+
+- 一条命令, 你的 App 直达应用商店
+- iOS、安卓、网页, 三端一键上线
+- 从代码到上架, 构建提交全自动

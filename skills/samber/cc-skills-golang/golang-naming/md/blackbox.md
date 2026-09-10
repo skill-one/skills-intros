@@ -1,0 +1,9 @@
+# golang-naming (`samber/cc-skills-golang/golang-naming`)
+
+## blackbox
+
+**function**: 审查和纠正 Go 代码里的命名, 让你的变量、函数、包、常量等名字符合 Go 社区的通行惯例 — 也能帮你二选一时拍板 (比如 New 还是 NewUser)。
+
+- input: 一个 Go 源码文件路径, 如 internal/handler/user.go, output: 一份命名问题清单: 指出每处不合惯例的名字 (如 MAX_RETRIES 应为 MaxRetries、GetName() 应为 Name()), 并给出改后的写法和一句理由
+- input: 「我这个 Go 包想叫 utils, 行不行?」, output: 直接判断 + 具体替代建议, 如: 不行, utils 说明不了内容, 按实际功能改叫 stringutil 或 fileio
+- input: 「构造函数该叫 New 还是 NewClient?」, output: 明确答案 + 适用条件: 包里只有一个主要类型时用 New, 调用点写 client.New(); 有多个可构造类型时才用 NewClient

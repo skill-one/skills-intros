@@ -1,0 +1,13 @@
+# caveman-evidence-review (`juliusbrussee/caveman/caveman-evidence-review`)
+
+## whitebox
+
+- 加载 Caveman 上下文 (caveman_context, CLI fallback: whoami/projects); 未登录或未选项目则停下让用户操作, 绝不猜
+- 拉基线报表 (caveman_report 的 overview/costs/score/workflows/verified_savings + caveman_plan 的每日 headroom); 问题窄就跳过无关报表, 报表前先声明时间窗口
+- 用 caveman_trace_search 验证主导解释: 限定时间窗+闭合过滤器, 按对比组 vs 对照组 (或更早窗口) 比较疑似队列
+- 用 caveman_trace_get 抽查少量高信号 trace id, 只看元数据/spans/延迟/状态/token/缓存/优化器/路由, 默认不取 payload
+- 按固定模板输出报告: 范围+三类成本数字分开+findings (附 trace ids)+Unproven+下一步只读检查+仅提案的 action
+
+- 成本四桶硬隔离: provider 实测清单价 cost / inferred 推算 headroom / verified 台账节省 / evidence 取证成本, 禁止相加或改标签 — 防止把目录小计当发票、把实验结果当已验证节省
+- 聚合→抽样的因果链校验: 聚合数据只定位嫌疑, 必须落到具体 trace id + 精确时间窗才能下结论, 且只读、不做生命周期操作 (启停/回滚实验一律拒绝)
+- 数据源是 Caveman Cloud 的 MCP 工具链 (caveman_context / caveman_report / caveman_plan / caveman_trace_search / caveman_trace_get), 全部有 `caveman cloud` CLI fallback; 读取范围锁死在当前项目, 禁止传 org id

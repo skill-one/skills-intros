@@ -1,0 +1,7 @@
+# developing-genkit-python (`firebase/agent-skills/developing-genkit-python`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 用 Python + Genkit 框架开发 AI 应用,核心是编码与框架集成。

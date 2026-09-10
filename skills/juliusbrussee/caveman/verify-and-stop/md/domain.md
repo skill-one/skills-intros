@@ -1,0 +1,7 @@
+# verify-and-stop (`juliusbrussee/caveman/verify-and-stop`)
+
+## domain
+
+**domain**: 🧪 测试与质量
+
+**reason**: 专注验证已有工作是否达标：验收检查、质量把关，不越界改代码

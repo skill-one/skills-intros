@@ -1,0 +1,10 @@
+# nuxt (`antfu/skills/nuxt`)
+
+## comments
+
+- user: 从 Nuxt 3 升级的前端, category: 坑, comment: 升 4 之后路由全 404：页面代码必须挪进 app/ 目录，按老习惯放根目录不生效。而且 ~ 现在指向 app/，旧的引用路径要一起改。
+- user: 第一次用的新手, category: 坑, comment: 我在页面里用 $fetch 取数据，右键查看源码发现正文是空的，SEO 全白做。换成 useFetch 才对：它会在服务端先取一次，$fetch 只在浏览器跑。
+- user: 后端转全栈, category: 妙用, comment: 在 server/api/ 下随手建个文件就是一个能跑的接口。后端没就绪时我先拿它当假数据源，页面全写完再切真接口，连 mock 服务都不用起。
+- user: 内容站站长, category: 妙用, comment: 用 routeRules 按路径混着渲染：文章页服务端渲染方便收录，登录后的后台页关掉渲染纯浏览器跑。一个配置文件搞定，不用拆两个项目。
+- user: 吃过亏的上线负责人, category: 注意, comment: 跨页面共享的状态务必用 useState，别用普通 ref——服务端会把上一个访客的状态带给下一个。我们购物车串过单，排查两天才定位到。
+- user: 独立接活的全栈, category: 启发, comment: 同一份代码这次发 Vercel，下个客户要私有化就发自己服务器，只换部署目标不动业务代码。后来我选框架都先看这条：别被平台绑死。

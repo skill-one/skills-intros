@@ -1,0 +1,9 @@
+# dbs-restore (`dontbesilent2025/dbskill/dbs-restore`)
+
+## blackbox
+
+**function**: 帮你找回上次诊断的进度和结论, 让你不用从头再讲一遍, 接着上次继续。
+
+- input: 「接着上次」「上次诊断到哪了」或 /dbs-restore, output: 一张状态卡: 上次的主诉、已得出的结论、你否决过的方向、留的下一步, 然后问你想从哪儿继续
+- input: /dbs-restore list, output: 所有已保存的诊断记录清单 (哪天、什么项目、什么状态), 供你挑一份恢复
+- input: /dbs-restore --slug 小红书-test, output: 该项目上次诊断的完整状态, 跟着说「按上次继续」就能从原来的下一步接着干

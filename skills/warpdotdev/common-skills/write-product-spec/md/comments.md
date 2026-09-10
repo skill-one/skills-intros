@@ -1,0 +1,10 @@
+# write-product-spec (`warpdotdev/common-skills/write-product-spec`)
+
+## comments
+
+- user: 第一次用的新手, category: 坑, comment: 我以为它连测试计划一起写,干等半天——Validation 章节在 PRODUCT.md 里本来就没有,是故意的。写完要接着喊 write-tech-spec 出 TECH.md。
+- user: 全栈工程师, category: 坑, comment: 我把内部状态机、模块划分全塞给它,结果 spec 里全被剔了。它只写'用户看到什么',实现细节是 TECH.md 的事,喂错料等于白喂一轮。
+- user: 设计师转的产品, category: 注意, comment: 有 Figma 稿一定先甩链接再让它写行为,它会照着稿子来;没有也要明说,spec 会标 'Figma: none provided',不然它替设计师瞎猜视觉细节。
+- user: 后端老兵, category: 妙用, comment: 我把 Behavior 里的编号不变量直接当 code review 清单,一个编号一个验收点逐条过,reviewer 再也没法说'这里行为没定义'。
+- user: QA 老姐, category: 妙用, comment: 编号不变量直接抄进用例库:行为 11 对应用例 11。spec 改了哪条、哪些用例要回归,一眼就能对上,不用再逐段读文档。
+- user: 小团队 tech lead, category: 注意, comment: 改文案、调样式这种小活别硬上,指南自己说 trivial 不需要 spec。另外它不会主动帮你建 Linear/GitHub issue,要用得明说,否则只找你要目录名。

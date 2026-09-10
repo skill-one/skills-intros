@@ -1,0 +1,7 @@
+# mastra (`mastra-ai/skills/mastra`)
+
+## tagline
+
+- 拒绝过时记忆，只写验证过的代码
+- Mastra 智能体与工作流，一步到位
+- 报错不慌，查文档、定根因、快修复

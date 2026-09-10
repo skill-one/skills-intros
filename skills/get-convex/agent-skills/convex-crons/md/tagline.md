@@ -1,0 +1,7 @@
+# convex-crons (`get-convex/agent-skills/convex-crons`)
+
+## tagline
+
+- 定时任务，一次配好，准点稳跑
+- 重跑不翻车，任务小而稳
+- 能推送不轮询，省时省服务器

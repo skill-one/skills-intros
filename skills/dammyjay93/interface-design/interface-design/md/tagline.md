@@ -1,0 +1,7 @@
+# interface-design (`dammyjay93/interface-design/interface-design`)
+
+## tagline
+
+- 拒绝模板感,每个像素都有理由
+- 从产品世界生长,而非套用默认
+- 层级清晰,细节全对,一眼高级

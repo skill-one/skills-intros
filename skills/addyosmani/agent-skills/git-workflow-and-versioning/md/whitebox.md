@@ -1,0 +1,13 @@
+# git-workflow-and-versioning (`addyosmani/agent-skills/git-workflow-and-versioning`)
+
+## whitebox
+
+- 接手任意代码改动任务, 先从 main 拉一条短命分支 (feature/<描述> / fix/<描述>), 默认 trunk-based: 分支 1~3 天内合并, main 始终可部署。
+- 按切片推进: 实现一小块 → 跑测试验证 → 通过才 commit; 失败就回退到上一个 commit, 只损失一个增量。
+- 每次 commit 前过卫生检查: git diff --staged 审查改动、grep 密钥泄漏、跑测试 / lint / 类型检查。
+- 提交保持原子且消息规范: 一次只做一件事, 格式 <type>: <说明>, 正文解释 why 而非 what。
+- 改动完成后输出结构化摘要 (改了什么 / 有意没动什么 / 潜在顾虑); 若涉及发布, 按变更类型选 semver 版本、打 tag、同步写 changelog。
+
+- Save-point 模式 + 原子提交: commit 即存档点, 出问题 git reset --hard HEAD 秒回退; commit 类型限定为 feat/fix/refactor/test/docs/chore, 保障历史可读可回溯。
+- 提交前校验链 (纯本地命令, 无外部模型依赖): git diff --staged 人工审查 + grep 扫描 password/secret/api_key/token + npm test、npm run lint、npx tsc --noEmit; 可用 git hooks (husky + lint-staged) 自动化这一步。
+- 版本契约: 语义化版本承载承诺 (breaking→major, 新功能→minor, 修复→patch); 版本号以 annotated git tag 为唯一事实来源、从 tag 派生而非手改文件; changelog 按 Added/Changed/Fixed 分组、以用户影响措辞, 且在同一个变更里同步写好, 而非发版时从 commit 记录反推。

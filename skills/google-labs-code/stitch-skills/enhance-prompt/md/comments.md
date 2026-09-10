@@ -1,0 +1,10 @@
+# enhance-prompt (`google-labs-code/stitch-skills/enhance-prompt`)
+
+## comments
+
+- user: 非设计背景的独立开发者, category: 妙用, comment: 把「图片区域」这类大白话丢进去，它会翻成 hero section with full-width image 这种 Stitch 认识的词。我索性把它的对照表当 UI 词汇书，自己写 prompt 时也照着用。
+- user: 第一次用 Stitch 的新手, category: 坑, comment: 只说「做个健身 app」没提平台，出来是按网页排版。移动端项目一开始就写明 Platform: Mobile、mobile-first，别让它靠猜。
+- user: 接小单的前端, category: 妙用, comment: 小改动用 targeted edit 格式：位置、样式、行为逐条列清，末尾补上「只改这块、保留其余元素」。我试过不加这句，Stitch 把整页重画了。
+- user: 转岗半年的产品经理, category: 注意, comment: 别只写「看起来温暖」，要给色值加用途，比如 Warm Cream (#faf5f0) 作页面背景。不写色值它会自己挑，挑中什么全看运气。
+- user: 后端转全栈, category: 注意, comment: 项目里没有 DESIGN.md 时它只会附一条提示，不会替你生成设计系统。想多页风格统一，先用 design-md 技能把文件建好再开工，省得每页各长各样。
+- user: 被整页重画坑过的人, category: 坑, comment: 我把加搜索框、换深色主题、调导航顺序塞进同一次修改，结果整页重生成、页脚丢了。改版要一次只提一个改动，分开喂才稳。

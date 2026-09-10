@@ -1,0 +1,5 @@
+# write-product-spec (`warpdotdev/common-skills/write-product-spec`)
+
+## scenario
+
+你让 agent「做个分享功能」,它做出来不是你想要的,返工三轮。痛点:需求只在你脑子里,实现只能瞎猜。我把需求写成 PRODUCT.md 行为清单——每个状态、边界情况逐条写清,先确认再动手,一次做对。📝

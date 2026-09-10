@@ -1,0 +1,5 @@
+# convex-design (`get-convex/agent-skills/convex-design`)
+
+## scenario
+
+想做个实时应用(协作/聊天/看板),却被数据库、WebSocket(服务器主动推送)、授权配置耗掉几周,数据还动不动不同步?我用 Convex 把"一个想法"直接变成能跑的后端:你说需求,我写代码,实时同步、免运维。🚀

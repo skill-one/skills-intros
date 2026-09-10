@@ -1,0 +1,5 @@
+# investigate-without-getting-made (`useosint/skills/investigate-without-getting-made`)
+
+## scenario
+
+背调时点开对方主页,他手机立刻弹出"谁看了你"——秒删帖、销号,线索全断。打草惊蛇,是调查最贵的代价。我帮你规划隐形路线:能翻存档就不碰活站,管住上网地址、浏览器痕迹和账号身份,查得深,却像从未出现过。🔍

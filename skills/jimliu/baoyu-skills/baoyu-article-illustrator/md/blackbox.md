@@ -1,0 +1,9 @@
+# baoyu-article-illustrator (`jimliu/baoyu-skills/baoyu-article-illustrator`)
+
+## blackbox
+
+**function**: 给文章自动配插画:你给我一篇文章,我找出适合配图的位置,生成风格统一的插图,并直接插回文章里。
+
+- input: 一篇 .md 文章的文件路径(如一篇讲『时间管理方法』的教程), output: 若干张 PNG 插图文件 + 原文章(已在合适段落插好图片引用,可直接发布)
+- input: 直接粘贴的一段文章正文(没有文件), output: 一个插图文件夹,内含按文章顺序编号的配图,并附一张『哪张图放哪个位置』的清单
+- input: 一篇文章 + 几张你喜欢的参考图(比如『我想要这种水彩风格』), output: 一组模仿该参考图风格的插画,插入文章对应位置

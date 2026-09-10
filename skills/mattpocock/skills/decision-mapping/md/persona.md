@@ -1,0 +1,9 @@
+# decision-mapping (`mattpocock/skills/decision-mapping`)
+
+## persona
+
+**tool**: decision map
+
+**role**: 决策排图师
+
+**scene**: 脑子里只有一个模糊想法、不知从哪下手时

@@ -1,0 +1,7 @@
+# referral-program (`coreyhaines31/marketingskills/referral-program`)
+
+## tagline
+
+- 让老客户, 成为你的增长引擎
+- 口碑即获客, 推荐即增长
+- 设计好循环, 增长自己发生

@@ -1,0 +1,10 @@
+# building-native-ui (`expo/skills/building-native-ui`)
+
+## comments
+
+- user: 第一次跑 Expo 的新手, category: 坑, comment: 上来就 npx expo run:ios, 卡在装 Xcode 环境半天。其实先用 Expo Go 扫码就能跑, 只有本地原生模块或第三方原生库才需要自定义构建。
+- user: 从 Web 前端转来的, category: 坑, comment: 习惯性写 div/img 还想上 Tailwind, 直接跑不通——这套规范不支持 CSS/Tailwind, 只能内联样式。标签换 View/Text, 图片用 expo-image。
+- user: 写了五年 RN 的老兵, category: 注意, comment: 老习惯照搬会报错: Picker、SafeAreaView、AsyncStorage 已从 RN 移除。安全区换 react-native-safe-area-context, 存储换 SQLite/SecureStore。
+- user: 独立接活的开发者, category: 妙用, comment: 颜色集中放 theme/colors.ts 用 expo-router 的 Color.ios.*, 深浅色自动切, 我那两套 hex 表和 colors.web.ts 全删了, 一处定义全端生效。
+- user: 被动画报错折磨过的人, category: 注意, comment: 别把语义色 (Color/PlatformColor) 直接塞进 Reanimated 动画样式, 会不生效。动画里用静态 hex, 普通视图再用语义色。
+- user: 对齐像素的设计出身, category: 妙用, comment: 计数器加 fontVariant: 'tabular-nums' 数字不抖了, 圆角配 borderCurve: 'continuous' 更有 iOS 原味, 阴影用 boxShadow 字符串写法, 老的 shadow/elevation 别再用。

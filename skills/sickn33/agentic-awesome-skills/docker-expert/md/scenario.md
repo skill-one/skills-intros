@@ -1,0 +1,5 @@
+# docker-expert (`sickn33/agentic-awesome-skills/docker-expert`)
+
+## scenario
+
+镜像动辄 1GB、构建要等十几分钟、一上线就报"我本地明明能跑"🫠——容器化常让团队又慢又慌。我能把镜像瘦身 80%、构建提速、堵住安全漏洞，让应用在任何机器上都稳稳跑起来。📦

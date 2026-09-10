@@ -1,0 +1,13 @@
+# fastapi-templates (`wshobson/agents/fastapi-templates`)
+
+## whitebox
+
+- 判断任务契合度: 新建 FastAPI 项目 / 搭后端 API / async 应用 (PostgreSQL、MongoDB), 不契合不接手
+- 用 skill.md 里的导航总览定位需求属于哪块: 项目结构、依赖注入 (DI)、async 模式、还是测试
+- 若导航摘要不够, 按需去读 references/details.md 里的详细实现模式 (Implementation Patterns)
+- 按固定分层结构 (api/core/models/schemas/services/repositories + main.py 入口) 生成项目代码
+- 补上测试: pytest 异步测试打真实 HTTP 请求, 断言状态码和响应字段, 收工
+
+- 解析 - 按需加载: skill.md 本体只是导航摘要, 详细实现模式拆在 references/details.md, 摘要不够用时才去读, 避免一次性灌入全部内容
+- 转换 - 模板化生成: 核心是固定的分层目录约定 + FastAPI 原生 Depends (FastAPI 自带的依赖注入, 把数据库会话、鉴权、业务逻辑、配置统一注入路由)
+- 校验 - 测试先行: pytest + pytest-asyncio + httpx.AsyncClient 发真实请求校验; 用 app.dependency_overrides 把 get_db 换成 aiosqlite 内存 SQLite (SQLAlchemy async engine), 不依赖真实数据库

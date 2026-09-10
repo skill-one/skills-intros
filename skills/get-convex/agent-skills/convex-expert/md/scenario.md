@@ -1,0 +1,5 @@
+# convex-expert (`get-convex/agent-skills/convex-expert`)
+
+## scenario
+
+场景:用 Convex 做后端,查询越来越慢、部署反复报错,通用 AI 写的代码总推不上去。我专精 Convex:先读库表结构再动手,索引查询防慢查询,写完必编译+推送验证,报错当场修,一次交付可运行的后端。

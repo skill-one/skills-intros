@@ -1,0 +1,13 @@
+# golang-documentation (`samber/cc-skills-golang/golang-documentation`)
+
+## whitebox
+
+- 先判定项目类型：扫描代码结构（有无 main 包 / cmd/ 目录），区分“库”还是“应用/CLI”，这决定要做哪些文档。
+- 对照优先级清单盘点缺口：导出函数的 doc 注释、包注释 → README → CONTRIBUTING / CHANGELOG → 库专属项（Example 测试、Go Playground 演示、llms.txt）。
+- 按模式执行：Write 模式（补写）沿清单顺序逐项产出，Review 模式（审计）按文档层逐层检查完整性、准确性与风格。
+- 写作时套用固定模板与规范：从 assets/templates 取 README/CHANGELOG/llms.txt 骨架，详细规范按需查 references/ 下的分层参考文档。
+- 用 Go 工具链收尾验证：go doc 本地预览注释渲染效果，go test 跑 ExampleXxx 确认示例代码可执行且输出正确。
+
+- 并行编排（大代码库场景）：Write 或 Review 时可拆分任务，扇出最多 5 个并行 sub-agent（每个负责一组包，或一个文档层如 README/CONTRIBUTING/CHANGELOG/llms.txt），最后把各自的产出合并成最终文档；在 Claude Code 上需显式用 ultracode 开启多 agent 编排。
+- 模板与参考文档驱动，而非自由发挥：README 固定 9 节顺序（标题→徽章→摘要→演示→上手→特性→贡献→贡献者→许可证），CHANGELOG 遵循 Keep a Changelog 格式，函数注释强制以函数名开头、讲 why/when/约束而非复述签名；这些细则放在 references/*.md，主文件按需引用，跨规范（命名、测试、排版）通过交叉引用转给同系列的其他 skill。
+- 外部依赖与校验工具：硬性要求 go 二进制（metadata.requires.bins），允许调用 golangci-lint 和 git；ExampleXxx 测试函数是“可执行文档”，由 go test 自动验证；godoc 注释最终渲染在 pkg.go.dev，Playground 链接通过 // Play: 前缀嵌入注释；API 文档倾向从代码注解自动生成（REST 用 swaggo/swag，gRPC 用 buf/grpc-gateway）。

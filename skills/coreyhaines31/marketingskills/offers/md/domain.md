@@ -1,0 +1,7 @@
+# offers (`coreyhaines31/marketingskills/offers`)
+
+## domain
+
+**domain**: 📈 商业运营
+
+**reason**: 设计"卖什么"本身: 价值组合、赠品、保障、稀缺性与定价结构, 直接服务销售转化与业务增长

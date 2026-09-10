@@ -1,0 +1,5 @@
+# extension-email-marketing (`caffeinelabs/skills/extension-email-marketing`)
+
+## scenario
+
+开网店想做会员营销,群发邮件却靠手动复制粘贴:发错人、被当垃圾邮件、退订没人管……我可以一键向订阅了某主题的用户发个性化邮件,自动附退订链接,只发给已验证邮箱,合规省心 📮

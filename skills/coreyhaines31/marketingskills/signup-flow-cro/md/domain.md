@@ -1,0 +1,7 @@
+# signup-flow-cro (`coreyhaines31/marketingskills/signup-flow-cro`)
+
+## domain
+
+**domain**: 📈 商业运营
+
+**reason**: 专注注册/试用流程转化率优化, 属于增长与营销范畴

@@ -1,0 +1,7 @@
+# firecrawl-build-scrape (`firecrawl/skills/firecrawl-build-scrape`)
+
+## tagline
+
+- 一条网址, 干净内容即刻到手
+- 给产品装上读懂网页的眼睛
+- 单页抓取, 接入即用, 快而准

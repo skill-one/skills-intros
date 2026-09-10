@@ -1,0 +1,13 @@
+# emails (`coreyhaines31/marketingskills/emails`)
+
+## whitebox
+
+- 读取上下文文件: 检查 .agents/product-marketing.md (或 .claude/ 同名文件), 存在则先读, 只追问未覆盖的信息
+- 需求评估: 确认序列类型 (welcome/nurture/re-engagement/onboarding 等)、受众、目标, 回答 skill 内置的 5 个任务问题
+- 匹配蓝图: 按序列类型套用内置策略模板 (邮件数量 3~10 封、发送间隔、退出条件)
+- 逐封生成: 按 Output Format schema 产出每封邮件的 subject/preview/body/CTA, 遵循文案守则 (一段一职责、CTA 唯一、字数区间)
+- 输出总览 + Metrics Plan; 若需落地实施, 转交 tools/REGISTRY.md 指向的集成指南
+
+- 上下文预载: 以 product-marketing 上下文文件替代部分提问, 缺什么才问什么
+- 文档检索 (RAG 式引用): 细节模板不内联在 skill.md, 按需引用 references/ 下的 sequence-templates.md、email-types.md、copy-guidelines.md
+- 工具路由: 无自有执行代码, 实施阶段映射到外部邮件平台的集成指南 (Customer.io / Mailchimp / Nitrosend / Resend / SendGrid / Kit)

@@ -1,0 +1,5 @@
+# convex-migrate (`get-convex/agent-skills/convex-migrate`)
+
+## scenario
+
+已上线的应用要改数据库结构,最怕改错一步:老数据不符合新规则,线上直接报错甚至丢数据。我按「先兼容→补数据→再收紧」三步迁移,老数据逐一补齐、验证无误后才生效,全程不断服。🚧

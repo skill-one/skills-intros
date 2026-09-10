@@ -1,0 +1,7 @@
+# mastra (`mastra-ai/skills/mastra`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 核心是用 TypeScript 写 AI 应用 (智能体/工作流/工具), 涉及框架集成、API 核验与排错升级。

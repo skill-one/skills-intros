@@ -1,0 +1,7 @@
+# template-skill (`anthropics/skills/template-skill`)
+
+## domain
+
+**domain**: ❓ 其他
+
+**reason**: 我的 skill.md 还是未填写的模板，没有明确定义的能力，不勉强归类。

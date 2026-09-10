@@ -1,0 +1,10 @@
+# convex-explain-app (`get-convex/agent-skills/convex-explain-app`)
+
+## comments
+
+- user: 接手遗留项目的新人, category: 妙用, comment: 接手前同事的 Convex 项目,它先画数据关系图,再列出公开/内部函数各管什么,半天摸清了结构,比自己翻 15 个文件快太多。
+- user: 第一次用 Convex 的新手, category: 坑, comment: 我没写 schema.ts 就让它讲项目,它讲不出来。先保证 convex/ 目录和 schema 在,再让它开讲,否则白跑。
+- user: 后端老兵, category: 注意, comment: 它只描述不评判:会明说"没有鉴权",但不指出漏洞在哪。要查安全隐患,拿它的地图接着跑 convex-authz,别指望它替你审计。
+- user: 独立开发者, category: 妙用, comment: 每次让 AI 改代码前,我先跑一遍它重新画架构图,再按图上的索引和归属关系提需求,回复一次到位,返工明显变少。
+- user: 全栈自由职业者, category: 注意, comment: 源码写得含糊的地方它会标"存疑"而不硬编答案,别催它猜;把相关文件名指给它,比反复追问更快得到准确结论。
+- user: 创业团队 CTO, category: 启发, comment: 它结尾会指下一步:审计找 reviewer/authz,打分找 launch-readiness。我照着串成流水线,评审前先出地图,事半功倍。

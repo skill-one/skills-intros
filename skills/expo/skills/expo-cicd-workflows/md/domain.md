@@ -1,0 +1,7 @@
+# expo-cicd-workflows (`expo/skills/expo-cicd-workflows`)
+
+## domain
+
+**domain**: 🛡️ 运维与安全
+
+**reason**: 核心是写 EAS CI/CD 流水线 YAML, 属部署发布自动化。

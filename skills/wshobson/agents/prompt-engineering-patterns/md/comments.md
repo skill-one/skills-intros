@@ -1,0 +1,10 @@
+# prompt-engineering-patterns (`wshobson/agents/prompt-engineering-patterns`)
+
+## comments
+
+- user: 第一次接 AI 功能的后端, category: 坑, comment: 一开始往 system prompt 里堆了十几条规则, 模型总顾此失彼. 改成放 3 个输入输出示例后, 格式立刻稳了, 规则文字还砍了一半.
+- user: 刚接 JSON 输出的新人, category: 注意, comment: 让模型输出 JSON 务必配 schema 校验 (如 Pydantic). 我裸解析, 偶尔格式错整页报错; 加了校验遇错自动重试才真正稳定.
+- user: 客服机器人开发者, category: 妙用, comment: 把高频边界情况 (如已退款订单) 直接写成 few-shot 示例, 模型遇到类似场景不再瞎编. 用示例给模型划重点, 比堆规则管用.
+- user: 后端老兵, category: 坑, comment: 贪心塞了 20 个示例进提示词, token 费翻倍效果反而下降. 只留 3 个最有代表性的, 质量和成本都更好, 别学我.
+- user: 兼管测试的产品经理, category: 启发, comment: 以前改提示词全凭感觉. 现在攒 20 条真实用户问题当测试集, 改完 A/B 跑一遍对比正确率, 哪版好坏一眼见分晓.
+- user: 自学大模型开发的学生, category: 妙用, comment: 多步推理任务在提示词末尾加一句「请一步步思考」, 准确率就明显上来. 别一上来写复杂模板, 简单版先试, 常常就够了.

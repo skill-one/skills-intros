@@ -1,0 +1,13 @@
+# sandbox-next (`cloudflare/skills/sandbox-next`)
+
+## whitebox
+
+- Gate 校验: 检查项目 npm 依赖和容器镜像是否同在 @next 预览线, 不匹配则停止本 skill (转 sandbox-stable 或 sandbox-migrate-to-next)
+- 按契约写代码: exec(argv) 在进程启动时返回句柄而非最终结果, 用句柄方法收集输出; 需要 shell 时显式调 /bin/bash
+- 按任务检索: 实现前打开预览文档映射表中对应页面, 以本地安装的 @next 类型为最高依据, 而非记忆
+- 验证主路径: getSandbox → exec → output 拿到 stdout 和 exitCode
+- 发布前检查: lockfile 与 Dockerfile 同线, 对照 @next 类型做 typecheck, 沙箱环境不放真实密钥
+
+- 门禁: 依赖与镜像必须同线; 发现 stable 包 → 停用本 skill 转 sandbox-stable; 要求迁移 → 转 sandbox-migrate-to-next; Worker 包与容器镜像永不混线 (bridge 也留在 stable)
+- 进程契约: exec 接 argv 数组、无隐式 shell、每次启动相互独立 (cd/export 不跨调用, 需按次传 cwd/env); 等待超时只取消等待不杀进程; 交互式用 createTerminal 终端而非 stdin
+- 检索式知识: 内置 '任务→文档页' 映射表; 外部依赖 = @cloudflare/sandbox@next SDK、Cloudflare Containers 平台、wrangler、developers.cloudflare.com 的 1.0-preview 文档与 next 分支 examples 仓库

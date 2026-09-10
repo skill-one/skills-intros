@@ -1,0 +1,7 @@
+# fix-errors (`warpdotdev/common-skills/fix-errors`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 核心是修 Rust 编译错误、lint、格式问题并跑通构建检查, 属典型开发调试场景

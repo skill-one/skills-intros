@@ -1,0 +1,9 @@
+# golang-testing (`samber/cc-skills-golang/golang-testing`)
+
+## blackbox
+
+**function**: 给 Go 项目补上、修好、查清测试: 你给我代码, 我给你能直接跑的测试; 你给我坏掉的测试, 我告诉你为什么坏并修好。
+
+- input: 一个 Go 源码文件路径, 如 helloworld.go, output: 配套的测试文件 helloworld_test.go, 覆盖正常情况、边界情况和出错情况, 运行 `go test` 全部通过
+- input: 一个跑不过、或者时好时坏的 Go 测试, output: 失败原因分析 + 修改后的代码, 修复后测试稳定通过
+- input: 一个 Go 项目的测试目录, output: 一份测试体检报告: 哪些功能没测到、哪些测试互相干扰或偶发失败、哪些写法有问题, 附改进建议

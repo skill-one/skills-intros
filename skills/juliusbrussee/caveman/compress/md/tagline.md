@@ -1,0 +1,7 @@
+# compress (`juliusbrussee/caveman/compress`)
+
+## tagline
+
+- 话变短, 码不变
+- 文件瘦身一半, 干货分毫不差
+- 自动备份, 放心压缩

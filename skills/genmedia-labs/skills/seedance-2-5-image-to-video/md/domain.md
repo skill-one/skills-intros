@@ -1,0 +1,7 @@
+# seedance-2-5-image-to-video (`genmedia-labs/skills/seedance-2-5-image-to-video`)
+
+## domain
+
+**domain**: 🎨 设计多媒体
+
+**reason**: 把静态图片生成为带音频的720p视频, 属于视觉与音视频制作。

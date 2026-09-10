@@ -1,0 +1,7 @@
+# firecrawl-build-search (`firecrawl/skills/firecrawl-build-search`)
+
+## tagline
+
+- 一句话提问，全网找来源
+- 先搜索发现，再深挖内容
+- 让应用从问题出发，而非网址

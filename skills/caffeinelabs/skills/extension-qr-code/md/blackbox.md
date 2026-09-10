@@ -1,0 +1,11 @@
+# extension-qr-code (`caffeinelabs/skills/extension-qr-code`)
+
+## blackbox
+
+**function**: 在网页/App 里用摄像头扫码：打开摄像头对准二维码，里面的内容（网址、文字等）就实时显示出来。📷
+
+- input: 在页面上点「开始扫描」, output: 摄像头画面出现在页面上，对准二维码后，解码出的内容立刻显示在画面下方
+- input: 对准一个含网址的二维码, output: 屏幕显示该网址和扫描时间，可直接复制或打开
+- input: 在手机上点「切换摄像头」, output: 画面在前后摄像头之间来回切换
+- input: 连续扫多个二维码, output: 按时间排列的扫描记录列表（最新在前），可一键清空
+- input: 设备没有摄像头或拒绝授权, output: 页面给出明确的错误提示，而不是白屏卡死

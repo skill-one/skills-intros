@@ -1,0 +1,7 @@
+# harden (`pbakaus/impeccable/harden`)
+
+## tagline
+
+- 查缺补漏，让界面扛住真实世界
+- 把每个“万一”，都变成“已处理”
+- 空页、报错、断网，都能体面收场

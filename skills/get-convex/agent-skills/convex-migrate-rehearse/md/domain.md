@@ -1,0 +1,7 @@
+# convex-migrate-rehearse (`get-convex/agent-skills/convex-migrate-rehearse`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 核心是数据库 schema 变更 + 数据回填, 属于开发中改库的安全演练流程

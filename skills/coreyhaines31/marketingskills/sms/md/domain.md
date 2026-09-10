@@ -1,0 +1,7 @@
+# sms (`coreyhaines31/marketingskills/sms`)
+
+## domain
+
+**domain**: 📈 商业运营
+
+**reason**: SMS 营销属于面向业务增长与客户触达的营销渠道, 涵盖弃购挽回、促销、召回等电商与增长场景。

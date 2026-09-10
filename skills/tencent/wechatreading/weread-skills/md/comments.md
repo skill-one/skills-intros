@@ -1,0 +1,10 @@
+# weread-skills (`tencent/wechatreading/weread-skills`)
+
+## comments
+
+- user: 第一次用的新手, category: 坑, comment: 上来就问"看下我书架"，直接报错没鉴权。得先 export WEREAD_API_KEY=你的key 再开口，别像我一样先浪费时间排查半天。
+- user: 写书评的自由撰稿人, category: 妙用, comment: 写书评前我先搜书拿到书，同一轮对话里接着要"这章热门划线+公开点评"，共鸣金句一次凑齐，不用自己翻书划重点。
+- user: 年度复盘爱好者, category: 妙用, comment: 直接问"今年读了几本书、这个月读了多久"，返回的时长自动换算成几小时几分钟，比在 App 里翻统计页省事，年终总结直接抄。
+- user: 有声书重度用户, category: 注意, comment: 数书架别漏听书：专辑和有声书也算书架里的条目，报总数时要把它们算上，不然报出去的数字会偏少。
+- user: 备考研究生, category: 妙用, comment: 复习专业课我让它导出整本书的划线，再挑重点问"这段下面有什么想法"，等于白嫖一份大家的共读笔记。
+- user: 后端老兵, category: 启发, comment: 一个对话里报过一次书名，后面直接说"这本书的第3章"就行，它会记住上下文；把会话当书签用，多轮查询很顺。

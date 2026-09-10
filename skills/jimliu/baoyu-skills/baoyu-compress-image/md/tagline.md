@@ -1,0 +1,7 @@
+# baoyu-compress-image (`jimliu/baoyu-skills/baoyu-compress-image`)
+
+## tagline
+
+- 一键压缩,图片瘦身,画质不减
+- 体积砍半,网页秒开,流量省心
+- 大图变小图,清晰不打折

@@ -1,0 +1,5 @@
+# security-requirement-extraction (`wshobson/agents/security-requirement-extraction`)
+
+## scenario
+
+做完威胁分析,却写不出安全需求?"更安全一点"没法测试,开发无从下手,验收无据可依,审计还被打回。我把威胁逐条转成可测试、可验收的需求 ✅,每条溯源自风险,安全不再是空话。

@@ -1,0 +1,7 @@
+# baoyu-image-gen (`jimliu/baoyu-skills/baoyu-image-gen`)
+
+## tagline
+
+- 一句话, 出好图
+- 所想即所得, 灵感即刻成画
+- 多款顶级模型, 张张都是封面级

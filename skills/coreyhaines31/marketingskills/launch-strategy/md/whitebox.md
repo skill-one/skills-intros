@@ -1,0 +1,13 @@
+# launch-strategy (`coreyhaines31/marketingskills/launch-strategy`)
+
+## whitebox
+
+- 用户请求命中 description 里的触发词 (launch / Product Hunt / beta / early access / waitlist / GTM plan / "we're about to ship" 等), 技能激活
+- 先读取产品营销上下文文件 .agents/product-marketing-context.md (旧版路径 .claude/...), 存在则直接采用
+- 只用任务问题清单补齐缺口 (发布对象、受众规模、自有渠道、时间线、过往发布经验、Product Hunt 准备情况), 已覆盖的不重复问
+- 用框架组织输出: ORB 框架定三类渠道策略, 五阶段发布 (Internal→Alpha→Beta→Early Access→Full) 定节奏, 涉及 Product Hunt 则叠加其前后期打法
+- 附上 Pre-Launch / Launch Day / Post-Launch 三段清单, 交付可执行的发布方案
+
+- 触发解析靠 description 元数据中的触发词表做关键词匹配, 决定是否启用本技能, 无额外解析器
+- 上下文前置校验: 通过文件读取检查 product-marketing-context.md 的存在性与内容, 作为"少问问题"的依据 —— 这依赖宿主 agent 的文件读写能力, 技能本身不调用任何外部 API
+- 输出由两套内置框架驱动: ORB (Owned/Rented/Borrowed) 渠道分类 + 五阶段发布流程, 构成答案的结构骨架; 对用户推荐 SparkToro/Listen Notes (受众重合分析)、Navattic (无代码互动演示)、Introw (渠道伙伴联盟管理) 等外部工具, 但技能运行自身不依赖它们

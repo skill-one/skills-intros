@@ -1,0 +1,5 @@
+# security-and-hardening (`addyosmani/agent-skills/security-and-hardening`)
+
+## scenario
+
+上线没几天,用户数据就遭泄露、被监管约谈,却查不出漏洞在哪?🚨 我能像攻击者一样思考,提前找出登录、支付、外部接口的风险点,在出事前堵住。

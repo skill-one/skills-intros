@@ -1,0 +1,13 @@
+# golang-uber-dig (`samber/cc-skills-golang/golang-uber-dig`)
+
+## whitebox
+
+- 识别触发条件: 代码库 import 了 go.uber.org/dig, 或任务是在启动时装配对象图 (依赖注入)。
+- 读取现有 Go 源码 (Read/Glob/Grep/gopls), 摸清构造函数与依赖关系。
+- 在组合根 (composition root, 即 main 所在层) 用 dig.New() + c.Provide() 注册构造函数; 依赖多时改用 dig.In/dig.Out 结构体 + struct tag 声明。
+- 用 c.Invoke() 按需触发解析: 构造函数懒加载, 每个类型只构建一次并复用 (容器内单例); 构造失败时错误带上完整依赖路径。
+- 校验收尾: go build / golangci-lint 过一遍, 并建议在 CI 中提前 Invoke (或 dig.DryRun(true)) 让缺失的 Provider 在启动时而非运行时报错。
+
+- 反射容器: dig 在运行时用反射解析对象图, 不生成代码; Provide 阶段就校验构造函数签名 (畸形直接报错), Invoke 阶段按依赖路径包装错误, 使失败点可见。
+- Tag 声明式装配: dig.In/dig.Out 嵌入结构体 + struct tag 完成解析规则——name:"..." 消歧同名依赖, optional:"true" 缺失时给零值, group:"..." 聚合多 Provider 为切片 (,flatten 展开, 顺序不保证); dig.As 把具体类型按接口注册, 消费方只见接口。
+- 外部依赖: 需 Go 工具链 (requires bins: go); 包文档查询优先用 godig (pkg.go.dev)、Context7 兜底, 代码导航/诊断走 gopls (LSP); 静态校验靠 go build 与 golangci-lint。

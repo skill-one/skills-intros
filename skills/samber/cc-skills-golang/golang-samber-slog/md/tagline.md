@@ -1,0 +1,7 @@
+# golang-samber-slog (`samber/cc-skills-golang/golang-samber-slog`)
+
+## tagline
+
+- 日志降噪脱敏,一条管道直达目的地
+- 错误必达,噪音必弃,隐私必藏
+- 二十个组件自由拼,搭出日志流水线

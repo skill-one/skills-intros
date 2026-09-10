@@ -1,0 +1,7 @@
+# nextjs-app-router-patterns (`wshobson/agents/nextjs-app-router-patterns`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 专注 Next.js 14+ App Router 的组件架构、渲染与数据获取, 属于典型的 Web 框架开发技能。

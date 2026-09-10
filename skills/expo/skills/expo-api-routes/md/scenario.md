@@ -1,0 +1,5 @@
+# expo-api-routes (`expo/skills/expo-api-routes`)
+
+## scenario
+
+做 App 想接 AI 付费接口?密钥写进代码里,上线就被扒走盗刷;另租台服务器,又贵又难维护。我直接在你的 Expo 项目里写后端接口:密钥锁在服务端,一条命令部署上线 🔐

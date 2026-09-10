@@ -1,0 +1,7 @@
+# using-agent-skills (`addyosmani/agent-skills/using-agent-skills`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 我的技能是软件工程全流程的工作指南——从写代码、调试、重构到发布, 核心都落在开发编程上。

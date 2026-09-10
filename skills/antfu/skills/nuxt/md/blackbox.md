@@ -1,0 +1,10 @@
+# nuxt (`antfu/skills/nuxt`)
+
+## blackbox
+
+**function**: 帮你写、改、修 Nuxt (一个基于 Vue 的建站框架) 网站代码——从页面、数据请求、后端接口到上线部署, 直接给你能落地的代码和答案。
+
+- input: 一句需求: 「写一个商品详情页 /products/123, 数据从接口拿」, output: 可直接放进项目的页面代码 + 取数写法, 复制即用
+- input: 贴一段报错信息, 如 「Hydration completed but contains mismatches」, output: 一句话说明哪里出错了 + 修改后的代码片段
+- input: 你的 nuxt.config.ts + 目标平台 (如 「部署到 Cloudflare」), output: 改好的配置文件 + 具体的构建和部署命令
+- input: 「怎么让登录后才能看的页面?」, output: 中间件代码 (middleware: 用户访问页面前先检查是否登录的关卡) + 该放在项目哪个位置

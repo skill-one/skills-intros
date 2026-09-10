@@ -1,0 +1,7 @@
+# golang-google-wire (`samber/cc-skills-golang/golang-google-wire`)
+
+## tagline
+
+- 编译期接线,依赖清清楚楚
+- 错误上线前现形,不惊扰深夜
+- 零反射零魔法,生成纯 Go 代码

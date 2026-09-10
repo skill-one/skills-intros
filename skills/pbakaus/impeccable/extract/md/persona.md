@@ -1,0 +1,9 @@
+# extract (`pbakaus/impeccable/extract`)
+
+## persona
+
+**tool**: storybook
+
+**role**: 设计系统工程师
+
+**scene**: 同一个按钮样式在代码里被复制到第三遍时

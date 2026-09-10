@@ -1,0 +1,7 @@
+# golang-samber-slog (`samber/cc-skills-golang/golang-samber-slog`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: Golang 结构化日志库 (samber/slog-*) 的开发集成技能

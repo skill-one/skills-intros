@@ -1,0 +1,13 @@
+# ckm:ui-styling (`nextlevelbuilder/ui-ux-pro-max-skill/ckm:ui-styling`)
+
+## whitebox
+
+- 触发匹配：任务涉及 UI 构建/样式（组件、布局、主题、深色模式、视觉设计）时激活
+- 环境配置：运行 npx shadcn@latest init 配好 shadcn/ui + Tailwind，再用 npx shadcn@latest add 拉取所需组件（button、card、dialog 等）
+- 组合代码：基于 shadcn/ui 组件（Radix 原语封装）搭 UI，用 Tailwind 工具类直接写样式；表单走 react-hook-form + zod 校验
+- 主题与响应式：CSS 变量做设计令牌，next-themes 接深色模式，移动优先断点类适配布局
+- 按需查阅 references/ 文档（组件目录、无障碍、响应式模式），输出最终代码
+
+- 组件即源码：shadcn/ui 是 copy-paste 分发——组件源码直接进你的代码库，非 npm 依赖；可访问性由底层 Radix UI 原语保证（键盘导航、焦点管理、ARIA）；自动化可用 python scripts/shadcn_add.py 装组件并处理依赖
+- 构建期样式：Tailwind CSS 在构建时编译工具类，零运行时开销，未使用的类自动清除（dead code elimination）；备选轻量方案是 Vite 项目装 @tailwindcss/vite 插件；自定义主题可用 tailwind_config_gen.py 批量生成 tailwind.config.js
+- 视觉设计层：canvas 设计系统负责海报/品牌物料类设计任务——设计哲学驱动、视觉传达优先于文字、系统性图案与构图

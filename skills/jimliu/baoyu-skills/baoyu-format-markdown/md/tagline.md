@@ -1,0 +1,7 @@
+# baoyu-format-markdown (`jimliu/baoyu-skills/baoyu-format-markdown`)
+
+## tagline
+
+- 只动排版，不改一字
+- 让重点一眼可见
+- 标题·摘要·层次，一步到位

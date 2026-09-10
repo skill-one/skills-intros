@@ -1,0 +1,9 @@
+# vue-debug-guides (`vuejs-ai/skills/vue-debug-guides`)
+
+## blackbox
+
+**function**: Vue 3 项目出 bug 时, 我帮你定位原因并给出修好的代码——覆盖报错、警告、界面不更新、动画/列表异常、服务端渲染不匹配等常见问题。
+
+- input: 一段浏览器控制台的报错信息 (如 "Cannot read property of undefined"), 加上相关的 .vue 组件代码, output: 报错原因的一句话解释 + 改好的代码片段, 标明改了哪几行
+- input: 一个现象描述, 如「列表排序后页面上顺序没变」或「输入框打中文时搜索请求疯狂发送」, output: 直接指出对应的常见坑点、为什么会这样、以及最小改动修法
+- input: 一个行为异常的 .vue 文件 (如数据变了但页面不刷新), output: 诊断报告: 问题在哪、为什么、修复后的完整文件

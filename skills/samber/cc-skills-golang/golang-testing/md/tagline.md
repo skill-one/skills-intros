@@ -1,0 +1,7 @@
+# golang-testing (`samber/cc-skills-golang/golang-testing`)
+
+## tagline
+
+- 测试即规格:约束行为,不凑覆盖率
+- 快、稳、零 flaky,生产级 Go 测试
+- 每一次重构,都有测试兜底

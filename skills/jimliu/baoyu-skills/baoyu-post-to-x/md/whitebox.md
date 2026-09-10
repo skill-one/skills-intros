@@ -1,0 +1,13 @@
+# baoyu-post-to-x (`jimliu/baoyu-skills/baoyu-post-to-x`)
+
+## whitebox
+
+- 根据用户请求判定帖子类型: 纯文本且 ≤10000 字符 → Regular Post, .md 文件 → X Article; 用户明确指定类型则从其指定。
+- 选定执行模式: 用户点名 Codex Chrome 插件 / Chrome Computer Use / CDP 脚本则用对应模式, 否则默认 Chrome Computer Use (绝不用应用内置浏览器)。
+- 准备内容: 文章先运行 md-to-html.ts 把 Markdown 转成 HTML, 读取 JSON 输出中的 title、coverImage 和 contentImages (XIMGPH_N 占位符 → 本地图片路径)。
+- 在用户真实 Chrome 登录会话中填写: 输入文本, 图片经剪贴板粘贴; 文章正文粘贴富 HTML 后逐张点击占位符, 经工具栏 Insert → Media 上传对应图片并删除占位符。
+- 校验后请求确认: 检查占位符计数归零、图片数与预期一致, 打开预览核对标题/封面/正文/链接/图片, 未经用户在当前会话中显式确认绝不点击 Publish/Post。
+
+- 内容转换: md-to-html.ts (由 bun 或 npx -y bun 运行的 TypeScript 脚本) 将 Markdown 转 HTML, 正文图片替换为 XIMGPH_N 占位符并输出 placeholder→localPath 映射, 供在编辑器内逐张定位、上传、删占位符; 支持 YAML front matter (title / cover_image) 及 --cover、--title 覆盖。
+- 剪贴板注入: copy-to-clipboard.ts 把图片/富 HTML 写入系统剪贴板 (macOS 依赖 Swift/AppKit), 再用真实粘贴键 (macOS Meta+V / Win-Linux Ctrl+V) 粘贴进 X 编辑器; 可先用 check-paste-permissions.ts 预检 Chrome、Accessibility 权限、剪贴板、粘贴键 (Linux 需 xdotool/ydotool)。
+- 浏览器驱动与安全护栏: CDP 兜底脚本 (x-browser/x-video/x-quote/x-article.ts) 经 CDP 驱动真实 Chrome, 默认只填充内容、发布需人工操作 (除非显式 --submit); CDP 端口连不上时自动 pkill 带 remote-debugging-port 的 Chrome 实例后重试; 任何 Publish/Post 必须有用户显式最终确认。

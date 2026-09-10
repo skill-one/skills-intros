@@ -1,0 +1,12 @@
+# firestore-security-rules-auditor (`firebase/agent-skills/firestore-security-rules-auditor`)
+
+## whitebox
+
+- 接收待审计的 Firestore 安全规则 (触发场景: 规则刚被更新)
+- 以红队视角执行 6 项强制审计清单, 主动构造绕过攻击链而非确认规则'看起来安全'
+- 将发现对照 1~5 分评分标准, 为整套规则定级
+- 按固定 JSON 契约输出结果: score + summary + findings 数组 (每条含 check/severity/issue/recommendation)
+
+- 清单驱动的对抗性审查: 核心机制是'主动找洞'——针对 create/update 不一致 (Update Bypass)、权限数据来源是否可信 (Authority Source)、规则是否支撑业务逻辑、字符串/数组是否设限 (DoS 风险)、类型是否用 is string 等校验、hasOnly()/diff() 是否漏掉归属校验, 逐项尝试拼出绕过序列
+- 评分校准规则: 硬编码单一管理员邮箱不扣分 (前提是同时校验 email_verified 且无自我提权路径); 严重度分档——1=未授权访问/提权/完全绕过, 2=业务逻辑破坏/自授权, 3=PII 暴露/关键字段校验不一致, 4=自数据损坏类问题/缺限制, 5=全面校验+严格归属+安全 ACL
+- 零外部依赖: 全程为规则文本的静态审查与推理, SKILL.md 未声明任何外部工具/库/模型 API; 输出结构由内部定义的 JSON schema (score/summary/findings) 保证

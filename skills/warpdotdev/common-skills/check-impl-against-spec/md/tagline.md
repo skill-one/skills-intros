@@ -1,0 +1,7 @@
+# check-impl-against-spec (`warpdotdev/common-skills/check-impl-against-spec`)
+
+## tagline
+
+- 让实现忠于规格, 偏差无处遁形
+- 只报要害偏差, 不纠缠细枝末节
+- 发现融入评审, 不制造额外报告

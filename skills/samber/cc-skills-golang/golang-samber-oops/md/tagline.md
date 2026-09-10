@@ -1,0 +1,7 @@
+# golang-samber-oops (`samber/cc-skills-golang/golang-samber-oops`)
+
+## tagline
+
+- 让每个错误自带完整档案
+- 上下文、堆栈、追踪码, 报错一次到位
+- 排查不问人, 错误自己说清楚

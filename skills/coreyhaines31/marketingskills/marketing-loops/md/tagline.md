@@ -1,0 +1,7 @@
+# marketing-loops (`coreyhaines31/marketingskills/marketing-loops`)
+
+## tagline
+
+- 营销循环一次设定，每周准时自动跑
+- 盯排名、查广告、防流失，不漏一拍
+- 该自动的自动，该人审的绝不跳过

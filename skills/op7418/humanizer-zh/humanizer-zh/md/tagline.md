@@ -1,0 +1,7 @@
+# humanizer-zh (`op7418/humanizer-zh/humanizer-zh`)
+
+## tagline
+
+- 去掉 AI 腔，让文字说人话
+- 一眼识破 AI 味，一改还原人味
+- 你的文字，不该有机器的影子

@@ -1,0 +1,7 @@
+# gsap-core (`greensock/gsap-skills/gsap-core`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: GSAP 是 JavaScript 动画库技能, 核心是写代码实现网页动效, 属于前端开发

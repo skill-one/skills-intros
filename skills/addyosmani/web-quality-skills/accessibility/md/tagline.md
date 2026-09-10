@@ -1,0 +1,7 @@
+# accessibility (`addyosmani/web-quality-skills/accessibility`)
+
+## tagline
+
+- 别让一个按钮,挡住一位真实用户
+- 键盘能到,读屏能懂,人人可用
+- WCAG 2.2 逐条审计,证据说话,不空谈

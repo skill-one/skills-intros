@@ -1,0 +1,13 @@
+# extension-qr-code (`caffeinelabs/skills/extension-qr-code`)
+
+## whitebox
+
+- 组件挂载 useQRScanner: 从默认 jsdelivr CDN 拉取 jsQR 解码库 (jsQRLoaded 变 true), 同时透传自 useCamera 的 isSupported 检测通过 → 计算态 isReady = true
+- 调用 startScanning(): 按 facingMode (如 'environment') 激活相机, videoRef 绑定到 <video> 实现实时预览, canStartScanning (ready + 非 loading) 控制按钮可用
+- 每 scanInterval 毫秒 (默认 100ms) 采集一帧视频画面, 绘制到隐藏的 <canvas> (canvasRef) 并交给 jsQR 解码
+- 解码成功则以 { data, timestamp } 追加进 qrResults (最新在前, 上限 maxResults 默认 10 条)
+- stopScanning() 关闭相机并停止扫描; clearResults()/reset() 清理历史, 生命周期收尾
+
+- 帧采集 + 解码: <video> (playsInline + muted) 持续出流, 隐藏 <canvas> 承接逐帧画面, 定时器按 scanInterval 触发 jsQR 解码 — 依赖 jsQR 库 (默认从 jsdelivr CDN 按配置的 jsQRUrl 懒加载)
+- 相机层复用: Hook 构建在 @caffeineai/camera 之上, isActive/isSupported/error/isLoading/currentFacingMode 直接透传; switchCamera 切换 user/environment 前后摄, 失败可用 retry() 重试初始化
+- 结果管理为环形缓冲: 只保留 maxResults 条 (默认 10), 新结果置顶, 每条带 timestamp 作 key; Hook 本身为预制品不可修改, 应用侧只负责传入 config、挂载两个 ref、渲染结果与错误信息

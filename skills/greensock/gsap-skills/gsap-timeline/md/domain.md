@@ -1,0 +1,7 @@
+# gsap-timeline (`greensock/gsap-skills/gsap-timeline`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: GSAP 时间轴是前端动画编排工具, 属于代码与框架集成范畴。

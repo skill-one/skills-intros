@@ -1,0 +1,10 @@
+# flutter-apply-architecture-best-practices (`flutter/agent-plugins/flutter-apply-architecture-best-practices`)
+
+## comments
+
+- user: 前端转 Flutter, category: 坑, comment: 我一开始以为三层都得建, 简单页面也套了 Use Case 空壳。后来重读才发现指南写明: 简单 CRUD 直接跳过, ViewModel 调 Repository 即可。删掉空壳后代码少了一半。
+- user: 独立开发者, category: 妙用, comment: Repository 做单一数据源的好处被我吃到了: 在 getUser 里加个 _cachedUser 判断, 全 App 反复进个人页都不重复请求, 以后改缓存策略也只动这一个文件。
+- user: 后端老兵, category: 启发, comment: 最触动我的是「View 只做 UI 操作」——以前我把日期格式化、状态判断全塞 build 方法里。挪进 ViewModel 后 View 变成纯展示, 改需求只动一处, 再没出过改 UI 顺带改坏逻辑的事。
+- user: 接手祖传代码的, category: 妙用, comment: 接手没分层的祖传项目, 我没敢一口气重写。照 8 步清单, 每接一个新需求就把那一块按规范落地, 老代码不动。三个月下来新代码全是标准结构, 测试也从「不敢碰」变成「敢跑」。
+- user: 第一次用的新手, category: 注意, comment: Step 7 的依赖注册别漏: 我按清单做完 ViewModel 和 View, 一跑就报错, 找半天才发现 Service/Repository 没在 get_it 里注册。现在把「注册」当每个功能固定的收尾动作, 做完立刻跑一遍。
+- user: 小团队负责人, category: 注意, comment: 带两个实习生后把它当团队规范, 最省心的是「UI 按功能、数据按类型」的混合目录: 新人找文件从不问人。Code review 我只盯一条: 原始 API model 有没有漏出 data 层。

@@ -1,0 +1,10 @@
+# sandbox-sdk (`cloudflare/skills/sandbox-sdk`)
+
+## comments
+
+- user: 第一次用的新手, category: 坑, comment: 忘写 export { Sandbox } 那行 re-export, Worker 死活部署不上, 查了一小时。卡部署先检查这一行。
+- user: AI 应用开发者, category: 妙用, comment: runCode 传同一个 context 能留住变量, 我让 AI 分段跑数据分析, 前一段读入的 DataFrame 下一段直接用, 不用重跑。
+- user: 后端老兵, category: 妙用, comment: 把用户 ID 直接传给 getSandbox 当 sandboxId, 每人自动一个独立沙箱, 不用自己管实例分配和隔离。
+- user: 独立开发者, category: 注意, comment: preview URL 在 workers.dev 域名下用不了, 必须自定义域名配 *.yourdomain.com 通配符解析, 提前备好别上线当天才发现。
+- user: 运维老哥, category: 注意, comment: 本地开发必须先装 Docker 且 docker info 能跑通, 我在无 Docker 的环境里起本地服务, 直接卡死起不来。
+- user: 性能敏感的后端, category: 注意, comment: Dockerfile 里 pip/apt 塞太多包, 冷启动明显变慢, 只装真正用到的; 另外闲置 10 分钟容器会休眠, 评估首请求延迟要留余量。

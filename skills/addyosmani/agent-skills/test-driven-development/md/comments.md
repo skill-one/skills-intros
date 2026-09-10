@@ -1,0 +1,10 @@
+# test-driven-development (`addyosmani/agent-skills/test-driven-development`)
+
+## comments
+
+- user: 后端老兵, category: 妙用, comment: 修 bug 我现在只说一句"先写复现测试再修"。先看它把测试跑红,再修到绿,这条测试以后就一直帮我挡同类回归。
+- user: 第一次用的新手, category: 坑, comment: 我没让它先摸项目,它默认跑了 npm test,可我仓库是 pytest,白折腾一轮。开口第一句就让它先确认仓库自己的测试命令。
+- user: QA 测试工程师, category: 注意, comment: 盯住一件事:失败测试必须先红后绿。我遇到过它写的测试一上来就过,压根没测到目标行为,看着全绿其实啥也没证明。
+- user: 创业公司全栈, category: 启发, comment: 我以前总说"原型不用测试",结果原型转正全裸奔。现在哪怕新加一个函数也让它配测试,补债真比欠债便宜。
+- user: 运维老哥, category: 注意, comment: 改一行逻辑别让它每轮跑全量,让它只跑聚焦的那一个测试,收尾再全量跑一次。不然每轮几分钟,机时和耐心都烧不起。
+- user: 前端工程师, category: 坑, comment: 我图省事让它把数据库全 mock 了,测试全绿线上照样炸。现在只许 mock 外部接口,核心逻辑必须跑真实现或内存假库。

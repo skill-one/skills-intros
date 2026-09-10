@@ -1,0 +1,7 @@
+# multi-account-isolation (`antibrow/anti-detect-browser-skills/multi-account-isolation`)
+
+## domain
+
+**domain**: 🧪 测试与质量
+
+**reason**: 核心是对隔离配置做断言式验证、CI 一致性检查与缺陷排查, 属于质量检查而非开发或运维本身。

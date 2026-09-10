@@ -1,0 +1,10 @@
+# ckm:slides (`nextlevelbuilder/ui-ux-pro-max-skill/ckm:slides`)
+
+## comments
+
+- user: 卖方案的产品经理, category: 妙用, comment: 把 Excel 原始数据直接贴给它,Chart.js 图表比截图糊上去的清晰,改个数字自动重画,周报图表页省一半时间。
+- user: 第一次用的新手, category: 注意, comment: 产出是 HTML 文件不是 PPT,浏览器全屏就能放映,但只用 PowerPoint 的同事打不开,要改内容得改 HTML 源码。
+- user: 创业路演老手, category: 妙用, comment: 参数务必带页数,如「create 融资路演 12」。不锁页数它自己铺了二十多页,路演根本讲不完,锁定后每页密度明显克制。
+- user: 运营打工人, category: 注意, comment: 做图表页前先把真实数字给它。我只说"增长趋势",它编了组好看的假数据,差点直接拿去汇报,数字务必自己核对。
+- user: 后端老兵, category: 坑, comment: 第一句只说"帮我做个 PPT",它反问一圈没干活。正确姿势是开头写「create 主题 页数」,一次就出活。
+- user: 设计转岗的实习生, category: 启发, comment: 它的文案按叙事公式组织,我才发现自己一直先堆图表后凑话术,顺序反了。现在做任何汇报都先想叙事再动手排版。

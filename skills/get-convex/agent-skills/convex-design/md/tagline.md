@@ -1,0 +1,7 @@
+# convex-design (`get-convex/agent-skills/convex-design`)
+
+## tagline
+
+- 你说想法，我建后端
+- 数据实时到屏，无需自搭
+- 从一句话到上线，一步到位

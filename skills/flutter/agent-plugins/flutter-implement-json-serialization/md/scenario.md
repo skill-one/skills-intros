@@ -1,0 +1,5 @@
+# flutter-implement-json-serialization (`flutter/agent-plugins/flutter-implement-json-serialization`)
+
+## scenario
+
+📱 App 一联网就卡：列表一刷就掉帧，接口数据一变就闪退。痛点在数据解析——手动对接字段繁琐易错。我专注 Flutter 手动 JSON 解析：建好数据模型、类型严格校验，大数据转后台解析，界面丝滑不卡顿。

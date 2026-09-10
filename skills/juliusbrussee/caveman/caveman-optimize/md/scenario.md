@@ -1,0 +1,5 @@
+# caveman-optimize (`juliusbrussee/caveman/caveman-optimize`)
+
+## scenario
+
+AI 应用疑似浪费 token(调用成本),却不知从哪省;照优化建议盲改,又怕弄坏功能。我读 Caveman 报告,由你选定优化点,设计"改前改后"同条件对比实验,只做有证据的最小改动——结论只报事实,不吹省钱。

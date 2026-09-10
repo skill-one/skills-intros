@@ -1,0 +1,10 @@
+# vue-best-practices (`vuejs-ai/skills/vue-best-practices`)
+
+## comments
+
+- user: 后端转前端的全干工程师, category: 注意, comment: 接手的老项目是 Options API, 我忘了提前说, 按默认的 Composition API 写完才发现两种画风, 只能重写。老项目开工前先交代技术栈。
+- user: 写了八年大组件的前端, category: 启发, comment: 以前一个页面千行, 表单列表筛选全塞一个文件。按「3个独立UI区块就拆」的硬标准重构后, 每个组件职责一句话说清, 改列表不再误伤表单。
+- user: 第一次用的新手, category: 坑, comment: 急着交付跳过了前置阅读, 把接口返回的富文本直接 v-html 上去, 上线前被安全扫描标了 XSS 风险。老老实实先读模板安全规则, 换成受控渲染。
+- user: 性能强迫症老哥, category: 启发, comment: 过去功能没跑通就上虚拟列表、v-memo, 需求一变优化全白做。现在严格「先做对再做快」, 工期没多花, 返工少一大半。
+- user: 带三个人的小组长, category: 妙用, comment: 动手前先列组件地图: 每个组件一句话职责加 props/emits 契约。code review 照着地图查, 谁越界一眼看穿, 比口头约定管用。
+- user: 独立做小工具的, category: 注意, comment: 单文件一把梭不是默认选项——只有极小的临时 demo 允许, 还得明确说理由。我的待办页被拆成容器、表单、列表、底部操作, 后期改起来省心。

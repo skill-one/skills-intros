@@ -1,0 +1,10 @@
+# email-and-password-best-practices (`better-auth/skills/email-and-password-best-practices`)
+
+## blackbox
+
+**function**: 帮你给网站或应用搭好「邮箱 + 密码」登录体系——注册、邮箱验证、找回密码、密码规则和安全设置，交付能直接用的代码。
+
+- input: 「我的网站想支持邮箱注册、登录」, output: 一套完整的注册/登录配置代码，粘进项目就能跑
+- input: 「要求用户先点验证邮件，才能登录」, output: 开启邮箱强制验证的配置 + 发验证邮件的代码，未验证的人登录时会被拦下并收到新邮件
+- input: 「用户忘密码了，要做找回密码」, output: 完整的找回密码流程代码：发重置邮件、限时链接（默认 1 小时失效）、重置成功后自动踢掉所有旧登录
+- input: 「密码要更安全：至少 12 位，别用明文存」, output: 改好的密码长度规则 + 换用更强加密方式（如 Argon2id）的配置代码

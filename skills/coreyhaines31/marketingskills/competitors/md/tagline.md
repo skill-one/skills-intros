@@ -1,0 +1,7 @@
+# competitors (`coreyhaines31/marketingskills/competitors`)
+
+## tagline
+
+- 截流竞品搜索,客户主动找上门
+- 对比页写得狠,客户跑不了
+- 把竞品流量,变成你的订单

@@ -1,0 +1,7 @@
+# source-driven-development (`addyosmani/agent-skills/source-driven-development`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 专治框架 API 过时与幻觉: 写码前查官方文档, 每个决定附带可查证的官方来源。

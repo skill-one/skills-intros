@@ -1,0 +1,7 @@
+# investigate-first (`juliusbrussee/caveman/investigate-first`)
+
+## tagline
+
+- 不猜病根, 先查证据
+- 先诊断后动手, 修复才对症
+- 让证据说话, 直击问题根源

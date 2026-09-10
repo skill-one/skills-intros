@@ -1,0 +1,13 @@
+# golang-samber-lo (`samber/cc-skills-golang/golang-samber-lo`)
+
+## whitebox
+
+- 匹配触发条件: 任务涉及 *.go 文件, 或代码库 import 了 github.com/samber/lo
+- 用 Grep/Read 扫描代码, 定位手写 for 循环式集合变换与已有 lo 调用点
+- 查权威事实: godig 查 pkg.go.dev 的函数签名 (Context7 兜底), gopls 定位定义与诊断
+- 按决策表选包: 默认 lo, 仅在有性能证据时升级 lop/lom/loi; stdlib 已覆盖的 (slices.Contains 等) 优先用 stdlib
+- 写入代码 (错误用 MapErr 等 Err 变体传播), 再用 go / golangci-lint 验证
+
+- 分层包选择: lo (不可变, 默认) → lop (1000+ 条 CPU 密集并行, 不用于 I/O) → lom (仅 pprof 证实分配热点后) → loi (Go 1.23+ 惰性迭代器省中间分配), 全部规则来自 skill 内置决策表
+- 文档事实链: godig (pkg.go.dev, 首选) → gopls/LSP (定义/调用点) → Context7 (兜底); 300+ 函数目录在 references/api-reference.md, 组合模式在 references/advanced-patterns.md
+- 防错护栏: 内置常见错误表约束产出 — 不滥用 lo.Must (仅测试/init)、不改输入集合 (lo 默认不可变)、可组合 Filter→Map→GroupBy 链; 产出经 go build 与 golangci-lint 校验

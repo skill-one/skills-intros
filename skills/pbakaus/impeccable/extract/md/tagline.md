@@ -1,0 +1,7 @@
+# extract (`pbakaus/impeccable/extract`)
+
+## tagline
+
+- 重复的界面, 让它只写一次
+- 一处修改, 全站焕然一新
+- 从零散拼凑, 到统一设计系统

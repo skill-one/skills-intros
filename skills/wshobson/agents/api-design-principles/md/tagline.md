@@ -1,0 +1,7 @@
+# api-design-principles (`wshobson/agents/api-design-principles`)
+
+## tagline
+
+- 好接口, 让开发者一眼懂、一次用爽
+- 精心设计每个接口, 经得起岁月考验
+- REST 与 GraphQL, 双修设计专家

@@ -1,0 +1,9 @@
+# caveman-explore (`juliusbrussee/caveman/caveman-explore`)
+
+## persona
+
+**tool**: grep
+
+**role**: 代码定位员
+
+**scene**: 面对陌生仓库、想知道"这功能到底写在哪个文件哪一行"时

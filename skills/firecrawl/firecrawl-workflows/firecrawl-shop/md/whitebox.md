@@ -1,0 +1,13 @@
+# firecrawl-shop (`firecrawl/firecrawl-workflows/firecrawl-shop`)
+
+## whitebox
+
+- 从上下文推断商品、预算、偏好; 明确则跳过提问直接开始, 不明确才问 1~3 个问题
+- 用 Firecrawl search + scrape 抓取多来源: 商品页、评论、参数、价格、Reddit/论坛、测评站
+- 横向对比: 价格、参数、评论、卖家质量、物流、与用户偏好的匹配度
+- 选出最优选项并给出理由
+- 按固定 Markdown 模板输出 Shopping Research 报告 (推荐 / 对比 / 评论信号 / 来源 / 复跑参数)
+
+- Firecrawl 托管 API (需 FIRECRAWL_API_KEY): search 用于跨站检索, scrape 用于抓取商品页与评论内容, 是全部数据的来源
+- Firecrawl browser: 仅在用户明确要求加购且已有已登录浏览器会话时启用, 执行加购后停在 checkout 之前; 未经明确授权绝不购买
+- 结构化交付物 + 质量约束: 输出固定 Markdown 模板 (含 Rerun Inputs 保证可复跑); 硬性要求写明具体型号/价格/卖家, 主动标注 affiliate/赞助/不可靠来源

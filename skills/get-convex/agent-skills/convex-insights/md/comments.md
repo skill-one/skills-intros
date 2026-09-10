@@ -1,0 +1,10 @@
+# convex-insights (`get-convex/agent-skills/convex-insights`)
+
+## comments
+
+- user: 后端老兵, category: 妙用, comment: 问「是不是部署搞坏的」,它把报错首次出现的时间对上部署版本再下结论,最后附 dashboard 链接让我点开核对,不是拍脑袋。
+- user: 第一次用的新手, category: 坑, comment: 我在本地跑 dev 环境,问健康检查拿不到结果——insights 只对云端部署生效。本地只能查日志,健康度要去云端看。
+- user: 运维老哥, category: 注意, comment: 日志只能按「往前 N 条」取,没有时间窗参数。流量大时问「最近一小时的报错」,得让它取大一点的窗口再筛,别指望精确按时间查。
+- user: 独立开发者, category: 妙用, comment: 把失败请求的 requestId 贴给它,它单独拉出那一次的完整执行日志。查「这个用户的支付回调为啥挂」比翻面板快多了。
+- user: SRE 老哥, category: 注意, comment: 它只读不修。查出某函数老撞读取上限,给的是证据和结论,不改代码、不调参。当诊断第一环用,别当自动修障工具。
+- user: 刚接手项目的技术负责人, category: 启发, comment: 它默认按「结论+出错次数+一条代表报错+可点链接」交付,我们团队照此定了新规:AI 查日志没有证据链就不算查完。

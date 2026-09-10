@@ -1,0 +1,7 @@
+# wecomcli-contact (`wecomteam/wecom-cli/wecomcli-contact`)
+
+## tagline
+
+- 名字拼音英文名,一句话精准找人
+- 同名不混淆,部门职务一查便知
+- 通讯录再大,找人只需一秒

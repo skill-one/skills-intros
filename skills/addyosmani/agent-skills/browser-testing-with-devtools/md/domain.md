@@ -1,0 +1,7 @@
+# browser-testing-with-devtools (`addyosmani/agent-skills/browser-testing-with-devtools`)
+
+## domain
+
+**domain**: 🧪 测试与质量
+
+**reason**: 核心是通过 Chrome DevTools 在真实浏览器中做 E2E/UI 测试、console 与网络请求检查、视觉回归和 bug 排查

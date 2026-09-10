@@ -1,0 +1,7 @@
+# golang-naming (`samber/cc-skills-golang/golang-naming`)
+
+## tagline
+
+- 好名字，让代码自己说话
+- 告别命名纠结，写出地道 Go
+- 每一处命名，精准无歧义

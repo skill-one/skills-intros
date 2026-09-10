@@ -1,0 +1,9 @@
+# firecrawl-knowledge-base (`firecrawl/firecrawl-workflows/firecrawl-knowledge-base`)
+
+## blackbox
+
+**function**: 把一个网址或一个主题, 变成本地一份整理干净、可直接喂给 AI 用的资料库 (文字版, 带目录和来源清单)。
+
+- input: 一个文档网站链接, 如 https://docs.stripe.com, output: 本地文件夹: 整个文档站的 markdown 版资料库, 含总目录 index.md 和来源清单 sources.json
+- input: 一个主题关键词, 如「LangGraph 教程」, output: 围绕该主题从全网搜集整理好的资料合集 (官方文档、教程、社区讨论分类存放), 附每篇的来源网址
+- input: 几条网页链接 + 一句用途说明「用来微调模型」, output: 一份训练格式的语料文件 training-data.jsonl (每行一条问答/指令数据), 外加说明文件

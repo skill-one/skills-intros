@@ -1,0 +1,7 @@
+# sandbox-sdk (`cloudflare/skills/sandbox-sdk`)
+
+## tagline
+
+- 让每行代码,跑在安全沙箱里 🔒
+- AI 写的代码,放心执行 ✅
+- 边缘云上,沙箱秒开即跑 ⚡

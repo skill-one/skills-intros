@@ -1,0 +1,10 @@
+# public-relations (`coreyhaines31/marketingskills/public-relations`)
+
+## comments
+
+- user: 第一次联系记者的独立开发者, category: 坑, comment: 群发『我们发布 2.0 啦』,零回复。里程碑本身不是故事,包上独家数据或对立视角的角度后才有人回我。
+- user: 管投放预算的市场负责人, category: 启发, comment: TechCrunch 报道后转化几乎为零,我一度觉得白干。后来销售说客户谈单时会引那篇文章——PR 买的是背书,不是流量。
+- user: SaaS 创始人, category: 妙用, comment: 把发稿前的 7 条自检用在所有冷邮件上:光『标题要能预测出文章标题』这一条就筛掉我八成烂邮件,不止对记者有用。
+- user: 追热点的运营, category: 坑, comment: 热点出来我先磨两天完美稿,发出去话题早凉了。正确做法是第一小时发 80 分的版本,速度比打磨重要。
+- user: 下周上播客的技术嘉宾, category: 注意, comment: 只把准备当成练回答就亏了:节目文字稿会被 AI 引用好几年,记得完整说出品牌名和品类,别只说『我们这个工具』。
+- user: 被派来做 PR 的新媒体专员, category: 注意, comment: 以专员身份联系记者没人理——记者只要创始人的原话。先跟老板锁死每周固定 pitch 时间,撑不满四到六周别启动。

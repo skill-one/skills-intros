@@ -1,0 +1,7 @@
+# convex-backup (`get-convex/agent-skills/convex-backup`)
+
+## domain
+
+**domain**: 🛡️ 运维与安全
+
+**reason**: 核心是数据库备份快照与灾难恢复演练 (SRE 范畴), 而非业务开发

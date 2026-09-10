@@ -1,0 +1,7 @@
+# python-performance-optimization (`wshobson/agents/python-performance-optimization`)
+
+## tagline
+
+- 精准定位瓶颈, 让慢代码跑起来
+- 不靠猜, 用数据找出每个性能黑洞
+- 省时省内存, Python 快人一步

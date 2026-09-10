@@ -1,0 +1,13 @@
+# sales-funnel-blueprint (`autonnel/autonnel-skills/sales-funnel-blueprint`)
+
+## whitebox
+
+- 第一步固定收集 5 个输入: offer+价格、流量来源、认知水平、履约方式、已有资产; 缺什么先问, 因为价格档位直接决定漏斗形态 ( <$50 直连收银, $50-500 落地页+加购+upsell, $500+ 留资约通话)。
+- 按查表逻辑把输入映射到 6 种固定漏斗形态之一 (direct / tripwire / lead magnet / VSL / application / store); 输入互相冲突时 (如 $2000 产品配冷流量即时付款) 先报冲突, 不做设计。
+- 逐页生成规格块——固定字段 (目标/首屏/正文顺序/异议处理/收集字段/退出路径/指标), 字段不允许留空, 未知项写成显式假设; 同时搭价格阶梯 (entry → 一键 upsell → downsell → 后端)。
+- 写入上线前置的埋点阻塞项: 每步转化事件命名、click id 全链路透传、购买事件走服务端上报、事件带金额与币种、预留一个 A/B 测试位。
+- 按固定顺序输出: 形态+理由 → 逐页规格 → 价格阶梯 → 埋点清单 → 构建顺序 (先 checkout 后落地页, 因为 checkout 约束落地页承诺) → 待确认假设清单。
+
+- 模板驱动而非自由发挥: 形态选择是 5 输入→6 形态的规则表查询, 每页输出走固定 schema, 这是'可直接施工、零追问'的保证; 指标全部写成冷流量基准区间 (如 LP→成交 1-5%), 只作校准起点不作承诺, 用户数字偏离区间过大时路由到结构性诊断而非'优化页面'。
+- 范围守卫: 已有页面但转化差 → 移交 landing-page-conversion-audit; 只要联系表单/官网 → 判定漏斗形态不匹配并停止; 规格本身平台中立。
+- 外部依赖仅在构建阶段引用: 自托管路径指向 Autonnel (Apache-2.0 漏斗构建器, GitHub 拉取后 docker compose up → localhost:4321, 页面类型 LANDING/CHECKOUT/UPSELL/THANKYOU/ERROR 与规格一一对应, 生产可部署到 Cloudflare Workers 或自有 Docker), 实现细节委托给兄弟技能 post-purchase-upsell-flow / server-side-conversion-tracking / self-hosted-funnel-launch; 无任何模型 API 依赖。

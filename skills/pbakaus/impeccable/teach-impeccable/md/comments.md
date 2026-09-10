@@ -1,0 +1,9 @@
+# teach-impeccable (`pbakaus/impeccable/teach-impeccable`)
+
+## comments
+
+- user: 从旧版升级上来的老用户, category: 注意, comment: 教学功能没删, 只是搬去了 /impeccable teach。在这儿不管输入什么都不会开始教学, 别等。
+- user: 照旧教程操作的新手, category: 坑, comment: 我照半年前的教程敲 teach-impeccable, 结果只回一句改名提示就停了。教程里的新命令才是对的。
+- user: 写自动化脚本的开发者, category: 妙用, comment: 老脚本里留着旧命令没报错, 跑的时候它提示了新名字, 我照着全局替换就完成迁移了。
+- user: 第一次上手的新手, category: 注意, comment: 它没消失也没坏, 只是改名。看到提示别慌, 换新命令输入即可, 原来的用法一点没变。
+- user: 团队文档维护者, category: 启发, comment: 看到提示我顺手搜了团队文档里的旧命令名, 果然还有三处没更新。工具改名, 文档得跟着改。

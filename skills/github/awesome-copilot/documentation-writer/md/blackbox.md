@@ -1,0 +1,9 @@
+# documentation-writer (`github/awesome-copilot/documentation-writer`)
+
+## blackbox
+
+**function**: 给软件写说明书: 你描述产品或功能, 我产出能让人上手、查得着、看得懂的文档 (教程 / 操作指南 / 参考手册 / 原理讲解, Markdown 格式)。动笔前我会先问清目标读者和用途, 再给目录提纲, 你点头后才写全文。
+
+- input: "我刚做了个命令行小工具, 能批量压缩图片, 帮我写个新手教程", output: 一篇 Markdown 教程: 从安装到完成第一次压缩的分步操作, 新手照着就能跑通
+- input: "用户老在问『怎么把数据导出成 CSV』, 帮我写个说明", output: 一篇针对该问题的操作指南: 只讲导出 CSV 的步骤和常见坑, 不掺杂无关内容
+- input: 一份 API 参数说明或命令列表, output: 一份参考手册 (Markdown): 每个参数、返回值各占一条, 按条目排列, 方便快速查阅

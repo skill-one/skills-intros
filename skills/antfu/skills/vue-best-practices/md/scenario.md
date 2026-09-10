@@ -1,0 +1,5 @@
+# vue-best-practices (`antfu/skills/vue-best-practices`)
+
+## scenario
+
+AI 生成的 Vue 页面越改越乱:代码全堆一个文件,改一处崩三处?🧩 我按 Vue 3 官方最佳实践,先定好组件边界再动手:状态清晰、数据流向明确、逻辑不堆砌,交付能长期维护、不返工的代码。

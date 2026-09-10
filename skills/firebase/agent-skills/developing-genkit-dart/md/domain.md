@@ -1,0 +1,7 @@
+# developing-genkit-dart (`firebase/agent-skills/developing-genkit-dart`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 为 Dart/Flutter 生成 AI 应用代码, 集成大模型能力, 属于框架集成与编码开发

@@ -1,0 +1,11 @@
+# convex-agent (`get-convex/agent-skills/convex-agent`)
+
+## whitebox
+
+- 安装 @convex-dev/agent + @convex-dev/ai-sdk-provider, 在 convex.config.ts 中挂载 agent 组件
+- 用 languageModel: convexGateway("provider/model") 定义 agent (工具 + 指令), 无需自己提供 API key
+- 创建 thread (会话线程) 并流式发送消息, 模型调用在 action 中执行 (SDK 需要时用 'use node')
+- 消息与历史持久化到 Convex, 保证可持续追踪和实时响应
+- 如需 RAG: 把文档嵌入向量索引, 在工具里检索; 嵌入模型的 key 通过 env 存入 Convex (网关暂不支持嵌入)
+
+- Convex AI Gateway 代理模型调用: @convex-dev/ai-sdk-provider 的 convexGateway 让 Convex 持有各家 provider 的凭据, 业务侧零 key 管理不可用时 (免费版/自托管/本地) 才回退: 用 provider SDK + 存在 Convex env 里的 key 直接调模型; key 永不暴露到客户端

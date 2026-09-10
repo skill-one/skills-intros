@@ -1,0 +1,10 @@
+# create-auth-skill (`better-auth/skills/create-auth-skill`)
+
+## comments
+
+- user: 独立全栈开发, category: 妙用, comment: 它会先扫出我的 Next.js 和 Drizzle 配置，列好清单让我确认才动手。我把用不上的 2FA 当场砍掉，最后装的东西刚刚好。
+- user: 第一次做登录的新手, category: 坑, comment: 只加了服务端 organization 插件，前端一直报找不到方法。后来才明白：服务端插件必须配一个对应的 client 插件才算完整。
+- user: NextAuth 迁移过来的后端, category: 注意, comment: 别急着卸旧库。它是新老并存着迁：先路由、再会话、最后 UI。我上次一口气删了 NextAuth，中间两天没法登录调试。
+- user: 运维老哥, category: 坑, comment: 开发时 drizzle-kit push 很爽，上线我也这么跑，结果线上表和迁移文件对不上。生产要用 generate + migrate，别偷这个懒。
+- user: 独立产品前端, category: 妙用, comment: 邮件先选 console.log 模拟，验证链接直接打在终端里，复制出来就能跑通整条验证流程，不用提前去申请 Resend。
+- user: 接过社交登录的前端, category: 注意, comment: 配 Google 登录前，先去 Google 后台把 redirect URI 填好。回调报错十有八九是这里，别在自己的代码里白查半天。

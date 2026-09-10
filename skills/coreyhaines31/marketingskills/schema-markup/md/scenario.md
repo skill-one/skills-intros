@@ -1,0 +1,5 @@
+# schema-markup (`coreyhaines31/marketingskills/schema-markup`)
+
+## scenario
+
+文章明明写得不错, 搜索结果里却只是一行蓝字链接, 点击全被带⭐星级、FAQ 展示的同行抢走。我给页面注入结构化数据, 让你的结果也带星级、问答框, 把点击抢回来。

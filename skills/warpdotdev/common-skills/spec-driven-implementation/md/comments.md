@@ -1,0 +1,10 @@
+# spec-driven-implementation (`warpdotdev/common-skills/spec-driven-implementation`)
+
+## comments
+
+- user: 带 5 人团队的技术负责人, category: 妙用, comment: spec 和代码放同一个 PR 后, 我 review 先读 PRODUCT.md, 十分钟就能判断方向对错, 不对直接打回, 不用在几百行 diff 里猜意图。
+- user: 第一次用的新手, category: 坑, comment: 一上来给改一行的 bug 也写 PRODUCT.md, 白耗半天。小修复、纯重构直接跳过, 千行以上或跨模块的改动才值得写 spec。
+- user: 后端老兵, category: 妙用, comment: specs/ 目录成了新人 onboarding 材料: 实现一变就同步更新过, 描述的是真实发布版, 读它比啃代码快, 大取舍另记在 DECISIONS.md。
+- user: 产品转研发, category: 注意, comment: 第一版 PRODUCT.md 写满表结构和接口, 被打回。它只该写用户看到什么、边界情况、怎么算成功, 技术取舍留给 TECH.md。
+- user: 不用 Linear 的独立开发者, category: 注意, comment: 流程默认建 Linear issue、拿工单号当目录名。我们不用 Linear, 我换成自家 issue 号, 且 specs/ 下只放工单目录, 别按人名建子目录。
+- user: AI 协作重度用户, category: 坑, comment: 实现时换了方案没回头改 TECH.md, 下次 agent 按旧 spec 干活, 又返工一轮。现在实现一偏离 spec 就当场更新, 并和代码放同一 PR。

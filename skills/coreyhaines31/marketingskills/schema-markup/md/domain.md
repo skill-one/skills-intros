@@ -1,0 +1,7 @@
+# schema-markup (`coreyhaines31/marketingskills/schema-markup`)
+
+## domain
+
+**domain**: 📈 商业运营
+
+**reason**: 核心是给网站加结构化数据, 让 Google 搜索结果更亮眼 (富摘要/星级), 服务于 SEO 与业务增长。

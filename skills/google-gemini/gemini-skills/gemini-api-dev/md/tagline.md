@@ -1,0 +1,7 @@
+# gemini-api-dev (`google-gemini/gemini-skills/gemini-api-dev`)
+
+## tagline
+
+- 十行代码，接入 Gemini 全部能力
+- 文本图像语音视频，一个接口搞定
+- 用最新模型，不写过时代码

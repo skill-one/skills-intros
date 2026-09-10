@@ -1,0 +1,10 @@
+# firecrawl-knowledge-ingest (`firecrawl/firecrawl-workflows/firecrawl-knowledge-ingest`)
+
+## comments
+
+- user: 第一次用的新手, category: 坑, comment: 没先配 FIRECRAWL_API_KEY，第一步就卡住。把密钥、门户网址、要 markdown 还是 JSON 备齐再说，一次就能出全。
+- user: 帮助中心运营, category: 妙用, comment: 帮助中心翻页加「加载更多」混着用，以前人肉复制一上午。它顺侧边栏和分页全抓完，导航页脚都剔掉，markdown 直接进内部搜索。
+- user: 客服团队主管, category: 注意, comment: 登录才可见的知识库它认权限边界：你账号看不到的文章它也拿不到。想收私有板块，先用有权限的账号备好凭据再跑。
+- user: 后端老兵, category: 启发, comment: 结果带每篇的最后更新时间和抓取时间，隔月重跑 diff 一下就知道哪些文档改版了，文档巡检从人肉变成跑个任务。
+- user: 刚搭 RAG 的独立开发者, category: 坑, comment: 几百页大门户没设页数上限，抓了一部分就停。好在报告单列了失败页清单，照着补跑两轮才齐，大门户记得先给 max_pages。
+- user: 维护 JS 文档站的前端, category: 妙用, comment: 我们文档站全靠 JS 渲染，普通爬虫抓来全是空壳。它是开真浏览器顺侧边栏翻页抓的，代码块和表格都保住了，喂检索正合适。

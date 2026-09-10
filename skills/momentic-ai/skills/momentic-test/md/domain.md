@@ -1,0 +1,7 @@
+# momentic-test (`momentic-ai/skills/momentic-test`)
+
+## domain
+
+**domain**: 🧪 测试与质量
+
+**reason**: 专精浏览器 E2E/UI 自动化测试的创建、运行与维护

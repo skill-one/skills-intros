@@ -1,0 +1,10 @@
+# firecrawl-build-interact (`firecrawl/skills/firecrawl-build-interact`)
+
+## comments
+
+- user: 第一次用的新手, category: 坑, comment: 我一开始所有页面都上 /interact,又慢又费额度。其实静态页 /scrape 就够,先 scrape 抓不到再升级。
+- user: 爬虫工程师, category: 妙用, comment: 电商筛选结果要点开才显示,/scrape 拿不到。让 /interact 只负责点筛选按钮,点完再抓,一次搞定。
+- user: 后端老兵, category: 注意, comment: 动手前先按你的语言读一遍官方 source-of-truth 文档页,各语言参数不一样,我瞎猜参数白报错半天。
+- user: 数据组实习生, category: 妙用, comment: 翻页我让 /interact 只点「下一页」,抓数据的逻辑分开写。动作越窄越稳,流程不容易中途断掉。
+- user: SaaS 全栈开发, category: 注意, comment: 登录态的 persistent profile 别随便开,只有确实要跨会话保持登录才用,否则多一堆维护负担。
+- user: 自动化测试转岗, category: 启发, comment: 我本想拿它做开放式浏览器自动化,指南自己就提醒:那种需求该评估浏览器沙箱,别硬套 /interact。

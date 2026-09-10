@@ -1,0 +1,9 @@
+# gsap-utils (`greensock/gsap-skills/gsap-utils`)
+
+## blackbox
+
+**function**: 帮你写出正确的 GSAP 工具函数代码（动画里的取值、映射、随机、吸附等小工具），也能帮你检查和修正写错的地方。
+
+- input: 一个问题，如：「滚动条进度是 0~1，怎么换成 0~360 度的旋转角度？」, output: 一段可直接粘贴运行的代码，如 gsap.utils.mapRange(0, 1, 0, 360, progress)，并附一句说明
+- input: 一段你写好但有 bug 的 GSAP 动画代码, output: 修正后的代码，标出原来错在哪、为什么
+- input: 一个效果需求，如：「让 20 个方块，越靠中间的越大」, output: 完整的实现代码（用 distribute() 按位置分配缩放值），复制即用

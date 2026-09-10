@@ -1,0 +1,7 @@
+# baoyu-xhs-images (`jimliu/baoyu-skills/baoyu-xhs-images`)
+
+## tagline
+
+- 把文字变成会说话的图片卡片
+- 一键拆解内容，生成小红书爆款图
+- 12种风格，让干货自带流量

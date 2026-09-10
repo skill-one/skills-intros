@@ -1,0 +1,7 @@
+# baoyu-infographic (`jimliu/baoyu-skills/baoyu-infographic`)
+
+## tagline
+
+- 一图胜千言,复杂一眼懂
+- 长文变美图,干货不缩水
+- 21 种布局 × 22 种风格,随心出图

@@ -1,0 +1,13 @@
+# web-perf (`cloudflare/skills/web-perf`)
+
+## whitebox
+
+- 确认可用的 Chrome DevTools MCP 工具集 (浏览器/性能追踪工具是否齐备, 缺失则声明哪些指标无法采集)
+- navigate_page 打开目标 URL, 再启动 performance_start_trace (reload + autoStop) 录制一次冷加载性能轨迹
+- 用 performance_analyze_insight 逐项拆解核心指标: LCPBreakdown / CLSCulprits / RenderBlocking / DocumentLatency 等, 对照阈值给出 good/needs-improvement/poor 评级
+- list_network_requests + get_network_request 逐条检查请求: 渲染阻塞资源、请求链、缺失 preload/preconnect、缓存头、过大 payload
+- take_snapshot 抓无障碍树 (对比度/焦点/ARIA); 有代码库则追加框架与打包分析 (Phase 5), 最后输出 CWV 汇总表 + 按预估收益排序的修复清单
+
+- 驱动真实浏览器采集: 全部指标来自 Chrome DevTools MCP 的工具调用 (navigate_page / performance_start_trace / performance_analyze_insight / list_network_requests / get_network_request / take_snapshot), 而非凭经验推断; insight 名称随 DevTools 版本可能变化, 失效时从 trace 响应的 insightSetId 反查可用项
+- 检索优先于记忆: 指标阈值 (TTFB<800ms, LCP<2.5s, CLS<0.1 等) 和评分权重等具体数字, 强制从 web.dev 与 developer.chrome.com 官方文档实时检索, 避免训练数据过时
+- 量化 + 排序输出: 每条建议必须带预估节省毫秒数或具体文件 (如 'compress hero.png 450KB → WebP'), 预估影响为 0ms 的问题只记录不推荐, 已达优秀的站点直接说明无需优化

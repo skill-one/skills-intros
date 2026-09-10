@@ -1,0 +1,13 @@
+# firecrawl-research-index (`firecrawl/skills/firecrawl-research-index`)
+
+## whitebox
+
+- 解析查询, 判断题型 (指名单篇 / 方法家族 / 榜单最优 / 按作者机构过滤 / 对比对象), 选对应策略
+- 用 firecrawl_research_search_papers 对摘要语料做 HyDE 语义检索, 几乎所有查询的第一步; 结果单薄或雷同就换措辞 (邻近领域/竞品方法/数据集名) 重搜
+- 以强命中为种子, 用 firecrawl_research_related_papers 沿引文图扩展 (mode=similar/citers/references), 把单条命中扩成完整论文集
+- 关键约束需要坐实时才验证: read_paper 读正文片段确认 (方法确实用了/分数确实报了), inspect_paper 补全元数据
+- 输出按相关度排序的完整论文集 (宁多勿漏, 只剔除明确跑题的); 榜单类问题先走通用 web 搜索拿排名, 再映射回论文
+
+- HyDE 语义检索: 不靠关键词匹配, 对摘要语料 (主体为 PubMed/bioRxiv/medRxiv 生物医学文献, 辅以 arXiv CS/物理/数学预印本) 做语义向量检索; 依赖 Firecrawl 的 firecrawl_research_* MCP 工具或 firecrawl research CLI 子命令
+- 引文图结构扩展: related_papers 的 similar/citers/references 三种模式沿索引内引文关系走, 能触达语义搜索够不到的邻近方法与被引/引用论文——这是把一个答案变成一组答案的核心机制
+- 正文验证 + web 兜底: read_paper 只返回单篇正文片段, 用于证伪而非逐篇把关 (硬约束不满足才剔除); 语料答不了的事实 (排行榜/排名) 回退到 firecrawl_search/firecrawl_scrape 通用网页搜索抓取

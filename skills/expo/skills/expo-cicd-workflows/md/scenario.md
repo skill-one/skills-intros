@@ -1,0 +1,5 @@
+# expo-cicd-workflows (`expo/skills/expo-cicd-workflows`)
+
+## scenario
+
+每次发版，你还在手动打包、盯日志、深夜和流水线配置搏斗？我来写 Expo 的 EAS 工作流（自动打包/测试/发布的 YAML 文件），并按官方规范逐条校验，一次推送，全平台自动发版。🚀

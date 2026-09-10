@@ -1,0 +1,5 @@
+# dbs-xhs-title (`dontbesilent2025/dbskill/dbs-xhs-title`)
+
+## scenario
+
+笔记改了 8 遍还是没人点？内容不错，标题太平。痛点就在这：好内容被烂标题埋没。我从 75 个小红书验证过的爆款公式里，帮你匹配最合适的，起出让人想点开的标题。📝

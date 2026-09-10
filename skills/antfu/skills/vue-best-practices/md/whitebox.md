@@ -1,0 +1,13 @@
+# vue-best-practices (`antfu/skills/vue-best-practices`)
+
+## whitebox
+
+- 确认架构: 默认 Vue 3 + Composition API + `<script setup lang="ts">`; 若项目明确用 Options API/JSX, 则切换加载对应技能。
+- 读取 4 份必读参考 (reactivity / sfc / component-data-flow / composables) 并全程保持在上下文中; 动手前先产出组件地图 (每个组件一句职责 + props/emits 契约)。
+- 按基础规范实现: 最小化 ref/reactive 状态、其余用 computed 派生; SFC 按 script→template→style 排序; props 下行、事件上行; 有状态/副作用逻辑抽成 composable; 命中拆分条件即拆小组件。
+- 仅当需求出现时才按需加载可选参考 (slots/Teleport/Transition/指令/性能等); 性能优化严格放在核心功能正确并验证之后。
+- 逐条过最终自检清单, 通过后交付。
+
+- 纯指令集 + 按需知识库: 技能本体只是一套有序工作流指令, 知识来自同目录下的 markdown 参考文件 (4 份必读全程驻留上下文, 其余仅在需求出现时加载), 不调用任何外部模型或服务 API。
+- 客观化拆分门槛: 是否拆组件不凭主观判断, 用明确触发条件判定——编排/状态与大量展示标记混杂、3 个以上独立 UI 区块、模板块重复可复用; 非平凡功能必须先写组件地图再实现。
+- 类型化契约 + 阶段闸门: 数据流契约用 defineProps / defineEmits / InjectionKey 显式声明类型 (TypeScript); 可选特性 (slots、Teleport、KeepAlive 等) 有'需求触发才用'的规则约束, 结尾有强制自检清单兜底。

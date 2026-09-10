@@ -1,0 +1,5 @@
+# find-the-original-image (`useosint/skills/find-the-original-image`)
+
+## scenario
+
+网恋对象照片美得不像真人?聊天群疯传的"爆料图"真假难辨?被一张图骗过钱或感情的痛,我懂。我帮你搜遍 Yandex、谷歌等多家图库,顺着老图反查最早出处——盗图冒充、旧图翻新还是AI生成,一目了然,别再当接盘侠。🔍

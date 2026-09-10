@@ -1,0 +1,7 @@
+# create-auth-skill (`better-auth/skills/create-auth-skill`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 为 TS/JS 应用脚手架并实现认证 (登录/注册), 涉及框架集成、数据库与 API 配置, 属于典型开发编程场景。

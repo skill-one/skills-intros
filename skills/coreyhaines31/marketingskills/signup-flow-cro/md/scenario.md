@@ -1,0 +1,5 @@
+# signup-flow-cro (`coreyhaines31/marketingskills/signup-flow-cro`)
+
+## scenario
+
+📉 注册页正在漏人?用户填到一半就跑:字段太多、密码报错、验证卡壳,流量白白流失。我能逐项诊断注册流程,砍掉多余步骤和字段,把"填表"变成"入门",用更少摩擦换更高完成率。

@@ -1,0 +1,7 @@
+# react:components (`google-labs-code/stitch-skills/react:components`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 把设计稿转成模块化 React/TypeScript 组件代码, 属于前端开发

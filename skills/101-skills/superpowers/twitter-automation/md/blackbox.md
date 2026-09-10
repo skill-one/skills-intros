@@ -1,0 +1,11 @@
+# twitter-automation (`101-skills/superpowers/twitter-automation`)
+
+## blackbox
+
+**function**: 一句话:你说一声,我就能替你在 Twitter/X 上发推、发图、点赞、转推、发私信、关注人、查资料。
+
+- input: 一段文字:「新品上线了,前 100 名下单打 8 折 🎉」, output: 这条内容被发成一条推文,返回发布成功的推文链接
+- input: 一段文字 + 一张图的链接, output: 一条带图推文发布出去(也能配 AI 生成的图片/视频)
+- input: 一条推文的链接或 ID, output: 这条推文被点赞、被转推(也可按需删除你自己的推文)
+- input: 某个用户的用户名 + 一句话, output: 以私信(DM)形式发给对方,并自动关注该用户
+- input: 一个用户名,比如 OpenAI, output: 对方的账号资料:昵称、简介、粉丝数等

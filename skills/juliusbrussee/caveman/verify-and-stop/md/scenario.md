@@ -1,0 +1,5 @@
+# verify-and-stop (`juliusbrussee/caveman/verify-and-stop`)
+
+## scenario
+
+代码写完,却迟迟"不敢说做完了"?一验收就越查越多、边查边改,永远差最后一公里。我只做最小验证:跑关键检查,给出通过/失败/卡住的明确结论,查完即停,绝不顺手加活。✅

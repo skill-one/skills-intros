@@ -1,0 +1,7 @@
+# documentation-and-adrs (`addyosmani/agent-skills/documentation-and-adrs`)
+
+## domain
+
+**domain**: ✍️ 内容创作
+
+**reason**: 核心产出是 ADR、README、API 文档等技术文档, 本质是技术写作而非写代码

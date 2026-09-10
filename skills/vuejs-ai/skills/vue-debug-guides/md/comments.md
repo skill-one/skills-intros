@@ -1,0 +1,10 @@
+# vue-debug-guides (`vuejs-ai/skills/vue-debug-guides`)
+
+## comments
+
+- user: 三年前端, category: 注意, comment: 别报猜测的病因,要报看到的症状。我写"响应式坏了"只得到泛泛建议,改成"解构出来的对象不更新"立刻命中正解。
+- user: Vue2转3的后端, category: 坑, comment: 照 Vue 2 经验查 TransitionGroup 布局塌陷,白耗两小时。Vue 3 它不再默认包一层元素,列表外得自己补容器。
+- user: 做搜索框的前端, category: 坑, comment: v-model 接中文输入法,拼音还没上屏就触发搜索请求。要等组合输入结束再查询,不然接口被打爆还全是半截词。
+- user: SSR独立开发者, category: 注意, comment: 服务端渲染的单例 store 会把 A 用户的登录态串进 B 用户的请求,这种串数据 bug 极隐蔽,务必每个请求新建状态。
+- user: 第一次用的新手, category: 坑, comment: v-if 和 v-for 写在同一标签上,过滤不生效还数据错乱。先用 computed 过滤数组再渲染,别把两者混在一个元素。
+- user: 前端组长, category: 妙用, comment: 我拿它当上线前自查清单:watch 异步清理、Teleport 的 SSR 兼容、KeepAlive 内存泄漏,评审逐条对照拦过不少隐患。

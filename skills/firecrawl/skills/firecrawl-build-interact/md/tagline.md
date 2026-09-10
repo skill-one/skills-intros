@@ -1,0 +1,7 @@
+# firecrawl-build-interact (`firecrawl/skills/firecrawl-build-interact`)
+
+## tagline
+
+- 不止抓取网页, 更能让它动起来
+- 点击、填表、翻页, 一步到位
+- 抓不到的数据, 我替你点出来

@@ -1,0 +1,7 @@
+# ci-cd-and-automation (`addyosmani/agent-skills/ci-cd-and-automation`)
+
+## domain
+
+**domain**: 🛡️ 运维与安全
+
+**reason**: CI/CD 流水线本质是部署发布与质量门禁的自动化基础设施, 核心属 DevOps 运维范畴

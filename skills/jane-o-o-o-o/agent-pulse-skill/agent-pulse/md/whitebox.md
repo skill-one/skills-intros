@@ -1,0 +1,14 @@
+# agent-pulse (`jane-o-o-o-o/agent-pulse-skill/agent-pulse`)
+
+## whitebox
+
+- 根据用户问题查命令选择表, 选定 agent-pulse 子命令 (如 status/forecast/top)
+- 加 --json 及 --hours (默认 24, 周级用 168) 运行; 用户指定某工具时加 -P 过滤 (如 -P codex)
+- 解析 JSON 输出, 汇总关键字段: 会话数、tokens、工具/搜索调用、模型分布、预估成本
+- 涉及成本时按 skill 规则组合多个视图 (status + models + top --sort cost)
+- 需要报告/看板时调用 export / report / web 等命令生成产物
+
+- 以 CLI 为唯一事实来源: 优先运行命令而非读源码; 命令缺参数时用 --help 探测并适配旧版本; 未安装时经用户同意后 pip install agentpulse-cli
+- Windows 下先设 UTF-8 环境变量 (PYTHONUTF8 / PYTHONIOENCODING), 因输出含 emoji 和框线字符
+- 成本字段 total_cost_usd 是基于 Agent Pulse 本地模型定价表的估算值, 须同时报告成本与 token 量, 不自行编造数字
+- 无数据时的兜底: 先跑 doctor 诊断, 再放宽时间窗口到 --hours 168; 另有本地辅助脚本 scripts/run_agent_pulse_snapshot.py 做组合快照

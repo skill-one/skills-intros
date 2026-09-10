@@ -1,0 +1,5 @@
+# baoyu-image-gen (`jimliu/baoyu-skills/baoyu-image-gen`)
+
+## scenario
+
+想要配图不会画;找设计师又贵又慢,改稿改到崩溃?🎨 一句话告诉我想法,直接生成 2K 高清图:任意比例、参考图锁脸、批量出插画组图。你说,我画,几分钟交付。

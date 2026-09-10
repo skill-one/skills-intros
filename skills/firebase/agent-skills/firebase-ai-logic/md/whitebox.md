@@ -1,0 +1,13 @@
+# firebase-ai-logic (`firebase/agent-skills/firebase-ai-logic`)
+
+## whitebox
+
+- 接到任务后先按 skill.md 判定目标平台 (Web/Android/iOS/Flutter/Unity); 平台不支持则引导用户去 Firebase 官方文档
+- 确认前置条件: Node.js 16+ 与 npm, 再用 firebase-tools CLI 核对当前项目和已关联应用 (projects:list / apps:list)
+- 执行 npx firebase-tools init 选 AI Logic —— 该命令自动在 Firebase 控制台启用 Gemini Developer API (默认供应商, 有免费层)
+- 在客户端 SDK 里直接调 Gemini 模型实现功能: 纯文本、多模态输入 (图片/音频/视频/PDF)、多轮聊天、流式响应、结构化 JSON 输出
+- 上线前补两道保险: 必须配 App Check 防止配额被盗用; 模型名走 Remote Config 下发, 免改代码重新发版
+
+- 客户端直连架构: App 内通过 Firebase SDK 直接调 Gemini API, 不需要自建后端; 默认用 Gemini Developer API (免费层够原型验证), 只有企业级规模需求才切 Vertex AI Gemini API (需 Blaze 计费)
+- 大文件分流校验: 超过 20MB 的媒体不走 inline data (会报 HTTP 413), 自动改存 Cloud Storage for Firebase, 再把 URL 传给模型
+- 外部依赖清单: firebase CLI (npm firebase / npx firebase-tools)、Firebase Web SDK、Gemini API (默认 gemini-flash-latest, 禁用 gemini-1.5-flash; 文生图用 gemini-2.5-flash-image 需 Blaze)、可选的 Chrome 端 Gemini Nano 混合推理、以及 App Check (reCAPTCHA Enterprise) / Remote Config / Cloud Storage 三项 Firebase 服务

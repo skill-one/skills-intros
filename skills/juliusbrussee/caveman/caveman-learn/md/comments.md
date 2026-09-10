@@ -1,0 +1,10 @@
+# caveman-learn (`juliusbrussee/caveman/caveman-learn`)
+
+## comments
+
+- user: 第一次给 agent 做精简的新手, category: 坑, comment: 开口就说"全部优化", 被打回: 每条改动必须单独确认, 没有一键应用。当时嫌啰嗦, 到第三条我想反悔时才庆幸它是逐条问的。想一键清空的人先有心理准备。
+- user: 后端老兵, category: 妙用, comment: 先 dry-run 看具体 diff 和前后每轮 token 数; 应用后强制重测, 数字没降就自动回滚。等于给配置改动自带回归测试, 这套思路我直接搬进了自己的 review 流程。
+- user: 用 Max 套餐的独立开发者, category: 注意, comment: 报告里的花费是按 API 牌价折算的等值, 我在 Max 套餐上实际多花为零, 它会主动说明这点, 也拒绝帮我外推成月账单。想拿这数字当真金白银的, 歇了吧。
+- user: 写 skill 上瘾的效率控, category: 坑, comment: 把常跑的部署流程蒸馏成 skill 以为稳赚, 它坚持先开对照实验: 开/关各满 5 个会话才判。结果判了 regressed——skill 每轮都占开头 token, 命中又少, 净亏, 删了。
+- user: 给团队定用法规范的技术负责人, category: 启发, comment: 报告把"没 commit 的会话"只列为观察项, 并明确说无提交≠浪费。我本想按这指标裁团队的用法, 被这句劝住。它拒绝把相关说成因果, 比我先一步清醒。
+- user: 运维老哥, category: 妙用, comment: 每轮重复贴的背景被搬进 cavemem, 原处只留一行指针。稳: 写完它真去 recall 验证能召回, 召不回就连记忆带原文整体回滚。上下文瘦了, 信息一条没丢。

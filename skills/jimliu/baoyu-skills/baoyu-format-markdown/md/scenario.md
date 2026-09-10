@@ -1,0 +1,7 @@
+# baoyu-format-markdown (`jimliu/baoyu-skills/baoyu-format-markdown`)
+
+## scenario
+
+写好的文章是一大坨文字,没有标题、不分段,重点淹没在字海里,读者划两下就走了 📄➡️👋
+
+我帮你:**加标题、分段、标重点、排清单**,内容一个字不改,只动排版——让文章一眼看懂、专业耐读,输出即用的成稿。

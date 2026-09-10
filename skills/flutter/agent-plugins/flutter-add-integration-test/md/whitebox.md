@@ -1,0 +1,13 @@
+# flutter-add-integration-test (`flutter/agent-plugins/flutter-add-integration-test`)
+
+## whitebox
+
+- 配置项目: 向 pubspec.yaml 添加 integration_test 与 flutter_test 依赖, 在应用入口注入 enableFlutterDriverExtension(), 给关键控件埋 ValueKey。
+- MCP 探索: launch_app 启动应用, get_widget_tree 摸清控件树与可用的 Key/Text/类型, 再用 tap/enter_text/scroll 实际试跑用户路径。
+- 编写测试: 在 integration_test/ 目录创建 <name>_test.dart (WidgetTester API + 断言), 并创建 test_driver/integration_test.dart 宿主脚本调用 integrationDriver()。
+- 执行: 运行 flutter drive, 按目标平台分派 (本机 Android / Chrome 需另起 chromedriver / 无头用 web-server / 云端走 Firebase Test Lab)。
+- 反馈循环: 按输出报错修正 (超时→查无限动画, 控件找不到→补 scrollUntilVisible), 重跑直到通过。
+
+- Key 定位机制: 依赖应用代码预埋的 ValueKey, 测试用 find.byKey 精确锚定控件, 配合 expect(findsOneWidget / findsNothing) 断言可见性, 避免依赖易碎的文本匹配。
+- 先探后写机制: 依赖 Dart/Flutter MCP server 工具链 (launch_app、get_widget_tree、tap、enter_text、scroll、waitFor、get_health), 先交互验证路径再落成静态测试; ListView/SliverList 懒加载控件须先 scrollIntoView 强制挂载才能操作。
+- 帧驱动 + 错误驱动迭代: 每次交互后 pumpAndSettle 等动画结束再断言; 执行引擎为 flutter drive + integrationDriver() (legacy 场景退回 flutter_driver 的 driver.waitFor/tap/scroll API), 按 PumpAndSettleTimedOutException→排查无限动画、控件未找到→scrollUntilVisible 的规则循环直至通过。

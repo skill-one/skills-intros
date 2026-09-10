@@ -1,0 +1,7 @@
+# ui-styling (`nextlevelbuilder/ui-ux-pro-max-skill/ui-styling`)
+
+## domain
+
+**domain**: 🎨 设计多媒体
+
+**reason**: 核心是 UI/界面设计与视觉呈现（组件美化、主题、海报与品牌视觉）

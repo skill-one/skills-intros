@@ -1,0 +1,7 @@
+# popup-cro (`coreyhaines31/marketingskills/popup-cro`)
+
+## domain
+
+**domain**: 📈 商业运营
+
+**reason**: 弹窗 CRO 核心是营销转化: 留资、折扣、挽留、增长, 面向业务与客户

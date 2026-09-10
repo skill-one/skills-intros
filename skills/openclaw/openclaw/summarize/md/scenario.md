@@ -1,0 +1,5 @@
+# summarize (`openclaw/openclaw/summarize`)
+
+## scenario
+
+视频太长、文章太多、收藏夹从没打开过?😱 1小时播客听完就忘,PDF堆满下载夹… 把链接或文件丢给我,几分钟还你核心要点,想细看哪段再展开。🧾

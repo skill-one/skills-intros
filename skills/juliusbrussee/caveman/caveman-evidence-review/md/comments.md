@@ -1,0 +1,10 @@
+# caveman-evidence-review (`juliusbrussee/caveman/caveman-evidence-review`)
+
+## comments
+
+- user: 刚接手老项目的后端新人, category: 坑, comment: 上来就让它查成本, 它直接停下让我先 caveman login 选项目. 提前登录好、确认当前项目, 免得白等一轮.
+- user: 精打细算的创业公司 CTO, category: 妙用, comment: 让它按 session 分组搜 traces, 一次就抓到某个 agent 失控重试烧钱的循环, 还给了对照窗口对比, 比我翻后台快多了.
+- user: 负责对账的财务, category: 注意, comment: 它给的三个数不能相加: 实测成本、已验证省钱、预估可省. 我直接加总做预算被它拦下, 口径分开才敢报给老板.
+- user: 隐私敏感的安全工程师, category: 妙用, comment: 默认只看元数据、不看 prompt 内容, 结论还带 trace id, 我把报告直接贴进周会文档也不怕泄露用户数据.
+- user: 运维老哥, category: 坑, comment: 搜出来 0 条我以为是零成本, 其实空结果只是"当前无信号". 按它提醒换时间窗重搜, 才对上账.
+- user: 天天想省 token 的算法工程师, category: 注意, comment: 想让它顺手停掉烧钱的实验, 它只提建议不动手, 得走 caveman-manage. 记住它是只读审查, 别指望它执行.

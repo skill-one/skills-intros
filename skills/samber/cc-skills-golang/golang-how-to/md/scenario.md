@@ -1,0 +1,5 @@
+# golang-how-to (`samber/cc-skills-golang/golang-how-to`)
+
+## scenario
+
+半夜 Go 服务 panic,翻文档、改代码、查 CVE,越查越乱?🤯 我一次调齐排查、安全、测试整套技能,直接定位根因、给出地道修法。写 Go 的每个环节——开发、调试、审计、搭项目——我都有一套指南兜底。

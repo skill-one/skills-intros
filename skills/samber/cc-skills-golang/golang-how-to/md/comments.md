@@ -1,0 +1,10 @@
+# golang-how-to (`samber/cc-skills-golang/golang-how-to`)
+
+## comments
+
+- user: 十年 Go 后端老兵, category: 妙用, comment: 我只说「写个 gRPC 服务」, 它自动把 grpc、testing、error-handling 三个子技能一起拉上。手写时我总漏错误处理那套。
+- user: 第一次用的新手, category: 坑, comment: 没装 gopls 就开工, 跳转定义、诊断全是哑的。先 go install golang.org/x/tools/gopls@latest, Claude Code 再设 ENABLE_LSP_TOOL=1。
+- user: 安全审计工程师, category: 坑, comment: 我用 godig vulns 查包, 见 CVE 就催全组升级, 白忙一场——它不管你的代码是否真走到漏洞路径, 判实际影响得跑 govulncheck。
+- user: 带团队的技术负责人, category: 妙用, comment: 入职老仓库先跑 /golang-how-to configure, 把团队必备技能写进 CLAUDE.md 提交上去。新人 clone 下来 AI 就按我们规矩干活, 不用口头交代。
+- user: Python 转 Go 两年, category: 启发, comment: 它从不单发技能: 上并发必配 context, 说优化先给 benchmark。我学着成对补课, 改掉了拍脑袋优化的老毛病。
+- user: 接手祖传项目的倒霉蛋, category: 注意, comment: go.mod 里 replace 指向公司 fork, 我照 pkg.go.dev 文档查行为总对不上。godig 只看公开发布版, 本地 fork 只有 gopls 看得见。

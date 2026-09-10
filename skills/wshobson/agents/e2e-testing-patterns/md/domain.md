@@ -1,0 +1,7 @@
+# e2e-testing-patterns (`wshobson/agents/e2e-testing-patterns`)
+
+## domain
+
+**domain**: 🧪 测试与质量
+
+**reason**: 专注 Playwright/Cypress 的 E2E 自动化测试, 提升测试稳定性与发布信心

@@ -1,0 +1,7 @@
+# self-improving-agent (`zhaono1/agent-playbook/self-improving-agent`)
+
+## tagline
+
+- 每次失败, 沉淀为可验证的经验
+- 改进不靠承诺, 靠证据说话
+- 纠正一次, 未来行为就此改变

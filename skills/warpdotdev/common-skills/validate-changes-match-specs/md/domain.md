@@ -1,0 +1,7 @@
+# validate-changes-match-specs (`warpdotdev/common-skills/validate-changes-match-specs`)
+
+## domain
+
+**domain**: 🧪 测试与质量
+
+**reason**: 核心是校验分支/PR 实现是否符合规格, 属代码审查与质量检查范畴

@@ -1,0 +1,13 @@
+# update-skill (`warpdotdev/common-skills/update-skill`)
+
+## whitebox
+
+- 创建或定位 skill 目录, 新建/打开其中的 SKILL.md (YAML frontmatter + markdown 正文)
+- 写 frontmatter: name 用 kebab-case, description 说明做什么 (what) + 何时用 (when), 动词开头、第三人称
+- 按参考结构写正文: 标题+概述 → Overview → 主内容 → Best Practices → 示例, 简洁可裁剪
+- 按 200 行阈值定文件组织: ≤200 行全留 SKILL.md; 超出则把细节拆到 references/ 子目录并在 SKILL.md 链接
+- 运行 skills-ref validate ./my-skill 校验; 若未安装该工具, 用 WebSearch 获取相关上下文
+
+- frontmatter 校验规则: name 仅限小写字母/数字/连字符; description 必须非空且含 what+when, 避免空泛表述 (skill 是否被发现的关健)
+- 渐进式披露: 详细参考材料 (schema、大量示例) 移入 references/ (如 references/best-practices.md), SKILL.md 只保留核心工作流程序, 保持结构灵活可裁剪
+- 外部依赖: skills-ref 参考库 (GitHub agentskills/agentskills) 做 frontmatter 合法性与命名规范校验; 未安装时回退 WebSearch

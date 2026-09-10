@@ -1,0 +1,7 @@
+# slides (`nextlevelbuilder/ui-ux-pro-max-skill/slides`)
+
+## tagline
+
+- 把想法,做成会说话的幻灯片
+- 数据可视化,说服力看得见
+- 结构文案图表,一页到位

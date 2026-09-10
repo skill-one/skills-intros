@@ -1,0 +1,12 @@
+# fingerprint-ci-gate (`liarjsdev/liarjs-skills/fingerprint-ci-gate`)
+
+## whitebox
+
+- CI 镜像备好 Node 22+ 与 Chromium (--shm-size=1g, 保留浏览器 sandbox), 执行扫描: `npx liarjs@0.3 --headless --json scan.json`
+- liarjs 自行拉起一个带全新临时 profile 的 Chrome 跑指纹检测, 32 项 JS 层检查 + 8 项跨层检查 (后者请求 liarjs.dev/api/net.json), 结果写入 scan.json, 结束后删除临时 profile
+- 设了 --min-score 就套绝对门槛: 分数低于门槛则 exit 1 使任务失败; 再跑 `diff baseline.json scan.json`, 只打印两个已存扫描之间状态变化的检查项
+- 按退出码判定 (0 干净 / 1 低于门槛 / 2 出错如找不到浏览器), scan.json 作为构建产物上传, 供事后排障
+
+- 双闸门校验: 绝对门槛 (--min-score, 低于即 exit 1) + 基线 diff (两份保存的 JSON 对比, 只报状态迁移项); 有些检查永远过不了的场景 (机房 IP 必挂 tz) 优先用 diff
+- 扫描引擎 liarjs (npx 调用的 npm CLI, 零运行时依赖) 自动启停自带全新 profile 的 Chromium; --offline 只跑 32 项 JS 层检查、零出网, 8 项跨层检查可经 --endpoint 指向自部署的同款 Cloudflare Worker
+- 确定性控制: 锁死 liarjs 版本 (规则随 Chrome 大版本变动, 不锁则分数会无故漂移); 基线必须与任务同 headless/headed 模式采集, 且在独立 commit 中刷新并把 diff 写进 commit message

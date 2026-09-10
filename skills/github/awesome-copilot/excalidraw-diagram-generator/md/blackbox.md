@@ -1,0 +1,9 @@
+# excalidraw-diagram-generator (`github/awesome-copilot/excalidraw-diagram-generator`)
+
+## blackbox
+
+**function**: 你说一句"帮我画个××图", 我给你一个可以直接打开、还能继续手动编辑的 Excalidraw 图表文件。
+
+- input: 一句话: "画一个用户注册流程的流程图, 从填邮箱到注册完成", output: 一个 user-registration-flow.excalidraw 文件, 拖进 excalidraw.com 就能看到带箭头的流程图, 每个框、每根线都能手动改
+- input: 一段文字: 描述你的系统有哪些模块, 比如"前端、网关、服务器、数据库、缓存", output: 一个系统架构图文件, 各模块用方框摆放好、连接线标好数据流向, 打开即用可改
+- input: 一句话: "把『机器学习』拆成思维导图, 包含监督学习、无监督学习、深度学习等分支", output: 一个思维导图文件, 中心主题 + 放射状分支, 分支颜色区分, 可直接在 Excalidraw 里继续添加节点

@@ -1,0 +1,7 @@
+# firecrawl-lead-research (`firecrawl/firecrawl-workflows/firecrawl-lead-research`)
+
+## tagline
+
+- 会前 10 分钟, 摸清对方底牌
+- 一份简报, 让你比客户更懂客户
+- 开场即主场, 赢在见面之前

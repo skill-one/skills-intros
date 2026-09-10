@@ -1,0 +1,7 @@
+# extension-email-calendar-events (`caffeinelabs/skills/extension-email-calendar-events`)
+
+## tagline
+
+- 会议邀约, 一键直达每个日历
+- 活动你定, 邀请邮件我发
+- 改期取消, 谁都不会错过

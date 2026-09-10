@@ -1,0 +1,10 @@
+# api-design-principles (`wshobson/agents/api-design-principles`)
+
+## comments
+
+- user: 后端老兵, category: 坑, comment: 我早先把接口全写成 /createUser、/deleteUser 这种动词路径, 后改成名词资源: POST /users、DELETE /users/123, URL 立刻自解释。
+- user: 第一次设计 API 的新手, category: 坑, comment: 别学我: 第一版没加版本号, 后来字段一改老客户端全崩。从第一天就写 /api/v1/, 以后才有退路。
+- user: 前端转全栈, category: 坑, comment: GraphQL 没配 DataLoader 就上线, 列表页一个请求触发上百次查库 (N+1), 页面卡爆。动手前先把它配好。
+- user: 技术负责人, category: 妙用, comment: 我把它当 code review 检查表: 分页、限流、状态码、错误格式统一, 逐条过。团队 API 风格不齐的毛病就这么治好的。
+- user: 移动端开发, category: 妙用, comment: App 流量敏感, REST 总是多拉一堆用不上的字段。按指南换 GraphQL 按需取数后, 列表页返回体积小了一半。
+- user: 独立开发者, category: 注意, comment: 小项目也别省限流。我的 API 没设 rate limit, 被爬虫打到宕机一次才长记性, 照指南默认配上即可。

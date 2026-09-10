@@ -1,0 +1,7 @@
+# vue-debug-guides (`vuejs-ai/skills/vue-debug-guides`)
+
+## tagline
+
+- Vue 报错别慌, 一针见血快速修复
+- 从诡异警告到崩溃, Bug 无处遁形
+- 精准定位疑难杂症, 还你稳定应用

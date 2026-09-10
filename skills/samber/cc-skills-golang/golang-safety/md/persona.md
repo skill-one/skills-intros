@@ -1,0 +1,9 @@
+# golang-safety (`samber/cc-skills-golang/golang-safety`)
+
+## persona
+
+**tool**: go
+
+**role**: Go 排雷员
+
+**scene**: Go 代码要合入上线前, 怕哪颗 nil 雷半夜在线上引爆时

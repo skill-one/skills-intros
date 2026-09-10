@@ -1,0 +1,13 @@
+# baoyu-url-to-markdown (`jimliu/baoyu-skills/baoyu-url-to-markdown`)
+
+## whitebox
+
+- 环境准备: 定位 SKILL.md 目录为 {baseDir}, 解析 bun 运行时, node_modules 缺失则 bun install, 得到 CLI 入口 baoyu-fetch
+- 读偏好: 按优先级查 EXTEND.md (项目 > XDG > 用户主目录); 找不到则阻塞式问用户 (媒体下载策略/输出目录/保存位置), 生成后才继续
+- 构造输出路径: 从 URL 提取 domain 和 kebab-case slug, 生成 {base_dir}/{domain}/{slug}/{slug}.md 传给 --output, 冲突时追加时间戳
+- 抓取转换: 运行 baoyu-fetch <url>, 经 Chrome CDP 驱动 Chrome 渲染页面, 自动选适配器 (x/youtube/hn/generic), 提取内容输出干净 markdown
+- 质量门: 逐次检查落盘 markdown 是否完整 (headless 渲染差异可能静默丢失内容); 若开启媒体下载, 图片/视频落到 imgs/、videos/ 并重写链接
+
+- 真实浏览器渲染而非纯 HTTP 拉取: baoyu-fetch 通过 Chrome DevTools Protocol (CDP) 驱动 Chrome 加载页面, JS 执行后才提取; 遇登录/验证码用 --wait-for interaction 轮询等待用户在浏览器完成交互后自动继续 (默认等待 10 分钟)
+- 站点适配器体系: X/Twitter、YouTube 字幕、Hacker News 各有专用解析器, 通用页面走 Defuddle 库提取正文, 均产出干净 markdown (可选 --format json); 默认自动探测, 可 --adapter 强制指定
+- 配置分层与优先级: EXTEND.md 仅支持 download_media / default_output_dir 两键, 映射为 CLI 参数 (--download-media 等); 取值优先级 CLI 参数 > EXTEND.md > 默认值, 输出路径算法由 agent 侧构造

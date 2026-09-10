@@ -1,0 +1,7 @@
+# turnstile-spin (`cloudflare/skills/turnstile-spin`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 核心是在现有前后端中集成 Cloudflare Turnstile 人机验证, 属于 API/框架集成开发

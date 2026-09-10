@@ -1,0 +1,7 @@
+# public-relations (`coreyhaines31/marketingskills/public-relations`)
+
+## tagline
+
+- 不买流量,让媒体追着报道你
+- 把你的故事,写进行业头条
+- 媒体关系,趁早经营才复利

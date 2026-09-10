@@ -1,0 +1,10 @@
+# using-agent-skills (`addyosmani/agent-skills/using-agent-skills`)
+
+## comments
+
+- user: 独立开发者, category: 妙用, comment: 需求说不清时, 把模糊想法原样丢给它就行, 它会路由到 interview-me 先问你几个问题, 比我自己憋需求文档再返工省事得多.
+- user: 第一次用的新手, category: 坑, comment: 看到 16 步生命周期以为每个任务都要全跑, 一个小 bug 折腾了一下午. 文里写了 bug 修复只需调试→测试→评审三步, 先读这句再开工.
+- user: 后端老兵, category: 妙用, comment: 让它先列 ASSUMPTIONS 再动手, 我逐条核对后发现它对我们的表结构理解错了, 开工前纠正, 一行代码没白写.
+- user: 技术负责人, category: 注意, comment: 它会带着量化依据反驳你, 这不是故障. 但团队里 junior 第一次遇到会慌, 提前打好招呼: 听完反驳再决策, 有理有据可以推翻它.
+- user: 测试工程师, category: 启发, comment: "Verify, don't assume" 改了我验收 AI 产出的方式: 现在只认测试输出和构建日志这类证据, 不认它嘴上说"应该没问题".
+- user: 运维老哥, category: 妙用, comment: 把文末十条 failure modes 打印贴墙上, 拿来 review 同事的 PR 也好用——过度设计、乱动无关代码、不写验证全在列.

@@ -1,0 +1,7 @@
+# caveman-discover (`juliusbrussee/caveman/caveman-discover`)
+
+## tagline
+
+- 让每一分 AI 开销,都有名字
+- 看清哪个工作流在烧钱
+- 别让所有账单,挤进一个桶

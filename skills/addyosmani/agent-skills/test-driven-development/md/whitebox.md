@@ -1,0 +1,13 @@
+# test-driven-development (`addyosmani/agent-skills/test-driven-development`)
+
+## whitebox
+
+- 先探查仓库: 读构建文件 (package.json / go.mod / Makefile 等)、README 和 CI 配置, 确定本项目真实的测试命令与框架
+- RED: 先写一个必然失败的测试; 修 bug 时则先写复现测试, 失败即确认 bug 存在
+- GREEN: 写最少量的代码让测试转绿, 不做过度设计
+- REFACTOR: 在测试保持绿色的前提下清理实现 (改名、去重、抽取), 每步重构后重跑测试确认无破坏
+- 收尾验证: 用仓库自己的全量测试命令跑完整套件, 确认无回归
+
+- 栈发现机制: 从仓库自身痕迹 (构建清单、CI workflow、既有测试的命名与位置) 推导测试基础设施, 而非套用默认命令; 示例用 TypeScript, 但流程对任何语言一视同仁
+- 证明机制 (Prove-It): 立即通过的测试证明不了任何事, 必须先红后绿; bug 修复以「先失败的复现测试」为证 — 修复前失败 = bug 确认, 修复后通过 = 修复生效且防回归
+- 测试质量控制: 断言行为产出而非内部调用 (测试状态不测交互); 测试替身偏好序为 真实实现 > fake > stub > mock; 按金字塔分布 (小测试约 80%); 浏览器类改动追加 Chrome DevTools MCP 做运行时核验 (console / network / DOM / 截图), 复杂 bug 可派 subagent 独立写复现测试

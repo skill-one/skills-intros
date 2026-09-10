@@ -1,0 +1,10 @@
+# golang-samber-ro (`samber/cc-skills-golang/golang-samber-ro`)
+
+## blackbox
+
+**function**: 帮你在 Go 项目里处理"数据随时间不断到来"的场景——实时推送、定时任务、多来源合并、自动重试等,新写、改写或排错,交付能直接跑的代码。
+
+- input: 一段用 goroutine + channel 手写的 Go 事件处理代码(贴出来或给文件路径), output: 改写成一条清晰管道的同功能 Go 代码,可直接编译运行
+- input: 一句话需求,如:"定时拉接口数据,合并 WebSocket 推送,失败自动重试 3 次", output: 一份能直接跑的 Go 源码 + 简短使用说明
+- input: 一段用了数据流库但会内存泄漏、吞掉错误的代码, output: 指出问题所在位置,并给出修好的代码
+- input: 一个选择题,如:"多个消费者共享一个数据源,用 Publish 还是 Replay?", output: 明确的结论 + 可复制的示例代码

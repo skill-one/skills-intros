@@ -1,0 +1,13 @@
+# seedance-2-5-image-to-video (`genmedia-labs/skills/seedance-2-5-image-to-video`)
+
+## whitebox
+
+- 触发后先用一句话向用户确认任务: 把一张静态图片动画成视频, 并拿到可公开访问的图片 URL
+- 按四字段 schema 组装 JSON: prompt (必填), image (必填), duration (默认 5, 整秒 4~30), generate_audio (默认 true), 不传任何多余字段
+- 通过 Bash 执行 runcomfy run bytedance/seedance-2.5/image-to-video/720p --input '<json>' --output-dir <绝对路径> 提交任务
+- CLI 轮询状态接口直至 in_queue → in_progress → completed, 再调 result 接口取回视频链接
+- 把 *.runcomfy.net / *.runcomfy.com 的输出文件下载到 --output-dir, 返回成品
+
+- 四字段 schema 严格校验: 只有 prompt/image/duration/generate_audio, 传额外字段即 schema mismatch (退出码 65); 分辨率固定 720p, 画幅跟随输入图片, 无 seed 字段
+- 外部依赖: 本地 RunComfy CLI (npm i -g @runcomfy/cli), 认证走 runcomfy login 或 RUNCOMFY_TOKEN; prompt 以 JSON 字符串经 --input 传输, CLI 不做 shell 展开, 无注入面
+- 远端模型 API: CLI POST 到 model-api.runcomfy.net 的 bytedance/seedance-2.5/image-to-video/720p 端点, 轮询 /v1/requests/{id}/status, 取 /v1/requests/{id}/result; 计费 $0.35/秒, 退出码 75 (超时/429) 可重试, 69 为上游 5xx

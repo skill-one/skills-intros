@@ -1,0 +1,10 @@
+# server-side-conversion-tracking (`autonnel/autonnel-skills/server-side-conversion-tracking`)
+
+## comments
+
+- user: 独立站投放操盘手, category: 妙用, comment: 我每周只盯一个数：带 fbclid 的订单占比。上周从 82% 掉到 40%，查出是市场部新上的跳转链接丢了参数，当天修掉。比等 CPA 变差再排查快多了。
+- user: 踩过坑的独立站卖家, category: 坑, comment: 我上来就接了 CAPI，跑一个月匹配质量还是很差——落地页根本没抓 fbclid，服务端事件只能靠邮箱哈希去匹配。回头从抓取那步重做才见效，顺序真不能跳。
+- user: 自己部署的运维, category: 坑, comment: 部署到 Workers 后没检查 cron 触发器，队列里的转化全没发出去，还不报任何错，一周后才从广告后台看出事件断崖。现在每次发版都手动过一遍验证清单。
+- user: 电商团队负责人, category: 启发, comment: 上线前先跟老板对齐：各平台报数加总一定超过真实订单，是各家归因抢功不是 bug。只拿自己的订单表当真相，平台数据看 7 天以上的稳定比例，省了无数扯皮。
+- user: 第一次做事件去重的开发者, category: 坑, comment: 加了服务端上报后购买数翻倍，我第一反应是关掉服务端那路。后来才懂正确做法是两边带同一个 event id 去重——浏览器端本来就会漏，删服务端等于白干。
+- user: 后端老兵, category: 注意, comment: 上报一开始写在结算接口里，广告平台 API 一慢支付就超时，挪进队列重试才稳。另外邮箱电话哈希前要小写去空格、电话转 E.164，错了不报错，匹配率只是悄悄掉。

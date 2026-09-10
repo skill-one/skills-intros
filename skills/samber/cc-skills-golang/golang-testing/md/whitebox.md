@@ -1,0 +1,13 @@
+# golang-testing (`samber/cc-skills-golang/golang-testing`)
+
+## whitebox
+
+- 按请求选定工作模式: Write (写新测试) / Review (评审 PR 测试 diff) / Audit (审计存量测试) / Debug (排查失败或 flaky 测试)
+- Read/Glob/Grep 读取被测 Go 源码, 确定测试策略 (单测 vs 集成测试, 并发代码加 goleak)
+- 用 gotests 生成表驱动测试骨架, 再逐个补充边界条件、错误路径和并行声明 (t.Parallel)
+- 通过 Bash 运行 go test 验证: 默认带 -race 竞态检测, 必要时 -coverprofile 生成覆盖率
+- 测试全绿后交付; 若失败则按 Debug 流程复现 → 隔离断言 → 溯源根因
+
+- 模式路由: 四种模式各有一套固定流程 — Write 顺序遍历被测代码; Review 只聚焦 diff; Audit 最多并行 3 个子代理分头审计 (单测质量/集成隔离/goroutine 竞态) 再合并成一份缺口报告; Debug 严格按复现→隔离→溯源顺序
+- 测试生成: gotests (go install github.com/cweill/gotests/gotests@latest) 脚手架表驱动用例, 强制每个 case 带 name 传给 t.Run; testify 仅作断言辅助而非替代标准库; mock 只 mock 接口不 mock 具体类型
+- 验证与规范强制: go test 全家桶 (-race / -coverprofile / -tags=integration 隔离集成测试) 经 Bash 执行; 并发包用 goleak.VerifyTestMain 抓 goroutine 泄漏; golangci-lint 的 thelper/paralleltest/testifylint 规则自动把关

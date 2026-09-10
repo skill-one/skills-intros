@@ -1,0 +1,13 @@
+# firecrawl-build-interact (`firecrawl/skills/firecrawl-build-interact`)
+
+## whitebox
+
+- 先判断: 页面能直接读取就留在 /scrape, 不升级 (升级规则兜底)
+- 确认用户项目语言 (Node/Python/Rust/Java/Elixir/cURL), 先读对应的 source-of-truth 文档再写代码
+- 配置 FIRECRAWL_API_KEY (必需); 自部署场景可选配 FIRECRAWL_API_URL
+- 先用 /scrape 抓取; 页面需要点击、填表、翻页、登录等操作时, 才升级到 /interact
+- 把 /interact 限定在解锁数据所需的最小浏览器动作内, 完成多步交互流程
+
+- 升级判据 (解析需求): 只需读取 → /scrape; 页面必须被操作 (点击/表单/分页/登录门控) → /interact; 完全开放式浏览器自动化 → 建议改用 browser sandbox
+- 依赖外部服务 Firecrawl (firecrawl.dev): 托管请求凭 FIRECRAWL_API_KEY 鉴权, FIRECRAWL_API_URL 指向自部署实例; /interact 支持登录感知流程与持久 profile (仅跨会话需要登录态时才用)
+- 文档校验: 集成代码以 docs.firecrawl.dev 各语言 source-of-truth 页面为唯一依据编写, 避免 API 用法偏差

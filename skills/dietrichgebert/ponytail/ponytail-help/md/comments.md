@@ -1,0 +1,10 @@
+# ponytail-help (`dietrichgebert/ponytail/ponytail-help`)
+
+## comments
+
+- user: 第一次用的新手, category: 坑, comment: 我以为 /ponytail-help 能开启这个模式，结果只弹一张说明卡，什么都没变。真要开启得敲 /ponytail，help 只是查手册用的。
+- user: 接锅祖传仓库的维护者, category: 妙用, comment: 看帮助卡才发现有 ponytail-audit。接手老项目先跑一遍，直接拿到按优先级排好的删除清单，比自己翻代码找冗余快多了。
+- user: 管十台机器的运维, category: 注意, comment: 说 "stop ponytail" 只关当次会话，下个会话默认 full 又自动开。想永久关，要把 config.json 里 defaultMode 设成 "off"。
+- user: Mac 版本落后的老用户, category: 坑, comment: /plugin 提示不认识，我以为是插件装坏了来回重装。其实是 Claude Code 本体太旧，升级后重启才认出这条命令。
+- user: 双工具混用党, category: 注意, comment: 在 Codex 里敲 /ponytail 没反应，查卡片才知道那边要用 @ponytail，两个工具前缀不一样，换环境记得换写法。
+- user: 三人小组的技术组长, category: 启发, comment: 组员代码里散落的 "ponytail: 有更简做法" 注释，我用 ponytail-debt 收成清单每周批量还债，重构从随口抱怨变成可跟踪任务。

@@ -1,0 +1,7 @@
+# convex-auth (`get-convex/agent-skills/convex-auth`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 技能是为 Convex 应用集成认证 (passkey/OAuth), 属于框架集成与代码开发

@@ -1,0 +1,13 @@
+# fixing-motion-performance (`ibelick/ui-skills/fixing-motion-performance`)
+
+## whitebox
+
+- 触发 `/fixing-motion-performance <file>` (不带参数时, 则将全部规则作为约束套用到本会话后续的动画开发)
+- 按规则清单扫描文件中的动画代码: 布局动画、scroll 监听、rAF 循环、will-change、blur/滤镜、布局测量读写
+- 按优先级校验 9 类规则, critical 类最先强制执行 (never patterns、机制选择、工具边界)
+- 对每处违规输出三件套: 引用原始代码行 + 一句话说明危害 + 代码级具体修复
+- 所有修复留在现有技术栈内、不迁移库, 交付审查报告
+
+- 优先级驱动的规则清单审查: 9 个规则类别按影响排序 (never patterns → 工具边界), critical 类优先强制; 非默认方案必须注明成立的约束 (表面积大小/时长/交互需求)
+- 渲染成本分层模型: 属性按 composite (transform/opacity) → paint → layout 分级; 修复方向是『降级技术而非删除动画』, 如 width→transform、scroll 事件→scroll-timeline、逐帧读写→FLIP 批量测量
+- 栈内约束、零外部依赖: 审查完全基于内置规则与代码样例, 不调用外部工具/库/模型; 硬性规定只在现有动画系统 (CSS/WAAPI/Motion/rAF/GSAP) 内改, 除非用户明确要求否则不迁移动画库

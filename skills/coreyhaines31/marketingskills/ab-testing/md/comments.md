@@ -1,0 +1,10 @@
+# ab-testing (`coreyhaines31/marketingskills/ab-testing`)
+
+## comments
+
+- user: 增长负责人(日活几千的SaaS), category: 注意, comment: 低流量做不了A/B:基线转化1%想测出10%提升,每组要15万样本。先攒流量,或做更激进的改动。
+- user: 第一次跑实验的产品经理, category: 坑, comment: 第3天看B组领先就提前停了,复查发现是误判。样本量定好就别中途偷看,早期领先多半是噪音。
+- user: 数据分析师, category: 妙用, comment: 定价页实验我把退款率设成护栏指标:B组选择率涨、退款也涨,果断叫停。主指标赢不等于真赢。
+- user: 独立开发者, category: 启发, comment: 给实验待办按ICE打分才发现,我原想先做的那条Ease只有2分,排到最后。光排个顺序就省出两周。
+- user: 电商运营, category: 坑, comment: 一口气改了标题、按钮、配图,转化涨了但说不清谁的功劳。一次只测一个变量,慢但每个实验都有结论。
+- user: 增长工程师, category: 妙用, comment: 每个实验多写一行"为什么成/败",半年攒出自家模式库。新落地页直接套验证过的套路,不用从零猜。

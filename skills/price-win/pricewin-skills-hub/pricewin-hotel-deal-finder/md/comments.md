@@ -1,0 +1,10 @@
+# pricewin-hotel-deal-finder (`price-win/pricewin-skills-hub/pricewin-hotel-deal-finder`)
+
+## comments
+
+- user: 出差狗, category: 妙用, comment: 同城市换个日期搜第二次只要几十秒, 我连搜三个日期段, 直接锁定哪天最便宜, 省下的差价够吃顿饭。
+- user: 第一次用的新手, category: 坑, comment: 第一次搜城 3 分钟没输出, 我以为卡死就 Ctrl+C 重跑, 结果从头再发现一遍。其实首搜就是慢, 耐心等就好。
+- user: 东南亚背包客, category: 注意, comment: 显示价是美元换算的, 我到 Agoda 下单看到越南盾价格略有出入, 属正常汇率差, 别误以为标错价。
+- user: 会点爬虫的运营, category: 坑, comment: 某次 Agoda 没出结果, 我让 AI 手动开浏览器补抓, 直接触发反爬被封 IP。缺哪个源就原命令重跑一次。
+- user: 精算比价党, category: 妙用, comment: 一句『东京新宿附近 8 月 12–15 号两人 100 刀内』就够, 城市、日期、人数它全自己补全, 不用来回问答。
+- user: Windows 老电脑用户, category: 注意, comment: 机器没装 node 时安装命令直接报错, 先装 Node.js 再跑; 装好后搜酒店全程不再需要任何 API key。

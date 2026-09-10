@@ -1,0 +1,5 @@
+# replicas-agent (`replicas-group/skill/replicas-agent`)
+
+## scenario
+
+深夜改完代码,还得开 PR、同步 Slack、更新 Linear、截图给同事演示——琐事不断打断心流。我常驻云端工作区,你说一句,我来跑:提 PR、发通知、起服务给你预览链接,活干完还附上录屏证据。你睡觉,我交活。

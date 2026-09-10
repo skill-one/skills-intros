@@ -1,0 +1,10 @@
+# golang-project-layout (`samber/cc-skills-golang/golang-project-layout`)
+
+## comments
+
+- user: 后端老兵, category: 妙用, comment: 最意外的价值是劝退:我想给千行小工具套六边形架构,它先问我项目多大,最后给了平铺结构。防过度设计比生成目录值钱。
+- user: 第一次用的新手, category: 坑, comment: 架构和依赖注入两问我随手选的,生成后不合口味,service 接法整个重写。这两问决定后面每个文件,答之前先想清楚。
+- user: 运维老哥, category: 妙用, comment: 迁移被建成 cmd/migrate 一次性命令,发版跑个 K8s Job 就完事,不用进容器敲 SQL;日志走 stdout,接采集器零改动。
+- user: 开源库作者, category: 注意, comment: 先建好仓库再 go mod init,模块名直接抄仓库地址。我手滑写了本地名,推上 GitHub 后 import 路径全错,全项目替换重发了一版。
+- user: 多仓库项目负责人, category: 妙用, comment: 三个模块互相依赖,以前在 go.mod 写 replace 指向本地路径,一提交就污染同事;换 go.work 后 replace 只在本地生效,联调干净。
+- user: Java 转行来的后端, category: 启发, comment: 我习惯一上来就 controller/service/dao 全套,它先问我项目多大,百行脚本只给平铺。目录结构该跟着问题规模走,不是仪式。

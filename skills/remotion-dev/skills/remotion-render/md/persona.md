@@ -1,0 +1,9 @@
+# remotion-render (`remotion-dev/skills/remotion-render`)
+
+## persona
+
+**tool**: npx remotion render
+
+**role**: 成片导出师
+
+**scene**: Remotion 代码写完、急着导出成片时

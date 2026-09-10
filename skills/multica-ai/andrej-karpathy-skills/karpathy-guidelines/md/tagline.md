@@ -1,0 +1,7 @@
+# karpathy-guidelines (`multica-ai/andrej-karpathy-skills/karpathy-guidelines`)
+
+## tagline
+
+- 想清再写,删繁就简
+- 只改该改的一行
+- 目标可验证,结果才可信

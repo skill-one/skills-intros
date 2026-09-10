@@ -1,0 +1,10 @@
+# browser-testing-with-devtools (`addyosmani/agent-skills/browser-testing-with-devtools`)
+
+## comments
+
+- user: 第一次用的新手, category: 注意, comment: 先在 .mcp.json 里配好 chrome-devtools 这个 MCP 再开工。我以为是开箱即用, 结果整套都跑不起来, 卡在这一步半天。
+- user: 后端老兵, category: 妙用, comment: 让 agent 开着网络监视器复现 bug, 直接看到前端把字段名传错、接口返回 4xx。以前靠日志反推, 现在请求响应原文都在眼前。
+- user: 独立接单开发者, category: 妙用, comment: 改样式前截 before、改完刷新截 after, 两张一对比, 间距错位一眼现形。交付客户前我先自己这么过一遍, 返工少了很多。
+- user: 兼修内部系统的运维老哥, category: 坑, comment: 内部系统要登录态, 我用 --autoConnect 接了日常 Chrome, 它能看见我网银邮箱等所有标签页。现在单开只登测试账号的浏览器身份。
+- user: 测试工程师, category: 启发, comment: 把复杂 bug 写成含步骤、预期结果、网络和控制台检查项的测试计划交给 agent 跑。回头看我原来的 bug 单, 缺了太多可验证的断言。
+- user: 十年前端, category: 注意, comment: 让它读 localStorage 里的 token 排查登录会被拒绝, 这是安全底线不是故障。改让它查非敏感的应用状态变量就行。

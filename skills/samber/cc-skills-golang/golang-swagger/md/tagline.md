@@ -1,0 +1,7 @@
+# golang-swagger (`samber/cc-skills-golang/golang-swagger`)
+
+## tagline
+
+- 注释即文档,一键生成 Swagger UI
+- 文档随代码而生,永不失真
+- 让接口文档,成为唯一的真相

@@ -1,0 +1,7 @@
+# flutter-setup-localization (`flutter/agent-plugins/flutter-setup-localization`)
+
+## tagline
+
+- 三步配置, 你的 App 会说世界语
+- Flutter 出海, 本地化零踩坑
+- 你写功能, 我让应用对话全世界

@@ -1,0 +1,13 @@
+# expo-api-routes (`expo/skills/expo-api-routes`)
+
+## whitebox
+
+- 在 app/api/ 下创建 `+api.ts` 文件, 文件路径直接映射为 API 端点 (如 users/[id]+api.ts → /api/users/:id)
+- 按 HTTP 方法导出同名函数 (GET/POST/PUT/DELETE), 从标准 Request 对象读取 query/headers/JSON body 并校验
+- 需要密钥时用 process.env 读服务端环境变量, 需要外部服务时用标准 fetch 代理调用
+- 返回标准 Response.json(), 配合 try/catch 输出正确的 HTTP 状态码 (200/400/401/500)
+- 本地 `npx expo serve` 验证, `eas deploy` 部署, 用 `eas env:create` 注入生产密钥
+
+- 文件即路由: Expo Router 按 `+api.ts` 后缀生成端点, 方括号 `[id]` 生成动态路径参数, 导出的函数名即 HTTP 方法, 零配置约定优先
+- 运行时约束驱动写法: 部署目标是 EAS Hosting (Cloudflare Workers), 因此强制使用 Web 标准 API (Request/Response/URL/fetch/crypto.subtle), 禁用 Node fs 和原生模块, CPU 密集任务受 30 秒超时限制; 需要持久化时接云端数据库 (D1/Turso/Supabase 等)
+- 密钥与客户端隔离: API key 只存在于服务端 (本地 .env / 生产 eas env), 客户端只 fetch 相对路径 /api/*, 配合 CORS 头和鉴权中间件模式控制访问

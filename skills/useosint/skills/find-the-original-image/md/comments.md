@@ -1,0 +1,10 @@
+# find-the-original-image (`useosint/skills/find-the-original-image`)
+
+## comments
+
+- user: 第一次用的新手, category: 坑, comment: 我只把整图丢给 Google,没结果就当原创。换 Yandex 搜才发现这张脸被三个交友账号盗用——一个引擎查不到不算数,至少跑三个。
+- user: 被网恋骗过的过来人, category: 妙用, comment: 对方自称CEO的"本人照"出现在四十个不相关网站,是素材库模特——假身份本身就是查证结论,不用再纠结原图出处。
+- user: 做背调的HR, category: 注意, comment: 四个引擎都查不到≠照片没问题:新图、登录墙内、AI生成的图都搜不到。零匹配时我会转去查生成痕迹,而不是写"照片为本人"。
+- user: 事实核查编辑, category: 注意, comment: 找到最早版本当天就要截图并存档链接——引擎索引会删页,上周的命中这周可能就没了。TinEye 的最旧日期还要用网页存档核对。
+- user: 自由摄影师, category: 妙用, comment: 维权时用 Bing 在图上直接框选水印局部重搜,省掉下载裁剪再上传。点开命中页看图片URL文件名,常带年月和主题的命名线索。
+- user: 律所调查员, category: 注意, comment: 把客户原图传给商业引擎,等于向对方暴露"有人在查它"。敏感图先裁掉人脸再搜。人脸引擎查他人有合规风险,我只在授权案件里用。

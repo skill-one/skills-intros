@@ -1,0 +1,7 @@
+# extension-camera (`caffeinelabs/skills/extension-camera`)
+
+## tagline
+
+- 一个钩子, 让网页看见世界 📷
+- 拍照、切换、容错, 开箱即用
+- 不必造轮子, 摄像头一键就绪

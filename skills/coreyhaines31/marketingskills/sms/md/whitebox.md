@@ -1,0 +1,13 @@
+# sms (`coreyhaines31/marketingskills/sms`)
+
+## whitebox
+
+- 触发后先查 .agents/product-marketing.md 等上下文文件, 从中提取业务信息, 只追问缺失项
+- 合规前置校验: A2P 10DLC 注册状态、opt-in 机制等, 阻塞项最先标出
+- 按业务模式给 SMS 流程排 ROI 优先级 (电商默认弃购挽回第一)
+- 逐条设计 sequence: 触发条件 + 延时 + 文案 (标注字符数) + CTA + 受众分段
+- 输出平台选型建议 + KPI 基准/A-B 测试队列 + 合规页脚与 STOP/HELP 模板
+
+- 渠道分流: 查内置场景决策表判定 SMS vs email — 弃购/交易类即时消息走 SMS, 长内容走 email; 准则: 能等 24 小时的消息不发短信
+- 计费编码校验: 每条文案按分段计费模型换算 — GSM-7 160 字符 = 1 段, emoji 触发 UCS-2 降为 70 字符/段, 以此约束文案长度与成本
+- 外部依赖: 深层规则与模板按需加载自 references/ (compliance.md, sequence-templates.md, platforms.md) 和 tools/REGISTRY.md; 平台经各集成文档对接, Klaviyo/Brevo 有原生 MCP

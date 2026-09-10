@@ -1,0 +1,12 @@
+# extension-email-calendar-events (`caffeinelabs/skills/extension-email-calendar-events`)
+
+## whitebox
+
+- 管理员调用 addCalendarEvent，先经 AccessControl 校验 #admin 权限
+- 用随机种子经 Uuid.generateV4 生成 uid，calendarEvents.add 把活动（含组织者、参会者及角色）存入状态
+- 管理员调用 sendEventInvitation(uid)，用 get 从状态取出该活动
+- 调用 EmailClient.sendCalendarEvent，为每位参会者构建 iCalendar 文件并作为附件发送邀请邮件
+
+- 状态管理：活动存于 List + uidMap (Text→Nat 索引) 的 State 中，随迁移链 (migrations) 初始化；提供 iter/reverse 按新旧顺序遍历，支持 add/update/addAttendees/removeAttendees/cancel/delete 全套 CRUD
+- 邀请投递：依赖 extension-email 的 sendCalendarEvent，按 CalendarEventMethod (#request/#publish/#cancel) 构建 iCalendar 附件逐人发送；目前只发不收，不支持 RSVP 回执
+- 外部依赖：mops 包 caffeineai-email-calendar-events、caffeineai-email、caffeineai-authorization，以及 mo:core 的 Random/Map/Set/Uuid 等基础库

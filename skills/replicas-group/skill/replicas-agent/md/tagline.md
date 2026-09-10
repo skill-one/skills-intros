@@ -1,0 +1,7 @@
+# replicas-agent (`replicas-group/skill/replicas-agent`)
+
+## tagline
+
+- 你在睡觉, 我在云端写代码
+- 不只写代码, 还跑给你看
+- 一句需求, 从编码到上线全交付

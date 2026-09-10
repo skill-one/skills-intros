@@ -1,0 +1,7 @@
+# nestjs-best-practices (`kadajett/agent-nestjs-skills/nestjs-best-practices`)
+
+## tagline
+
+- 40 条军规, 让 NestJS 稳上生产
+- 架构·安全·性能, 一次写对
+- 从模块到部署, 最佳实践全掌握

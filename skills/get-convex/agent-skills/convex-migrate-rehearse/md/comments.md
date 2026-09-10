@@ -1,0 +1,10 @@
+# convex-migrate-rehearse (`get-convex/agent-skills/convex-migrate-rehearse`)
+
+## comments
+
+- user: 十年全栈老兵, category: 妙用, comment: 意外之喜: 新 schema 推 preview 被拦时, 报错会列出老数据里违规的行, 等于迁移前免费做了次数据体检, 脏数据提前现形。
+- user: 第一次用的新手, category: 坑, comment: 手快先改了 schema.ts 再建 preview, 导快照时全表报不符新 schema。正确顺序: 先用旧代码建副本、导完数据, 再动 schema。
+- user: 免费档独立开发, category: 注意, comment: preview 是付费档功能, 得先在后台把 Preview Deploy Key 导出为 CONVEX_DEPLOY_KEY, 光 login 建不了; 免费档只能退回个人 dev 灌快照练。
+- user: 运维老哥, category: 坑, comment: 把 deploy --preview-name 敲成 convex dev, 全推到个人 dev, 副本还停在旧 schema, 我却当验证过了。import 没有 --preview-name, 得用 --deployment 指名。
+- user: 副业独狼程序员, category: 注意, comment: snapshot.zip 是真实用户数据, 差点被我 commit 进仓库: 加 .gitignore, 用完就删。preview 约 5 天自动过期, 演练别拖太久。
+- user: 踩过线上事故的后端, category: 启发, comment: 回滚=恢复快照, 快照之后写入的数据全丢, 所以我把 promote 压到低峰半小时窗口。上线前要重新要到一句「可以」, 演练时的同意不算数。

@@ -1,0 +1,5 @@
+# caveman-setup (`juliusbrussee/caveman/caveman-setup`)
+
+## scenario
+
+每月 AI 账单只涨不降,却不知道钱烧在哪次调用? 🔥 我把你的代码接入 Caveman 网关:每次模型请求自动记录用量与成本,代码零改动,几分钟上仪表盘。看清账单,才是省钱第一步。

@@ -1,0 +1,13 @@
+# expo-ui (`expo/skills/expo-ui`)
+
+## whitebox
+
+- 判断需求落点: 按优先级走三层清单——先通用组件 (从 @expo/ui 根导入, 一棵树跑 iOS/Android/Web), 缺件或要平台行为才降级到 @expo/ui/swift-ui 或 jetpack-compose; 已在用社区库的走 drop-in replacements 迁移路径
+- 按需查阅 references/ 下对应文档 (universal.md / swift-ui.md / jetpack-compose.md / drop-in-replacements.md), 必要时用唯一许可的工具 node expo-ui/scripts/list-components.js 查组件清单
+- 生成组件树: 每棵树必须包在 Host 里 (Host 只从 @expo/ui 根导入); BottomSheet/Switch/Slider/Picker/List/Menu/FieldGroup 默认用 @expo/ui, 不用 Reanimated、@gorhom/bottom-sheet 或 RN 内置件
+- 应用边界校验: 大数据/未知长度列表改用 FlatList/FlashList (List 只渲染原生分组行, 不虚拟化); 平台专属树放 components/ 下的 .ios.tsx/.android.tsx (绝不放 app/ 路由目录), 否则会运行时崩溃
+- 一切顺利即交付; 若遇报错或文档过时, 用 npx submit-expo-feedback 把具体可执行的问题上报给 Expo
+
+- 三层选择机制: universal → platform-specific → drop-in replacements, 从上往下停在第一个满足需求的层; 代价不对称——universal 一份代码全平台, platform-specific 要维护两棵树并拆成 .ios.tsx/.android.tsx 或按 Platform.OS 分支
+- 原生渲染桥接: @expo/ui 把 React 声明式树映射为真原生 UI——iOS 编译为 SwiftUI, Android 编译为 Jetpack Compose, Web 走 react-native-web/react-dom; Host 是所有树的必需容器节点, universal 层要求 Expo SDK 56+ 且可在 Expo Go 直接运行 (无需自定义构建)
+- 属性契约校验: 替代品 API 有严格契约——如 BottomSheet 只认 isPresented/onDismiss, 误用 @gorhom 的 isOpen/onChange 会静默失效不报错; List 是原生分组行 (类似 iOS 设置页) 而非虚拟化列表, 每个 ListItem 都是 JS 线程上的原生节点且不回收, 大数据必须换 FlatList/FlashList

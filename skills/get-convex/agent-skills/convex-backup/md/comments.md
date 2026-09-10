@@ -1,0 +1,10 @@
+# convex-backup (`get-convex/agent-skills/convex-backup`)
+
+## comments
+
+- user: 独立开发者·刚上线第一个产品, category: 坑, comment: 之前跑完 export 就当有备份了, 从没恢复过。半年后误清一张表, 拿备份导入却是 0 行, 等于白备份。现在定期跑恢复演练才安心。
+- user: SRE 老哥, category: 妙用, comment: 最实用的是它按"能忍多少数据丢失"反推备份节奏, 我照着定了 CI 每日导出 + 保留 30 天, 报告直接当灾备材料交差。
+- user: 白嫖免费版的独立开发者, category: 注意, comment: 恢复演练需要 Preview Deploy Key (付费版功能)。没开通的话它会改用个人 dev 环境演练并在报告里注明。先确认这点再开工, 免得中途卡住。
+- user: 做用户上传功能的后端, category: 坑, comment: 应用存了用户上传文件, 第一次演练忘了加 --include-file-storage: 表数据完好, 图片全丢。有文件存储就务必带上这个参数。
+- user: 被泄露事故吓过的运维, category: 注意, comment: 备份 zip 是完整真实数据, 我 git add . 差点把它提交进仓库。演练完立刻删本地副本, 并提前把备份文件加进 .gitignore。
+- user: 后端老兵, category: 启发, comment: "没恢复过的备份只是希望, 不是备份"这句点醒我。以前演练走过场, 现在恢复后必核对行数 + 抽查真实记录, 0 行就判失败。

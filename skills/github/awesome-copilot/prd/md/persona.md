@@ -1,0 +1,9 @@
+# prd (`github/awesome-copilot/prd`)
+
+## persona
+
+**tool**: markdown
+
+**role**: 需求分析师
+
+**scene**: 脑子里有产品想法、却说不清需求时

@@ -1,0 +1,7 @@
+# mcp-apps-builder (`mcp-use/mcp-use/mcp-apps-builder`)
+
+## tagline
+
+- 让 AI 无缝连上你的应用
+- 从想法到上线,一站搞定
+- 少踩坑,快交付,代码更可靠

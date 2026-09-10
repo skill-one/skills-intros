@@ -1,0 +1,7 @@
+# security-requirement-extraction (`wshobson/agents/security-requirement-extraction`)
+
+## tagline
+
+- 把威胁翻译成可落地的安全需求
+- 安全不空谈, 条条需求可测试可验收
+- 从业务到代码, 让安全有迹可循

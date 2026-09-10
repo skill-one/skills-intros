@@ -1,0 +1,5 @@
+# baoyu-article-illustrator (`jimliu/baoyu-skills/baoyu-article-illustrator`)
+
+## scenario
+
+你写了篇干货文章,读者却嫌"全是字"——抽象概念讲不清,想配图又不会画,网上找的图风格混乱还不贴切。我能读懂文章结构,找出最该配图的位置,自动生成风格统一、贴合内容的插图,一键插入正文。让文章一眼看懂。📊

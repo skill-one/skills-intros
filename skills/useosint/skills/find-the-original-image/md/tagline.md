@@ -1,0 +1,7 @@
+# find-the-original-image (`useosint/skills/find-the-original-image`)
+
+## tagline
+
+- 每张图都有出处，我帮你找到最早那张
+- 从一张截图，追到真相源头
+- 旧图新炒、盗图营销，原形毕露

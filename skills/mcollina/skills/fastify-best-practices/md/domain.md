@@ -1,0 +1,7 @@
+# fastify-best-practices (`mcollina/skills/fastify-best-practices`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: Fastify Node.js 后端框架与 REST API 开发, 典型编程场景

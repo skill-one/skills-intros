@@ -1,0 +1,5 @@
+# higgsfield-game-generation (`higgsfield-ai/skills/higgsfield-game-generation`)
+
+## scenario
+
+想做个游戏，却不会编程、不会画画、不会配乐？找外包动辄数万、等数月，点子只能烂在备忘录里。我能把你的想法直接变成可玩的网页游戏——美术、音乐、3D角色全由我生成，最后交付一个点开即玩的链接。🎮

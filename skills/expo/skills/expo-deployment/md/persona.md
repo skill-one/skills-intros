@@ -1,0 +1,9 @@
+# expo-deployment (`expo/skills/expo-deployment`)
+
+## persona
+
+**tool**: eas
+
+**role**: App 上架员
+
+**scene**: App 代码写完、正愁怎么送进 App Store 和应用商店时

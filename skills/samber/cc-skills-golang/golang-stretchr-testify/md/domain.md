@@ -1,0 +1,7 @@
+# golang-stretchr-testify (`samber/cc-skills-golang/golang-stretchr-testify`)
+
+## domain
+
+**domain**: 🧪 测试与质量
+
+**reason**: 专为 Go 的 testify 测试框架打造: 断言、mock、测试套件的编写与审查

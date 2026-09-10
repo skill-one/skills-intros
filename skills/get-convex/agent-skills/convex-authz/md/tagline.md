@@ -1,0 +1,7 @@
+# convex-authz (`get-convex/agent-skills/convex-authz`)
+
+## tagline
+
+- 身份来自登录,不来自传参
+- 每条数据,只准它的主人碰
+- 扫描、加固、验证,越权漏洞无处藏

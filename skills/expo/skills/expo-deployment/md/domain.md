@@ -1,0 +1,7 @@
+# expo-deployment (`expo/skills/expo-deployment`)
+
+## domain
+
+**domain**: 🛡️ 运维与安全
+
+**reason**: 核心是部署发布: App 构建上架、版本管理、CI/CD, 而非写代码

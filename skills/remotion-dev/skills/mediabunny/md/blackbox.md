@@ -1,0 +1,9 @@
+# mediabunny (`remotion-dev/skills/mediabunny`)
+
+## blackbox
+
+**function**: 给我一个音/视频文件，我帮你读出它的基本信息：时长多久、画面多大。
+
+- input: 一个音频文件（如 song.mp3、录音.wav）, output: 这段音频的时长，如「3 分 42 秒」
+- input: 一个视频文件（如 clip.mp4）, output: 这个视频的时长，如「1 分 15 秒」
+- input: 一个视频文件（如 clip.mp4）, output: 画面尺寸，如「1920 × 1080」

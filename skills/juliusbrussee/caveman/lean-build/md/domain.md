@@ -1,0 +1,7 @@
+# lean-build (`juliusbrussee/caveman/lean-build`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: lean-build 专为功能开发设计: 新特性、产品切片、集成, 严控范围、复用现有代码、验收即停, 正是写代码/集成的核心场景。

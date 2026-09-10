@@ -1,0 +1,10 @@
+# signup-flow-cro (`coreyhaines31/marketingskills/signup-flow-cro`)
+
+## comments
+
+- user: 独立开发者, category: 坑, comment: 我全用 placeholder 当字段标签,用户一开始输入说明就消失,不知道这栏干嘛,填一半就跑了。改回常显 label,完成率肉眼可见地涨。
+- user: B2B SaaS增长负责人, category: 妙用, comment: 渐进式承诺是杀招:第一步只收邮箱,第二步才要密码姓名,公司规模挪去 onboarding。完成率从四成提到六成,邮箱域名还能自动带出公司名。
+- user: 第一次管注册转化的新手, category: 注意, comment: 先备好字段级数据再问:完成率多少、哪一栏开始流失。没埋点它只能给通用建议。另外它只管注册前的流程,注册后的 onboarding 得另找技能。
+- user: 电商产品经理, category: 妙用, comment: 我们原来下单前强制注册,结账流失惨重。改成游客结账为默认、买完再可选建号,移动端转化当周就反弹。指南里这条电商模式对我们真对症。
+- user: 前端兼做增长, category: 注意, comment: 密码框三个细节别漏:别禁用粘贴、规则提前亮出来别等报错才说、实时显示满足了几条。只改这三点,密码这步的报错率掉了一半多。
+- user: 数据分析师, category: 启发, comment: 以前只盯整体完成率,它让我按字段记聚焦、报错,结果发现电话号码栏干掉了三成注册——不是流程长,是那一栏在劝退人。现在砍字段有据可依。

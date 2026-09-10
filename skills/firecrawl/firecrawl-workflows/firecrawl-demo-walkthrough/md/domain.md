@@ -1,0 +1,7 @@
+# firecrawl-demo-walkthrough (`firecrawl/firecrawl-workflows/firecrawl-demo-walkthrough`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 核心是用 Firecrawl 浏览器自动化走查产品流程并产出结构化走查报告, 归属浏览器自动化。

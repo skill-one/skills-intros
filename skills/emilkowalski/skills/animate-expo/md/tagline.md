@@ -1,0 +1,7 @@
+# animate-expo (`emilkowalski/skills/animate-expo`)
+
+## tagline
+
+- 该动则动,一帧不浪费
+- 动效不卡顿,真机见真章
+- 指尖有反馈,手感即品质

@@ -1,0 +1,13 @@
+# create-auth-skill (`better-auth/skills/create-auth-skill`)
+
+## whitebox
+
+- 扫描项目: 读 next.config / svelte.config / drizzle.config.ts / prisma/schema.prisma / package.json, 自动识别框架、数据库+ORM、已有认证库、包管理器
+- 用 AskQuestion 一次问齐剩余规划题 (登录方式、功能插件、UI 风格等), 扫描已确定的直接跳过, 条件性追问 (选了 OAuth 才问服务商, 选了邮箱密码才问邮箱验证)
+- 把答案汇总成 markdown 清单式实施计划, 请用户确认——未确认不进入实现阶段
+- 按决策树分三条路径实现 (新建/从旧库迁移/加装): 安装 better-auth → 写 auth.ts + auth-client.ts → 配对应框架的路由 handler → 跑 CLI 生成并迁移表结构 → 加插件 → 建 UI 页面
+- 收尾: 指导剩余人工步骤 (OAuth 凭证、部署环境变量、流程测试)
+
+- 配置文件探测: 以 drizzle.config.ts 的 dialect 字段判库类型、package.json 依赖判断驱动 (drizzle-orm/node-postgres→pg 等), 用探测结果预填问题默认值
+- Better Auth 技术栈: 核心库 better-auth + 按需 scoped 包 (@better-auth/passkey/sso/stripe 等); 插件成对配置 (server 端进 plugins 数组 + client 端进 createAuthClient); 数据库经 adapter 接入 (Prisma / Drizzle / pg / mysql2 / mongodb); 邮件走 Resend 或 console.log mock
+- 生成与校验: npx @better-auth/cli generate/migrate 建表 (Drizzle 再接 drizzle-kit, 生产环境用 generate+migrate 而非 push), 加插件后需重跑; 附安全检查清单 (secret 32+ 位、trustedOrigins、rate limit、CSRF 不关闭) 和 troubleshooting 表兜底

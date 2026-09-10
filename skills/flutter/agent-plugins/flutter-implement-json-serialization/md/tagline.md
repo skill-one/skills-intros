@@ -1,0 +1,7 @@
+# flutter-implement-json-serialization (`flutter/agent-plugins/flutter-implement-json-serialization`)
+
+## tagline
+
+- JSON 变模型，手写更可控
+- 类型安全零踩坑，序列化一次到位
+- 大接口不卡屏，后台解析稳如磐石

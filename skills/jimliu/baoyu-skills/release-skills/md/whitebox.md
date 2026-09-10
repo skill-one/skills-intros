@@ -1,0 +1,13 @@
+# release-skills (`jimliu/baoyu-skills/release-skills`)
+
+## whitebox
+
+- 探测配置: 按固定优先级扫描版本文件 (package.json → pyproject.toml → Cargo.toml → marketplace.json → VERSION), 用 glob 找 changelog 并按文件名后缀识别语言, 同时检查远程是否 GitHub、gh 是否已认证
+- 分析变更: 取最近一个 tag, 用 git log/diff 将提交按约定式提交类型分类 (feat/fix/docs…), 并检测 BREAKING CHANGE 标记
+- 定版本并落盘: 按规则选 bump (用户 flag > breaking→major > feat→minor > 其余→patch), 为每个 changelog 生成对应语言的条目, 变更按模块分组逐个提交, 再更新版本文件
+- 用户确认: 询问版本号、是否 push、是否发布 GitHub Release 三项, 未确认前不产生任何发布动作
+- 执行发布: 创建 release commit → git tag -a 附注标签 (写入 release notes) → 确认后 push, 最后用 gh release create/edit 发布
+
+- 文件探测与语言推断: 版本文件按生态优先级顺序扫描自动识别项目类型; changelog 语言由文件名后缀规则推断 (无后缀=en, `_CN` 大写 / `.zh` 小写 / `.zh-CN` 地区变体), `.releaserc.yml` 存在时可整体覆盖默认探测与 hooks
+- 提交语义解析驱动决策: 解析 conventional commit 类型与 BREAKING CHANGE (标题前缀或正文/footer) 决定版本 bump 级别; 用 gh pr view 对比 PR 作者与 repo owner 识别第三方贡献者, 各语言 changelog 统一追加 `(by @username)`
+- 外部依赖与安全传递: 依赖 git (log/diff/tag/push) 与 gh CLI (需安装且已认证, 用于 release list/pr 归属/release 发布); 多行 release notes 一律写入 UTF-8 临时文件, 经 `git tag -F` / `gh release --notes-file` 传入, 不内联进 shell; GitHub Release 仅在用户确认推送且 gh 可用时才创建

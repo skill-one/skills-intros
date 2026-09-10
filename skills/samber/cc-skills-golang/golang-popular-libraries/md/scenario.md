@@ -1,0 +1,5 @@
+# golang-popular-libraries (`samber/cc-skills-golang/golang-popular-libraries`)
+
+## scenario
+
+选 Go 库像拆盲盒:文档漂亮,用半年才发现无人维护、依赖一堆坑。📚 我按你的需求筛库:标准库够用就直接用,不够才推荐久经生产验证的选择,并核查维护状态、许可证与使用量,不让你踩坑。

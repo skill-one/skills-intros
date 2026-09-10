@@ -1,0 +1,7 @@
+# gh-cli (`github/awesome-copilot/gh-cli`)
+
+## tagline
+
+- 一行命令, GitHub 全搞定
+- 不碰网页, 代码照常起飞 🚀
+- 仓库 PR Issue, 张口就来

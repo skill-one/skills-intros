@@ -1,0 +1,10 @@
+# graphic-overlays (`heygen-com/hyperframes/graphic-overlays`)
+
+## comments
+
+- user: 播客剪辑师, category: 妙用, comment: Whisper 把品牌名听错,我在第 5 步直接改词、保留原时间戳,后面每张卡文字全对。先修稿再出卡,一次渲染就过。
+- user: 第一次剪视频的新手, category: 坑, comment: 我以为它能把视频剪短、调顺序,结果源视频原样播完,只往上叠图形卡。想剪片子先用剪辑软件,这工具只管'包装'。
+- user: 程序员转技术UP主, category: 坑, comment: 最后一张卡 endSec 超出了视频时长,渲染出来结尾一段黑屏。把所有卡片时间和总时长都夹到 metadata 的 duration 内就好了。
+- user: 知识区UP主, category: 注意, comment: 同一句话挂 15 秒没人看得下去,长卡要拆成数据块或分步动画。语速慢的闲聊按低密度算,卡少点节奏反而顺。
+- user: 企业内训视频制作者, category: 注意, comment: 跑流程前先 npx hyperframes doctor。我机器没装 ffmpeg,直接卡在转写那步,补装后一路畅通,别白排一次队。
+- user: 纪录片访谈编导, category: 启发, comment: 卡数按时长和信息密度推,不靠感觉。我以前凭情绪加花字,现在先读一遍稿子定节奏,成片的呼吸感比手工排的好。

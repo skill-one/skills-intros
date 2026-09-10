@@ -1,0 +1,5 @@
+# page-cro (`coreyhaines31/marketingskills/page-cro`)
+
+## scenario
+
+广告费在烧,访客看完就走,注册购买寥寥无几?你的页面可能在"漏钱"💸 把网址发给我,我逐项排查标题、按钮、信任感,给出立刻能上手的优化清单,让流量真正变成订单。

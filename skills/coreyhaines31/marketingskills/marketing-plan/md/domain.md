@@ -1,0 +1,7 @@
+# marketing-plan (`coreyhaines31/marketingskills/marketing-plan`)
+
+## domain
+
+**domain**: 📈 商业运营
+
+**reason**: 技能是制定 12 个月营销增长计划 (AARRR 模型/GTM), 属于市场营销与增长范畴

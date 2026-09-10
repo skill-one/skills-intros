@@ -1,0 +1,10 @@
+# firecrawl-demo-walkthrough (`firecrawl/firecrawl-workflows/firecrawl-demo-walkthrough`)
+
+## comments
+
+- user: 竞品调研产品经理, category: 妙用, comment: 把三家竞品 URL 逐个丢给它跑 focus:pricing,定价页结构拆解半小时凑齐对比表,不用自己一个个截屏记笔记。
+- user: 独立开发者, category: 坑, comment: 我没交代就让它走登录后的后台,结果它只在公开页转了一圈。进受保护区域必须明说授权并给测试账号,不然它止步于注册页。
+- user: 第一次做UX审计的新手, category: 注意, comment: 默认会拆首页、注册、定价、文档、后台、支持六大块,只关心某一环就指定 focus,不然整份输出很长,反而抓不到重点。
+- user: B2B SaaS 增长运营, category: 启发, comment: 上线前让它走了一遍自家新用户流程,才发现注册第二步要填的信息定价页从没提过——文档把我们习以为常的断点全摆了出来。
+- user: 后端老兵, category: 注意, comment: 先配好 FIRECRAWL_API_KEY 才能跑;它最多追问三个问题,准确 URL 和想看的流程一次给足,它就直接开工不打断你。
+- user: 技术文档写手, category: 妙用, comment: 最实用的是末尾 Pages Visited 清单:新用户会经过哪些页面一目了然,我直接拿来当新手引导文档的目录骨架。

@@ -1,0 +1,10 @@
+# insforge-debug (`insforge/insforge-skills/insforge-debug`)
+
+## comments
+
+- user: 全栈新手, category: 坑, comment: SELECT 返回空数组，我以为数据没存上，翻了一小时插入代码。其实是 RLS 把行静默过滤了，用 db query 按服务角色一查，数据都在。
+- user: 后端老兵, category: 注意, comment: 遇到 429 别去翻日志，平台压根不记 429，也没有 Retry-After 头。直接改客户端：防抖、批量请求、加指数退避。
+- user: 运维老哥, category: 妙用, comment: 实例整个卡死时连 diagnose logs 都超时，diagnose incident 反而能用——全走云端数据，直接给 oom_likely 结论和证据。
+- user: 独立开发者, category: 启发, comment: 内存常年 80% 我差点升级实例，后来才懂 Postgres 拿空闲内存做缓存是健康态。真正要看的是趋势在涨还是平，不是绝对值。
+- user: 前端转全栈, category: 注意, comment: 在脚本里升级实例，npx -y 的 -y 是 npm 装包参数，不是跳过确认，CLI 还会交互式问一遍，自动化得另传 CLI 层的 --yes。
+- user: 准备上线的 solo 开发, category: 坑, comment: 上线前想跑 advisor 全量体检，提示要 Platform 登录，而我项目是 --api-key 关联的跑不了，只能 db-health 加 policies 手动过。

@@ -1,0 +1,7 @@
+# golang-observability (`samber/cc-skills-golang/golang-observability`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 本质是写 Go 代码: 为服务插桩日志/指标/追踪, 产物是 .go 文件而非运维配置。

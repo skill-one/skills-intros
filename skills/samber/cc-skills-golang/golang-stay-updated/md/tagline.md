@@ -1,0 +1,7 @@
+# golang-stay-updated (`samber/cc-skills-golang/golang-stay-updated`)
+
+## tagline
+
+- Go 生态新鲜事,一站尽览
+- 追版本、找好库、混社区,不迷路
+- 紧跟 Go 大牛动态,快人一步

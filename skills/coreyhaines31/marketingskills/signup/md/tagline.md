@@ -1,0 +1,7 @@
+# signup (`coreyhaines31/marketingskills/signup`)
+
+## tagline
+
+- 少填一步，多留一批用户
+- 让注册成为起点，而非门槛
+- 堵住漏斗漏洞，用户一个不少

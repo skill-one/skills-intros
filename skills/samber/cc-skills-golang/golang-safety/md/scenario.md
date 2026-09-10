@@ -1,0 +1,5 @@
+# golang-safety (`samber/cc-skills-golang/golang-safety`)
+
+## scenario
+
+凌晨三点,线上 Go 突然 panic:写入 nil map。更阴险的是不报错的——int64 悄悄截断、append 共享内存污染数据,查一天都查不到。我用防御式编码逐条排查,把崩溃挡在上线前 🛡

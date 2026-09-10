@@ -1,0 +1,10 @@
+# brandalf (`warpdotdev/common-skills/brandalf`)
+
+## comments
+
+- user: 创业公司设计师, category: 妙用, comment: 本以为它只管配色排版, 没想到文案语气、名称大小写也归它管. 让它写 launch 文案, 连 Warp Drive 这类名称的写法都是对的, 省了来回改.
+- user: 远程办公的自由职业者, category: 坑, comment: 在内网环境直接开工, 它 fetch 不到线上品牌指南就不肯凭记忆写, 会停下来问我. 赶时间的话先确认能访问那个品牌站点.
+- user: 负责品牌验收的项目经理, category: 注意, comment: 品牌规则存在线上, 官方更新后旧稿可能就不合规了. 交付前让它重新过一遍最新规范, 别直接复用上次的产出.
+- user: 市场部写文案的, category: 妙用, comment: 它交付时会列出哪些品牌约束影响了这次产出, 我把这份清单直接发给设计核对, 验收环节快了不少.
+- user: 独立开发者, category: 注意, comment: 它只服务 Warp/Oz 品牌相关的东西. 我拿去做自家产品官网, 范围对不上, 这类需求得换别的工具.
+- user: 前端工程师, category: 启发, comment: 以前做页面全凭印象里的品牌感, 十个页面十种风格. 现在每次先拉最新规范再动手, 团队产出终于统一了.

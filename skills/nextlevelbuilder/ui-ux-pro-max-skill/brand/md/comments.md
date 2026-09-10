@@ -1,0 +1,10 @@
+# brand (`nextlevelbuilder/ui-ux-pro-max-skill/brand`)
+
+## comments
+
+- user: 第一次做品牌规范的新手, category: 注意, comment: 别从空白文档硬憋，先把 templates/brand-guidelines-starter.md 复制成 docs/brand-guidelines.md 再逐项填，结构和示例都是现成的，比自己列框架快一倍。
+- user: 前端工程师, category: 坑, comment: 我直接改 assets/design-tokens.json，一跑 sync 全被冲掉了——md 文件才是唯一源头，tokens 和 css 都从它生成，要改品牌色请改 guidelines。
+- user: 自由设计师, category: 妙用, comment: 客户发来宣传图，我用 extract-colors 跑一下，自动和品牌色板比对，哪张图偏色一目了然，验收交接时少扯皮。
+- user: 独立开发老哥, category: 注意, comment: 脚本要在项目根目录下跑，它读写的是 docs/brand-guidelines.md 这类项目文件；我在别的目录里执行，一直报找不到文件，切回根目录就好了。
+- user: 内容运营, category: 妙用, comment: 写推文前先跑 inject-brand-context，把输出的品牌语气说明贴进提示词，AI 写的文案终于带上了我们的调性，不再千篇一律官腔。
+- user: 开源项目维护者, category: 启发, comment: 品牌定义收敛成一个 md，再自动生成 tokens 和 css，一处改动全部生效——我照这个思路把团队的设计约定也收敛了，维护成本直线下降。

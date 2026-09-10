@@ -1,0 +1,9 @@
+# ponytail-help (`dietrichgebert/ponytail/ponytail-help`)
+
+## persona
+
+**tool**: diff
+
+**role**: 代码瘦身师
+
+**scene**: 功能刚能跑、代码却越堆越厚时

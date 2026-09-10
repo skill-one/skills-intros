@@ -1,0 +1,5 @@
+# golang-code-style (`samber/cc-skills-golang/golang-code-style`)
+
+## scenario
+
+Go 代码越写越乱:嵌套五六层、else 套 else、参数十几行,自己回看都头疼 🤯。我是 Go 代码风格助手:帮你理顺控制流、砍掉多余缩进、收敛超长函数,让代码读起来一目了然 ✨

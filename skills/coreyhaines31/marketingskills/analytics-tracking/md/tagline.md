@@ -1,0 +1,7 @@
+# analytics-tracking (`coreyhaines31/marketingskills/analytics-tracking`)
+
+## tagline
+
+- 别猜了, 用数据说话
+- 看清用户每一步, 预算不再打水漂
+- 从埋点到洞察, 追踪一步到位

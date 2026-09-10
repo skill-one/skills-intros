@@ -1,0 +1,5 @@
+# test-driven-development (`addyosmani/agent-skills/test-driven-development`)
+
+## scenario
+
+改一行代码,崩了三个页面?修好的 bug 过几天又复发?别再靠"看起来没问题"。我先写一个会失败的测试复现你的 bug,修复后测试变绿才算完——每个改动都有证据。日后谁改坏了代码,测试立刻报警。🚦

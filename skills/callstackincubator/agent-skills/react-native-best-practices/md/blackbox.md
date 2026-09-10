@@ -1,0 +1,9 @@
+# react-native-best-practices (`callstackincubator/agent-skills/react-native-best-practices`)
+
+## blackbox
+
+**function**: 你告诉我 App 哪里慢 (卡顿、启动慢、发热、安装包大), 我帮你找到原因并给出改好的代码和优化前后数据。
+
+- input: 「我的商品列表往下滑会掉帧」+ 列表页的源码文件, output: 一份卡顿诊断报告: 指出是整页渲染导致的, 并给出替换成虚拟化列表后的完整代码, 附优化前后帧率对比 (如 45fps → 60fps)
+- input: 「App 打开要 3 秒多才可用」+ 项目文件夹路径, output: 一份启动速度优化方案: 按影响大小排序列出几个具体改动, 每条附预期的启动时间 (如 3.2s → 1.8s)
+- input: 「应用商店嫌我们安装包太大」+ 打包产物文件, output: 一份体积分析报告: 哪些代码/依赖占了多少空间、怎么砍, 附改后的体积对比 (如 2.1MB → 1.6MB)

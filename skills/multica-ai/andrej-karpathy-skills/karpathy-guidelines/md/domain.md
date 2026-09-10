@@ -1,0 +1,7 @@
+# karpathy-guidelines (`multica-ai/andrej-karpathy-skills/karpathy-guidelines`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 技能核心是写代码/重构/审查时规避常见错误, 属开发场景

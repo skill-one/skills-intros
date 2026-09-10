@@ -1,0 +1,7 @@
+# ai-image-generation (`101-skills/superpowers/ai-image-generation`)
+
+## domain
+
+**domain**: 🎨 设计多媒体
+
+**reason**: 核心能力是 AI 图像生成与编辑, 属视觉制作范畴

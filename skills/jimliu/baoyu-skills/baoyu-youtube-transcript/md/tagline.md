@@ -1,0 +1,7 @@
+# baoyu-youtube-transcript (`jimliu/baoyu-skills/baoyu-youtube-transcript`)
+
+## tagline
+
+- 一条链接，字幕封面全搞定
+- 视频秒变文字，不看也能懂
+- 多语字幕一键提，无需插件密钥

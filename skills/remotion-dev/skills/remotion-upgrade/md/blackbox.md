@@ -1,0 +1,9 @@
+# remotion-upgrade (`remotion-dev/skills/remotion-upgrade`)
+
+## blackbox
+
+**function**: 把用 Remotion (用 React 代码做视频的框架) 搭建的项目升级到最新版本, 并保证所有相关包版本一致、项目照常能跑。
+
+- input: 一个 Remotion 视频项目的文件夹路径, output: 该项目所有 Remotion 相关依赖升级到同一个最新版, 配置文件和锁文件同步更新, 附一份改了什么的简短说明
+- input: "帮我升级视频项目" + 项目路径, output: 升级完成的确认报告: 版本已统一、检查通过, 顺带列出本次升级涉及的主要变化
+- input: 一个版本混乱的项目 (有的包是 4.0.x, 有的是 4.1.y), output: 所有版本对齐后的项目, 版本冲突消除, 可直接构建渲染

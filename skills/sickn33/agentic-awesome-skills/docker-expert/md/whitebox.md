@@ -1,0 +1,13 @@
+# docker-expert (`sickn33/agentic-awesome-skills/docker-expert`)
+
+## whitebox
+
+- 范围检查: 若问题属于 Docker 之外 (Kubernetes、CI/CD、云服务、数据库持久化), 转荐对应专家并停止。
+- 环境探测: 优先用内部工具, shell 命令兜底, 扫描 Docker 版本、运行时、Dockerfile/compose/.dockerignore 文件、运行中容器和现有镜像。
+- 方案适配: 根据探测结果匹配现有基础镜像与构建模式, 区分开发/生产环境, 兼顾已有编排方式。
+- 定位问题: 判断问题类别 (构建慢/安全漏洞/镜像过大/网络/开发工作流) 与复杂度, 从专家模式库套用对应策略。
+- 验证收尾: docker build 实际构建、docker run 试运行、docker-compose config 校验配置合法性, 全部通过才算完成。
+
+- 探测机制: 遵循 '内部工具优先, shell 兜底' 原则 —— Read/Grep/Glob 看项目结构, docker --version/info/ps/images 和 find 命令补齐运行时信息, 探测结果直接决定后续用哪套模板。
+- 策略匹配机制: 预置模式库按需套用 —— 多阶段构建模板 (deps→build→runtime 三段式)、安全加固模式 (非 root 用户/最小攻击面)、Compose 生产模板 (健康检查/secrets/资源限制), 另有按 checklist 逐项审查的评审路径。
+- 验证机制: 依赖 Docker CLI 系外部工具 —— docker build --no-cache 验证可构建, docker run --rm 实跑容器并用 docker exec ps 检查进程, docker scout 做漏洞快扫 (无则跳过), docker-compose config 验证编排文件; 不引入 Docker 之外的第三方依赖或模型 API。

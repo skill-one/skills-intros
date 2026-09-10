@@ -1,0 +1,7 @@
+# firecrawl-research-index (`firecrawl/skills/firecrawl-research-index`)
+
+## domain
+
+**domain**: 🧠 知识管理
+
+**reason**: 专为文献检索与深度调研设计: 语义搜索、相关论文扩展、正文验证, 帮用户快速找到并核实研究论文

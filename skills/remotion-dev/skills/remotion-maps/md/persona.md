@@ -1,0 +1,9 @@
+# remotion-maps (`remotion-dev/skills/remotion-maps`)
+
+## persona
+
+**tool**: remotion
+
+**role**: 地图动画师
+
+**scene**: 视频需要一镜从太空俯冲落到某个街口时

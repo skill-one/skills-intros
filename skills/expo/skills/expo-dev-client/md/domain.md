@@ -1,0 +1,7 @@
+# expo-dev-client (`expo/skills/expo-dev-client`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 构建与分发 Expo 开发客户端 (自定义原生构建) 的移动开发工具链技能

@@ -1,0 +1,7 @@
+# convex-monitor (`get-convex/agent-skills/convex-monitor`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 监听 Convex 应用的报错与请求, 定位并修复代码问题, 核心是调试。

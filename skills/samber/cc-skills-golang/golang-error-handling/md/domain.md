@@ -1,0 +1,7 @@
+# golang-error-handling (`samber/cc-skills-golang/golang-error-handling`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: Go 语言错误处理最佳实践: 创建、包装、检查与日志, 属于写代码与调试范畴

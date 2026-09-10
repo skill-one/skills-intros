@@ -1,0 +1,1 @@
+{"text": "写 Go 代码, 命名总被评审打回: NewUser() 还是 New()? isConnected 还是 connected? 反复改, 白白耗时间。我按 Go 社区标准命名: 构造器、布尔、错误、枚举, 一次写对, 评审一次过 🏷"}

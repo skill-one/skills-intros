@@ -1,0 +1,10 @@
+# fixing-motion-performance (`ibelick/ui-skills/fixing-motion-performance`)
+
+## comments
+
+- user: 刚学前端的新人, category: 坑, comment: 侧边栏动画写成 transition: width，安卓机一拖就掉帧。它让我改成 transform 才明白：动画只碰 transform 和 opacity。
+- user: 接活儿的独立开发者, category: 注意, comment: 想让它把 jQuery 动画迁到 GSAP，它只在原代码里修、不换库。真要换库得明确说「帮我迁移」，默认它都在现有技术栈内动手。
+- user: 做 H5 营销页的, category: 坑, comment: 首屏大图加了持续模糊动画显质感，结果滚动全程卡。它建议：模糊只进场用一次、别超 8px，其余用 opacity 过渡就够。
+- user: 全栈老哥, category: 妙用, comment: 进度条原来监听 scroll 改透明度，一滚一卡。换成 animation-timeline: view() 一行就顺了，注意要较新内核浏览器才支持。
+- user: 带团队的前端组长, category: 启发, comment: 审动效 PR 我就盯一条：同一帧别又读位置又改样式。先量一次再动画，我们列表拖拽卡顿就是这么修好的。
+- user: 设计转前端的, category: 注意, comment: 曾给每张卡片都加 will-change 想提速，图层堆多了反而更卡。它提醒只临时加在真正动画的一两个元素上，用完就删。

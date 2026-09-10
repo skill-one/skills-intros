@@ -1,0 +1,7 @@
+# mobile-ios-design (`wshobson/agents/mobile-ios-design`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 核心是用 SwiftUI (苹果官方开发框架) 写代码构建 iOS 应用界面, 产出可运行的原生应用, 而非静态视觉素材

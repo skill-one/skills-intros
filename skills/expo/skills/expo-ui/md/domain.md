@@ -1,0 +1,7 @@
+# expo-ui (`expo/skills/expo-ui`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 核心是写 React 代码, 用 @expo/ui 框架构建原生 UI 组件

@@ -1,0 +1,10 @@
+# web-perf (`cloudflare/skills/web-perf`)
+
+## comments
+
+- user: 电商独立站老板, category: 妙用, comment: 报告直接写『hero 图 450KB 转 WebP, 预计省 800ms』, 甩给外包就能改。最值是它会明说『你站已够快, 别瞎优化』, 帮我省了笔冤枉钱。
+- user: 前端新手, category: 坑, comment: 没配 Chrome DevTools 的 MCP 就让它测, 只能干分析没数据。先按指南把 chrome-devtools-mcp@latest 加进 MCP 配置, 重启后再跑, 一次出全报告。
+- user: 后端老兵, category: 妙用, comment: 和前端扯皮谁拖慢了加载, 让它跑 DocumentLatency 分析, TTFB 超标坐实是我接口慢, 不吵了。能拆出『服务器响应 vs 资源加载』的证据最服人。
+- user: 全栈独立开发, category: 注意, comment: 别拿 dev 模式的 localhost 给它测: 不压缩、带 sourcemap, 数据虚高。先 build 生产包起个静态服务再测, 否则结论全是错的。
+- user: 带投放业务的产品经理, category: 启发, comment: 用户总说按钮『跳一下』点错, 用 CLSCulprits 查出是广告位没预留高度。现在写需求我先注明『媒体位必须定尺寸』, 数据比嘴炮管用。
+- user: 性能优化老手, category: 注意, comment: insight 名随版本变, LCPBreakdown 报错先让它列 insightSetId 里有哪些再用。单次 trace 受当时网络影响, 优化前后各测一次做对比, 别只信绝对值。

@@ -1,0 +1,5 @@
+# video (`coreyhaines31/marketingskills/video`)
+
+## scenario
+
+想给产品做条视频,却不会拍、不会剪?外包动辄上万,还要等两周?🎬 丢给我:写脚本、AI 生成画面、数字人出镜、一键渲染成片——你只管发。

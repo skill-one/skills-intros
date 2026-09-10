@@ -1,0 +1,7 @@
+# convex-sentinel (`get-convex/agent-skills/convex-sentinel`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 为 Convex 应用集成错误捕获组件并接线 SDK, 属于框架集成与调试类开发工作

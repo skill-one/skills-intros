@@ -1,0 +1,10 @@
+# playwright-stealth-verify (`liarjsdev/liarjs-skills/playwright-stealth-verify`)
+
+## blackbox
+
+**function**: 给你的"程序操控的浏览器"做一次拟真体检: 打一个 0–100 的分, 并列出它哪些地方露馅、不像真人用的浏览器。
+
+- input: 一段 Playwright / Puppeteer 测试代码里的页面对象 (在测试里调用一次 checkPage), output: 一份体检报告: 0–100 评分 + 逐项清单, 指明哪几处露馅 (如 navigator.webdriver 未隐藏、UA 还带着 HeadlessChrome 字样、主线程和后台线程说法对不上), 附原始指纹数据, 可直接写进测试断言
+- input: 一条命令: npx liarjs@0.3 --cdp http://127.0.0.1:9222 (指向某个已经开着的浏览器的调试地址), output: 针对那个正在运行的浏览器实测出的评分报告, 只读不改, 不动它的任何配置
+- input: 什么都不给, 直接跑默认命令 npx liarjs@0.3, output: 它自己临时开一个一次性浏览器, 给出这份"出厂配置"的评分报告, 结束后自动清理干净
+- input: 加上 --offline 参数 (浏览器不能对外联网的场景), output: 只测浏览器自身 32 项、不发任何外部请求的评分报告, 适合内网/离线环境

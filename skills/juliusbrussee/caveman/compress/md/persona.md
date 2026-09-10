@@ -1,0 +1,9 @@
+# compress (`juliusbrussee/caveman/compress`)
+
+## persona
+
+**tool**: python3
+
+**role**: 记忆瘦身师
+
+**scene**: CLAUDE.md 越写越肿、token 账单看着心疼时

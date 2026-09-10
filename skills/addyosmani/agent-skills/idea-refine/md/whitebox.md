@@ -1,0 +1,13 @@
+# idea-refine (`addyosmani/agent-skills/idea-refine`)
+
+## whitebox
+
+- 接收想法后先复述为 "How Might We" 问题陈述, 再用 AskUserQuestion 追问 3~5 个关键问题 (目标用户/成功标准/约束), 不弄清不放行
+- 发散阶段: 用反转/去约束/换受众/极简化/10x 等透镜生成 5~8 个变体; 若在代码库内, 先用 Glob/Grep/Read 扫描现有架构, 让变体落在真实约束上
+- 等用户对变体表态后转入收敛: 聚类成 2~3 个方向, 按 用户价值/可行性/差异化 三维压测, 逐条显式挖出隐藏假设
+- 产出 markdown 一页纸: 问题陈述 / 推荐方向 / 待验证假设 (带验证方式) / MVP 范围 / Not Doing 清单
+- 经用户确认后保存为 docs/ideas/[idea-name].md, 不确认不落盘
+
+- 门控式对话流程: 三阶段各做一件事, Phase 1 未明确"为谁解决 + 成功长什么样"前禁止推进; 明确反 yes-machine, 对弱想法要具体且有善意地反驳
+- 发散→收敛的结构化思考: 变体数量硬性限在 5~8 个 (拒绝 20+ 浅变体), 收敛时强制暴露隐藏假设——押注了什么、什么会杀死这个想法、刻意忽略了什么; 可按需读取 skill 目录下 frameworks.md / refinement-criteria.md / examples.md 补充弹药
+- 工件化输出: 交付物是固定模板的一页纸而非对话记录, 其中 Not Doing 清单被视为最有价值部分 (把取舍写明白); 依赖外部工具: AskUserQuestion (收集输入), Glob/Grep/Read (代码库感知), bash 脚本 idea-refine.sh (可选, 初始化 ideas 目录); 不依赖任何外部模型 API

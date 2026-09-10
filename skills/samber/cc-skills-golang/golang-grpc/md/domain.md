@@ -1,0 +1,7 @@
+# golang-grpc (`samber/cc-skills-golang/golang-grpc`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: Go 微服务 gRPC 技能：实现/调试服务与客户端、proto 文件、拦截器、错误码等，核心是写代码

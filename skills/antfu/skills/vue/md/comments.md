@@ -1,0 +1,10 @@
+# vue (`antfu/skills/vue`)
+
+## comments
+
+- user: React 转过来的前端, category: 坑, comment: 按 React 习惯写 const { title } = defineProps, 之后 title 不再跟着父组件更新, 页面一直是旧值. 改回 props.title 访问才正常, 别解构.
+- user: 后端转前端的, category: 妙用, comment: 双向绑定以前要父传 props、子 emit('update:xxx') 两头写. 换 defineModel 一行拿到 model, 子组件直接 v-model="model", 样板代码少一半.
+- user: 维护 Vue2 老项目的, category: 注意, comment: Vue2 改数组要 $set, 3.x 直接赋值就行. 但几千条的大列表别用 ref 包, 深层追踪拖慢页面; 换 shallowRef, 更新时整体替换数组.
+- user: 前端组长, category: 妙用, comment: defineProps / defineEmits 用 TS 泛型写, props 类型改一处, 父子组件同步报错提示, 类型问题在写代码时就暴露, 不用等测试反馈.
+- user: 第一次用的新手, category: 注意, comment: 改完 ref 的值马上读弹层高度, 拿到的还是旧 DOM. 数据更新到页面渲染有延迟, 套一层 await nextTick() 再量就对了.
+- user: 写中后台的熟手, category: 启发, comment: 以前 data/methods/computed 按类型分堆, 一个功能的代码散在三处. 组合式把状态+监听+方法放一起, 再抽成 composable 跨页面复用.

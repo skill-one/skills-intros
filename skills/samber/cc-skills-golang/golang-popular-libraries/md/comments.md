@@ -1,0 +1,10 @@
+# golang-popular-libraries (`samber/cc-skills-golang/golang-popular-libraries`)
+
+## comments
+
+- user: 第一次做选型的新手, category: 坑, comment: 库选定后我拿具体函数用法问它, 被告知不归它管, 该去查那个库的专属技能或文档. 它只管"选哪个", 不管"怎么用", 问完记得换工具.
+- user: 维护祖传 Go 项目的老兵, category: 妙用, comment: 反向用法: 把 go.mod 依赖清单贴给它, 问哪些能用标准库替掉, 它标出两个可删的第三方库. 减依赖比加依赖难, 推荐试试.
+- user: 十年 Java 转 Go 的后端, category: 启发, comment: 上来问"哪个 Web 框架最好", 它反推 Go 标准库就够, 我删掉一个重框架依赖. 现在选型先问标准库够不够, 再谈第三方.
+- user: 创业小厂 Tech Lead, category: 注意, comment: 它按维护状态、license、接入方数量评估库, 遇到弃更的会先停下来问你, 不硬推. 把性能、license 红线一次说全, 别只丢"推荐个最好的".
+- user: 管发布流程的运维老哥, category: 坑, comment: 我让它顺手扫 go.mod 的漏洞和升级, 被指到依赖管理那套工具去了. 它只管选型推荐, 治理升级是另一摊, 分开问省时间.
+- user: 爱从趋势榜搬库的自由开发者, category: 妙用, comment: 趋势榜上 star 很多、接入方很少的新库, 先丢给它验货: 它查出还在 0.x 且维护不稳, 劝我观望. 比自己读 README 靠谱.

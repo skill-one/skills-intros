@@ -1,0 +1,5 @@
+# anysearch (`anysearch-ai/anysearch-skill/anysearch`)
+
+## scenario
+
+查资料时,搜到的全是过期信息和广告软文?核实一条新闻,要开十几个网页来回对照?我能实时联网搜索、一次并行查多个问题、直接抽取网页正文——一条指令,信息新鲜、准确、一步到位。🔍

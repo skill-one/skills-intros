@@ -1,0 +1,5 @@
+# convex-crons (`get-convex/agent-skills/convex-crons`)
+
+## scenario
+
+数据清理、发提醒,总靠人肉手动?忘了漏了、重复执行闹乌龙。我来给你的应用装上"定时闹钟":到点自动干活,重复跑也不出错,后台一目了然。⏰

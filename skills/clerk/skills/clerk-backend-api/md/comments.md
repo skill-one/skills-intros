@@ -1,0 +1,10 @@
+# clerk-backend-api (`clerk/skills/clerk-backend-api`)
+
+## comments
+
+- user: 后端老兵, category: 坑, comment: 加字段时直接传 {role:'admin'}，publicMetadata 被整个替换，原有数据全没了。它是覆盖不合并，要先读旧值、展开再写回。
+- user: 第一次用的新手, category: 注意, comment: 写操作前它会先检查密钥和权限，缺了会停下来问我，不会硬跑报错。但 CLERK_SECRET_KEY 得自己提前配好，我就是没配卡了半小时。
+- user: SaaS 独立开发者, category: 妙用, comment: 它每次执行 curl 还顺手给一份等价的 TypeScript SDK 代码，我直接粘进 Next.js 项目，后端脚本和正式集成一次搞定。
+- user: 运维老哥, category: 坑, comment: 删用户是真删：账号、全部会话、组织成员关系一起消失。它列出清单要我确认，我扫一眼就过了，结果删错人。确认前一定核对 user_id。
+- user: 客服小组长, category: 妙用, comment: 不会写代码，直接说「列出最近 7 天注册的用户」，它就执行完整理成邮箱列表。数据超过 500 条要分页，它会提醒，别以为一次能拉全。
+- user: 全栈接单的, category: 注意, comment: 开发环境限 100 次/10 秒，批量邀请每小时才 25 个。我写循环一晚上把配额打爆全是报错。导入前先看它给的限流表，分批慢慢来。

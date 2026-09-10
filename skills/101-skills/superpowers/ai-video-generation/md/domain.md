@@ -1,0 +1,7 @@
+# ai-video-generation (`101-skills/superpowers/ai-video-generation`)
+
+## domain
+
+**domain**: 🎨 设计多媒体
+
+**reason**: 用 40+ AI 模型生成视频(文生视频/图生视频/数字人/加音效/画质增强), 属于音视频制作

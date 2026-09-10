@@ -1,0 +1,7 @@
+# vue-best-practices (`vuejs-ai/skills/vue-best-practices`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 技能核心是 Vue.js 前端代码编写:组件设计、TypeScript、SSR 与工程化实践,属于典型编程开发场景。

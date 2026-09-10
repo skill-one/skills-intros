@@ -1,0 +1,5 @@
+# post-purchase-upsell-flow (`autonnel/autonnel-skills/post-purchase-upsell-flow`)
+
+## scenario
+
+广告费一分没少,顾客下单即走,每单只赚杯奶茶钱🥤。我把"付款成功"页变成第二收银台:买完后的黄金3秒,一键加购配套品,同单同卡发货,客单价涨了,成交率不掉。同一笔广告费,多赚一截。

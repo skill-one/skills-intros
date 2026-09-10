@@ -1,0 +1,9 @@
+# teach-impeccable (`pbakaus/impeccable/teach-impeccable`)
+
+## blackbox
+
+**function**: 当有人调用旧的 `teach-impeccable` 命令(或提出相关教学请求)时,我不会执行任何教学,只会回复一条改名通知:请改用 `impeccable teach`。
+
+- input: 输入命令 `teach-impeccable`, output: 一条通知:「这个命令已改名为 impeccable teach,请用新命令」
+- input: 「请教我如何使用 impeccable」, output: 不会开始教学,只提示改用 `impeccable teach`
+- input: 任何关于旧命令的教学请求, output: 同样的改名提示,除此之外什么都不做

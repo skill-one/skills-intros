@@ -1,0 +1,7 @@
+# firecrawl-shop (`firecrawl/firecrawl-workflows/firecrawl-shop`)
+
+## domain
+
+**domain**: 📈 商业运营
+
+**reason**: 全网比价、筛选商品并给出购买建议, 属电商购物场景。

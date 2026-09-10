@@ -1,0 +1,7 @@
+# dbs-action (`dontbesilent2025/dbskill/dbs-action`)
+
+## domain
+
+**domain**: 🏠 生活服务
+
+**reason**: 帮个人诊断拖延与行动障碍的心理服务，属个人自我事务

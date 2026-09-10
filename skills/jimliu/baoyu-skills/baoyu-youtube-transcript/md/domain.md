@@ -1,0 +1,7 @@
+# baoyu-youtube-transcript (`jimliu/baoyu-skills/baoyu-youtube-transcript`)
+
+## domain
+
+**domain**: 🧠 知识管理
+
+**reason**: 核心是获取 YouTube 视频字幕/文稿与封面, 属于信息检索与资料整理沉淀, 为后续研究、笔记、翻译、写作提供素材。

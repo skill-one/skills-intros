@@ -1,0 +1,7 @@
+# convex-billing (`get-convex/agent-skills/convex-billing`)
+
+## domain
+
+**domain**: 💰 支付金融
+
+**reason**: 技能核心是给 Convex 应用集成 Stripe 支付与订阅(结账、webhook、订阅状态校验)

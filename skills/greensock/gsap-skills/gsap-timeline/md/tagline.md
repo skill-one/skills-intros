@@ -1,0 +1,7 @@
+# gsap-timeline (`greensock/gsap-skills/gsap-timeline`)
+
+## tagline
+
+- 一条时间线, 指挥所有动画
+- 编排动画节奏, 分毫不差
+- 多步动效, 有序上演

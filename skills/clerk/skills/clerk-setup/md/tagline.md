@@ -1,0 +1,7 @@
+# clerk-setup (`clerk/skills/clerk-setup`)
+
+## tagline
+
+- 一条命令, 登录即刻上线
+- 无需账号, 密钥自动配好
+- 十余框架, 一套方案全搞定

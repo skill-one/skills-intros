@@ -1,0 +1,5 @@
+# directory-submissions (`coreyhaines31/marketingskills/directory-submissions`)
+
+## scenario
+
+产品做完了,推广却没人看到;Product Hunt 上线就被埋没;ChatGPT 推荐工具从不提到你。问题:投错了目录、用错了顺序。我帮你:查就绪度 → 规划目录分层 → 定制说辞 → 打爆 Product Hunt,让外链和客户自己找上门 🚀

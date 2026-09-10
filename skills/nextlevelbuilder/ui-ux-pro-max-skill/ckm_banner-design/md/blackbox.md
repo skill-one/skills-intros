@@ -1,0 +1,9 @@
+# ckm:banner-design (`nextlevelbuilder/ui-ux-pro-max-skill/ckm:banner-design`)
+
+## blackbox
+
+**function**: 我按你给的用途、平台和风格, 直接产出能上传使用的横幅/封面设计图 (PNG 文件), 一次给多个版本供你挑。
+
+- input: 「帮我做一张 YouTube 频道头图, 名字叫 CodeLab, 科技感风格」, output: 2560×1440 的 PNG 头图, 附 3 个不同设计风格的版本供挑选
+- input: 一张产品照片 + 「用它做一条电商广告横幅」, output: 以照片打底、文字和购买按钮排版好的广告横幅 PNG
+- input: 「同一个活动, 我要公众号封面 + Instagram 方图 + Google 广告条」, output: 三种尺寸的 PNG 文件, 风格统一, 放在同一个文件夹里

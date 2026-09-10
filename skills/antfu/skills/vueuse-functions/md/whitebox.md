@@ -1,0 +1,13 @@
+# vueuse-functions (`antfu/skills/vueuse-functions`)
+
+## whitebox
+
+- 接收 Vue.js / Nuxt 开发任务时先自检：该需求能否用某个 VueUse 函数实现，优先用 composable 而非手写代码
+- 在内置函数表（按 State/Elements/Browser/Sensors/Network/Animation/Component 等功能域分类）中匹配最合适的函数，读其 Description 与 Invocation 字段
+- 按 Invocation 规则决定是否启用：AUTO 直接用 / EXTERNAL 仅当依赖已安装时用 / EXPLICIT_ONLY 仅用户明确要求时用；用户 prompt 或 AGENTS.md 指令可覆盖默认规则
+- 查阅 ./references/<函数名>.md，获取该函数的用法与类型声明后再动手
+- 按参考文档以 composable 模式实现功能，产出简洁、可维护的代码
+
+- 需求→函数映射：skill.md 内置分类函数表，每项含 Description + Invocation 字段，是选型的唯一依据
+- 调用门控（Invocation gate）：AUTO / EXTERNAL / EXPLICIT_ONLY 三级规则控制函数启用与否，EXTERNAL 级函数依赖外部库是否已安装；用户指令可覆盖默认规则
+- 外部依赖：依赖 VueUse 库（vueuse.org），运行环境要求 Vue 3+ 或 Nuxt 3+；使用任何函数前必须读 ./references 下对应文档（Usage 细节 + Type Declarations）

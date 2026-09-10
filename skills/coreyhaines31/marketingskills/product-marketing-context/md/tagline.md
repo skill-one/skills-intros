@@ -1,0 +1,7 @@
+# product-marketing-context (`coreyhaines31/marketingskills/product-marketing-context`)
+
+## tagline
+
+- 定位只写一次, 营销处处复用
+- 一份产品档案, AI 秒懂你的卖点
+- 扫一遍代码, 起草全部营销底稿

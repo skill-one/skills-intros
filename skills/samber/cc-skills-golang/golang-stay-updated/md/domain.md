@@ -1,0 +1,7 @@
+# golang-stay-updated (`samber/cc-skills-golang/golang-stay-updated`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 专为 Golang 项目服务, 汇集语言/工具链更新与学习资源的开发向技能

@@ -1,0 +1,7 @@
+# investigate-first (`juliusbrussee/caveman/investigate-first`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 专治疑难 bug: 先查证据、再定病因, 不瞎改代码.

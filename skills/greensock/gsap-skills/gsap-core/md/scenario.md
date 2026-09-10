@@ -1,0 +1,5 @@
+# gsap-core (`greensock/gsap-skills/gsap-core`)
+
+## scenario
+
+网页动画卡顿、不同步、想暂停却做不到,像台生锈的机器,体验一落千丈?我来用 GSAP (专业网页动画库) 精准编排:流畅 60fps、错落有序、可暂停倒放,滚动动画也稳稳拿捏 ✨

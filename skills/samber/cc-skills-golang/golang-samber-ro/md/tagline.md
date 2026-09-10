@@ -1,0 +1,7 @@
+# golang-samber-ro (`samber/cc-skills-golang/golang-samber-ro`)
+
+## tagline
+
+- 数据长流,管道自成
+- 告别手写并发,一条管道串起事件流
+- 异步再乱,数据不丢,实时稳稳接住

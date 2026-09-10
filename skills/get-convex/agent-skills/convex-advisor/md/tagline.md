@@ -1,0 +1,7 @@
+# convex-advisor (`get-convex/agent-skills/convex-advisor`)
+
+## tagline
+
+- 线上慢与贵，让运行数据说话
+- 凭证据下结论，按根因开药方
+- 72小时洞察，病根定位到代码行

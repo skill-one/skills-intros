@@ -1,0 +1,10 @@
+# pricing-strategy (`coreyhaines31/marketingskills/pricing-strategy`)
+
+## comments
+
+- user: 独立开发者, category: 注意, comment: 开头它会先问目标客群、现有转化率这些背景问题。我嫌烦随便答，给的方案很泛；老实填数据后建议立刻具体了。别跳过提问环节。
+- user: 十人SaaS创始人, category: 妙用, comment: 按指南把价格锚在竞品和客户感知价值之间，而不是我的成本，直接涨价一倍，转化几乎没掉。以前我一直在按成本加价。
+- user: B端产品经理, category: 注意, comment: Van Westendorp（测客户心理价位的四问问卷）必须拿真实客户去问。我图省事自己替客户填答案，得出的价格区间完全没用。
+- user: 转做产品的设计师, category: 启发, comment: 它问我「客户用量涨了，价值是否也涨」，才发现我一直按席位收费，但客户只有一人下单、全公司受益，计费口径从根上就选错了。
+- user: 增长负责人, category: 妙用, comment: 把中间档做成明显最划算的诱饵档，原本纠结高低两档的用户全涌进中间档，客单价比原来单一档位高了三成。
+- user: 第一次涨价的站长, category: 坑, comment: 我涨价对老客户一起生效，被骂到撤回。后来按指南改成「老客户保留旧价、只对新客生效」，重涨一次，几乎零流失。

@@ -1,0 +1,5 @@
+# update-skill (`warpdotdev/common-skills/update-skill`)
+
+## scenario
+
+你把操作步骤写给 AI, 它却经常漏做、乱做, 反复返工? 😵 我专治这个: 把你的经验整理成结构清晰的技能文件 (SKILL.md), 让 AI 稳定、准确、可复用地按你的流程干活。

@@ -1,0 +1,7 @@
+# firecrawl-deep-research (`firecrawl/firecrawl-workflows/firecrawl-deep-research`)
+
+## tagline
+
+- 复杂问题，一次深研见全貌
+- 每个结论，都有据可查
+- 深挖正反两面，报告直抵真相

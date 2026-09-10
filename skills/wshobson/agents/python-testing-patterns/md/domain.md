@@ -1,0 +1,7 @@
+# python-testing-patterns (`wshobson/agents/python-testing-patterns`)
+
+## domain
+
+**domain**: 🧪 测试与质量
+
+**reason**: 专注 pytest 编写测试、mock、fixture、TDD 与覆盖率, 守护代码质量。

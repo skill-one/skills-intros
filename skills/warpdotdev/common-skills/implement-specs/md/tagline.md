@@ -1,0 +1,7 @@
+# implement-specs (`warpdotdev/common-skills/implement-specs`)
+
+## tagline
+
+- 规格说了算, 实现不跑偏
+- 文档与代码, 永远同步进化
+- 一份 PR, 功能真正落地

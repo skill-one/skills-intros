@@ -1,0 +1,5 @@
+# extension-email-calendar-events (`caffeinelabs/skills/extension-email-calendar-events`)
+
+## scenario
+
+约会议最烦的:挨个发邮件、时间被记错、改期还得重新通知,费时又漏人。我能一键创建活动,自动给每位参与者发日历邀请 📅,对方点接受即入日历;改期、取消也能同步更新,不错过任何一场。

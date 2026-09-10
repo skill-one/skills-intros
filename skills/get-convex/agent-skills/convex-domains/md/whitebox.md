@@ -1,0 +1,13 @@
+# convex-domains (`get-convex/agent-skills/convex-domains`)
+
+## whitebox
+
+- 确认目标: 判定域名要指向哪里 — *.convex.app 静态站点主机或部署的 HTTP actions URL
+- 创建 DNS 记录: 优先用你机器上已登录的 DNS CLI 自动创建 (先只读检查登录态、展示命令、经你同意才执行); 没有 CLI 就给你精确的记录串 (CNAME/A + TXT 验证记录) 让你在注册商处手动建
+- 绑定域名: 通过 Convex dashboard 或 CLI 挂载自定义域名并等待验证 (DNS 生效可能数分钟到数小时)
+- 重绑鉴权 (如用到): 若应用带 auth (passkeys/OAuth), 把 SITE_URL / RP_ID / ORIGIN 等环境变量改到新域名并重新部署/发布
+- 验收: 确认域名走 HTTPS 正常访问, 若配置了 apex→www 跳转也一并验证
+
+- DNS 写入走供应商 CLI (外部依赖): Cloudflare → flarectl dns create 或 CF API + token 环境变量; Route53 → aws route53 change-resource-record-sets; Google Cloud DNS → gcloud dns record-sets create; DigitalOcean → doctl compute domain records create; Vercel → vercel dns add。凭证不离开工具本身: 先只读验登录态 (flarectl user info / aws sts get-caller-identity / doctl account get), 绝不索要注册商账号密码、绝不代装 CLI 或执行登录
+- 校验闭环: 记录落地用 dig +short 复核; 全程必含 TXT 验证记录 (不只 CNAME); 终态校验是 HTTPS 可访问 + apex→www 跳转
+- auth-origin 重绑机制: 换域名会改变鉴权 origin, 必须更新 SITE_URL / RP_ID / ORIGIN 并重新发布, 否则登录会挂

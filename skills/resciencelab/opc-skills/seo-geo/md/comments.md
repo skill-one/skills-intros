@@ -1,0 +1,10 @@
+# seo-geo (`resciencelab/opc-skills/seo-geo`)
+
+## comments
+
+- user: 做了十年传统SEO的老炮, category: 启发, comment: 我惯性堆关键词,这技能的数据直接打脸:堆砌词是-10%。把"最低价TOP1"这类词全删掉,换成具体数字和出处,AI引用反而多了。
+- user: 独立开发者, category: 坑, comment: 安全插件默认屏蔽陌生爬虫,GPTBot和PerplexityBot全被挡在外面,内容再好也没AI引用。先查robots.txt放行了哪些AI爬虫。
+- user: 跨境电商内容运营, category: 注意, comment: 别只查Google收录。Claude走Brave搜索,Copilot只认Bing索引,我去Bing站长平台提交网站后才被Copilot引用到。
+- user: SaaS创始人, category: 妙用, comment: 把帮助文档改成"问题当标题、答案放开头第一句",再套FAQPage schema,两周后ChatGPT回答用户提问时开始点名引用我。
+- user: 个人博客博主, category: 妙用, comment: 30天内更新过的老文比新文更容易被ChatGPT引用。我把精力从写新文挪去刷新旧文的数据和日期,省力且见效快。
+- user: 第一次用的新手, category: 注意, comment: 免费审计脚本只查标题、描述、加载速度这些技术项,不代表AI真会引用你。要拿行业问题去Perplexity里搜一遍验证效果。

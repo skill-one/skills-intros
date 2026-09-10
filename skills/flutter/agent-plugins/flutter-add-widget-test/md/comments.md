@@ -1,0 +1,10 @@
+# flutter-add-widget-test (`flutter/agent-plugins/flutter-add-widget-test`)
+
+## comments
+
+- user: 第一次写测试的新手, category: 坑, comment: 点了按钮直接 expect 一直红。后来才知道 tap 完必须 await tester.pump() 重画一帧,断言才能看到新界面,加上就绿了。
+- user: 后端转 Flutter 的工程师, category: 坑, comment: 页面里有无限转圈的加载动画时别用 pumpAndSettle——它要等'不再出新帧'才停,永远等不到,直接超时卡死。这种情况手动 pump 几次就好。
+- user: 接外包的独立开发者, category: 妙用, comment: 我给关键按钮都加了 Key,用 find.byKey 定位而不是 find.text。后来客户上线多语言版,文案全换了,测试一行没改,照样全绿。
+- user: 维护二手项目的前端, category: 注意, comment: 测试文件必须放根目录 test/ 下、以 _test.dart 结尾。我随手放别的目录,flutter test 根本扫不到,查半天以为是环境坏了。
+- user: 带小团队的技术负责人, category: 启发, comment: 接手没人敢动的老页面,先按清单补个交互测试,重构后一跑全绿再提交,改坏哪一步当场暴露。现在我重构前必先写测试。
+- user: 做电商 App 的 Flutter 开发, category: 注意, comment: 电商长列表是懒加载,直接 find 第 50 个商品会报找不到——它压根没渲染。先 scrollUntilVisible 滚过去,再点击或断言才稳。

@@ -1,0 +1,7 @@
+# twitter-automation (`101-skills/superpowers/twitter-automation`)
+
+## tagline
+
+- 一句指令, X 发帖全自动
+- AI 生成图文视频, 一键发上 X
+- 点赞私信关注, 互动不打烊

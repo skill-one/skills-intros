@@ -1,0 +1,7 @@
+# golang-safety (`samber/cc-skills-golang/golang-safety`)
+
+## tagline
+
+- 把崩溃拦在上线前,安睡每个深夜
+- 防 nil、防溢出、防静默损坏
+- 让 Go 代码稳如磐石,零隐患

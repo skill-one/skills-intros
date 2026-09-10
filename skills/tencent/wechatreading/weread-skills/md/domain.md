@@ -1,0 +1,7 @@
+# weread-skills (`tencent/wechatreading/weread-skills`)
+
+## domain
+
+**domain**: 🧠 知识管理
+
+**reason**: 核心能力是读书检索、笔记划线沉淀与阅读统计, 属于个人知识获取与整理。

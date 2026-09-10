@@ -1,0 +1,5 @@
+# firecrawl-dashboard-reporting (`firecrawl/firecrawl-workflows/firecrawl-dashboard-reporting`)
+
+## scenario
+
+周一老板要数据周报,你得挨个登录 GA、广告后台、CRM,截图抄数,半小时过去还没算完总和?📊 我来自动打开各看板、核对日期、抓取真实指标,汇总成一份带数据的周报,你只需转发。

@@ -1,0 +1,10 @@
+# hallmark (`nutlope/hallmark/hallmark`)
+
+## comments
+
+- user: 接官网外包的自由前端, category: 妙用, comment: 让它 study 我喜欢的站并"锁 DNA"生成 design.md 放项目根目录, 后面每个新页面都自动遵守这套系统, 多页风格统一, 不用反复叮嘱。
+- user: 第一次用的新手, category: 坑, comment: 丢一句"做个定价区块"就走了, 它反问"一张卡还是整页"我没回, 默认按单张卡交付, 比预期小一圈。它提问时一定回, 想要整页要明说。
+- user: SaaS 独立开发者, category: 启发, comment: 它拒绝编造"+47%转化"这类数字, 没给就放"待确认"灰块。倒逼我先备齐真实指标再开工, 治好了我文案先吹后补数据的老毛病。
+- user: 维护老项目的前端, category: 坑, comment: 以为 redesign 会连路由架构一起换, 结果只动视觉层, 旧组件全保留。想推倒重来必须明说"全量重建", 删文件它还要逐条让你确认。
+- user: 设计转岗的产品经理, category: 妙用, comment: audit 只打分列清单、不改一行代码。我拿它验收外包交付, 按 punch list 逐条让乙方返工, 比我自己憋"说不上哪里不对"专业。
+- user: 后台系统程序员, category: 注意, comment: 手动改过配色, 它还按旧方案出页面——预检结果有缓存, 手改样式文件不会触发重扫。说一句"refresh pre-flight"即可重新扫描。

@@ -1,0 +1,9 @@
+# golang-dependency-injection (`samber/cc-skills-golang/golang-dependency-injection`)
+
+## persona
+
+**tool**: go
+
+**role**: 依赖接线师
+
+**scene**: 服务越写越多、main.go 里手动 new 到手软时

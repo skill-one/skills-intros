@@ -1,0 +1,5 @@
+# ui-styling (`nextlevelbuilder/ui-ux-pro-max-skill/ui-styling`)
+
+## scenario
+
+界面东拼西凑、颜色刺眼、手机上看全乱?用户点开 3 秒就想关掉。我能把你的网站/应用打扮得干净专业:组件统一、深色模式一键适配、手机电脑都好看,让产品一眼就"值钱"。

@@ -1,0 +1,7 @@
+# offers (`coreyhaines31/marketingskills/offers`)
+
+## tagline
+
+- 别改文案了，先改报价
+- 四个杠杆，撬动成交率
+- 好报价，让客户无法拒绝

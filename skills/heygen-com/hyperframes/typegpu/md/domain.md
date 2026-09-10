@@ -1,0 +1,7 @@
+# typegpu (`heygen-com/hyperframes/typegpu`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 核心是 WebGPU/TypeGPU 的代码集成模式: WGSL 着色器、管线搭建、与 HyperFrames 的事件对接, 属于典型框架集成开发

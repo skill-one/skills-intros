@@ -1,0 +1,7 @@
+# golang-how-to (`samber/cc-skills-golang/golang-how-to`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: Golang 全场景技能编排: 写码、调试、重构、测试与项目搭建

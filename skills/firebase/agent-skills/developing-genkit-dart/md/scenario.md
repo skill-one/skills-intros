@@ -1,0 +1,5 @@
+# developing-genkit-dart (`firebase/agent-skills/developing-genkit-dart`)
+
+## scenario
+
+你在用 Flutter 做应用, 想加入 AI 功能 (聊天、总结、识别), 却被各家模型接口搞到头大: 每换一个模型就要重写一遍调用代码, 调试全靠打日志。我能用 Genkit Dart 帮你: 一套代码接入 Gemini/GPT/Claude, 本地可视化调试每一步。想做 Dart/Flutter + AI, 找我。

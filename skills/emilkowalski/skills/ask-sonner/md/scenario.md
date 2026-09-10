@@ -1,0 +1,5 @@
+# ask-sonner (`emilkowalski/skills/ask-sonner`)
+
+## scenario
+
+上线前夜:保存成功后提示死活不弹、弹两次、或样式全乱,你翻文档查到崩溃。我专治 Sonner(React 的弹提示组件):装好、弹对、样式和暗色模式一步到位;把报错贴给我,直接给能跑的修法。🔔

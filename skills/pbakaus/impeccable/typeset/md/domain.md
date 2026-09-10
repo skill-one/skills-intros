@@ -1,0 +1,7 @@
+# typeset (`pbakaus/impeccable/typeset`)
+
+## domain
+
+**domain**: 🎨 设计多媒体
+
+**reason**: 排版是视觉设计的核心: 字体、层级、字号、可读性调优

@@ -1,0 +1,5 @@
+# interface-design (`dammyjay93/interface-design/interface-design`)
+
+## scenario
+
+周五下班前要向老板汇报, 打开数据后台: 十几个卡片长得一模一样, 数字挤作一团, 不知道先看哪——越急越乱。这不是设计, 是模板。我来重排: 让关键数字一眼跳出, 层级、留白、颜色, 每个决定都有理由。📊

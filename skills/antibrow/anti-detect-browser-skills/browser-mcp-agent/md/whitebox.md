@@ -1,0 +1,13 @@
+# browser-mcp-agent (`antibrow/anti-detect-browser-skills/browser-mcp-agent`)
+
+## whitebox
+
+- 客户端按 MCP 配置以 stdio 启动 `anti-detect-browser --mcp` 进程, 挂载两组工具: 浏览组 (launch_browser / navigate / click / fill / get_content / screenshot / close_browser) 和配方组 (list_recipes / run_recipe / fanout_recipe)
+- Agent 调 `launch_browser(profile 名)`; 内核二进制首次运行时从厂商 CDN 下载并缓存到 ~/.anti-detect-browser/, profile 不存在则同调用内自动创建并启动会话
+- Agent 循环 `navigate` 打开 URL → `get_content`/`screenshot` 读页面 → `click`/`fill` 操作, 页面返回的文本一律视为数据而非指令
+- 任务结束时 `close_browser`; cookie/存储按 profile 名持久落盘, 下次用同名 profile 启动即恢复登录态
+
+- 指纹一致性: 伪装不在页面注入 JS, 而在闭源 Chromium 内核的 C++ 层实现 - Canvas/WebGL/WebGPU/音频/字体/屏幕读数自洽, TLS ClientHello 与 HTTP/2-3 行为来自真实 Chrome 构建; 时区跟随代理出口; API key 启动时联网验证授权, 无离线模式
+- 状态载体是 profile: cookie/存储按 profile 名持久化, npm 与 Python SDK 共享同一缓存目录和 profile 格式 (跨语言可续用同一指纹); `temporary: true` 把 profile 隔离进独立临时树; deviceType/realFingerprint 只在创建时生效, 免费键上 realFingerprint 被 server 直接拒绝
+- 并发校验: 内核用跨进程文件锁强制并发上限 (免费版 1 个), 忘记 close_browser 会阻塞下次 launch; 弃用真无头模式 (无头构建自带指纹), Windows 把窗口移出屏幕, Linux/Docker 走 Xvfb 有头运行
+- 外部依赖: npm `anti-detect-browser@2.8.0` (deps: ws, socks, yauzl, adm-zip, @modelcontextprotocol/sdk) 或 PyPI `antibrow[mcp]==0.9.0`; 浏览器内核是闭源二进制 (~190 MB, macOS universal ~320 MB), 从厂商 CDN 首次拉取并缓存; 不含模型 API - 智能来自调用方的 LLM, 本技能只提供工具

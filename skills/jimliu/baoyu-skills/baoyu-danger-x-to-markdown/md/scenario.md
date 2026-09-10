@@ -1,0 +1,5 @@
+# baoyu-danger-x-to-markdown (`jimliu/baoyu-skills/baoyu-danger-x-to-markdown`)
+
+## scenario
+
+刷到 X 上的宝藏推文或长文,想收藏,却发现链接会失效、帖子会被删,手动复制格式还乱七八糟 😮‍💨 我能把推文/文章一键转成干净的 Markdown 存进笔记库,图片视频也能下载到本地,永久留存,随时可搜。

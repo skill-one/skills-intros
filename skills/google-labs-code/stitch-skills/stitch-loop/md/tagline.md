@@ -1,0 +1,7 @@
+# stitch-loop (`google-labs-code/stitch-skills/stitch-loop`)
+
+## tagline
+
+- 一棒接一棒, 网站长不停
+- 自动接力建站, 每轮长出一页
+- 建站交给循环, 风格永远在线

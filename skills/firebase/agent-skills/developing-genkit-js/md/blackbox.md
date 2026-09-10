@@ -1,0 +1,9 @@
+# developing-genkit-js (`firebase/agent-skills/developing-genkit-js`)
+
+## blackbox
+
+**function**: 帮你用 Genkit (一个让 AI 接入自己应用的框架, 适用于 Node.js/TypeScript) 开发 AI 功能, 比如聊天机器人、翻译流程、能调用工具的智能体; 也能修复相关的报错。
+
+- input: 一句需求: "帮我写一个 AI 客服流程, 输入用户问题, 输出回答, 用 Gemini 模型", output: 可直接运行的 TypeScript 代码, 包含定义好的 AI 流程和模型配置
+- input: 一段报错信息或截图, 比如 Genkit 运行时抛出的 ValidationError / 404, output: 修正后的代码 + 一句话说明错在哪、为什么这样改
+- input: 一个现有项目的路径 (如 Next.js / Express 项目), output: 在项目里新增好的 AI 功能代码, 并通过类型检查确认能编译

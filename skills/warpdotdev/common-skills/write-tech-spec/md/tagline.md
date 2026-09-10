@@ -1,0 +1,7 @@
+# write-tech-spec (`warpdotdev/common-skills/write-tech-spec`)
+
+## tagline
+
+- 先读真代码, 再落笔方案, 拒绝空谈架构
+- 产品意图, 落地为可执行的技术图纸
+- 让执行有图纸, 让评审有依据

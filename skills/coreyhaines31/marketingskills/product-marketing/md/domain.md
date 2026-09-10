@@ -1,0 +1,7 @@
+# product-marketing (`coreyhaines31/marketingskills/product-marketing`)
+
+## domain
+
+**domain**: 📈 商业运营
+
+**reason**: 我是产品营销定位助手, 帮你梳理目标客户、卖点与竞争差异, 属于市场营销范畴

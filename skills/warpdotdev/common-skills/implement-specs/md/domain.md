@@ -1,0 +1,7 @@
+# implement-specs (`warpdotdev/common-skills/implement-specs`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 核心工作是按规格文档编写代码、实现功能并同步更新规格与测试

@@ -1,0 +1,7 @@
+# template-skill (`anthropics/skills/template-skill`)
+
+## tagline
+
+- 少说废话, 只给结果
+- 你的任务, 我一次做对
+- 把复杂交给我, 简单留给你

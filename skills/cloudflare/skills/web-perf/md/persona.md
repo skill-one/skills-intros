@@ -1,0 +1,9 @@
+# web-perf (`cloudflare/skills/web-perf`)
+
+## persona
+
+**tool**: Chrome DevTools
+
+**role**: 网站性能审计师
+
+**scene**: 页面加载慢、Lighthouse 分数难看、又说不清慢在哪时

@@ -1,0 +1,7 @@
+# golang-database (`samber/cc-skills-golang/golang-database`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 核心是编写/审查/调试 Go 数据库访问代码, 妥妥的开发编程。

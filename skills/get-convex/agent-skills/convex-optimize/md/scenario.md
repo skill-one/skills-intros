@@ -1,0 +1,5 @@
+# convex-optimize (`get-convex/agent-skills/convex-optimize`)
+
+## scenario
+
+应用能跑 ≠ 没问题。你的 Convex 应用：接口谁都能调、组件老旧、报错没人发现——出事才发现就晚了。我出带评分的体检报告，安全优先；你确认后逐项修复、升级、装错误监控，改完重新评分，涨几分看得见。

@@ -1,0 +1,10 @@
+# mobile-android-design (`wshobson/agents/mobile-android-design`)
+
+## comments
+
+- user: 独立开发者, category: 妙用, comment: 开了动态取色后,App 配色自动跟用户壁纸走,评论区都夸我们"懂用户",其实就一行开关,Android 12+ 生效。
+- user: 第一次写安卓的前端, category: 坑, comment: 长列表一开始用 Column,几百条数据旧手机直接卡死。换成 LazyColumn 才顺滑,列表条数多必用它。
+- user: iOS 转安卓的工程师, category: 坑, comment: 手机一转屏输入全没了,查了半天:普通 remember 存不住,得用 rememberSaveable 才扛得住旋转。
+- user: 带团队的老安卓, category: 启发, comment: 被要求把状态提到组件外面(state hoisting)后,组件直接变可复用可测试,现在团队写界面都先拆状态再画壳。
+- user: 产品经理, category: 注意, comment: 折叠屏适配比想的省事:用 WindowSizeClass 一套代码大屏自动变双栏。立项时就该把大屏需求写进排期。
+- user: 兼职接活的后端, category: 妙用, comment: 给同一组件配多个 @Preview(深色、大字号),不用插真机就能看到各种形态,改 UI 迭代快了一倍。

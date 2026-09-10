@@ -1,0 +1,7 @@
+# what-leaked-about-you (`useosint/skills/what-leaked-about-you`)
+
+## domain
+
+**domain**: 🛡️ 运维与安全
+
+**reason**: 核心是数据泄露检测与账户暴露风险评估, 属于安全防护场景

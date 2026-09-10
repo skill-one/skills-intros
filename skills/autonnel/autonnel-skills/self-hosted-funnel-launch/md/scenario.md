@@ -1,0 +1,5 @@
+# self-hosted-funnel-launch (`autonnel/autonnel-skills/self-hosted-funnel-launch`)
+
+## scenario
+
+做漏斗的人每月给 SaaS 付几百刀订阅费,数据还锁在别人平台。我帮你把漏斗建到自己的 Cloudflare/服务器上——流量近乎零成本,落地页、收银、加购、感谢页一次搭好,还能让 AI 直接改页,告别订阅费。

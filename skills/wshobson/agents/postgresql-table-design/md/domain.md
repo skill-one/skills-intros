@@ -1,0 +1,7 @@
+# postgresql-table-design (`wshobson/agents/postgresql-table-design`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 专精 PostgreSQL 表结构设计: 类型选择、约束、索引、分区, 属数据库开发而非数据分析

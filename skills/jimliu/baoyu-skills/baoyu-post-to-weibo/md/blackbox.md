@@ -1,0 +1,9 @@
+# baoyu-post-to-weibo (`jimliu/baoyu-skills/baoyu-post-to-weibo`)
+
+## blackbox
+
+**function**: 帮你把文字、图片、视频发到微博, 或把一篇 Markdown 长文变成排版好的微博头条文章。
+
+- input: 一段文字, 如「今天天气真好」, output: 浏览器自动打开微博发布框, 文字已填好, 你确认后点发布即可
+- input: 一段文字 + 几张图片或一个视频文件, output: 微博发布框里文字和图片/视频都已挂好, 等你过目发布
+- input: 一个 Markdown 文章文件 (.md), 可附带封面图, output: 微博头条文章编辑器打开, 标题、导语、正文排版全部就位, 你检查后一键发布

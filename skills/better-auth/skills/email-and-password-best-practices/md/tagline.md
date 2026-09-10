@@ -1,0 +1,7 @@
+# email-and-password-best-practices (`better-auth/skills/email-and-password-best-practices`)
+
+## tagline
+
+- 邮箱验证到密码重置,一次配置全搞定
+- 让登录更顺滑,让密码更安全
+- 注册认证全链路,省心交付一步到位

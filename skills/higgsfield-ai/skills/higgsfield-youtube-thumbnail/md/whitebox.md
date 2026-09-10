@@ -1,0 +1,13 @@
+# higgsfield-youtube-thumbnail (`higgsfield-ai/skills/higgsfield-youtube-thumbnail`)
+
+## whitebox
+
+- 启动自检: 确认 higgsfield CLI 已安装、已登录, 并核对 nano_banana_pro / gpt_image_2 / seedream_v5_pro 三个模型的契约是否仍有效
+- 信息补全 (intake): 只收集 brief 里没有的项——视频主题与真实承诺、出镜人物(0–3 人及脸照)、logo、标题文字、比例(默认 16:9)、单图还是变体组
+- 概念筛选: 内部按 references/thumbnail-frameworks.md 头脑风暴至少 5 个真实概念, 选出最强的信息缺口设计, 保证在约 120px 宽下 1 秒内可读
+- 主渲染: 按 11 段固定顺序拼装提示词(画面框架→场景→文字→主体→元素→logo→地点→构图→背景→人物打光→调色), 写入临时文件经 stdin 管道传给 nano_banana_pro 以 4K + 指定比例生成, --wait --json 拿到 id 与 result_url
+- 校验与交付: 用宿主视觉检查(身份匹配/无多余文字/120px 可读/概念属实), 失败最多同提示词重试 2 次; 通过后交付 URL, 可选时用 seedream_v5_pro 做手术式微调
+
+- 提示词契约 (prompt contract): 主渲染提示词按固定 11 段顺序组装; 有照片参考的人附加 CHARACTER N 身份锁块(骨相/五官/肤色/发际线逐项锁定); ≥2 个参考时首行必须是清单声明(如 image 1 = CHARACTER 1 face reference); 提示词写入临时文本文件再经 stdin 管道传入, 保证标点与多行块不被 CLI 解析破坏
+- ID 链式引用: 每次生成返回的 id 私下保留, 后续把选中的已完成 job ID 直接作为 --image 输入传给 seedream_v5_pro 做定点编辑(表情/背景替换/背景调色/轮廓光变色四选一, 禁止整图重绘); 已知 CLI ≤1.1.20 会把 job 引用误标为 nano_banana_pro_job, 若报 medias.0...data.type 错误则改下载 result_url 为本地图片重传(本地路径自动上传)
+- 外部依赖: higgsfield CLI (Bash 工具, 本地路径图片自动上传) + 三个模型 API——nano_banana_pro(主渲染, 显式 4K)、gpt_image_2(可选 2D→3D logo, 1:1 4K)、seedream_v5_pro(手术式编辑, 缺失或拒绝时回退 seedream_v4_5 --quality high); 质检依赖宿主自带视觉能力, 文字叠加依赖可渲染 HTML canvas 的环境; 明确禁用 --count 与 --use-unlim 参数

@@ -1,0 +1,7 @@
+# competitors (`coreyhaines31/marketingskills/competitors`)
+
+## domain
+
+**domain**: 📈 商业运营
+
+**reason**: 制作竞品对比页与替代方案页, 服务 SEO 获客与销售转化, 属市场营销范畴

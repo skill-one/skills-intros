@@ -1,0 +1,5 @@
+# firecrawl-website-design-clone (`firecrawl/firecrawl-workflows/firecrawl-website-design-clone`)
+
+## scenario
+
+想让 AI 复刻某网站风格?痛点:配色靠猜、字体乱选、间距跑偏,手扒代码费时费力。给我一个网址,我用 Firecrawl 抓取真实页面证据,产出 AI 可直接照建的 DESIGN.md——🎨 颜色、字体、组件、版式,全部有据可依。

@@ -1,0 +1,5 @@
+# best-practices (`addyosmani/web-quality-skills/best-practices`)
+
+## scenario
+
+网站刚上线就被篡改页面、用户数据泄露,客户投诉手机上显示错乱——查了半天不知漏洞在哪 😰。我按行业标准给你的网站做体检:揪出安全漏洞、修掉过时代码、兼容各浏览器,修完复测验证,守住线上生意 🛡️

@@ -1,0 +1,5 @@
+# documentation-and-adrs (`addyosmani/agent-skills/documentation-and-adrs`)
+
+## scenario
+
+痛点:半年前"为什么选这个数据库"的争论散落在聊天记录里,今天团队又从头吵一遍,新同事一脸茫然。我能把它写成一份简短的决策记录:当时的问题、选项、为何放弃其他方案,10 分钟写清,替你省掉下次两小时的争吵。

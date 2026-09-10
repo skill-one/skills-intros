@@ -1,0 +1,7 @@
+# ai-image-generation (`101-skills/superpowers/ai-image-generation`)
+
+## tagline
+
+- 一句话成图，灵感不过夜
+- 50+ 顶级模型，想画就画
+- 从草图到 4K 大片，一步到位

@@ -1,0 +1,13 @@
+# expo-module (`expo/skills/expo-module`)
+
+## whitebox
+
+- 先划范围: 新建原生模块/视图、给已有模块加平台、写 config plugin 才接手; 若是把旧 DSL 迁移到 Expo Modules API 2.0 宏, 转交 expo-migrate-module 技能而非自己动手
+- 选脚手架类型 (local 单个 app 用 / standalone 可发布复用), 运行 create-expo-module CLI, 显式指定 slug/路径、--platform、--features, 生成目录结构、expo-module.config.json、podspec/Gradle、TypeScript 绑定和示例 app
+- 按需查阅 references/ 下对应文档 (native-module / native-view / lifecycle / config-plugin / module-config), 把脚手架生成的示例代码替换为真实实现 (Swift/Kotlin 的 ModuleDefinition DSL + TypeScript 封装)
+- 在 expo-module.config.json 登记模块 (iOS 只写类名, Android 写包名+类的全限定名), 依靠 autolinking 接入宿主 app; 本地模块放在 modules/ 或 expo.autolinking.nativeModulesDir 指定的目录
+- 事后若发现技能有错, 用 submit-expo-feedback CLI 定向上报
+
+- 脚手架机制: 核心依赖是 npm 的 create-expo-module CLI 及其 add-platform-support 子命令 —— 不手工创建文件, 由它生成标准布局、iOS podspec / Android Gradle、TS 绑定与独立示例 app; 功能示例默认 opt-in, 由 --features 决定生成哪些 (Constant/Function/AsyncFunction/Event/View/ViewEvent/SharedObject, ViewEvent 隐含 View)
+- DSL 声明转换: 用 Expo Modules API 的 ModuleDefinition DSL (Swift 与 Kotlin 结构同构, 含 Name/Function/AsyncFunction/Property/Constant/Events/View) 声明原生能力, 配合 expo-module.config.json 完成 JS 与原生之间的类型桥接和 autolinking 注册, 无需手写桥接代码
+- 按需加载参考 + 反馈回路: 具体细节不凭记忆, 而是查 references/ 的 6 份 md 文档; 若技能内容本身有误或反复失败, 走 npx submit-expo-feedback@latest (必要时按 expo-skill-feedback 的 eval-candidate 流程) 回馈上游, 不静默绕过

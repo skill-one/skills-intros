@@ -1,0 +1,13 @@
+# convex-backup (`get-convex/agent-skills/convex-backup`)
+
+## whitebox
+
+- GUARD: deploy-guard 识别并宣告目标部署 —— 只读/导出安全, 还原目标永远是临时 preview 而非生产。
+- 取快照: 执行 `npx convex export --path backup-<date>.zip` (有文件存储则加 `--include-file-storage`) 生成备份产物。
+- 还原演练: 先 `npx convex deploy --preview-create restore-drill-<date>` 从当前代码建一次性 preview, 再 `npx convex import backup.zip --deployment restore-drill-<date> --replace` 把快照灌进去。
+- 断言恢复: 通过 MCP 读回数据 —— `tables` 查行数, `data`/`runOneoffQuery` 抽查真实记录, 与源部署对比; 落地 0 行即判定演练失败。
+- 报告+清理: 汇报演练结果 (成功或失败原因)、匹配 RPO 的备份计划与保留窗口、含恢复命令的 runbook; 删除本地快照副本 (敏感真实数据, 永不入库)。
+
+- 快照产物机制: Convex CLI 的 `npx convex export` 导出 zip 作为可携带的用户自有备份 (叠加在 Convex 平台备份之上); 长期执行靠 CI/cron 按调度的定时导出写入用户控制的持久存储, 频率按 RPO (可容忍的数据丢失量) 匹配。
+- 隔离还原机制: 依赖 Preview Deploy Key 环境变量 `CONVEX_DEPLOY_KEY` (付费功能) 建一次性 preview 作为还原靶场, 缺失时降级为全新个人 dev 部署并明说; import 用 `--deployment <名称>` 定位部署 (import 没有 `--preview-name` 参数)。
+- 恢复校验机制: 用 Convex MCP 的 `tables` 读关键表行数、`data`/`runOneoffQuery` 抽查真实记录, 与源部署对比 —— '导入成功但 0 行' 判为 FAILED drill 且大张旗鼓上报, 这正是演练的价值 (真灾难前暴露问题)。

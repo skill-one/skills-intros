@@ -1,0 +1,7 @@
+# postgresql-table-design (`wshobson/agents/postgresql-table-design`)
+
+## tagline
+
+- 建表一步到位,上线零返工
+- 字段、索引、分区,坑提前避开
+- 让每张表扛得住百万行数据

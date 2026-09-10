@@ -1,0 +1,5 @@
+# swiftui-expert-skill (`avdlee/swiftui-agent-skill/swiftui-expert-skill`)
+
+## scenario
+
+App 上架后被吐槽"卡":列表滑动掉帧、页面莫名重刷、改一处崩一处,却查不出原因。⏱ 我能录制并解析性能数据,定位卡顿根源,修好数据流,让丝滑成为常态。

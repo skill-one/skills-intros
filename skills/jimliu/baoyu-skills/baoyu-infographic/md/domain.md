@@ -1,0 +1,7 @@
+# baoyu-infographic (`jimliu/baoyu-skills/baoyu-infographic`)
+
+## domain
+
+**domain**: 🎨 设计多媒体
+
+**reason**: 我生成信息图: 分析内容后产出专业视觉大图, 属于图像生成与视觉制作

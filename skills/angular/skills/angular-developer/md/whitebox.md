@@ -1,0 +1,13 @@
+# angular-developer (`angular/skills/angular-developer`)
+
+## whitebox
+
+- 确认 Angular 版本: 用户指定了版本就走指定版本, 没指定就探测本地 CLI, 都没有就取最新版
+- 按任务类型读取对应的本地 references/ 指南 (组件/信号/表单/HTTP/路由/测试等)
+- 用 Angular CLI 脚手架生成代码, 按 Angular 风格指南写 (signals、signal forms、v20+ 命名规范)
+- 运行 ng build 验证构建
+- 构建通过后, 连同代码一起交付架构建议
+
+- 版本决策链: 指定版本 → npx @angular/cli@<版本>; 未指定 → 先跑 ng version 探测本地安装; 探测失败 → npx @angular/cli@latest 兜底 (依赖 npx 与 Angular CLI)
+- 参考文档检索: 任务关键词映射到 references/*.md 文档 (如 signal-forms.md、http-client.md), 文档不够时回退 angular.dev 官网在线文档
+- 构建校验闭环: 生成代码后必须跑 ng build, 有报错则分析修复后重跑, 不允许跳过直接交付; 单元测试基于 Vitest

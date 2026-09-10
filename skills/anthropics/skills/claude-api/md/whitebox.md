@@ -1,0 +1,13 @@
+# claude-api (`anthropics/skills/claude-api`)
+
+## whitebox
+
+- 触发判定: 请求点名 Claude/Anthropic 或属 LLM 形态任务 (agent/工具调用/RAG 等) 才接手; 若明确点名 OpenAI/GPT/Gemini 等其他供应商, 直接跳过不接
+- 扫描目标文件/项目中的非 Anthropic 供应商标记 (如 import openai、gpt-4), 命中则停下询问用户是否改用 Claude, 不直接改写
+- 从文件后缀/构建配置 (py/ts/java/go/rb/cs/php) 推断项目语言, 加载技能内对应 {lang}/ 目录的语言专属参考文档
+- 严格按文档写代码: SDK 类名/方法签名一律取自技能文档; 文档未覆盖的绑定, 先 WebFetch 官方 SDK 仓库 (shared/live-sources.md 清单) 核实再动手
+- 按默认项产出: 官方 Anthropic SDK + 模型 claude-opus-5 + adaptive thinking + streaming; 若网络不可用, 转为本地编译/运行并按报错迭代修复
+
+- 触发与豁免判定: 关键词命中 (Claude/Anthropic/模型名, 或 LLM 形态任务如 agent/MCP/工具定义/分类摘要) 即触发; SKIP 规则优先 —— 点名其他供应商, 或先跑 grep 扫到 openai/gpt 等标记则整体跳过
+- 语言检测路由: 文件后缀/配置文件 (requirements.txt、package.json、go.mod 等) → 映射到 {lang}/ 文档目录; 检测不出时询问用户或默认 Python; 不支持的语言 (Rust/Swift 等) 降级为 curl/ 原始 HTTP 示例
+- 文档优先于记忆 + 防漂移: SDK 用法必须来自技能内 {lang}/ 文件或 live-sources.md 列出的官方仓库 (经 WebFetch 读取); 内置 API 漂移对照表纠正过时训练记忆 (如 budget_tokens 已被 400 拒绝); 网络失败时用静态类型 SDK 的编译-修复循环兜底。外部依赖: Anthropic Messages API (claude-opus-5)、WebFetch (官方 SDK 仓库/GitHub)、grep (供应商标记扫描)

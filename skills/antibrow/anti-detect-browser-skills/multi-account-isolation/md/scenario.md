@@ -1,0 +1,5 @@
+# multi-account-isolation (`antibrow/anti-detect-browser-skills/multi-account-isolation`)
+
+## scenario
+
+多账号运营最怕一觉醒来全被封:明明配了代理、换了指纹,平台仍判定关联——时区和IP对不上、WebRTC漏出真实地址,问题都藏在看不见处。我逐项检测每个浏览环境的隔离是否真实,揪出泄露点,封号防患于未然。🔒

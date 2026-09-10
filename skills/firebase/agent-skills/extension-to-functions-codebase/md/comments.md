@@ -1,0 +1,10 @@
+# extension-to-functions-codebase (`firebase/agent-skills/extension-to-functions-codebase`)
+
+## comments
+
+- user: 刚接手扩展迁移的新手, category: 坑, comment: 我在文件顶层直接用参数 .value() 初始化客户端, 部署后冷启动就报参数未定义. 挪进 onInit() 里才正常, 配置千万别在模块加载时读.
+- user: 管着云账单的后端老兵, category: 妙用, comment: V1 触发器升 V2 后并发变高, 计费模型也跟着变. 加上 cpu: "gcf_gen1" 锁回原来的单并发计费, 我们当月账单一分没涨.
+- user: 兼管 IAM 的运维, category: 注意, comment: 动手前先把 extension.yaml 里的 params / apis / roles 全列出来对应转换, 部署时权限和 API 自动配好, 不用再留 gcloud 手动步骤.
+- user: 第一次发 npm 包的独立开发, category: 注意, comment: 整个流程只产出包内容, 不会替你执行发布. 发之前自己核对 package.json 的 exports 映射和 node>=22, 不然别人 re-export 会挂.
+- user: 重度用任务队列的团队后端, category: 坑, comment: 升级任务队列后我没删入队代码里的 EXT_INSTANCE_ID, 队列一直派发不到函数. 删掉再部署才通, 用 Tasks 的记得这步.
+- user: 前端转云函数的萌新, category: 启发, comment: 迁移完所有配置都进了 .env 文件, 跟着代码库走. 以前改扩展参数要翻控制台, 现在评审和回滚配置跟改代码一样, 心态完全不同了.

@@ -1,0 +1,7 @@
+# huashu-design (`alchaincyf/huashu-design/huashu-design`)
+
+## tagline
+
+- 先看三个方向,再定一版好设计
+- 顶级工作室标准,认不出是AI做的
+- 设计从你的品牌里长出来

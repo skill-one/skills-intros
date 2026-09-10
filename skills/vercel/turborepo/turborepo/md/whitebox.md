@@ -1,0 +1,12 @@
+# turborepo (`vercel/turborepo/turborepo`)
+
+## whitebox
+
+- 命中触发词 (turbo.json、缓存、--filter、--affected、CI、monorepo 结构等) 后激活
+- 用内置快速决策树把问题归类 (配任务 / 缓存失效 / 只跑改动 / 环境变量 / CI / 建包 / 边界), 定位到对应 reference 文档
+- 对照反模式清单逐条校验现有配置: turbo 简写写进代码、根脚本绕过 turbo、&& 链接任务、prebuild 手工构建依赖、缺 outputs、env 未入 hash、根 .env 等
+- 输出修正后的 turbo.json / package.json 片段, 遵循核心原则: 任务逻辑放各 package、根 package.json 只用 turbo run 委派、依赖顺序交给 dependsOn
+
+- 决策树路由: 固定的分类树把自然语言问题映射到 references/ 下具体文档 (如 references/caching/gotchas.md、references/filtering/RULE.md), 而非自由发挥
+- 依赖图 + 输入哈希模型: ^build=先构建所依赖的包, build=同包前置任务, pkg#task=指定包; env/globalEnv/inputs/globalDependencies 参与哈希决定缓存是否失效, outputs 键决定命中后恢复哪些文件
+- 外部依赖: turbo CLI (实际执行、并行与缓存), git (--affected 对比 main/master 或 TURBO_SCM_BASE 指定分支, 或 --filter 手动指定); 不涉及任何模型 API

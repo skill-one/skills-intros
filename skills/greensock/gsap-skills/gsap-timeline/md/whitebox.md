@@ -1,0 +1,13 @@
+# gsap-timeline (`greensock/gsap-skills/gsap-timeline`)
+
+## whitebox
+
+- 判断任务匹配:多步动画编排、时间线顺序、关键帧序列类问题才接手
+- 创建 gsap.timeline(),默认把各 tween 按代码顺序依次追加
+- 用第三个参数(位置参数)把 tween 放到指定时间点或相对位置
+- 构造器传 defaults 统一子动画的 duration/ease,用 addLabel() 加标签标记阶段
+- 通过 play/pause/reverse/time()/progress() 控制播放,交付前对照 Do Not 自查
+
+- 排序核心是位置参数:支持绝对秒数(1)、相对偏移("+=0.5"/"-=0.2")、标签("intro"/"intro+=0.3")及相对前一动画("<"/">"/"<0.2")
+- defaults 合并机制:构造器的 defaults 注入每个子 tween;timeline 总时长由子动画决定,构造器传 duration 无效
+- 外部依赖:GSAP 库(gsap.timeline() 及播放 API);滚动驱动场景用 ScrollTrigger,但只能挂在顶层 Tween/Timeline,严禁放进 timeline 内部

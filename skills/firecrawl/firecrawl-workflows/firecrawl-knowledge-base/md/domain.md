@@ -1,0 +1,7 @@
+# firecrawl-knowledge-base (`firecrawl/firecrawl-workflows/firecrawl-knowledge-base`)
+
+## domain
+
+**domain**: 🧠 知识管理
+
+**reason**: 把网页内容抓取整理成知识库, 供检索/研究/RAG 使用, 本质是资料沉淀。

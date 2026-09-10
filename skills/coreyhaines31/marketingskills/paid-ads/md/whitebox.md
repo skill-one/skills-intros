@@ -1,0 +1,13 @@
+# paid-ads (`coreyhaines31/marketingskills/paid-ads`)
+
+## whitebox
+
+- 先读产品营销上下文文件 (.agents/product-marketing-context.md, 旧版在 .claude/ 下), 已覆盖的信息不再向用户重复询问
+- 收集缺失上下文: 目标 (转化/CPA/ROAS/预算/约束)、产品与 offer、受众、现状 (历史投放、pixel 数据、漏斗转化率)
+- 按平台选择表匹配平台 (Google=搜索意图, Meta=需求生成/视觉产品, LinkedIn=B2B 职位定向, TikTok=年轻人群+视频), 套用 Campaign→Ad Set→Ad 层级、命名规范和预算分配 (测试期 70% 稳妥 + 30% 测试)
+- 产出投放方案: 文案用框架生成 (PAS/BAB/社证开头), 受众用 lookalike/再营销/排除已购策略, 创意按规范 (视频 15-30s 四段式, 文字覆盖<20%)
+- 上线后按目标匹配指标 (转化看 CPA/ROAS, 流量看 CTR/CPC) 排查问题, 套用优化杠杆与竞价策略进阶路径, 每周复盘; 深层细节按需读 references/ 专题文件
+
+- 上下文文件优先加载: 启动时先读本地产品营销上下文文件, 只追问文件未覆盖或与本次任务强相关的信息, 减少反问轮次
+- 分层知识按需加载: SKILL.md 只保留主框架和速查表 (平台选择、指标匹配、再营销窗口等), 深层内容拆到 references/*.md (文案模板、受众定向、平台搭建清单、转化追踪) 与 tools/integrations/*.md, 任务涉及才读取
+- 外部依赖: 广告平台操作走 tools registry — 仅 Google Ads 提供 MCP 直连 (✓), Meta/LinkedIn/TikTok 仅有操作指南无 MCP; 归因上要求统一 UTM 参数并用 GA4 对账, 因平台自报数据偏高

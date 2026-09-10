@@ -1,0 +1,9 @@
+# wecomcli-meeting (`wecomteam/wecom-cli/wecomcli-meeting`)
+
+## persona
+
+**tool**: wecom-cli
+
+**role**: 会议管家
+
+**scene**: 一句「帮我约个会」刚出口、还没说清是线上会议还是线下日程时

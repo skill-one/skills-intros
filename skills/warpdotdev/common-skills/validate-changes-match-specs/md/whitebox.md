@@ -1,0 +1,13 @@
+# validate-changes-match-specs (`warpdotdev/common-skills/validate-changes-match-specs`)
+
+## whitebox
+
+- 定位规范: 确定基准分支, 用 git merge-base + git diff --name-only <base>...HEAD 找出本分支变更文件, 识别其中引入/修改的 spec (specs/ 目录下的 PRODUCT.md、TECH.md、SECURITY.md 等); 找不到相关 spec 就停止并报告。
+- 收集上下文: 通读全部相关 spec, 抽取具体承诺并分类 (产品行为 / 技术实现 / 安全 / 验证 / 非目标); 同时读分支 diff、代码、测试、PR 描述等实现材料, 不只看文件名和摘要。
+- 逐条比对: 按实质性标准 (缺行为、行为不符、技术路线矛盾、缺迁移/验证、范围外新增等) 产出带编号的 mismatch 清单; 没有则直接报告实现与 spec 相符。
+- 逐项决议修复: 先问用户逐个处理还是批量收集后一起改, 再对每个 mismatch 问 改实现 / 改 spec / 先解释 / 不改只记录, 然后执行所选修改。
+- 验证与提交: 检查 git diff 确认改动符合用户决定, 优先跑仓库自带的 test/lint/typecheck 命令, 最后问是否 commit (可一并 push)。
+
+- Spec 发现靠 git 而非猜测: 基准分支优先用仓库惯例 / PR base, 变更文件用 git merge-base + git diff --name-only <base>...HEAD 圈定, spec 按命名约定识别; 无 spec 即终止。
+- 对照校验有固定判据: spec 承诺逐条对照代码与测试, 只报实质性 mismatch, 不报无害细节; 安全 spec 额外验证正反两条路径 (该做的实现了 + 该防的防住了), 发现 spec 未覆盖的疑似安全缺口按 security amendment 提出; 若已过外部 review, 还会核对 PR review 评论中已确认的修复是否真的落地 (评论经 /pr-comments 或 GitHub CLI/API 获取)。
+- 外部能力按需调用: 设计稿走 Figma MCP 取结构化细节, 截图/渲染 UI 用计算机视觉比对, 可选启动多个 Oz 云端 computer-use 子代理按用户流程分组实测产品行为; 修完靠仓库自带的 test/lint/typecheck 命令验证, 跑不了就明确列出未验证项。所有决策经 ask_user_question 收集 (必含 Other... 选项), 未经批准不发 GitHub 评论, 提交信息带 Co-Authored-By: Warp Agent。

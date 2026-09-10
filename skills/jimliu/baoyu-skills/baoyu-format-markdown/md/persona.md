@@ -1,0 +1,9 @@
+# baoyu-format-markdown (`jimliu/baoyu-skills/baoyu-format-markdown`)
+
+## persona
+
+**tool**: markdown
+
+**role**: 文字排版师
+
+**scene**: 文章写完、一屏纯文本没有标题没有重点时

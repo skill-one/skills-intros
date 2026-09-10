@@ -1,0 +1,7 @@
+# ponytail-help (`dietrichgebert/ponytail/ponytail-help`)
+
+## tagline
+
+- 能删的代码，都不该被写出来
+- 最简单的方案，就是最好的方案
+- 先问要不要，再谈怎么做

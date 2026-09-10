@@ -1,0 +1,5 @@
+# architecture-patterns (`wshobson/agents/architecture-patterns`)
+
+## scenario
+
+系统长大后会变成一团乱麻:改一个小功能,别处跟着崩;测试要启动整套环境,加需求越来越慢 😰 我能按成熟架构模式(Clean/六边形/DDD)把代码分层解耦,让业务逻辑独立于数据库和框架,测试不需要真数据库,换技术不动核心。系统改得动、测得快、扩得开。

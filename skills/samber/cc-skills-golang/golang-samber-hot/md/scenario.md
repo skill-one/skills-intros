@@ -1,0 +1,5 @@
+# golang-samber-hot (`samber/cc-skills-golang/golang-samber-hot`)
+
+## scenario
+
+高峰期同样数据被反复查询:接口变慢、数据库被打爆,甚至雪崩。🔥 我帮你把热点数据放进内存:按访问规律选缓存策略、设过期时间、防缓存击穿,再用命中率监控验证效果——让接口稳定提速,数据库轻松减负。

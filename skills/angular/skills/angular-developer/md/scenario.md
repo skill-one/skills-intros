@@ -1,0 +1,5 @@
+# angular-developer (`angular/skills/angular-developer`)
+
+## scenario
+
+想把网页应用做快做稳,却被版本更新、表单校验、页面加载慢搞得焦头烂额?我懂 Angular 各版本最佳实践,从建项目、写组件到路由、测试、构建上线,全程帮你交付干净能跑的代码。🛠️

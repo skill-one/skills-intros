@@ -1,0 +1,5 @@
+# baoyu-url-to-markdown (`jimliu/baoyu-skills/baoyu-url-to-markdown`)
+
+## scenario
+
+刷到一篇好文章、长推文或 YouTube 视频,想存下来慢慢看,结果复制出来乱码连篇、图片丢失?我帮你:发我链接,一键抓取转成干净 Markdown,支持登录页和验证码,图片视频可一并下载。📄✨

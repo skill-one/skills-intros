@@ -1,0 +1,7 @@
+# write-product-spec (`warpdotdev/common-skills/write-product-spec`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 为软件功能撰写 PRD/产品规格, 定义实现前行为, 属于开发流程环节

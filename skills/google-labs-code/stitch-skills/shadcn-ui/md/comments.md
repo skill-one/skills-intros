@@ -1,0 +1,10 @@
+# shadcn-ui (`google-labs-code/stitch-skills/shadcn-ui`)
+
+## comments
+
+- user: 第一次用的新手, category: 坑, comment: 我直接在 ui/button.tsx 里改样式，后来跑 add button 更新组件，改动全被覆盖。教训：自定义封装放 components/ 外层，ui/ 目录保持原样别手改。
+- user: 后端老兵, category: 注意, comment: 项目没配 tsconfig 的 @/* 路径别名就装组件，import 全报找不到模块。先确认 React 18+、Tailwind 已配好、别名存在，再跑 add 命令。
+- user: 独立开发者, category: 妙用, comment: 做 MVP 我直接装 login 和 dashboard 区块起步，登录页、侧边栏骨架立刻有了，再换表格字段成业务数据，半天出原型，别从零一个个拼。
+- user: 前端小组长, category: 启发, comment: 组件源码进了自己仓库，改样式不用再 !important 硬覆盖黑盒。我们约定 ui/ 不动、封装放外层，升级只挑需要的组件单独跑 add。
+- user: 设计师转码, category: 坑, comment: 我在组件里硬编码了颜色，切深色模式文字直接看不见。正确做法：只改 globals.css 的 CSS 变量，深色模式在 .dark 里覆盖同名变量即可。
+- user: 手写过组件库的老前端, category: 注意, comment: 手写的弹窗 Tab 能跑到弹窗外面，shadcn 的 Dialog 焦点自动圈住、Esc 可关。自己封装时别顺手删掉它的 aria 属性和键盘处理。

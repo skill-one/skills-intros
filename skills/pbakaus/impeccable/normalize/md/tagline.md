@@ -1,0 +1,7 @@
+# normalize (`pbakaus/impeccable/normalize`)
+
+## tagline
+
+- 让走样的界面,回归设计秩序
+- 消灭风格漂移,细节整齐如一
+- 对齐设计规范,品质自现

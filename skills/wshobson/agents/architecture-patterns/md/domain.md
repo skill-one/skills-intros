@@ -1,0 +1,7 @@
+# architecture-patterns (`wshobson/agents/architecture-patterns`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 专注后端架构设计: 分层架构、DDD、重构与依赖治理, 属于写代码与重构范畴

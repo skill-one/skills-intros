@@ -1,0 +1,7 @@
+# slides (`nextlevelbuilder/ui-ux-pro-max-skill/slides`)
+
+## domain
+
+**domain**: 🗂️ 办公效率
+
+**reason**: 核心是制作 HTML 演示文稿, 即 ppt 类幻灯片, 属办公效率场景。

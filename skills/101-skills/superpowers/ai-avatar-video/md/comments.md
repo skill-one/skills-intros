@@ -1,0 +1,10 @@
+# ai-avatar-video (`101-skills/superpowers/ai-avatar-video`)
+
+## comments
+
+- user: 跨境电商运营, category: 妙用, comment: 同一条文案循环换 3 个声音,再用 video_prompt 换场景(厨房/卧室),一天量产十几版 UGC,先小钱测哪版跑得动。
+- user: 第一次用的新手, category: 坑, comment: 直接传横版照片,出来的视频就是横的,投竖屏平台全废。先用 p-image 按 9:16 生成竖版人像,或把原图裁竖再跑。
+- user: 视频后期老哥, category: 注意, comment: OmniHuman 和 PixVerse 没有内置配音,只给文案不开口;要先用 TTS 出音频再传。改已有视频口型用 LatentSync,别选错。
+- user: 出海独立开发者, category: 妙用, comment: 老产品视频出海:whisper 转写→翻译→kokoro 配音→latentsync 对口型,画面不动只换嘴,一条片吃多语言流量。
+- user: 预算敏感的投放同学, category: 注意, comment: 冲着字节名号先跑了 OmniHuman,一秒 0.16 刀还慢 15 倍。纯口播直接 P-Video-Avatar,0.025 一秒,1080p 也够用。
+- user: 企业内训讲师, category: 启发, comment: 定一张讲师形象照,十种语言各出一版,形象统一不用反复出镜;课程改版只换文案重跑,不用重录。

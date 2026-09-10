@@ -1,0 +1,9 @@
+# extension-email-calendar-events (`caffeinelabs/skills/extension-email-calendar-events`)
+
+## blackbox
+
+**function**: 帮你安排会议/活动: 创建、修改、取消日程, 并自动给每位参会人发一封带日历附件的邀请邮件。
+
+- input: 「新建日程: 项目评审会, 3月5日 14:00–15:00, 会议室 A, 参会人 alice@x.com、bob@x.com」, output: 日程创建成功 (返回唯一编号), alice 和 bob 的邮箱各收到一封邀请邮件, 点开可直接把会议加入自己的日历
+- input: 「把刚才的会议改到 15:00 开始, 再加上 carol@x.com」, output: 日程已更新, 所有参会人 (含新加入的 carol) 收到更新版邀请, 日历里时间同步刷新
+- input: 「取消 3月5日的项目评审会」, output: 日程标记为已取消, 所有参会人收到取消通知, 会议从他们的日历中移除; 也可随时说「列出所有日程」拿到一份按时间排序的活动清单

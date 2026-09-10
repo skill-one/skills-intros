@@ -1,0 +1,13 @@
+# python-design-patterns (`wshobson/agents/python-design-patterns`)
+
+## whitebox
+
+- 任务进来, 先对照 SKILL.md 的触发场景归类: 新组件设计 / 拆 God class / 是否抽抽象 / 继承 vs 组合 / 评审耦合问题
+- 若导航级原则不够用, 追加读取 references/details.md 里的详细模式文档
+- 套用核心原则给方案: KISS 选最简解, SRP 按"变更理由"切分职责, 组合优先于继承
+- 用启发式规则自查结论: rule of three 决定是否抽抽象, 依赖方向是否 API → Service → Repository
+- 输出可直接落地的代码/重构建议 (如字典分发替代工厂、构造器注入)
+
+- 清单驱动的判断规则: 不跑代码, 纯原则推理 —— "reason to change"测试判断拆不拆类, rule of three 判断抽不抽抽象, 复制已产生分歧则立即提取
+- 固定模式库 + 两级文档: SKILL.md 导航层给速查代码模板 (如 FORMATTERS 字典分发), 不够再查 references/details.md 详情层
+- 零外部依赖: 不调用任何外部工具/库/模型 API, 所有产出来自 skill 自带的准则与示例

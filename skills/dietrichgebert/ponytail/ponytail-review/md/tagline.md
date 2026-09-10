@@ -1,0 +1,7 @@
+# ponytail-review (`dietrichgebert/ponytail/ponytail-review`)
+
+## tagline
+
+- 专删臃肿代码,一行一定位
+- 只猎冗余,不问对错
+- 最好的代码,是你没写的代码

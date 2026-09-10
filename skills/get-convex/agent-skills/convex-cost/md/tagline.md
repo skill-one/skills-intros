@@ -1,0 +1,7 @@
+# convex-cost (`get-convex/agent-skills/convex-cost`)
+
+## tagline
+
+- 账单未到,成本先知
+- 定位最贵的那行代码,给最省钱的改法
+- 数据涨十倍,费用不心惊

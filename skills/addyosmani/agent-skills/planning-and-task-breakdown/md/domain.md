@@ -1,0 +1,7 @@
+# planning-and-task-breakdown (`addyosmani/agent-skills/planning-and-task-breakdown`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 核心是将代码需求拆解为带依赖顺序和验收标准的可实施任务, 服务于编程开发流程。

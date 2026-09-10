@@ -1,0 +1,7 @@
+# remotion (`google-labs-code/stitch-skills/remotion`)
+
+## domain
+
+**domain**: 🎨 设计多媒体
+
+**reason**: 将 Stitch 设计稿编排为带转场、缩放、文字标注的走查视频, 属于视频制作

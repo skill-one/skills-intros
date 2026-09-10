@@ -1,0 +1,10 @@
+# higgsfield-brandkit (`higgsfield-ai/skills/higgsfield-brandkit`)
+
+## comments
+
+- user: 设计外包老手, category: 妙用, comment: 客户给过官方 logo,走 apply-existing 一像素没重画,直接套到周边 mockup;审批都存本地,隔月加新品接着做,色板字体不用重新确认。
+- user: 自媒体博主, category: 妙用, comment: 带字的社媒图最怕 AI 字乱码,这里文案和我给的一字不差,导出来直接发,省了后期修字那步。
+- user: 第一次创业的创始人, category: 坑, comment: 我中途换了色板,心想 logo 会自动跟着调,结果用它生成的 logo 全判失效重做。先把色板定死再选 logo,顺序反了多烧一轮生成。
+- user: 电商运营, category: 注意, comment: 开工前先 higgsfield auth login 选好工作区,我是生成报错才发现没登录。文案要自己给全——配料表、slogan 它一个字不编,给全一次过。
+- user: 产品经理, category: 启发, comment: 只要 mockup,它就只管 logo,不逼我填完整品牌问卷;后期换字体也不作废 logo。边试边改,按需补缺的槽位最省。
+- user: 接手别人项目的设计助理, category: 坑, comment: 接手同事做一半的活,差点把 brandkit/state.json 当缓存删了——审批记录全在里面,删了色板 logo 字体全部重来。搬项目记得整个目录带走。

@@ -1,0 +1,7 @@
+# layout (`pbakaus/impeccable/layout`)
+
+## domain
+
+**domain**: 🎨 设计多媒体
+
+**reason**: 专精 UI 排版布局：间距、层级、节奏与构图优化

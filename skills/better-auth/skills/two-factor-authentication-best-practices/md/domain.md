@@ -1,0 +1,7 @@
+# two-factor-authentication-best-practices (`better-auth/skills/two-factor-authentication-best-practices`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 核心是用 Better Auth 框架集成两步验证功能， 属代码/框架配置类开发工作

@@ -1,0 +1,5 @@
+# code-review-and-quality (`addyosmani/agent-skills/code-review-and-quality`)
+
+## scenario
+
+代码还没细看就合并,bug 带进线上 🔥 AI 生成的代码"看着没问题",却常暗藏隐患。我在合并前把关:正确性、安全、性能逐项审查,意见分"必改/可选",只放行真正让代码变好的改动。

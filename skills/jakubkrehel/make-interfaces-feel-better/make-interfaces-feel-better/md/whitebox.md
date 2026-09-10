@@ -1,0 +1,13 @@
+# make-interfaces-feel-better (`jakubkrehel/make-interfaces-feel-better/make-interfaces-feel-better`)
+
+## whitebox
+
+- 触发判定：任务涉及 UI 打磨（组件、动画、hover 态、图标、微交互等关键词）；未指定模式时默认 `full` 全量审查
+- 先识别项目现有样式体系（Tailwind / 纯 CSS / CSS-in-JS），所有修复必须用该体系表达，绝不引入第二套样式系统
+- 慢速检查：用浏览器 DevTools 的 Animations 面板以 10% 速度回放动画，逐一遍历 hover / focus / active / loading / empty 五种状态
+- 将发现对照 19 条核心原则与常见错误表逐项修正（同心圆角、视觉对齐、tabular-nums、按压 scale 0.96 等）
+- 输出结构化报告：按原则分组的发现表（Severity/Location/Before/After/Why）+ 曾考虑但否决的候选 + 验证结果 + 最终裁决
+
+- 双模式限流：`quick` 只覆盖主用户路径和最高流量状态，只报 HIGH/MEDIUM，上限 5 条；`full` 覆盖 typography/surfaces/animations/icons/performance 五大类，上限 15 条。每个类别必须列出实际检查的证据，未检查的必须标注 Not reviewed 并给原因，禁止暗示检查过没查的地方。
+- 依赖探测分支：查 package.json 是否有 motion/framer-motion——有则按该库的 import 路径用 `spring`（duration 0.3，bounce 恒为 0）；没有则两个图标都留在 DOM 里用 CSS `cubic-bezier(0.2, 0, 0, 1)` 交叉淡入淡出，零依赖实现进出场动画。外部工具仅浏览器 Animations 面板，无模型 API。
+- 严重度门禁校验：HIGH（阻断使用/误导/反复干扰）→ 裁决 Block；仅剩 MEDIUM/LOW → Needs changes；无任何可行动发现 → Approve。每项检查要么列出执行的确切命令与观察结果，要么标记 Not verified 并在裁决旁列出所有未验证项。

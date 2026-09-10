@@ -1,0 +1,5 @@
+# java-springboot (`github/awesome-copilot/java-springboot`)
+
+## scenario
+
+项目越写越乱:改一处崩三处、报错没人看得懂、上线提心吊胆 😰 我按 Spring Boot 最佳实践帮你:规范结构、统一报错、补上测试,让系统稳、好维护 🔧

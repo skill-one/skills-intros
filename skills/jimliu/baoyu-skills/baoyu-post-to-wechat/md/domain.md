@@ -1,0 +1,7 @@
+# baoyu-post-to-wechat (`jimliu/baoyu-skills/baoyu-post-to-wechat`)
+
+## domain
+
+**domain**: ✍️ 内容创作
+
+**reason**: 核心是文章/图文发布到微信公众号, 属于社媒内容创作与分发环节

@@ -1,0 +1,7 @@
+# incremental-implementation (`addyosmani/agent-skills/incremental-implementation`)
+
+## tagline
+
+- 小步实现, 每步都能跑
+- 步步验证, 问题不过夜
+- 一次一事, 随时可回退

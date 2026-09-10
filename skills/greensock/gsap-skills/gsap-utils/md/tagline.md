@@ -1,0 +1,7 @@
+# gsap-utils (`greensock/gsap-skills/gsap-utils`)
+
+## tagline
+
+- gsap.utils 在手, 动画数值不用愁
+- 滚动换算、随机吸附, 一行代码搞定
+- 少写重复代码, 动画精准又丝滑

@@ -1,0 +1,10 @@
+# competitors (`coreyhaines31/marketingskills/competitors`)
+
+## comments
+
+- user: SaaS 增长负责人, category: 坑, comment: 凭记忆报了竞品价格,页面全照写。上线后被用户邮件指出数字是旧版,很尴尬。现在每次先核实竞品官网现价再开工。
+- user: 独立开发者, category: 妙用, comment: 试了竞品互比的格式:写「A vs B」,俩都不是我,文末把自己作为第三选项带出。抢到了以前完全搜不到我的词。
+- user: 内容运营新手, category: 注意, comment: 动手前先备好三样:客户真实切换评价、双方现价、迁移支持内容。我没准备,迁移和口碑段落只能写空话,可信度差一截。
+- user: B2B 市场总监, category: 启发, comment: 「竞品更适合谁」这段起初不敢写,照指南如实写了,销售反馈异议反而变少——敢承认边界,客户才信你说的优势。
+- user: SEO 顾问, category: 注意, comment: 给客户定好预期:这类页面在 AI 搜索里多是「被引用」而非「被推荐」,推荐靠站外评价和论坛声量,别拿页面承诺效果。
+- user: 第一次写竞品页的产品经理, category: 坑, comment: 我要求只夸自己、弱化别人,产出像广告软文。后来按 4-7 个真实替代品公平列出,页面反而排上去了,询盘也更真实。

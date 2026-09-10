@@ -1,0 +1,10 @@
+# convex-deploy-guard (`get-convex/agent-skills/convex-deploy-guard`)
+
+## blackbox
+
+**function**: 在你执行任何会改动 Convex 环境（开发 / 预发布 / 生产）的命令之前，先替你确认并明说「这条命令会动到哪个环境」；碰生产环境必须你当场点头；你说「本次只看不改」就绝不改任何东西。
+
+- input: 「帮我跑 npx convex deploy」, output: 一行明确目标环境（如 target: dev (joyful-capybara-123, personal dev)），你确认无误后才执行；若指向生产，则停下等你当场说「是」
+- input: 「把生产环境的某配置项改成 xxx」, output: 先明确告知这会改动哪个生产部署的什么内容，拿到你本次会话的明确同意后才动手——之前点过的头不算数
+- input: 「本次会话只读，什么都别改」, output: 整个会话内拒绝一切会改动环境的操作，只做查看、核对与报告
+- input: 「我明明部署了，线上却没变化」, output: 不盲目重跑部署，而是指出改动其实落在了另一个环境，并帮你确认到底哪个环境被改了

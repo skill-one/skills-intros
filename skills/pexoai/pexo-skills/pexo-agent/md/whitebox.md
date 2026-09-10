@@ -1,0 +1,13 @@
+# pexo-agent (`pexoai/pexo-skills/pexo-agent`)
+
+## whitebox
+
+- 初始化/诊断: 首次使用运行 pexo-doctor.sh, 读取 ~/.pexo/config 中的 PEXO_API_KEY, 完成鉴权配置
+- 建项目+传素材: pexo-project-create.sh 拿到 project_id; 用户给文件则 pexo-upload.sh 换取 asset_id, 以 <original-image> 等标签包裹 (裸 ID 会被忽略)
+- 原样转发: 把用户原话一字不差地通过 pexo-chat.sh 发给 Pexo 后端, 本地不加任何创意描述; 后端完成脚本、分镜、模型选择 (Seedance 2 / Kling 3.0 等) 与生成
+- 轮询状态机: 每 ≥60 秒调 pexo-project-get.sh 读 nextAction, 按 WAIT/CONFIRM/RESPOND/DELIVER/FAILED/RECONNECT 分支处理 (WAIT 期间只查询不发言, 防止重复生成)
+- 交付: nextAction=DELIVER 后调 pexo-asset-get.sh 下载成片 (默认无水印), 输出带完整签名参数的明文 URL + 项目链接给用户
+
+- 消息中继机制: 我不做任何创作决策, 用户消息原样复制进 pexo-chat.sh, 唯一允许的改动是附加素材标签; 创意工作 (脚本/分镜/提示词/模型路由) 全部由 Pexo 后端 agent 完成, 自动在 Seedance 2、Kling 3.0、HappyHorse 等 10+ 模型间选型
+- nextAction 驱动的轮询状态机: 靠 pexo-project-get.sh 返回的 nextAction 字段控制流程走向; CONFIRM 是费用确认分支 — 读取 confirmation_id 和 estimated_credits, 必须用户显式批准后才执行 pexo-billing-confirm.sh --user-approved, 脚本无此标志会拒绝请求; 用户改需求重新发消息会自动取消挂起的确认
+- 安全与依赖边界: 鉴权请求锁定 https://pexo.ai (PEXO_API_KEY), 产物落盘 ~/.pexo/tmp; 全部依赖捆绑的 bash 脚本 + curl/jq/file, 出站仅 HTTPS 到 Pexo; 计费模式由 PEXO_BILLING_CONFIRMATION_MODE 控制, 默认每笔计费批次都要用户确认

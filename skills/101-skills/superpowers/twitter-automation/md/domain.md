@@ -1,0 +1,7 @@
+# twitter-automation (`101-skills/superpowers/twitter-automation`)
+
+## domain
+
+**domain**: 📈 商业运营
+
+**reason**: 发推、点赞、转发、DM、关注等 Twitter/X 自动化，本质是社媒账号运营与涨粉增长，服务营销获客

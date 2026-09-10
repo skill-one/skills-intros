@@ -1,0 +1,7 @@
+# golang-samber-hot (`samber/cc-skills-golang/golang-samber-hot`)
+
+## tagline
+
+- 热点进内存, 毫秒延迟后端减负
+- 九种淘汰算法, 按访问模式选对型
+- 防击穿防雪崩, 命中率全程可观测

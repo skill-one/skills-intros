@@ -1,0 +1,5 @@
+# email-sequence (`coreyhaines31/marketingskills/email-sequence`)
+
+## scenario
+
+辛苦引来的用户,一封邮件后就石沉大海?📉 无人跟进,线索悄悄流失。我帮你设计自动化邮件序列——欢迎、培育、挽回,像老朋友一样按时问候,一步步把陌生人变成付费客户。✉️

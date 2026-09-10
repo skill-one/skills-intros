@@ -1,0 +1,7 @@
+# doubt-driven-development (`addyosmani/agent-skills/doubt-driven-development`)
+
+## tagline
+
+- 自信不是证据, 证伪才是
+- 趁纠错还便宜, 让怀疑先说话
+- 宁可现在被质疑, 不要上线后救火

@@ -1,0 +1,5 @@
+# golang-data-structures (`samber/cc-skills-golang/golang-data-structures`)
+
+## scenario
+
+深夜告警:Go 服务越跑越慢、内存悄悄翻倍?多半是循环里盲目 append、乱建 map——每次扩容都在整块拷贝数据。我能帮你选对结构、预留容量、砍掉重复分配,让程序又快又省。🗃

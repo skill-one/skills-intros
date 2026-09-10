@@ -1,0 +1,7 @@
+# huashu-nuwa (`alchaincyf/nuwa-skill/huashu-nuwa`)
+
+## tagline
+
+- 输入一个名字，输出一套思维操作系统
+- 不学他说了什么，学会他怎么想
+- 女娲造人：为思想造一面镜子

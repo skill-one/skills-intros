@@ -1,0 +1,10 @@
+# clerk (`clerk/skills/clerk`)
+
+## comments
+
+- user: Next.js 新手, category: 坑, comment: 不报版本就问登录写法,拿到的是新版 import(@clerk/react),我项目还是 Core 2 的 @clerk/clerk-react,一堆报错。后来把 package.json 里的版本号一起贴进去,示例一次跑通。
+- user: 全栈独立开发, category: 妙用, comment: 已知要做什么就直接点名子技能,比如「用 clerk-billing 加按席位计费」,比绕一大圈描述业务再等它自己路由省事得多。
+- user: 后端老兵, category: 妙用, comment: CLI 技能里藏着 clerk impersonate(冒充某用户登录调试)和 webhooks listen(本地收 webhook)。以前调试 webhook 还要开内网穿透隧道,现在本地直接听。
+- user: B2B 独立开发者, category: 注意, comment: 做 B2B 的提醒:问计费时把「按席位收费、挂在 organization 下」说清楚,否则容易被当普通个人订阅处理,拿不到组织级席位方案。
+- user: 原生 Android 开发, category: 坑, comment: 开口只说「给 App 加登录」没讲技术栈,结果拿到的是 Expo 方案。Expo 和原生 Kotlin 是两套技能,第一句就把框架说死,别让它猜。
+- user: 测试工程师, category: 注意, comment: 老项目提问时主动补一句「我在 Core 2」——它支持到 2027 年 1 月,尤其自定义登录界面两版 API 完全不同,不说清楚会拿到跑不了的代码。

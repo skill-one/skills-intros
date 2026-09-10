@@ -1,0 +1,7 @@
+# baoyu-post-to-wechat (`jimliu/baoyu-skills/baoyu-post-to-wechat`)
+
+## tagline
+
+- 写完即发, 一键进公众号草稿箱
+- 你只管写, 排版发布全交给我
+- 告别繁琐排版, 文章直达公众号

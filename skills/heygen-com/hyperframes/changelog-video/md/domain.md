@@ -1,0 +1,7 @@
+# changelog-video (`heygen-com/hyperframes/changelog-video`)
+
+## domain
+
+**domain**: 🎨 设计多媒体
+
+**reason**: 输入变更日志文字, 产出带配音/动效/字幕的成品视频, 本质是音视频制作

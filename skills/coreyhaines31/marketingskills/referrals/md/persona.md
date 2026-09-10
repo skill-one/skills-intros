@@ -1,0 +1,9 @@
+# referrals (`coreyhaines31/marketingskills/referrals`)
+
+## persona
+
+**tool**: 推荐链接
+
+**role**: 老带新增长顾问
+
+**scene**: 拉新广告越投越贵、想让老用户帮忙带新用户又无从下手时

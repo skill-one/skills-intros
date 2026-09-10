@@ -1,0 +1,7 @@
+# angular-developer (`angular/skills/angular-developer`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 专门生成 Angular 代码与架构指导, 属于框架开发场景

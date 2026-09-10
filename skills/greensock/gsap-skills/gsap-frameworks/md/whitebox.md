@@ -1,0 +1,13 @@
+# gsap-frameworks (`greensock/gsap-skills/gsap-frameworks`)
+
+## whitebox
+
+- 识别任务属于非 React 框架 (Vue/Nuxt/Svelte/SvelteKit) 的 GSAP 动画需求, React 场景则转交 gsap-react 技能
+- 等组件挂载后才动手: Vue 用 onMounted, Svelte 用 onMount, 此时 DOM 节点已存在 (挂载前绝不创建动画)
+- 在 gsap.context(回调, 组件根元素) 内创建所有 tween 与 ScrollTrigger, 并把 ref / bind:this 拿到的容器作为 scope 传入
+- Nuxt 场景改走 useGSAP() 组合式函数: 统一 registerPlugin, 不常用的插件按需 lazyLoadPlugin 动态 import
+- 卸载/销毁时调用 ctx.revert() (Vue 在 onUnmounted, Svelte 在 onMount 返回的清理函数中), 布局变化后按需 ScrollTrigger.refresh()
+
+- 集中登记 + 一键回收: gsap.context() 内创建的所有动画和 ScrollTrigger 被自动追踪, ctx.revert() 一次调用即 kill 全部并还原内联样式, 防止动画跑在已卸载节点上和内存泄漏
+- 选择器作用域隔离: 把容器元素作为 gsap.context 的第二参数, ".box" 等选择器只在该组件子树内匹配, 不会误伤页面其他组件
+- 外部依赖: GSAP 核心库与 ScrollTrigger 插件 (gsap.registerPlugin 注册, 应用级一次); Nuxt 下依赖自建 useGSAP() composable 的插件映射表做动态 import 以减小首包; DOM 引用靠 Vue 的 ref / Svelte 的 bind:this; Vue 数据加载后用 nextTick、Svelte 用 tick 触发 refresh

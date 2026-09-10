@@ -1,0 +1,7 @@
+# higgsfield-game-generation (`higgsfield-ai/skills/higgsfield-game-generation`)
+
+## tagline
+
+- 一句话点子, 变成可玩网页游戏
+- 角色、音效、上线, 一步到位
+- 不用写代码, 今天就能玩上你的游戏

@@ -1,0 +1,9 @@
+# firebase-firestore-enterprise-native-mode (`firebase/agent-skills/firebase-firestore-enterprise-native-mode`)
+
+## blackbox
+
+**function**: 帮你从零搭建并使用 Google Firestore Enterprise (Native 模式) 数据库——从开通环境、设计数据结构, 到写安全规则和接入代码, 再到查询提速。
+
+- input: 「我有个新项目, 想用 Firestore 存数据, 帮我开一个 Enterprise Native 模式的环境」, output: 一份可执行的开通指引 + 你本地就能跑起来的项目环境配置
+- input: 「我要保证每个用户只能读写自己的数据, 规则帮我写一下」, output: 一份可直接部署上线的安全规则文件 (决定谁能碰哪些数据的权限配置)
+- input: 「我的网页/Python 程序要读写这个数据库, 给我接入代码」或「这条查询太慢了怎么办」, output: 能直接粘进你项目里的读写代码 (Web 或 Python); 针对慢查询, 给出具体该建什么索引 (让查询变快的目录) 的方案

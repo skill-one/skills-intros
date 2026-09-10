@@ -1,0 +1,5 @@
+# developing-genkit-js (`firebase/agent-skills/developing-genkit-js`)
+
+## scenario
+
+你在用 Genkit (Node.js 的 AI 应用框架) 开发时, 是否常被报错、类型问题、过时 API 折磨到深夜? Genkit 刚经历大版本变更, 网上教程多半已失效。我内置官方文档与常见错误对照表, 遇错先查证再动手, 不瞎猜、不返工, 帮你从搭项目到跑通全流程。

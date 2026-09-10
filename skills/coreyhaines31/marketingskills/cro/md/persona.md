@@ -1,0 +1,9 @@
+# cro (`coreyhaines31/marketingskills/cro`)
+
+## persona
+
+**tool**: 热力图
+
+**role**: 转化率优化师
+
+**scene**: 落地页有流量、却没人点按钮时

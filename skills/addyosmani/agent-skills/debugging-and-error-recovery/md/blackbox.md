@@ -1,0 +1,9 @@
+# debugging-and-error-recovery (`addyosmani/agent-skills/debugging-and-error-recovery`)
+
+## blackbox
+
+**function**: 程序出问题时——报错、跑不起来、昨天还好好的今天突然坏了——帮你查清到底哪里坏了、为什么坏,然后修好它,并防止它再犯。
+
+- input: 一段报错信息(如「TypeError: Cannot read property 'x' of undefined」)+ 出问题的项目, output: 修好的代码 + 一句话说明「坏在哪一行、为什么坏」
+- input: 「这套代码昨天还能跑通,今天构建/运行就失败了」+ 项目, output: 指出是哪次改动引入的问题 + 修复后的代码 + 确认已恢复正常运行
+- input: 一个偶尔才出现、说不准什么时候复现的 bug 描述, output: 什么条件下会触发的说明 + 修复后的代码 + 一道防止它再犯的自动检查

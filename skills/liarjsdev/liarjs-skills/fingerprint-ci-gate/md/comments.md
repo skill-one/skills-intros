@@ -1,0 +1,10 @@
+# fingerprint-ci-gate (`liarjsdev/liarjs-skills/fingerprint-ci-gate`)
+
+## comments
+
+- user: 自建 GitLab 平台工程师, category: 坑, comment: 机房 runner 上设 --min-score 60 天天红,tz 检查因机房 IP 永远过不了。改用 diff 基线才安稳,这种环境别用绝对分数线。
+- user: 第一次接 CI 的新手, category: 坑, comment: 拿同事有头模式录的 baseline 来 diff 无头流水线,首跑一片红全是噪音。基线必须和任务同模式:无头对无头。
+- user: 爬虫镜像维护, category: 注意, comment: 容器里扫描起不来,先加 --shm-size=1g,别学我关沙箱硬跑——按规范该修镜像。shm 补上后沙箱照开,一切正常。
+- user: 爬虫组负责人, category: 坑, comment: 没锁版本吃过闷亏:Chrome 大版本一升,分数自己动了,代码零改动。把 liarjs@0.3 固定进 lockfile,升级才可控。
+- user: 用了半年的 CI 老用户, category: 妙用, comment: 推代码前本地先 scan 一份,对仓库里的 baseline 跑 diff,红了当场改,省一轮 CI。顺手把 diff 贴进 PR,reviewer 一眼看懂。
+- user: 内网环境运维, category: 注意, comment: 隔离机器记得加 --offline,零外呼能跑,但比在线少 8 项跨层检查,报告会标注。别拿离线报告当全量分数汇报。

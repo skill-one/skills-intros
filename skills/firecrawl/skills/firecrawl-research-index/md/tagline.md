@@ -1,0 +1,7 @@
+# firecrawl-research-index (`firecrawl/skills/firecrawl-research-index`)
+
+## tagline
+
+- 一句话,找到该找的那篇论文
+- 顺藤摸瓜,一篇变一族
+- 不止搜到,更验证到位

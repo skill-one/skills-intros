@@ -1,0 +1,7 @@
+# marketing-loops (`coreyhaines31/marketingskills/marketing-loops`)
+
+## domain
+
+**domain**: 📈 商业运营
+
+**reason**: 把营销任务变成定时自动运转的循环工作流(SEO 扫描、广告刷新、流失预警等), 服务业务增长。

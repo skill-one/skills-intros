@@ -1,0 +1,5 @@
+# design-system (`nextlevelbuilder/ui-ux-pro-max-skill/design-system`)
+
+## scenario
+
+做汇报PPT时, 每页配色字体对不齐, 老板一换品牌色就得改几十页, 折腾到深夜? 😩 我用设计系统自动生成风格统一的幻灯片——配色、排版、图表一次成型, 还能一键换肤, 你只需专注内容。

@@ -1,0 +1,7 @@
+# vue (`antfu/skills/vue`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 专精 Vue 3 组件编写与前端框架开发, 属于写代码范畴

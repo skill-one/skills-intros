@@ -1,0 +1,7 @@
+# golang-spf13-cobra (`samber/cc-skills-golang/golang-spf13-cobra`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 指导用 Go 的 cobra 库编写命令行工具, 属于框架集成与代码开发

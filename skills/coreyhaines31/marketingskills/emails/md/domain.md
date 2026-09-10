@@ -1,0 +1,7 @@
+# emails (`coreyhaines31/marketingskills/emails`)
+
+## domain
+
+**domain**: 📈 商业运营
+
+**reason**: 邮件营销序列设计与自动化, 属于市场营销与客户增长范畴

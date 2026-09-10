@@ -1,0 +1,9 @@
+# convex-improve-convex-plugin (`get-convex/agent-skills/convex-improve-convex-plugin`)
+
+## blackbox
+
+**function**: 把你这次编程对话的记录(脱敏后)交给 Convex 团队做 AI 复盘, 回给你一份「这次开发哪里卡壳、哪里顺手、该怎么改进」的摘要。
+
+- input: 你说「把这次会话发给 Convex 团队复盘一下」, output: 先问你一次: 是否愿意分享记录? 总是 / 仅这一次 / 永不。你选了它才会发, 并记住你的选择
+- input: 你回答「仅这一次」, output: 一份复盘摘要: 找到的问题(如「指令说得太含糊」「工具中途失灵」)、每条对应的改进建议、以及这次做得好的地方
+- input: 本次会话里没有找到可分析的对话记录, output: 一句话告诉你「没找到对话记录」, 什么都不发送

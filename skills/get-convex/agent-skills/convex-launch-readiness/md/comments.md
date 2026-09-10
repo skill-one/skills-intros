@@ -1,0 +1,10 @@
+# convex-launch-readiness (`get-convex/agent-skills/convex-launch-readiness`)
+
+## comments
+
+- user: 后端老兵, category: 妙用, comment: reviewer 从代码标了缺索引，advisor 又从线上流量报读超限，报告把两处合并成一条只扣一次分，省了我人工去重。
+- user: 第一次用的新手, category: 坑, comment: 以为跑完它就顺手修代码，结果只出报告干等半天。要在报告里点名接受哪几条，它才派给对应的修复技能动手。
+- user: 独立开发者, category: 注意, comment: 本地没部署就跑，advisor 和 insights 会跳过，得分只是代码分。报告头会列出跳过原因，绿分不等于生产没问题。
+- user: 创业公司技术负责人, category: 妙用, comment: 修完让它重跑受影响的检查项看涨分。三条高危 100→55→100，向合伙人汇报技术债进展时，数字自己会说话。
+- user: 全栈工程师, category: 注意, comment: 分数只算已确认问题，疑似项列在候选区不动分。我 95 分还藏着一条疑似数据泄露，记得点开候选区逐条看。
+- user: 前端转后端, category: 启发, comment: 报告自带修复顺序：先权限和数据丢失，再性能，最后代码风格。以前按心情修，现在照清单从上往下打勾。

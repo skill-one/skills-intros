@@ -1,0 +1,9 @@
+# write-tech-spec (`warpdotdev/common-skills/write-tech-spec`)
+
+## blackbox
+
+**function**: 把你的功能需求变成一份「照着就能写代码」的技术方案文档 (TECH.md), 方案全部基于你现有代码库的真实情况, 不是空想。
+
+- input: 一句功能需求, 如「给终端加标签页悬停预览」, 加上你的代码仓库, output: specs/标签名/TECH.md — 一份方案文档: 要改哪些地方、怎么改、有几种做法时选哪种及原因
+- input: 一张工单号 (如 APP-1234) 和产品需求描述, output: specs/APP-1234/TECH.md, 里面的方案引用钉死在具体代码行上 (点链接就能看到原文), 写错了随时可查证
+- input: 已有的产品文档 PRODUCT.md (描述这个功能该有什么行为), output: 配套的 TECH.md, 其中「验证」部分把每条产品行为一一对应到具体测试方法, 评审的人能照单验收

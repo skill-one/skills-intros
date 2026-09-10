@@ -1,0 +1,10 @@
+# clerk-setup (`clerk/skills/clerk-setup`)
+
+## comments
+
+- user: 独立开发者, category: 妙用, comment: 不注册 Clerk 账号也能开工：clerk init 直接把临时密钥写进 .env.local，上线前 auth login 一次，之前的应用自动认领进我账号，不用重配。
+- user: Next.js 新手, category: 坑, comment: ClerkProvider 包在 <html> 外面，登录状态时好时坏；Next 15 的 auth() 忘写 await，userId 永远是 undefined。两处改完才正常。
+- user: 后端老兵, category: 妙用, comment: 换密钥不停机：rotate_secret_keys 带 delay_old_secrets_expiration_hours:24，旧密钥多活一天，新部署慢慢滚上去，省掉维护窗口。
+- user: 运维老哥, category: 注意, comment: SDK 要 Node 20.9+，我们 CI 停在 18 直接装不上。排障先跑 clerk doctor --json，环境变量、中间件、SDK 问题一次全揪出来。
+- user: 从 NextAuth 迁移的后端, category: 注意, comment: 换 Clerk 前先列清单：用户表、受保护路由、session 存哪。切换那刻旧 session 全失效，要么留维护窗口，要么双系统并行跑一段。
+- user: 接手同事项目的前端, category: 坑, comment: clerk link 裸跑报 'Cannot select an application in agent mode'。别猜：先 apps list --json 拿 app_id，再 link --app 指定。

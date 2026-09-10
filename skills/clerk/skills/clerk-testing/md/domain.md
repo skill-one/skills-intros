@@ -1,0 +1,7 @@
+# clerk-testing (`clerk/skills/clerk-testing`)
+
+## domain
+
+**domain**: 🧪 测试与质量
+
+**reason**: 专为 Clerk 应用提供 E2E 认证流程测试(Playwright/Cypress), 属于自动化测试框架实践

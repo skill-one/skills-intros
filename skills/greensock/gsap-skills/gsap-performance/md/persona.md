@@ -1,0 +1,9 @@
+# gsap-performance (`greensock/gsap-skills/gsap-performance`)
+
+## persona
+
+**tool**: gsap
+
+**role**: 动画调优师
+
+**scene**: 页面动画开始掉帧、滚动发卡顿时

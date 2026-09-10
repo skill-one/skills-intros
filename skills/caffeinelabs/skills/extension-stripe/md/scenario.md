@@ -1,0 +1,5 @@
+# extension-stripe (`caffeinelabs/skills/extension-stripe`)
+
+## scenario
+
+你的网站再好用,顾客付不了款也是白搭:购物车堆满,下单前流失,眼睁睁丢订单。我能为你的应用接入 Stripe 信用卡/借记卡支付——配置、下单、跳转付款、支付结果页一步到位,让顾客痛快掏钱,订单落袋为安。💳

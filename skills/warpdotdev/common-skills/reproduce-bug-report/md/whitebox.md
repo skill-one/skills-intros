@@ -1,0 +1,14 @@
+# reproduce-bug-report (`warpdotdev/common-skills/reproduce-bug-report`)
+
+## whitebox
+
+- 解析 bug 报告: 提取报告行为、期望行为、复现步骤及环境约束 (OS/应用版本/渠道/设置)
+- 判断适用性: 只接 UI 可见类 bug (交互/渲染/布局/引导), 纯后端或纯代码问题不接
+- 通过一次 run_agents 批量调用启动一个或多个开启 computer use 的 Oz 云端 agent, 每个分配一个假设或环境变体
+- 各子 agent 在云端安装匹配的应用版本、按步骤操作 UI、录制屏幕录像并截图、写 manifest 后回报
+- 等全部子 agent 回报后, 按 Bug summary / 复现状态 / 证据 / 发现 / 下一步 的固定结构汇总
+
+- 变体并行探测: 复现路径不唯一时, 同一批 run_agents 并发多个子 agent, 各只测一个变量 (不同 OS、全新 vs 已有本地状态、stable vs dev 构建、设置开关); 回报时强制区分 confirmed / partially confirmed / not reproduced / blocked 四种结论
+- 版本对齐与回退: 优先安装与报告者完全一致的 app 版本/构建/渠道, 不悄悄换最新版; 找不到时才用最接近的合理回退, 并把请求版本、实装版本、工件来源及回退原因记录进 manifest 和最终报告
+- 证据工作流: 子 agent 用 computer use 操作 UI, 默认产出一支屏幕录像 (repro.mp4) 作为主证据, 截图按序命名作补充或静态 bug 的主证据, 并维护 manifest (文件名/时间戳/应用状态/动作/是否复现); 全程隐私约束: 不索取凭据、不把 token/私密信息写进任何工件、未经明确指示不向 GitHub/Linear/Slack 留言
+- 外部依赖: Oz 云端 computer-use agent + run_agents 批量调度机制 (skill 未引入其他外部库或模型 API)

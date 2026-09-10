@@ -1,0 +1,10 @@
+# convex-monitor (`get-convex/agent-skills/convex-monitor`)
+
+## comments
+
+- user: 第一次接 Convex 的新手, category: 坑, comment: 本地 dev 跑着就以为能收线上报错,prod_error 死等不来——后来才懂:必须应用已部署到云端且配好 Sentinel,这类事件才会触发。
+- user: 独立全栈开发者, category: 妙用, comment: 睡前把 agent 挂在监听上,收到 quiet 就让它接着循环。早上醒来,夜里 dev 报错已逐条修完,我只需 review 提交记录。
+- user: 运维老哥, category: 注意, comment: 它只等「下一个」事件,不补历史报错。想查旧账先去控制台翻,再挂监听盯新增,别指望一次调用把昨晚的错误清单都给你。
+- user: 白天上班的副业开发者, category: 妙用, comment: 把 feature_request 也加进监听类型,需求一进来 agent 就按事件直接开建,副业项目不用我守着也能持续推进。
+- user: 带 AI 团队的技术负责人, category: 启发, comment: 过去是「人盯报错、再喊 AI 修」,现在反过来让 agent 订阅事件流等错、错到即修。AI 该嵌进事件循环里,而不是一问一答。
+- user: 在 Copilot 云端跑任务的人, category: 注意, comment: 在 Copilot 云端没有阻塞式工具,它自动退回轮询,别以为坏了——事件格式一模一样,只是从「阻塞等」变「反复查」,结果一致。

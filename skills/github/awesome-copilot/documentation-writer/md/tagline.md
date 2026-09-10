@@ -1,0 +1,7 @@
+# documentation-writer (`github/awesome-copilot/documentation-writer`)
+
+## tagline
+
+- 把复杂技术,写成人人看得懂的文档
+- 好文档有章法:教程、指南、参考、详解
+- 为读者而写,让每个人都能达成目标

@@ -1,0 +1,7 @@
+# page-cro (`coreyhaines31/marketingskills/page-cro`)
+
+## tagline
+
+- 别让好产品, 输给不会卖的页面
+- 流量别浪费, 访客变客户
+- 一眼说服, 一步转化

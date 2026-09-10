@@ -1,0 +1,7 @@
+# design-md (`google-labs-code/stitch-skills/design-md`)
+
+## tagline
+
+- 读懂你的每一屏, 写成设计语言
+- 一份设计词典, 千屏风格如一
+- 新页面不走样, 一眼认出你的产品

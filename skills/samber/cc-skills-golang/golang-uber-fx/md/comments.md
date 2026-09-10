@@ -1,0 +1,10 @@
+# golang-uber-fx (`samber/cc-skills-golang/golang-uber-fx`)
+
+## comments
+
+- user: 第一次用的新手, category: 坑, comment: Provide 了不等于会跑, 必须有 fx.Invoke 引用到那个类型, 构造函数才执行。我服务空跑半天才定位到这点。
+- user: 从裸写 main 迁来的, category: 坑, comment: 把阻塞的 Serve 直接写进 OnStart, 启动卡死, 后面钩子全没跑。改成 go srv.Serve(ln) 丢后台, 钩子秒返回才正常。
+- user: 后端老兵, category: 妙用, comment: 我在 CI 里跑 fx.New(...).Err(), 只校验依赖图不真启动。缺 Provider、循环依赖合码前就报, 不用等上线炸。
+- user: 运维老哥, category: 注意, comment: 默认启停各只有 15 秒超时, 慢依赖直接被砍。按需加 fx.StartTimeout/StopTimeout, 钩子里响应 ctx.Done, 免得 goroutine 泄漏。
+- user: 测试工程师, category: 妙用, comment: fxtest 起真实依赖图, fx.Populate 拿实例, fx.Replace 换 fake DB。单测跑的就是线上那套接线, 手写 mock 测不出装配错误。
+- user: 平台组架构师, category: 启发, comment: 把 DB、HTTP 拆成 fx.Module 后, 新服务拼模块即起, 各模块可独立测。关键转变: 按关注点分模块, 别按层分包。

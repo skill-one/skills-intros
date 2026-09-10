@@ -1,0 +1,7 @@
+# seo-geo (`resciencelab/opc-skills/seo-geo`)
+
+## tagline
+
+- 让你的网站被搜到, 更被 AI 主动引用
+- 传统搜索 + AI 引用, 双引擎流量增长
+- AI 时代不拼排名, 拼被引用

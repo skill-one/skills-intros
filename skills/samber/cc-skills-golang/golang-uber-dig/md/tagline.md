@@ -1,0 +1,7 @@
+# golang-uber-dig (`samber/cc-skills-golang/golang-uber-dig`)
+
+## tagline
+
+- 告别手写 new,依赖自动接线
+- 依赖再多也不乱,一个容器理到底
+- 启动即验证,缺依赖不上线

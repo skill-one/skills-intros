@@ -1,0 +1,7 @@
+# developing-genkit-js (`firebase/agent-skills/developing-genkit-js`)
+
+## tagline
+
+- 让应用长出 AI 大脑
+- 报错不瞎猜, 查证再动手
+- 从想法到上线, 一步到位

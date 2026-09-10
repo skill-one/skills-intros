@@ -1,0 +1,5 @@
+# firecrawl-build-scrape (`firecrawl/skills/firecrawl-build-scrape`)
+
+## scenario
+
+给应用接网页内容?手写爬虫又慢又脆——页面一改版就崩,还常被反爬挡住。我用 Firecrawl /scrape 帮你集成:给一个 URL,稳定返回干净的 markdown、元数据、截图,直接喂给 AI 或知识库。🌍→📄

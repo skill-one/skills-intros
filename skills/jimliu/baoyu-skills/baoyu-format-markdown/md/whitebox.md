@@ -1,0 +1,13 @@
+# baoyu-format-markdown (`jimliu/baoyu-skills/baoyu-format-markdown`)
+
+## whitebox
+
+- 读取用户指定文件, 检测内容类型: 有 frontmatter/标题/列表等标记则判为 Markdown (会询问优化/保留/仅排版), 否则按纯文本处理
+- 从读者视角通读全文, 分析亮点、结构、格式问题与错别字, 保存为 {filename}-analysis.md 作为格式化蓝图
+- 生成/补充 frontmatter: 标题给出 4-5 个候选让用户挑选 (EXTEND.md 配置 auto_select 可跳过), 同时自动生成 summary 和 description
+- 按分析结果格式化正文 (标题层级、加粗、列表、表格、代码标记、引用块), 只调排版不改内容, 修明显错别字, 存为 {filename}-formatted.md (已存在则先备份)
+- 运行排版脚本对输出文件做中日英混排等修正, 最后输出完成报告
+
+- 内容分析与格式化由 LLM (本助手) 完成, 不经过解析器: 核心原则是只调格式和修明显错别字, 不增删改写原文字句; 分析文件作为蓝图保证分析与格式化一致
+- 排版脚本 scripts/main.ts 用 bun 运行 (无 bun 时回退 npx -y bun): 默认启用 autocorrect 添加中英文间距 + 修复 CJK 强调标点, 可选 --quotes 把 ASCII 引号换全角, frontmatter YAML 总是重新格式化; CJK 加粗强调处理依赖 remark-cjk-friendly
+- 交互与安全机制: 需要用户选择时优先用运行时内置输入工具 (如 AskUserQuestion), 无则退化为编号纯文本; EXTEND.md 按 项目 > XDG > 用户家目录 三个优先级路径查找配置; 覆盖已有输出文件前先 mv 为 .backup-时间戳 备份

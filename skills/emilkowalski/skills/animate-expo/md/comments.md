@@ -1,0 +1,10 @@
+# animate-expo (`emilkowalski/skills/animate-expo`)
+
+## comments
+
+- user: 前端转RN的新手, category: 坑, comment: 在Expo Go里看挺流畅, 打release包到旧安卓机上直接掉帧. 模拟器测不出卡顿, 手感必须在最慢的真机上验.
+- user: 带团队的技术负责人, category: 妙用, comment: 底部弹层当独立页面做, 路由配formSheet就是原生sheet, 拖拽回弹手势全白送, 我自己手写那版当场删了.
+- user: 被设计稿追着跑的独立开发, category: 启发, comment: 第一步先问该不该动: 每天几十上百次的高频操作不配动画. 照这个标准我砍了tab切换滑动, 代码少了用户也没意见.
+- user: 从网页动画转来的工程师, category: 注意, comment: 网页的hover习惯带不过来. 我做过按住没反馈、松手才动的按钮, 被用户说像坏了——反馈要在按下的瞬间出现.
+- user: 第一次接RN外包的, category: 注意, comment: 依赖要用npx expo install装, 直接npm装会跟SDK版本不匹配. 手势没反应且不报错, 多半是根组件没包GestureHandlerRootView.
+- user: 维护祖传RN App的老哥, category: 坑, comment: 列表动画卡, 原因是我在滚动回调里每帧setState, 一帧一次渲染. 换成共享值驱动后React零重渲染, 老机型稳了.

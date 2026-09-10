@@ -1,0 +1,7 @@
+# public-relations (`coreyhaines31/marketingskills/public-relations`)
+
+## domain
+
+**domain**: 📈 商业运营
+
+**reason**: 公关媒体曝光、记者对接、品牌传播属市场营销与业务增长范畴

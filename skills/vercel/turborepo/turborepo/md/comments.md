@@ -1,0 +1,10 @@
+# turborepo (`vercel/turborepo/turborepo`)
+
+## comments
+
+- user: 第一次碰 monorepo 的前端, category: 坑, comment: 我把各包的 build 用 && 串在根 package.json,turbo 完全没并行。拆到每个包自己的 package.json 后才按依赖图并行跑,构建快了一倍。
+- user: 在 CI 上踩坑的运维, category: 坑, comment: CI 里 GITHUB_TOKEN 传不进任务:默认严格模式只放行 turbo.json 声明过的变量,加进 globalPassThroughEnv 就好,别开 loose 模式糊弄。
+- user: 后端老兵, category: 注意, comment: 改了 .env 里的 API_URL 却命中缓存没重建——turbo 不读 .env,只认显式声明的。把 .env 写进任务 inputs 才参与缓存指纹,第一次必踩。
+- user: 全栈独立开发, category: 妙用, comment: CI 用 --affected 只构建改动包和下游,省一大半时间。但它默认对比 main/master,主分支叫别的名字要设 TURBO_SCM_BASE,我就栽过。
+- user: 从多仓库迁来的架构师, category: 坑, comment: 迁过来时图省事在仓库根放一个大 .env:web 读到了 api 的库密码,改一行所有包缓存全失效。拆到各包目录,谁用谁声明,又安全又省缓存。
+- user: 带团队的 Tech Lead, category: 启发, comment: turbo boundaries 给包打 tag 就能限制谁 import 谁,架构规则不用再靠 code review 人肉盯。老项目先理清存量依赖再开,不然一次全爆出来。

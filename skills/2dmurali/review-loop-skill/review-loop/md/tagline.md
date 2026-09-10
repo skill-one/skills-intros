@@ -1,0 +1,7 @@
+# review-loop (`2dmurali/review-loop-skill/review-loop`)
+
+## tagline
+
+- 初稿非终稿,迭代见真章
+- 毒舌评审轮番挑刺,不达标不交付
+- 先做完,再挑刺,交付即精品

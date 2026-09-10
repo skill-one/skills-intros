@@ -1,0 +1,5 @@
+# convex-agent (`get-convex/agent-skills/convex-agent`)
+
+## scenario
+
+想给应用加个 AI 助手, 却被 API 密钥管理、聊天记录丢失、回复中断折腾到头秃? 😵 我能在你的 Convex 应用里搭好 AI 后端: 无需自管密钥, 对话记录持久保存, 还能让 AI 检索你的文档回答问题。

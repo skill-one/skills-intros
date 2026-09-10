@@ -1,0 +1,7 @@
+# momentic-mobile-test (`momentic-ai/skills/momentic-mobile-test`)
+
+## domain
+
+**domain**: 🧪 测试与质量
+
+**reason**: 专注移动端 E2E/UI 自动化测试的编写、执行与维护

@@ -1,0 +1,7 @@
+# golang-grpc (`samber/cc-skills-golang/golang-grpc`)
+
+## tagline
+
+- 服务互通,又快又稳,出错有据
+- 正确码、稳超时、优雅停机,一步到位
+- 从 proto 到生产,gRPC 全程护航

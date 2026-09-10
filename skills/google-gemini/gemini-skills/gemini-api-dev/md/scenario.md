@@ -1,0 +1,5 @@
+# gemini-api-dev (`google-gemini/gemini-skills/gemini-api-dev`)
+
+## scenario
+
+想把 AI 加进产品,一写代码就报错?模型更迭快,网上教程全是过时 API,调一周也跑不通 🔥 我是 Gemini API 开发助手,直接给你能跑的最新代码:文本、图片、语音、智能体,一次到位。

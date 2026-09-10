@@ -1,0 +1,7 @@
+# convex-insights (`get-convex/agent-skills/convex-insights`)
+
+## tagline
+
+- 一句话,问出应用哪里在报错
+- 不甩日志,只给结论与证据
+- 答案带链接,后台一键可验证

@@ -1,0 +1,13 @@
+# insforge (`insforge/insforge-skills/insforge`)
+
+## whitebox
+
+- 请求命中 description 里的触发词 (加登录、查数据、传文件、开 checkout、发邮件等) → 激活本 skill
+- 装 @insforge/sdk; 用 npx @insforge/cli link/create 关联项目, secrets get ANON_KEY 拿密钥, URL 取 .insforge/project.json 的 oss_host, 按当前框架前缀写入 .env
+- createClient({baseUrl, anonKey}) 初始化 SDK; 仅服务端特权代码改用 createAdminClient({apiKey})
+- 按模块从 guides 表加载对应指南文件 (如 auth→auth/sdk-integration.md, 支付→payments/stripe.md), 获取该模块的具体集成模式
+- 照模块约定写代码并落库; SDK 所有方法统一返回 {data, error} 供上层处理
+
+- 渐进式路由 (懒加载): SKILL.md 本体只存 安装/环境变量表/客户端初始化/API 速查表, 细节按需加载; 后端基建 (建表、RLS、部署、secrets) 整体转交 insforge-cli skill, S3 老工具走 storage/s3-gateway.md 降级路径; AI 模块底层是 OpenRouter, 支付层是 Stripe/Razorpay 的 SDK 封装
+- 框架适配层: 六种框架 (Next.js/Vite/Astro/SvelteKit/CRA/Node) 各对应一套 .env 文件名、变量前缀 (NEXT_PUBLIC_/VITE_/PUBLIC_/REACT_APP_/无前缀) 和读取方式 (process.env / import.meta.env / $env/dynamic), 查表确定, 不靠猜
+- 硬约束清单 (写码时的校验规则): insert 必须传数组; storage 须同时存 url+key; 支付前必须先跑 npx @insforge/cli payments <provider> status 确认已配置; 涉 schema/RLS/OAuth 变更必须先开 branch 隔离验证再 merge; 列表读必须指定列名 + .limit(), 禁止无界轮询 (防止耗尽 egress 流量)

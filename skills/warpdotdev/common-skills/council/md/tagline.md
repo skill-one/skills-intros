@@ -1,0 +1,7 @@
+# council (`warpdotdev/common-skills/council`)
+
+## tagline
+
+- 难题会诊:三个AI,一个答案
+- 让AI互相挑刺,结论经得起推敲
+- 重大决策,先开一场AI圆桌会

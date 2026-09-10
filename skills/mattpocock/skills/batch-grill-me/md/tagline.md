@@ -1,0 +1,7 @@
+# batch-grill-me (`mattpocock/skills/batch-grill-me`)
+
+## tagline
+
+- 一轮问尽所有问题，不留一个想当然
+- 把每个决定挂上树，问透才动手
+- 逐轮逼近共识，零假设开工

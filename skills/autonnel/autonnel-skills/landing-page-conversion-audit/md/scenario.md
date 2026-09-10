@@ -1,0 +1,5 @@
+# landing-page-conversion-audit (`autonnel/autonnel-skills/landing-page-conversion-audit`)
+
+## scenario
+
+广告天天烧钱,点击不少,下单寥寥——钱漏在页面哪一步,没人告诉你。我逐项审查落地页:广告与页面是否对得上、首屏按钮够不够清晰、下单流程哪里卡人,输出按预计收益排序的修改清单,先堵最漏钱的那一处 💸

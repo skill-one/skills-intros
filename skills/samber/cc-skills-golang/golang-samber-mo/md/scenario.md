@@ -1,0 +1,5 @@
+# golang-samber-mo (`samber/cc-skills-golang/golang-samber-mo`)
+
+## scenario
+
+Go 项目痛点: nil 指针凌晨崩溃、满屏 if err != nil 抄不完。我用 samber/mo 把"值可能不存在、可能出错"写进类型里, 编译器提前挡错, 代码更短更稳。🔥

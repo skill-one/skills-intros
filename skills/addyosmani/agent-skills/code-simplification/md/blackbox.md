@@ -1,0 +1,9 @@
+# code-simplification (`addyosmani/agent-skills/code-simplification`)
+
+## blackbox
+
+**function**: 把「能跑但难读」的代码改写成更清晰易懂的版本,功能和行为完全不变。
+
+- input: utils.py 文件路径(功能正常,但 if 嵌套了四五层), output: 改写后的 utils.py:嵌套逻辑展平成一层层提前返回,跑起来结果和原来一模一样
+- input: 一段 300 行的 TypeScript 组件代码(长函数、重复逻辑、变量名叫 data/temp), output: 修改后的代码:长函数拆成名字一看就懂的小函数,重复逻辑合并成一处,行为不变,可直接过原有的测试
+- input: 仓库里三个文件各自复制粘贴的同一段校验逻辑, output: 提取成一个公共函数、三处替换调用,并给出一份只含这次改动的干净 diff

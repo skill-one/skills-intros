@@ -1,0 +1,13 @@
+# ai-avatar-video (`101-skills/superpowers/ai-avatar-video`)
+
+## whitebox
+
+- 前提: 本地装好 belt CLI (inference.sh 的命令行工具) 并 `belt login` 认证
+- (可选) `belt app run pruna/p-image` 生成竖版 9:16 人像图作为头像源
+- `belt app run pruna/p-video-avatar --input '{...}'`, JSON 内传 image(图片URL) + voice_script(台词) + voice(音色)
+- 服务端内置 TTS 把台词转语音, 再以该音频驱动人像生成口型同步视频
+- 返回成品视频 (720p/1080p, 画幅跟随输入图片比例)
+
+- 统一入口: 所有模型调用都走 `belt app run <app-id> --input '{JSON}'`, 不同模型字段不同 (P-Video-Avatar 用 image/voice_script/voice; OmniHuman/Fabric/PixVerse 用 image_url/audio_url)
+- TTS 分流: P-Video-Avatar 内置 TTS (30 音色/10 语言), voice_prompt 控语气情绪、video_prompt 控肢体/场景, 免单独音频步骤; 无内置 TTS 的模型需先跑 inworld/text-to-speech-2 或 infsh/kokoro-tts 合成音频再传入
+- 配音流水线 (换语言口播): infsh/fast-whisper-large-v3 转写原视频 → 外部翻译文本 → Kokoro TTS 合成新语音 → infsh/latentsync-1-6 对原视频做口型替换

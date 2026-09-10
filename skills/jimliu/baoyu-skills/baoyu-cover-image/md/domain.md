@@ -1,0 +1,7 @@
+# baoyu-cover-image (`jimliu/baoyu-skills/baoyu-cover-image`)
+
+## domain
+
+**domain**: 🎨 设计多媒体
+
+**reason**: 为文章生成封面图片, 属于图像生成与视觉设计

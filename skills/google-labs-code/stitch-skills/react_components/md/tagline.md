@@ -1,0 +1,7 @@
+# react:components (`google-labs-code/stitch-skills/react:components`)
+
+## tagline
+
+- 设计稿秒变模块化 React 组件
+- 像素级还原设计, 代码干净可维护
+- 从设计到上线, 质量自动把关

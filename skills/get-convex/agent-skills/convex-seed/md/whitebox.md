@@ -1,0 +1,13 @@
+# convex-seed (`get-convex/agent-skills/convex-seed`)
+
+## whitebox
+
+- 按数据形态选路径：少量样例数据 (fixture) 走 internalMutation，大批量走 `npx convex import`。
+- 把数据整形为与 schema validators 匹配的结构。
+- fixture 路径：编写插入样例行的 internalMutation，用 `npx convex run` 执行；批量路径：直接 `npx convex import`。
+- 施加幂等处理：先清空再插入 (clear-then-insert) 或 upsert，确保重跑安全。
+- 核对表内行数，确认写入成功。
+
+- 双通道写入：internalMutation (Convex 服务端原子写入，用于 fixtures) 与 `npx convex import` (CLI 批量导入)，数据均须匹配 schema validators，否则不合法。
+- 幂等性保障：clear-then-insert 或 upsert 两种策略，保证 seed 函数可重复执行不产生重复数据。
+- 外部依赖仅 Convex CLI (`npx convex run` / `npx convex import`)；安全红线：绝不向共享 deployment 写入 secrets/PII。

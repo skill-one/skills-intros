@@ -1,0 +1,7 @@
+# write-swift (`emilkowalski/skills/write-swift`)
+
+## tagline
+
+- 写 Swift,就该是它想要的模样
+- 死锁、数据竞争,编译期拦下
+- 简单起步,按需而动,快且稳

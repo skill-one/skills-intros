@@ -1,0 +1,5 @@
+# ai-video-generation (`101-skills/superpowers/ai-video-generation`)
+
+## scenario
+
+想给产品做条视频,却没设备、不会剪辑、外包一条要几千块。我有 40+ AI 视频模型:一句话生成视频、让产品图动起来、数字人开口带货、配音效并合成。发我想法,几分钟出片,省下整支团队。

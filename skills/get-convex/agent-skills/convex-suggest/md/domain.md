@@ -1,0 +1,7 @@
+# convex-suggest (`get-convex/agent-skills/convex-suggest`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 识别代码中的重复造轮子并推荐框架组件, 属于编码与框架集成辅助

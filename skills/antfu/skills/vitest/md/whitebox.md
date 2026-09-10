@@ -1,0 +1,12 @@
+# vitest (`antfu/skills/vitest`)
+
+## whitebox
+
+- 收到任务，先判断是否属于技能范围：写测试、mock、覆盖率配置、测试过滤、fixtures（来自 skill.md 的 description）
+- 按 skill.md 的三层主题表（Core / Features / Advanced）定位话题对应的 references/*.md 参考文档，如 mock 问题 → features-mocking
+- 依据参考文档中的 Vitest API（test/it、expect、describe、vi、hooks 等）编写测试代码或配置
+- 输出 Jest 兼容写法的测试文件/配置，并注明知识基于 Vitest 5.x (beta, 2026-06-22)
+
+- 知识路由：skill.md 本体是一张索引表，把 config/CLI/test API/mock/coverage 等话题映射到 references 目录下的具体文档，按需查阅作答，不凭空编造
+- Vite 管线复用：Vitest 用 Vite 的转换管线跑测试，与 Vite 应用共享 config、transformers、resolvers、plugins，因此原生支持 ESM/TypeScript/JSX；智能 watch 基于模块图只重跑受影响的测试，多线程 worker 并行执行
+- 外部依赖（均为 Vitest 本身依赖，非运行时调用外部服务）：覆盖率 provider 为 V8 或 Istanbul；基准测试基于 Tinybench；测试环境可选 node/jsdom/happy-dom；API 与 Jest 兼容，可直接替换大部分 Jest 测试

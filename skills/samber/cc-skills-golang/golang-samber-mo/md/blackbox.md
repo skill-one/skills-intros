@@ -1,0 +1,9 @@
+# golang-samber-mo (`samber/cc-skills-golang/golang-samber-mo`)
+
+## blackbox
+
+**function**: 帮你把 Go 代码改成 samber/mo 函数式风格——可空值用 Option、可能出错的操作用 Result，让"空指针"和"忘了检查错误"这类问题在编译阶段就暴露出来。
+
+- input: 一段嵌套着层层 if err != nil 的 Go 处理函数, output: 改写成 Result 链式调用的等价代码（错误自动短路传播），可直接替换进项目编译
+- input: struct 里用 *string、nil 表示「字段可能不存在」的 Go 代码, output: 改成 mo.Option[string] 版本，区分「没有」和「空字符串」，JSON 输出和数据库读写行为保持不变
+- input: 一段用了 samber/mo 却编译报错的代码（比如链式调用中类型变了）, output: 修正后的代码 + 一句话说明原因（类型变化需改用子包管道函数 Pipe）

@@ -1,0 +1,10 @@
+# baoyu-slide-deck (`jimliu/baoyu-skills/baoyu-slide-deck`)
+
+## comments
+
+- user: 第一次用的新手, category: 坑, comment: 我上来就说「直接生成」, 结果整套按默认蓝图风出了。想要特定风格就别跳过确认, 第一轮先把风格答好, 17 种预设都能换。
+- user: 运维老哥, category: 注意, comment: 没装 bun 的话最后合并 PPTX/PDF 会卡住, 先装 bun 或确认 npx 能拉。另外环境里没有生图后端它会停下来问你, 不是坏了。
+- user: 公众号运营, category: 妙用, comment: 我当长图发小红书: 每页信息完整, 顺着滑就能读完, 根本不当放映 PPT 用。选 sketch-notes 风, 收藏比文字截图高不少。
+- user: 培训讲师, category: 注意, comment: 它是「给人读」的幻灯片, 字偏多偏密, 拿去现场投屏讲课嫌挤。我现场用自己做的简洁版, 这套当课后讲义发, 正好各干各的。
+- user: 独立开发者, category: 妙用, comment: 某页文字错了别整组重跑, 用 --regenerate 3 只重出第 3 页。图上错字没法修图, 只能改提示词重生成, 所以在大纲阶段就把每页文字压短。
+- user: 设计师, category: 妙用, comment: 把 logo 和品牌截图用 --ref 喂进去、标 palette 用法, 每页自动带品牌色, 客户一次过审。想连质感线条都像就选 style 不是 palette。

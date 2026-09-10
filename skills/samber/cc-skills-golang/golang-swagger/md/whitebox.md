@@ -1,0 +1,13 @@
+# golang-swagger (`samber/cc-skills-golang/golang-swagger`)
+
+## whitebox
+
+- 扫描项目: 定位 main.go (或 -g 指定的文件) 与各 handler, 识别所用框架 (gin/echo/fiber/chi/net/http), 检查是否已有 docs/ 目录
+- 写注解: main.go 加通用信息 (@title/@host/@BasePath/@securityDefinitions), 每个 handler 加操作注解 (@Summary/@Param/@Success/@Router/@Security), 模型 struct 补 example/enums/swaggerignore 等标签
+- 生成: 运行 swag init 产出 docs/ 包 (docs.go + swagger.json + swagger.yaml), 用 swag fmt 统一注解格式
+- 接线: main.go 里 import docs 包 (blank import 即可注册), 按框架注册 /swagger/* 路由
+- 验证: 访问 /swagger/index.html 检查 schema; 之后每次改注解都重跑 swag init 防止文档与代码脱节
+
+- 注释驱动生成: 核心靠外部 CLI 工具 swag (需 go, go install github.com/swaggo/swag/cmd/swag@latest) 解析 Go 源码注释注解, 并从 struct 定义推导请求/响应 schema; struct tags (example/enums/swaggertype/swaggerignore) 只影响生成的 schema 不改 Go 类型; body 参数必须是具名 struct, swag 无法从 primitive 推导
+- 导入即注册: 生成的 docs 包被 import 时自动注册 spec — blank import 只做接线, named import 可在运行时覆盖 docs.SwaggerInfo.Host/BasePath 实现多环境
+- 框架适配器: 各框架的专用 WrapHandler (如 ginSwagger.WrapHandler) 把 Swagger UI 挂到 /swagger/index.html; 受保护接口需逐个 @Security 才会在 UI 显示锁图标

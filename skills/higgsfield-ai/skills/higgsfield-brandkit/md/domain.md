@@ -1,0 +1,7 @@
+# higgsfield-brandkit (`higgsfield-ai/skills/higgsfield-brandkit`)
+
+## domain
+
+**domain**: 🎨 设计多媒体
+
+**reason**: 品牌视觉系统一站式制作: 色板、SVG logo、字体、样机、包装、海报到品牌手册 🎨

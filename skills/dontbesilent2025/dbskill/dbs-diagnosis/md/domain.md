@@ -1,0 +1,7 @@
+# dbs-diagnosis (`dontbesilent2025/dbskill/dbs-diagnosis`)
+
+## domain
+
+**domain**: 📈 商业运营
+
+**reason**: 核心是商业模式诊断与业务问题消解, 直接服务于生意经营和增长决策

@@ -1,0 +1,9 @@
+# flutter-fix-layout-issues (`flutter/agent-plugins/flutter-fix-layout-issues`)
+
+## blackbox
+
+**function**: 把 Flutter 应用里「红屏报错」和「黄黑条纹溢出」这类布局问题修好，交付能正常运行界面的代码。
+
+- input: 控制台报错截图/文本：「Vertical viewport was given unbounded height」, output: 修改后的代码片段（列表外面加了一层 Expanded），热重载后界面正常显示
+- input: 控制台报错：「A RenderFlex overflowed by 32 pixels on the right」，加上出问题的那段 Row/Column 代码, output: 修正后的代码，长文本自动换行不再溢出，黄黑警示条纹消失
+- input: 一段包含 Row + TextField 的代码，运行时提示「cannot have an unbounded width」, output: 改好的代码，输入框宽度被正确约束，界面不再红屏

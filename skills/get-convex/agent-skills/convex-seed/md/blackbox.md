@@ -1,0 +1,9 @@
+# convex-seed (`get-convex/agent-skills/convex-seed`)
+
+## blackbox
+
+**function**: 把你的数据灌进 Convex 数据库的表里——帮你造一批测试数据, 或把现成的数据文件批量导入, 重复执行也不会产生重复数据。
+
+- input: 你的数据库 schema + 「给我造 20 条测试订单」, output: orders 表里多出 20 条符合字段规范的示例数据, 直接可以用来调试页面
+- input: 一个 JSON 或 CSV 数据文件 + 目标表名, output: 文件里的数据全部进入该表; 对不上表结构的行会被指出来而不是悄悄塞进去
+- input: 「把刚才的导入再跑一遍」, output: 数据不会翻倍, 各表行数和上次一致——随时可以安全重跑

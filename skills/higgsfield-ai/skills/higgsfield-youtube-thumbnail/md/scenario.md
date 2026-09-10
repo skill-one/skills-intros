@@ -1,0 +1,5 @@
+# higgsfield-youtube-thumbnail (`higgsfield-ai/skills/higgsfield-youtube-thumbnail`)
+
+## scenario
+
+视频拍了半天没人点?八成是封面不够抓眼——请设计师又贵又慢,自己P图半小时还是丑。我一句话生成高点击封面:你的脸、logo 全保真,一次出多版备选,不满意只微调不重做。🎬

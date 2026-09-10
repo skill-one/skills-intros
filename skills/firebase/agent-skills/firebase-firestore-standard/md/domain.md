@@ -1,0 +1,7 @@
+# firebase-firestore-standard (`firebase/agent-skills/firebase-firestore-standard`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 核心是数据库搭建、安全规则编写与应用内 SDK 集成, 属典型开发场景

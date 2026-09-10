@@ -1,0 +1,5 @@
+# self-improving-agent (`zhaono1/agent-playbook/self-improving-agent`)
+
+## scenario
+
+同一个坑,AI 反复踩:今天纠正过的问题,下周照旧再犯。我把每次失败与纠正沉淀成经验——先存候选,再用可执行测试证明有效,才固化进规则;改了有据可查,错了能回滚。让 AI 真正"吃一堑长一智"。

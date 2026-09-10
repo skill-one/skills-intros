@@ -1,0 +1,10 @@
+# developing-genkit-python (`firebase/agent-skills/developing-genkit-python`)
+
+## comments
+
+- user: 第一次用的新手, category: 坑, comment: 复制 Hello World 直接跑,报错才发现本机是 Python 3.11——这技能要求 3.14+。先确认版本再动手,别像我白折腾半小时。
+- user: 后端老兵, category: 妙用, comment: 已有 FastAPI 项目,用 genkit_fastapi_handler 把 AI 流程挂进现有路由,不用另起服务;串行的多次模型调用改成并行 flow 后,接口耗时直接减半。
+- user: 从 JS 版 Genkit 迁来的开发者, category: 注意, comment: 按 JS 版 Genkit 的记忆写 import,一堆报错。Python SDK 变动快,别信旧知识:出错先查 Common Errors,再对照示例改,比瞎猜快。
+- user: 纯 Python 背景的后端, category: 注意, comment: 没想到 Python 项目还要 Node:genkit CLI 是 npm 装的,没有它 genkit start 和调试界面都起不来。依赖用 uv 不用 pip,提前备齐。
+- user: 一个人接活的独立开发, category: 启发, comment: 以前我总凭记忆写代码,处处返工。这技能反复强调"别信内部知识,先查文档",我照做后顺手多了,现在做别的快变项目也先翻参考再动手。
+- user: 常和运营协作的工程师, category: 妙用, comment: 提示词全挪进 .prompt 文件(Dotprompt)后,运营改文案不用我改代码重新部署,提示词还能单独做版本管理,协作清爽多了。

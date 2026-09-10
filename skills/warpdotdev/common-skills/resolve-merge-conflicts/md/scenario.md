@@ -1,0 +1,5 @@
+# resolve-merge-conflicts (`warpdotdev/common-skills/resolve-merge-conflicts`)
+
+## scenario
+
+合并分支撞上冲突,满屏 <<<<<<< 看到头晕,怕改错一行搞崩项目?我只看冲突片段、不翻整个文件,逐个精准化解,收尾确认无残留、能跑通。合并、变基卡住时,找我。

@@ -1,0 +1,7 @@
+# brand (`nextlevelbuilder/ui-ux-pro-max-skill/brand`)
+
+## domain
+
+**domain**: 🎨 设计多媒体
+
+**reason**: 核心是品牌视觉识别: 品牌色板、字体规范、Logo 使用规则、设计资产管理与风格指南。

@@ -1,0 +1,13 @@
+# write-product-spec (`warpdotdev/common-skills/write-product-spec`)
+
+## whitebox
+
+- 触发：用户要为 Warp 的某个重要功能写产品规格（PRD / 行为定义文档，而非实现方案）
+- 收集上下文：确定目录 id（Linear 票号 / gh-问题号 / kebab-case 功能名），补齐功能摘要、目标用户、关键行为、边界情况；缺信息用 ask_user_question 询问而非猜测
+- 若功能涉及 UI/交互设计，先问是否有 Figma 原型：有则把链接写入 spec，没有则显式标注 'none provided'（纯后端功能跳过此问）
+- 写 specs/<id>/PRODUCT.md：Summary（1–3 句）+ Behavior（编号、可测试的行为不变量，穷举用户可见状态与边角案例），其余章节保持极简
+- 交付后引导下一步：调用 write-tech-spec 技能产出配套 TECH.md（实现与验证方案）
+
+- 输出结构强约束：固定写到 specs/<id>/PRODUCT.md；章节固定（Summary 必写，Problem/Goals/Figma/Open questions 可选且留空则整个省略，不写占位符）；Validation/Success criteria/Testing 三节禁止出现——它们归 TECH.md 管，不是我的输出范围
+- 核心转换：把模糊的产品意图转成『编号的可测试不变量』，纯消费者视角描述（UI 用户、读写数据模型的代码、API 调用方、CLI 开发者），禁止写内部类型、状态布局、算法等实现细节；用长度启发式控篇幅（小功能约 30–60 行，中等 80–150 行，复杂功能放行），边角案例宁多勿少（权限拒绝、离线、超时、竞态、并发实例等）
+- 外部依赖：ask_user_question（澄清缺失上下文）、Linear MCP 工具与 gh CLI（仅在用户明确要求新建工单/issue 时使用）、Figma 链接（仅作为 spec 内引用，不直接调用）；后续依赖 write-tech-spec 技能产出 TECH.md

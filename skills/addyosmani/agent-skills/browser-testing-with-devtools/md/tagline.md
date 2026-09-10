@@ -1,0 +1,7 @@
+# browser-testing-with-devtools (`addyosmani/agent-skills/browser-testing-with-devtools`)
+
+## tagline
+
+- 给 AI 一双看穿浏览器的眼睛
+- 不靠猜测调试, 眼见为实
+- 报错、卡慢、错位, 一眼定位

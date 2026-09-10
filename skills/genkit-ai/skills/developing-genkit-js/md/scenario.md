@@ -1,0 +1,5 @@
+# developing-genkit-js (`genkit-ai/skills/developing-genkit-js`)
+
+## scenario
+
+想用 JS 做个 AI 应用,网上教程全是旧版代码,一跑就报错,改到深夜还没通?👀 我专治 Genkit 开发:报错排查、智能体搭建,一切按官方文档验证,帮你一次跑通。

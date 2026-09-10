@@ -1,0 +1,13 @@
+# golang-observability (`samber/cc-skills-golang/golang-observability`)
+
+## whitebox
+
+- 判定模式：默认 coding/instrumentation；审 PR 走 Review；全库体检走 Audit（5 个信号子代理并行执行后合并覆盖结论）
+- 按顺序接入信号：先声明 Prometheus 指标（声明处附 PromQL 查询注释），再配 slog 结构化日志，再加 OpenTelemetry span，最后接 pprof 环境变量开关（免重发布切换）
+- 打通信号关联：otelslog 把 trace_id/span_id 注入每条日志，histogram 用 ObserveWithExemplar 挂上 trace_id，ctx 全程传递
+- 强制硬规则校验：延迟指标用 Histogram 不用 Summary、label 保持低基数（禁止 user_id/完整 URL）、错误只 log 或 return 其一（绝不both）、context 传到底
+- 按 Definition of Done 清单逐项验收（指标/日志/span/看板+报警/RUM），最后以 go / golangci-lint 验证代码
+
+- 五信号查表选型：每个信号绑定专属工具+reference 文档——日志 log/slog（标准库）、指标 Prometheus client、追踪 OpenTelemetry（otelhttp 中间件 / otelslog）、剖析 pprof/Pyroscope、用户侧 RUM PostHog/Segment；运行环境要求 go 命令可用
+- 信号互链靠三个载体：otelslog bridge 是日志↔追踪的桥（自动注 trace_id/span_id）、exemplar 是指标↔追踪的桥（P99 尖峰直达肇事 trace）、ctx 是跨服务携带 trace 上下文的唯一通道
+- 遗留日志器渐进迁移：经 samber/slog-zap / slog-logrus / slog-zerolog 桥接双写，逐步替换 zap/logrus/zerolog 调用点，迁完拆除桥接；报警规则直接复用 awesome-prometheus-alerts 的 ~500 条现成规则

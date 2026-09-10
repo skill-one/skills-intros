@@ -1,0 +1,12 @@
+# remotion-studio (`remotion-dev/skills/remotion-studio`)
+
+## whitebox
+
+- 在项目目录执行 shell 命令 `npx remotion studio --no-open`，由 npx 拉起 remotion CLI。
+- CLI 检查同一项目、同一端口是否已有 Studio 实例在运行。
+- 若已有实例：直接打印其 URL，命令随即退出；若没有：启动一个长期驻留的 Studio 服务进程，再打印 URL。
+- 拿到 URL 后在浏览器中打开，即可预览 Remotion 视频。
+
+- 全流程委托外部工具：本 skill 本身只做两件事——执行一条命令、打开 URL，所有实际逻辑都在 npm 包 `remotion`（本 skill 锁定版本 4.0.522）的 CLI 里，通过 `npx` 调起，无自定义解析/转换逻辑。
+- 单实例检测：CLI 自带同项目+同端口的运行中实例探测，命中则不重复起进程（打印 URL 后退出），可用 `--force-new` 绕过检测强制新起一个实例。
+- 端口与日志控制：默认由 Remotion 自动寻找空闲端口，可用 `--port=<number>` 指定；`--log=<level>`（error/warn/info/verbose）调日志级别；`--no-open` 阻止 CLI 自动开浏览器，把打开动作留给 skill 层。

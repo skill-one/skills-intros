@@ -1,0 +1,10 @@
+# paywalls (`coreyhaines31/marketingskills/paywalls`)
+
+## comments
+
+- user: 独立开发者, category: 妙用, comment: 试用到期页加了一行「你已完成:创建5个项目」,续费率比纯倒计时高一截,只改了这一行。
+- user: SaaS 产品经理, category: 注意, comment: 它管产品内升级弹窗,不管官网定价页。我拿定价页去问被指去用 cro 技能,先分清场景。
+- user: 第一次做付费的新手, category: 坑, comment: 我做过看不清的关闭按钮加愧疚文案,它直接点名这是暗黑模式。老老实实留「以后再说」。
+- user: 增长运营, category: 坑, comment: 空手来问,被反问转化率、aha时刻,答不上干等。提前备好这几个数,一轮就出方案。
+- user: 工具类 App 创始人, category: 妙用, comment: 用量到顶的弹窗保留「删一个项目腾空间」备选,升单反而更多,不堵死路用户才肯掏钱。
+- user: 转型做产品的工程师, category: 启发, comment: 「先给价值再开口」逼我重排引导:升级提示从注册第2天挪到完成首个项目后,投诉没了。

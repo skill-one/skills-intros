@@ -1,0 +1,7 @@
+# error-handling-patterns (`wshobson/agents/error-handling-patterns`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 核心是写代码时的错误处理模式: 异常、Result 类型、重试与降级, 提升应用可靠性

@@ -1,0 +1,7 @@
+# dbs-goal (`dontbesilent2025/dbskill/dbs-goal`)
+
+## tagline
+
+- 把模糊想法，钉成能落地的目标
+- 只追问影响结果的那个关键问题
+- 你的原话保留，缺口补齐，不多问一句

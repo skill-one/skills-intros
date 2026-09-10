@@ -1,0 +1,11 @@
+# turborepo (`vercel/turborepo/turborepo`)
+
+## blackbox
+
+**function**: 帮你搭建和排查 Turborepo (一种让「多个项目共用一个仓库」时构建提速的工具) 的任务配置与缓存问题, 给出能直接使用的配置和命令。
+
+- input: 贴出我的 turbo.json 配置 + 一句话描述「改了代码, 构建却直接命中旧缓存」, output: 指出配置里缺了哪一项, 给出改好的 turbo.json 片段
+- input: 「我只想重新构建这次改动的包和依赖它的包, 别的全跳过」, output: 一条可以直接粘贴执行的命令: turbo run build --affected, 附用法说明
+- input: 描述项目结构: 两个应用 + 三个公共库, 问「任务脚本该怎么组织」, output: 推荐的目录结构图 + 各包的 package.json 脚本和根 turbo.json 配置代码
+- input: 贴出 GitHub Actions 的 CI 配置文件, output: 优化后的 CI 配置: 只构建受改动影响的包, 并接上远程缓存
+- input: 「为什么我加的环境变量一改, 缓存却不失效?」, output: 诊断原因, 给出需要在配置里声明该变量的具体修改代码

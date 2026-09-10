@@ -1,0 +1,7 @@
+# convex-launch-readiness (`get-convex/agent-skills/convex-launch-readiness`)
+
+## tagline
+
+- 后端上线体检：一个分数看穿风险
+- 多轮审计合一去重，缺陷不重复扣分
+- 不只打分，还给排好序的修复清单

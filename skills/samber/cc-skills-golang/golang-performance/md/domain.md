@@ -1,0 +1,7 @@
+# golang-performance (`samber/cc-skills-golang/golang-performance`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 核心是 Go 代码的性能优化与重构, 属于写代码和调试范畴。

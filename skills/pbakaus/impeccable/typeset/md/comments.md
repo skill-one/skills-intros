@@ -1,0 +1,10 @@
+# typeset (`pbakaus/impeccable/typeset`)
+
+## comments
+
+- user: 第一次改官网的后端, category: 坑, comment: 上来就说"帮我调字体", 它先反问品牌调性和受众。把"极简开发者工具"补给它, 输出立刻对味——品牌上下文别省。
+- user: 前端三年, category: 注意, comment: 它会把字号从 px 换成 rem, 为了尊重用户浏览器设置。老代码全是 px 的话先圈定改动范围, 别默认全局替换。
+- user: 独立开发者, category: 妙用, comment: 我没让它换字体, 只要 5 档字阶方案, 按 1.25 比例抄进 CSS 变量当 token 用, 项目里一堆魔法数字全清了。
+- user: 内容站站长, category: 注意, comment: 先说清页面类型: 营销页标题它用 clamp() 流式缩放, 后台界面用固定 rem。我没说, 拿到的方案串了场景。
+- user: 写报表后台的, category: 妙用, comment: 顺嘴让它看看报表, 它给数字列加了 tabular-nums, 千位逐位对齐, 对账不用再眯眼。这种细节自己真想不起来。
+- user: 设计转产品的, category: 启发, comment: 它最后只留 Regular、Medium、Bold 三个字重。才意识到以前随手加 Semibold, 每个字重都是一次额外下载, 页面白白变慢。

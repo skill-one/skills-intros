@@ -1,0 +1,5 @@
+# competitors (`coreyhaines31/marketingskills/competitors`)
+
+## scenario
+
+潜在客户正在搜"你们 vs 竞品""竞品替代品"——结果页里全是竞品的声音;销售被问"凭什么选你们",只能现场编。我帮你写竞品对比页:占住对比词排名,给销售递弹药,把犹豫的用户接过来。⚖️

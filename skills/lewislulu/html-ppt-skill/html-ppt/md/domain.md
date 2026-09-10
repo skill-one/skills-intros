@@ -1,0 +1,7 @@
+# html-ppt (`lewislulu/html-ppt-skill/html-ppt`)
+
+## domain
+
+**domain**: 🗂️ 办公效率
+
+**reason**: 核心是制作 PPT/幻灯片, 属于文档演示类办公产出

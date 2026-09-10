@@ -1,0 +1,13 @@
+# golang-samber-mo (`samber/cc-skills-golang/golang-samber-mo`)
+
+## whitebox
+
+- 确认任务契合: 代码库导入 github.com/samber/mo、用户要采用该库, 或想在 Go 中用函数式模式做安全设计。
+- 以 Go 工程师视角深入推演类型选型: 多步 Option/Result/Either 管道一旦选错类型, 会产生多余的包装/解包。
+- 按需查阅随附参考文档 (option / result / either / pipelines / advanced-types); 包事实优先查 godig (pkg.go.dev), 代码内导航用 gopls, Context7 兜底。
+- 套用固定模式写代码: API 边界用 TupleToResult, 同类型变换链 .Map/.FlatMap, 跨类型变换用子包函数 + PipeN, 取值优先 OrElse 而非 MustGet。
+- 用声明允许的工具验证落地: go 编译、golangci-lint 检查、git 提交。
+
+- 选型决策规则: Result 表成败、Either 表两种都合法的取值、Option 表可空; 因 Go 方法不能引入新类型参数, 跨类型变换必须改用 option./result. 子包函数 + PipeN 组合。
+- 安全机制: mo.Do 包住命令式代码, 把 MustGet 的 panic 自动捕获为 Err; Option 已实现 json.Marshaler/Unmarshaler、sql.Scanner、driver.Valuer, 可直接用于 JSON 结构体和数据库字段。
+- 外部依赖: 核心库 samber/mo 本身零依赖 (Go 1.18+); 工具链为 go、golangci-lint、godig、gopls (LSP)、Context7 MCP, 均声明于 allowed-tools。

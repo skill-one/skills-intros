@@ -1,0 +1,9 @@
+# value (`hugmouse/skills/value`)
+
+## blackbox
+
+**function**: 什么都不做:无论给它什么,都不会产生任何可见的输出。
+
+- input: 一份待处理的 .md 文件路径, output: 没有任何反应,不生成任何文件
+- input: 「帮我把这段中文翻译成英文」, output: 得不到译文,对话里不会出现任何结果
+- input: 一条命令或一个任务描述, output: 什么都不发生,任务原地保留

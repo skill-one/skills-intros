@@ -1,0 +1,7 @@
+# firecrawl-workflows (`firecrawl/firecrawl-workflows/firecrawl-workflows`)
+
+## domain
+
+**domain**: 🧠 知识管理
+
+**reason**: 核心是全网信息检索与多源调研, 产出研究报告、竞品情报、文献综述、知识库等结构化沉淀

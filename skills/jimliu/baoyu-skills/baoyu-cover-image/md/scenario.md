@@ -1,0 +1,5 @@
+# baoyu-cover-image (`jimliu/baoyu-skills/baoyu-cover-image`)
+
+## scenario
+
+文章写好了,封面图却卡住?搜图千篇一律,自己设计又费时费力。把文章标题发给我,我读懂内容后为你定制专属封面——风格、配色、尺寸一步到位,几分钟出图。🎨

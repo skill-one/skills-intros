@@ -1,0 +1,5 @@
+# expo-ui (`expo/skills/expo-ui`)
+
+## scenario
+
+做 App 时常见痛点:弹窗卡顿、iOS 和安卓界面长得不一样、为滑出面板/开关/选择器装一堆第三方库,越改越乱。我用一套代码直接调用系统原生控件(SwiftUI/Compose),像系统自带 App 一样流畅统一。📱

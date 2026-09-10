@@ -1,0 +1,5 @@
+# react-native-best-practices (`callstackincubator/agent-skills/react-native-best-practices`)
+
+## scenario
+
+你的 App 滑动卡顿、启动慢、包体大,用户一吐槽就卸载?⚡ 我专治 React Native 性能:先测量定位根源,再优化,最后用数据验证(FPS、启动速度、包体积、内存)。不靠猜,每项改动都有前后对比。

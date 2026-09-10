@@ -1,0 +1,5 @@
+# observability-and-instrumentation (`addyosmani/agent-skills/observability-and-instrumentation`)
+
+## scenario
+
+凌晨 3 点系统报障,翻遍日志却说不清哪出了错,只能靠猜?我在功能上线时就埋好"行车记录仪"——规范的日志、指标、追踪和报警,故障发生后一条线索直达根因,不再大海捞针。

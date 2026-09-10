@@ -1,0 +1,10 @@
+# brand (`nextlevelbuilder/ui-ux-pro-max-skill/brand`)
+
+## blackbox
+
+**function**: 帮你的品牌"立规矩、守规矩": 定义品牌该怎么说、长什么样, 并检查每份物料是否没跑偏。
+
+- input: 一份品牌规范文档 (如 brand-guidelines.md), output: 同步生成的设计规范文件 (颜色、字体等参数), 设计师和开发拿来就能直接用
+- input: 一张图片文件 (如 logo、海报), output: 检查报告: 命名、尺寸、格式是否合规, 以及图中颜色与品牌色板的偏差对比
+- input: 一段准备发布的文案, output: 语气审查意见: 哪里不符合品牌口吻, 以及具体的修改建议
+- input: "帮我给新品牌做一套规范", output: 一份完整的品牌规范文档: 品牌语气、色彩、字体、 messaging (对外传达口径) 都有

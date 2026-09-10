@@ -1,0 +1,7 @@
+# migration (`juliusbrussee/caveman/migration`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 专注 schema、数据、API、配置等迁移改造, 属于典型的开发工程工作

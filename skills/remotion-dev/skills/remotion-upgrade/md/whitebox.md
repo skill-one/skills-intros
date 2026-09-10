@@ -1,0 +1,13 @@
+# remotion-upgrade (`remotion-dev/skills/remotion-upgrade`)
+
+## whitebox
+
+- 读项目 manifest 和 lockfile, 识别包管理器与 workspace 结构, 无关改动不碰
+- 检测本地是否装了 @remotion/cli: 有则直接跑 `npx remotion upgrade` (它顺带更新项目内 Remotion skills), 主流程到此结束
+- 没有 CLI 则手动升级: `npm view remotion version` 取最新稳定版, 把项目里所有 remotion / @remotion/* 依赖统一改到该精确版本
+- 用 `npm view @remotion/studio@<版本> dependencies --json` 对齐辅助包 (zod、mediabunny、@huggingface/transformers 等), 跑项目包管理器刷新 lockfile, 并 `npx skills update` 更新 Remotion skills
+- 复查 manifest + lockfile 的 diff, 确认 Remotion 包单一版本、辅助包为推荐版本; CLI 可用时再加一道 `npx remotion versions` 验证
+
+- CLI 优先分叉: 能复用项目内 @remotion/cli 的 `remotion upgrade` 就不手改文件; 只有 CLI 缺失才降级为手动逐包改版本 + 更新 skills
+- 版本对齐策略: 所有 remotion/@remotion/* 锁定同一精确版本; 辅助包以 @remotion/studio 官方 dependencies JSON 为唯一事实来源, @mediabunny/* 跟随对应 mediabunny 版本; 保留原有 workspace/catalog 约定
+- 事后校验闭环: 升级后 diff manifest 与 lockfile 交叉核对版本一致性, CLI 路径下追加 `npx remotion versions`; 外部依赖均为 npm registry 查询 (`npm view`)、项目包管理器、`npx skills update`, 变更摘要可参考 GitHub releases 页

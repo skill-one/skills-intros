@@ -1,0 +1,7 @@
+# convex-seed (`get-convex/agent-skills/convex-seed`)
+
+## tagline
+
+- 数据一键播撒,重跑永不翻车
+- 空库秒变数据田,一句指令搞定
+- 格式严丝合缝,数据稳稳入库

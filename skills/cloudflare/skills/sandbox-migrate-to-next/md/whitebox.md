@@ -1,0 +1,13 @@
+# sandbox-migrate-to-next (`cloudflare/skills/sandbox-migrate-to-next`)
+
+## whitebox
+
+- 先过一遍硬规则和替换表, 心里立好 stable→@next 的约束。
+- 用 rg 审计代码库, 列出废弃 API 命中点 (transport、session、execStream、gitCheckout 等) 和对应目标写法。
+- 向用户确认需要拍板的点 (是否立即切换生产、自部署 bridge、Python 镜像), 遇决策即暂停。
+- 升级: npm 装 @cloudflare/sandbox@next、Dockerfile 换 next 镜像、按替换表逐区域改代码, 最后一次部署配 --containers-rollout=immediate。
+- 验证: 同版本线一致性、typecheck、argv exec 冒烟、再次 rg 确认废弃 API 已清零。
+
+- 替换表驱动的机械改写: exec 字符串→argv+句柄、删 session/transport、terminal→createTerminal、gitCheckout→exec git; 文档没覆盖处优先看已安装的 @next 类型和官方 migrate 文档, 不凭记忆。
+- 硬规则当校验红线: Worker 包与镜像必须同一条 @next 线; 协议互不兼容所以生产只能 immediate 一次性切换 (渐进发布会留坏窗口); 切换后 await exec 只代表进程启动, 需再等 output/waitFor*; 不发明不存在的 API。
+- 外部依赖: rg (审计与收尾双扫)、npm 的 @cloudflare/sandbox@next、cloudflare/sandbox:next 容器镜像、wrangler --containers-rollout=immediate, 以及按需抓取的 Cloudflare 开发者文档页; 不涉及模型 API。

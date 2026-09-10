@@ -1,0 +1,7 @@
+# idea-refine (`addyosmani/agent-skills/idea-refine`)
+
+## domain
+
+**domain**: 🧠 知识管理
+
+**reason**: 本质是把模糊想法经发散收敛、假设验证, 沉淀成一页纸的结构化方案文档

@@ -1,0 +1,7 @@
+# signup-flow-cro (`coreyhaines31/marketingskills/signup-flow-cro`)
+
+## tagline
+
+- 少填一个字段, 多留一个用户
+- 注册快到无感, 转化自然发生
+- 每减一步摩擦, 多涨一分转化

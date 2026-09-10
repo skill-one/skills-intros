@@ -1,0 +1,7 @@
+# free-tool-strategy (`coreyhaines31/marketingskills/free-tool-strategy`)
+
+## tagline
+
+- 造一个工具, 让客户自己找上门
+- 免费送价值, 换回精准客户
+- 用实用工具, 赚流量更赚信任

@@ -1,0 +1,13 @@
+# golang-modernize (`samber/cc-skills-golang/golang-modernize`)
+
+## whitebox
+
+- 读项目 go.mod / go.work 的 go 指令确定当前 Go 版本, 对照内置的 Go 1.21~1.27 版本变更表, 落后就先建议升级
+- 读项目根目录的 .modernize 黑名单文件, 过滤掉用户此前已明确拒绝的建议, 不再重复推销
+- 扫描代码找旧式写法 — 显式调用 (/golang-modernize) 或 CI 时全库扫描, 开发者正在写码时则只提与当前文件相关的建议
+- 运行 golangci-lint 的 modernize linter 和 go test ./... 验证建议可行性 (Go 1.27+ 默认还会跑 stdversion vet 检查)
+- 按迁移优先级指南 (安全正确性 → 可读性 → 渐进改进) 合并输出建议; 大范围改写放进隔离 worktree (独立工作副本) 执行, 不碰开发者主目录
+
+- 静态知识库匹配: 核心是内置的「废弃/旧写法 → 官方替代」映射表和各版本 before/after 参考文档 (references/versions.md、tooling.md), 据此定位替换点, 如 math/rand → math/rand/v2、interface{} → any
+- 多子代理扇出 + 优先级合并: 全库扫描拆成最多 5 个并行子代理分别扫废弃包、语言特性、标准库升级、测试模式、工具链基建五类, 扫描只读, 结果按优先级指南合并排序后再动手改
+- 外部工具验证 + 记忆闭环: 依赖 go 二进制、golangci-lint ≥ v2.6.0 (modernize linter)、govulncheck (已知漏洞扫描) 做校验; 用户拒绝的建议写入 .modernize 备忘录, 下次扫描自动跳过

@@ -1,0 +1,7 @@
+# harden (`pbakaus/impeccable/harden`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 核心是前端代码级加固: 错误处理、空状态、i18n、文本溢出与边界场景, 本质是开发工作

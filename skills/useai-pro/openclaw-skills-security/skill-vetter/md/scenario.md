@@ -1,0 +1,5 @@
+# skill-vetter (`useai-pro/openclaw-skills-security/skill-vetter`)
+
+## scenario
+
+装个技能插件, 谁检查过它安不安全? 一个仿冒或恶意插件, 可能让你的密码、账号文件被悄悄偷走 🔓. 我在安装前逐项审查: 权限是否过度、有无可疑指令、名字是否仿冒, 出具安全报告, 明确告诉你: 装, 还是拦 🛡️

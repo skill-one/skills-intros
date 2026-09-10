@@ -1,0 +1,7 @@
+# golang-dependency-management (`samber/cc-skills-golang/golang-dependency-management`)
+
+## tagline
+
+- 依赖做减法,安全做加法
+- 漏洞挡在上线之前
+- 版本不乱,项目不臃肿

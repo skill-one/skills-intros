@@ -1,0 +1,7 @@
+# ponytail (`dietrichgebert/ponytail/ponytail`)
+
+## tagline
+
+- 最少的代码,最对的解法
+- 能删则删,留下的都能跑
+- 懒是手段,精是目的

@@ -1,0 +1,10 @@
+# flutter-setup-localization (`flutter/agent-plugins/flutter-setup-localization`)
+
+## comments
+
+- user: 第一次接手 Flutter 项目的新手, category: 坑, comment: 忘了开 generate: true, import flutter_gen 一直红线报找不到包, 重装依赖也没用; 加上这个开关再跑一次 flutter pub get 才生成出来。
+- user: 后端转移动端的老哥, category: 注意, comment: intl:any 别手痒锁成具体版本, intl 和 Flutter SDK 版本是强绑的, 我锁了高版本直接冲突装不上, 照抄 any 让它自动匹配最省心。
+- user: 接手别人外包项目的维护者, category: 坑, comment: 改完 arb 热重载界面纹丝不动, 还以为没保存成功。后来才知道翻译不走热重载, 每次都得跑 flutter pub get 或重启 App 才更新。
+- user: 做出海 App 的独立开发者, category: 注意, comment: 新 key 只写进 app_en.arb 就编译失败, 报错还指向别的语言文件, 找了半天。规律: 每加一个 key, 所有语言的 arb 都得同步补上。
+- user: 原生 iOS 转过来的, category: 坑, comment: 在 MaterialApp 外面调 AppLocalizations.of(context)! 直接空指针闪退, 那个感叹号真会崩, 页面代码都得放在 MaterialApp 底下。
+- user: 全栈自由接单的, category: 妙用, comment: 全部文案收进 arb 后, 提测后改字我直接让产品自己改 JSON, 一行代码不用动。这种单文件工作流, 对独立接活的我太省事了。

@@ -1,0 +1,5 @@
+# golang-concurrency (`samber/cc-skills-golang/golang-concurrency`)
+
+## scenario
+
+⚡ 线上服务内存持续上涨直到崩溃、偶发卡死,日志却看不出问题——十有八九是并发代码泄漏或竞态。我专注 Go 并发:编写、评审、全库审计,确保每个后台任务有入口也有出口,零泄漏、零竞态,服务稳稳跑。

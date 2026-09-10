@@ -1,0 +1,5 @@
+# humanizer-zh (`op7418/humanizer-zh/humanizer-zh`)
+
+## scenario
+
+你用 AI 写了篇推文，发出去，评论区第一句："一看就是 AI 写的。"稿子白写，人也尴尬。我能逐句揪出那些 AI 腔，空话、排比、强行升华，改成正常人说话的样子。改完连你自己都认不出 AI 的痕迹。

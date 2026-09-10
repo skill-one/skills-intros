@@ -1,0 +1,10 @@
+# laravel-specialist (`jeffallan/claude-skills/laravel-specialist`)
+
+## comments
+
+- user: 后端老兵(10年PHP), category: 妙用, comment: 队列任务模板自带 tries、backoff 和 failed() 回调, 我直接抄进团队规范——以前 review 十次有八次要提醒人补失败处理。
+- user: 接手老项目的外包新手, category: 坑, comment: 没先说版本就让它写, 客户项目是 Laravel 8 + PHP 7.4, 生成的 readonly 和枚举直接语法报错。开口第一句先报自己的框架和 PHP 版本。
+- user: 独立开发全栈, category: 注意, comment: php artisan test --coverage 需要 Xdebug 或 pcov, 本地没装会直接报错。先装驱动再让它跑覆盖率, 不然白等一轮。
+- user: 运维老哥, category: 注意, comment: Horizon 只能管 Redis 队列, 项目用 database driver 它就管不着。部署前先和它对齐队列驱动, 免得监控面板是空的。
+- user: 做 App 后端的, category: 坑, comment: Sanctum 有 SPA cookie 和 API token 两套登录, 我没说清端上怎么用, 它默认一套, App 端登不上返工了。先讲消费方是网页还是 App。
+- user: 从Node转PHP的, category: 启发, comment: 它的 MUST DO 清单就是现成的 code review 清单: 预加载防 N+1、控制器不放业务逻辑、输入必校验。现在我手工写码前也先过一遍。

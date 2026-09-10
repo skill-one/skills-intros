@@ -1,0 +1,7 @@
+# opencli-usage (`jackwener/opencli/opencli-usage`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: opencli 把任意网站/桌面应用/外部 CLI 统一成命令行驱动, 核心是浏览器自动化与 API 集成

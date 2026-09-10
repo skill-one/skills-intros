@@ -1,0 +1,13 @@
+# review-loop (`2dmurali/review-loop-skill/review-loop`)
+
+## whitebox
+
+- Step 1 - 完成任务: 先按常规把工作做完 (写代码/写文档), 产出第一版, 不留一手。
+- Step 2 - 派出评审子代理: 用 Agent 工具生成一个全新上下文的 reviewer, 它只拿到工作产物 (代码/文件), 不拿到我的推理过程, 要求打分 1-10 并给出具体可执行的反馈。
+- Step 3 - 解析反馈并按顺序检查停止条件: 先看是否达到 min_loops (未到则无条件继续), 再看分数是否 >= 质量门槛 (默认 8), 最后看是否用完 max_loops。
+- Step 4 - 定向修订: 只修 Critical/Important 问题 (不整体重写), 带着历史反馈回到 Step 2 再评审。
+- Step 5 - 终稿打磨: 达标或达上限后, 清理修订残留, 向用户报告最终分数与循环次数。
+
+- 评审隔离机制: reviewer 必须是独立 subagent (全新上下文, 无锚定偏误), 每轮 prompt 显式带上历史反馈防止问题重复; 依赖平台的 subagent/Agent 工具, 平台不支持时退化为'开新会话贴产物让它打分'来模拟。
+- 参数化状态机: 三个可配置参数控制循环 (min_loops=2, max_loops=4, quality_gate=8), 从用户自然语言中解析覆盖项 ('quality gate 9'→改门槛, 'quick'→max 2/门槛6, 'thorough'→门槛8); 连续 2 轮分数不涨则触发升级 (换更强模型/降门槛/拆任务)。
+- 评分校准机制: reviewer prompt 模板里按任务类型 (代码/规格/重构/写作等) 注入具体的评审标准 (如 REST API 要查状态码、输入校验、鉴权), 因为标准模糊会导致分数通胀; 硬性规则是 reviewer 模型能力必须 >= worker。

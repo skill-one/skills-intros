@@ -1,0 +1,5 @@
+# incremental-implementation (`addyosmani/agent-skills/incremental-implementation`)
+
+## scenario
+
+一次写几百行代码,一跑就崩,却找不到哪行坏了——这是开发的噩梦😰。我小步快跑:每实现一小块就测试、提交,随时可回退,每一步都是能用的版本,出问题秒定位。

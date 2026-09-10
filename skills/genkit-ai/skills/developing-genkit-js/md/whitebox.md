@@ -1,0 +1,13 @@
+# developing-genkit-js (`genkit-ai/skills/developing-genkit-js`)
+
+## whitebox
+
+- 判定任务与 Genkit (JS/TS AI 应用开发) 相关后按 skill.md 执行; 新项目先读 setup.md
+- 校验环境: genkit --version 必须 ≥ 1.29.0, 否则 npm install -g genkit-cli@^1.29.0
+- 查文档替代内部记忆: 用 genkit docs:read / docs:search 核实 API, 因为 Genkit 经历过 breaking change, 内部知识默认过时
+- 实现前决策: 会话型/多轮任务用 ai.defineAgent, 单次无状态生成用 ai.defineFlow; 从 package.json 识别运行时 (Next.js/Firebase/Express); 用户未指定则默认 Google AI
+- 验证而非盲跑: npx tsc --noEmit 类型检查; 用 genkit start -- 包裹运行采集 trace, 用 trace:get 检查提示词/工具调用/模型 IO
+
+- 错误处理协议: 遇到任何 Genkit 错误 (ValidationError/API/类型/404), 第一步强制读 references/common-errors.md, 匹配已知模式后套用文档方案, 禁止凭假设或 pre-1.0 记忆修复 (如 configureGenkit → genkit(), response.text() → response.text)
+- Trace 验证机制: 依赖 genkit CLI 遥测 — genkit start / flow:run (自带退出, 打印 Trace ID) 捕获每次 Genkit action 的输入输出与工具调用, trace:get --format json 输出可管道给 jq; 直接 node/tsx 运行则不采集 trace, 等于盲调
+- 分层知识结构: 主 skill.md + references/ 子文档 (dotprompt, agents, middleware, a2ui, common-errors 等) 按需加载; 代码层依赖 zod 定义 schema, 模型经插件接入 (默认 @genkit-ai/google-genai 的 Gemini), 对外统一走 ai.generate / ai.defineFlow / ai.defineAgent (beta, 需 genkit ≥ 1.39.0, 从 genkit/beta 导入)

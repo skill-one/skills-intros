@@ -1,0 +1,5 @@
+# clerk-webhooks (`clerk/skills/clerk-webhooks`)
+
+## scenario
+
+用 Clerk 登录后,数据库用户总不同步、欢迎邮件发不出、新成员权限更新不及时?我直接给你写好自动验签的 webhook(实时事件通知)处理器,同步、通知、集成一次到位,拿来即用 ✅

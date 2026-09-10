@@ -1,0 +1,7 @@
+# interview-me (`addyosmani/agent-skills/interview-me`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 动手写代码/做计划之前, 用一问一答挖出真实需求, 属于开发的前置环节

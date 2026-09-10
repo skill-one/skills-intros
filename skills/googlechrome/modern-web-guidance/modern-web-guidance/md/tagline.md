@@ -1,0 +1,7 @@
+# modern-web-guidance (`googlechrome/modern-web-guidance/modern-web-guidance`)
+
+## tagline
+
+- 先查最佳实践,再写每一行代码
+- 拒绝过时写法,网页更快更稳更美
+- 新特性敢用,老浏览器兼容,行行有据

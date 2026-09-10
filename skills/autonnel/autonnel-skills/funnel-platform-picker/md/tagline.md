@@ -1,0 +1,7 @@
+# funnel-platform-picker (`autonnel/autonnel-skills/funnel-platform-picker`)
+
+## tagline
+
+- 不比功能表,只算你真实的账单
+- 先算涨价交点,再决定订阅谁
+- 停付不瘫痪,数据永远在你手里

@@ -1,0 +1,10 @@
+# video (`coreyhaines31/marketingskills/video`)
+
+## comments
+
+- user: 短视频运营, category: 坑, comment: 我让 AI 生成"画面里有 slogan 大字"的开场, 出来全是乱码。正确做法: 生成无字素材, 文字用程序化叠加, 一个字都不会错。
+- user: 新手UP主, category: 坑, comment: 成片没加字幕就发了, 后台一看大半观众是静音刷到的, 完播惨淡。85% 社媒视频无声观看, 字幕要从第一步就排进流程。
+- user: 独立开发者, category: 妙用, comment: 每次发版把 changelog 喂进同一套 HTML 模板, 一条命令渲染成片。不会剪辑软件也能出风格统一的更新视频, 一个人顶一个小团队。
+- user: 创业公司PM, category: 注意, comment: 选框架前先过法务: Remotion 商用要买公司授权, Hyperframes 是 Apache 2.0 可随便商用。别像我, 代码写完了才发现要谈授权。
+- user: 外贸市场专员, category: 注意, comment: 用 HeyGen 做自己的数字分身, 前提是先录 2-5 分钟的自己当素材。免费版每月只有 3 条视频, 别像我一样全浪费在试 prompt 上。
+- user: 职业剪辑师, category: 启发, comment: 丢给它爆款链接, 拆出卡点节奏、字幕样式、镜头推拉的逐拍表格, 我照表套自己的素材。学的是手法不是抄内容, 比逐帧拉片快十倍。

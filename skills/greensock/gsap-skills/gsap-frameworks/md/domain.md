@@ -1,0 +1,7 @@
+# gsap-frameworks (`greensock/gsap-skills/gsap-frameworks`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 技能本质是在 Vue/Nuxt/Svelte 等框架中编写动画代码, 属于框架集成与前端开发

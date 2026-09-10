@@ -1,0 +1,13 @@
+# dbs-restore (`dontbesilent2025/dbskill/dbs-restore`)
+
+## whitebox
+
+- 解析存档根目录：读当前工作目录的 .dbs/config.json，按 mode（default→~/.dbs/、project→.dbs/、custom→root 指定路径）定位根目录；配置非法即中止并说明，不猜测、不静默回退
+- 定位存档文件：默认项目名取 basename $(pwd)（非法字符替换为 -），在 {存档根目录}/sessions/{项目名}/ 下按文件名前缀 YYYYMMDD-HHMMSS 排序取最新一份；找到后读完整 markdown 并解析 frontmatter（status/title/source_skill/next_skill 等）
+- 呈现状态：输出一段紧凑 markdown——项目、本地时间、主诉原文、来源 skill、状态（翻译成中文）、已结论、已否决方向、待验证假设、上次确认的下一步；末尾以开放问句收尾，不主动路由
+- 等待用户回应并路由：用户确认『按上次确认的下一步走』→ 调用 next_skill 字段指定的 skill，并把存档核心内容作为上下文喂给它（用户无需复述）；用户提新问题或新情况 → 交回 /dbs 主路由重新判断
+- 找不到存档时的兜底：当前项目为空但 sessions/ 下有其他项目 → 列出最近活跃的 3 个供用户 --slug 切换；整个存档位置为空 → 提示先走 /dbs 形成结论并『保存』
+
+- 排序/定位机制：『最新』严格按文件名前缀时间戳 YYYYMMDD-HHMMSS 判断，明确不依赖文件 mtime（防 iCloud 同步等改写）；序号模式则按文件名排序取第 N 条，越界时告知实际份数
+- 解析与容错：只做本地 markdown 文件读取 + frontmatter 字段解析；文件被手动改坏（frontmatter 缺字段等）时用现有信息尽量呈现，不因格式错误拒绝展示；frontmatter 技术字段名不暴露给用户，一律翻译成中文措辞（存档/项目/对话）
+- 校验与边界：只读配置不改配置（查看位置引导到 /dbs-save location）；拒绝恢复指向 /、用户家目录、当前项目根目录的配置，且不跨目录自动搜索私人文件；全流程无外部工具/库/模型 API 依赖，纯本地文件系统操作

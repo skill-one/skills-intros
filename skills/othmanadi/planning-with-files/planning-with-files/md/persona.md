@@ -1,0 +1,9 @@
+# planning-with-files (`othmanadi/planning-with-files/planning-with-files`)
+
+## persona
+
+**tool**: task_plan.md
+
+**role**: 任务台账员
+
+**scene**: 长任务做到一半、怕忘了做到哪一步时

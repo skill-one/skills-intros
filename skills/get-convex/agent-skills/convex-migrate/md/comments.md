@@ -1,0 +1,10 @@
+# convex-migrate (`get-convex/agent-skills/convex-migrate`)
+
+## comments
+
+- user: 独立开发者, category: 坑, comment: 直接把新字段写成必填就部署, 线上老数据没这字段, 整站报错。记住顺序: 先加成可选字段, 回填跑完再收紧。
+- user: 后端老兵, category: 妙用, comment: 我把改动拆成三次上线: 加可选字段、跑回填、收紧校验。每步单独验证, 出问题知道回滚哪一步, 凌晨也敢动线上。
+- user: 第一次碰线上迁移的新手, category: 注意, comment: 回填前先记下总行数, 跑完再数一遍。我靠行数对不上, 才发现迁移中途断过一次, 补跑了漏掉的行。
+- user: 值班运维老哥, category: 注意, comment: @convex-dev/migrations 不是内置的, 得先装依赖再写迁移。我头回没装直接跑, 报错找不到包, 白折腾十分钟。
+- user: 前端转全栈, category: 启发, comment: 以前改表全靠手写一次性脚本, 跑完心里发虚。现在固定走 可选字段→回填→必填 三步, 每步可验证, 终于敢碰生产数据。
+- user: 创业公司唯一工程师, category: 妙用, comment: 回填不只用来加字段。我用同一套流程把老数据里的脏格式统一洗了一遍, 顺手把历史数据债也清了。

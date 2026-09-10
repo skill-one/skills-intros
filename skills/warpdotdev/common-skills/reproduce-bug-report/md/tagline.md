@@ -1,0 +1,7 @@
+# reproduce-bug-report (`warpdotdev/common-skills/reproduce-bug-report`)
+
+## tagline
+
+- 你报 bug, 我交录屏证据
+- 不猜不辩, 录屏说话
+- 像素级还原 bug 现场

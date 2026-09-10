@@ -1,0 +1,9 @@
+# turborepo (`vercel/turborepo/turborepo`)
+
+## persona
+
+**tool**: turbo
+
+**role**: 构建调度员
+
+**scene**: monorepo 越长越大, 改了一个包、整仓库却在全量重新构建时

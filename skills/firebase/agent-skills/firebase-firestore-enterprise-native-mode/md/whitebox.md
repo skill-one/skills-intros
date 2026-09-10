@@ -1,0 +1,13 @@
+# firebase-firestore-enterprise-native-mode (`firebase/agent-skills/firebase-firestore-enterprise-native-mode`)
+
+## whitebox
+
+- 触发判定: 用户需求命中四大场景之一 — 开通 Firestore Enterprise 原生模式、设计数据模型、编写安全规则、在应用中使用 SDK (或优化查询索引)
+- 按任务类型路由到对应的参考文档: provisioning.md / data_model.md / security_rules.md / web_sdk_usage.md / python_sdk_usage.md / indexes.md
+- 依照文档中的步骤逐步执行, 例如开通环节覆盖 Firebase 项目与本地环境的搭建
+- 涉及命令行操作时, 通过 `npx -y firebase-tools@latest` 调用 Firebase CLI 完成
+- 交付后可延伸处理关联需求, 如查询慢时查阅 indexes.md, 规则写完后按 security_rules.md 部署
+
+- 文档路由机制: 本 skill 本质是一套结构化指南, 顶层 SKILL.md 只做需求分类, 真正的操作细节在 references/ 下 6 份子文档中, 按场景精准加载对应文档, 不全文塞入上下文
+- 外部工具依赖: Firebase CLI (通过 `npx -y firebase-tools@latest` 免安装调用), 用于开通与部署类操作; 兼容性声明为 'best used with, 不强制要求', 无 CLI 也能走通文档指引
+- SDK 双语分流: 应用代码接入分 Web SDK 和 Python SDK 两条独立文档路线, 各自提供用法示例; 不涉及其他语言

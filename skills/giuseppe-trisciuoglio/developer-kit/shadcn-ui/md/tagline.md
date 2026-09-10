@@ -1,0 +1,7 @@
+# shadcn-ui (`giuseppe-trisciuoglio/developer-kit/shadcn-ui`)
+
+## tagline
+
+- 现成组件一键装,界面几分钟成型
+- 组件代码归你,随便改随便用
+- 表单弹窗图表,好看还无障碍

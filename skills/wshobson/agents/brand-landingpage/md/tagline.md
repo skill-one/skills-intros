@@ -1,0 +1,7 @@
+# brand-landingpage (`wshobson/agents/brand-landingpage`)
+
+## tagline
+
+- 先懂品牌，再做好页面
+- 从想法到上线，落地页一次到位
+- 不做通用模板，只做像你的页面

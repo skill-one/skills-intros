@@ -1,0 +1,7 @@
+# solana-dev (`solana-foundation/solana-dev-skill/solana-dev`)
+
+## tagline
+
+- Solana 开发不踩坑, 从代码到主网
+- 你的链上工程师: 写程序、连钱包、稳交易
+- 新栈快写, 严格测试, 安全上链

@@ -1,0 +1,12 @@
+# convex-test (`get-convex/agent-skills/convex-test`)
+
+## whitebox
+
+- 安装 convex-test + vitest 依赖
+- 用 convexTest(schema) 建测试环境: t.run 播种数据, t.query/t.mutation 调用函数并断言参数与返回值
+- 补齐非主路径: withIdentity 覆盖鉴权, 覆盖报错路径, 用 t.finishInProgressScheduledFunctions 处理定时函数
+- 跑 vitest, 确认测试确定性通过
+
+- 内存后端: convex-test 让函数跑在内存中的 Convex 后端上, 不依赖任何线上部署 (deployment)
+- 测试上下文: convexTest(schema) 提供 t.run/t.query/t.mutation 等入口, 鉴权用 withIdentity, 定时函数用 t.finishInProgressScheduledFunctions 收尾
+- 确定性保障: 不用真实时间与网络, 保证测试可重复

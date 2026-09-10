@@ -1,0 +1,7 @@
+# organization-best-practices (`better-auth/skills/organization-best-practices`)
+
+## tagline
+
+- 多租户组织,一次配置,即开即用
+- 成员、邀请、权限,全链路搞定
+- 你专注产品,权限边界交给我

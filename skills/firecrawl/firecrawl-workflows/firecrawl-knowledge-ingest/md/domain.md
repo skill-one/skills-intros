@@ -1,0 +1,7 @@
+# firecrawl-knowledge-ingest (`firecrawl/firecrawl-workflows/firecrawl-knowledge-ingest`)
+
+## domain
+
+**domain**: 🧠 知识管理
+
+**reason**: 专注抓取文档站/帮助中心等知识库, 把网页内容整理沉淀为结构化资料

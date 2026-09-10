@@ -1,0 +1,10 @@
+# banner-design (`nextlevelbuilder/ui-ux-pro-max-skill/banner-design`)
+
+## comments
+
+- user: 电商投放运营, category: 妙用, comment: 让它一次出 3 版不同风格, 直接丢广告后台 A/B; 文案占比自动压在 20% 内, 不用担心图上字多被 Meta 限流。
+- user: 独立开发者, category: 妙用, comment: 每期活动 banner 只变标语和日期。我让它把背景排版定稿, 之后自己改 HTML 源文件里的文字重新截图, 不用每次重画。
+- user: 第一次用的新手, category: 坑, comment: 没给 logo 和品牌色就喊它开工, 出来全是通用配色, 跟官网完全不像, 只能返工一遍。先把品牌素材给齐再设计, 一次就过。
+- user: 新媒体小编, category: 注意, comment: 先讲清平台和尺寸, 再加一句"标题必须居中"。我第一次没说, 导出的头图标语压在边缘, 上线后正好被头像挡了一半。
+- user: 活动公司策划, category: 注意, comment: 我顺手让它连宣传视频和落地页一起做, 被明确拒了——它只管 banner 这一张图。视频和整站要另找工具, 提需求别混着说。
+- user: 后端老兵, category: 启发, comment: 它每张图都守 4.5:1 对比度、最多两种字体、只放一个 CTA。我把这几条抄进需求文档当验收标准, 跟设计师扯皮少多了。

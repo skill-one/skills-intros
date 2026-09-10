@@ -1,0 +1,13 @@
+# seo (`addyosmani/web-quality-skills/seo`)
+
+## whitebox
+
+- 对已渲染页面跑实时 Lighthouse SEO 与 Agentic Browsing 审计 (经 Chrome DevTools MCP 的 lighthouse_audit), 定位问题
+- 补充检查 Lighthouse 测不到的信号: 响应头、重定向、robots.txt、sitemap 覆盖、canonical 一致性、结构化数据资格、Search Console 证据
+- 区分技术抓取/索引问题与内容质量/权威性, 不虚构排名权重、不承诺排名变化
+- 修复问题源头 (改源码, 非表面打补丁)
+- 重跑同一套检查验证; 涉及索引/排名的结果明确标注验证仍待搜索引擎确认
+
+- 实测优先 + 降级策略: 有环境就用实时 Lighthouse 审计渲染页; 工具不可用时降级为 Lighthouse CLI 分类输出 + 直接读源码与 HTTP 响应
+- Lighthouse 只覆盖技术检查子集, 不作排名预测; 结构化数据仅验证语法与资格信号, 不保证富结果; llms.txt 等实验性方案仅在用户要求或存在文档化消费方时才添加
+- 外部工具链: Google Search Console (索引监控/修复)、PageSpeed Insights (Core Web Vitals)、Rich Results Test (结构化数据校验)、Screaming Frog (爬虫分析)

@@ -1,0 +1,10 @@
+# firecrawl-knowledge-ingest (`firecrawl/firecrawl-workflows/firecrawl-knowledge-ingest`)
+
+## blackbox
+
+**function**: 把一个文档站或帮助中心整站「搬」下来,变成一份干净、结构化的 Markdown / JSON 知识库文件。
+
+- input: 一个文档站首页 URL,如 https://docs.example.com, output: 整站文章整理后的知识库文件(Markdown 或 JSON),每篇含标题、所属分类、正文和链接
+- input: 需要登录才能查看的帮助中心 URL + 账号, output: 登录后能看到的页面内容,同样整理成结构化知识库文件
+- input: 一个分页很多、需要点击「加载更多」的支持知识库 URL, output: 翻完全部页面后的完整文章合集,每篇带标题、分类、更新时间等元信息
+- input: 一个用 JavaScript 动态渲染、普通抓取工具只能拿到空壳的文档站 URL, output: 和浏览器里看到的一样的完整文章内容,导航栏、页脚等杂物已剔除

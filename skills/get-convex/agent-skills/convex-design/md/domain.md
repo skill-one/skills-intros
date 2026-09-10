@@ -1,0 +1,7 @@
+# convex-design (`get-convex/agent-skills/convex-design`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 专为 Convex 后端而生: 建模数据、写查询与事务、实时同步、认证与定时任务, 纯写代码。

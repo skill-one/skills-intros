@@ -1,0 +1,13 @@
+# react:components (`google-labs-code/stitch-skills/react:components`)
+
+## whitebox
+
+- 运行 list_tools 发现 Stitch MCP 前缀，用 [prefix]:get_screen 拉取设计元数据 JSON（若本地 .stitch/designs/ 已有文件则先询问复用还是刷新）
+- 用 bash 脚本 scripts/fetch-stitch.sh 下载设计 HTML 与截图（截图 URL 先追加 =w{width} 取高清图），并目检 PNG 确认设计意图
+- 生成数据层 src/data/mockData.ts，以 resources/component-template.tsx 为模板起草各组件（替换 StitchComponent 为实际名称），并接入 App.tsx
+- 逐组件跑 npm run validate 做 AST 校验，对照 resources/architecture-checklist.md 复核
+- npm run dev 启动 dev server 验证最终效果
+
+- 高可靠下载：AI 内部 fetch 在 Google Cloud Storage 域名易失败，改走 bash 脚本 fetch-stitch.sh 处理重定向和安全握手；Google CDN 默认只给低清缩略图，截图 URL 须先拼 =w{width}
+- AST 校验：npm run validate 产出 AST 报告，抓出缺失接口与硬编码样式；前置条件是 node_modules 存在（缺失则先 npm install）
+- 代码生成约束（Vite + React + TypeScript + Tailwind）：每个组件必须带 Readonly [ComponentName]Props 接口；逻辑抽到 src/hooks/ 自定义 hook、静态数据抽到 src/data/mockData.ts；样式从 HTML <head> 提取 tailwind.config 同步到 resources/style-guide.json，用主题映射的 Tailwind 类替代任意 hex 值

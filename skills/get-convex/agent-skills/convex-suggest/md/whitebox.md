@@ -1,0 +1,12 @@
+# convex-suggest (`get-convex/agent-skills/convex-suggest`)
+
+## whitebox
+
+- 被动观察当前任务中的代码片段和用户意图, 不打断正在做的事
+- 把代码/意图与检测规则匹配: 如 setInterval→crons, .collect().length→aggregate, post.likes+1→sharded-counter
+- 完成用户原本的任务后, 给出一条建议: 点名组件 + 引用触发的代码 + 说明为什么更合适
+- 用户同意 → 执行 /add <component> 或按检测器给出的安装提示安装; 用户拒绝或忽略 → 永久放弃, 不重复建议
+
+- 规则检测: 依赖 generators/suggest-detector.mjs 的确定性规则表 (email/SMTP→resend, fs.write→Storage, Elasticsearch→内置全文搜索, Pinecone→rag 等), 不用模型猜测
+- 收敛策略: 每次只推荐一个最高优先级匹配, 不堆列表; 且不推荐用户已安装的组件, 不在无关的通用编程问题上误触发
+- 依赖外部工具: Convex 组件生态 (如 @convex-dev/crons, @convex-dev/workflow, @convex-dev/rate-limiter), 安装动作通过 /add 命令完成, 且必须拿到明确同意后才执行

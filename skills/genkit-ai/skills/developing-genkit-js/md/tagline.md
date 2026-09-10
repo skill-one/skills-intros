@@ -1,0 +1,7 @@
+# developing-genkit-js (`genkit-ai/skills/developing-genkit-js`)
+
+## tagline
+
+- 你出点子，我把 AI 应用写进现实
+- 从单次生成到多轮智能体，一站搞定
+- 报错先查文档，稳定交付不踩坑

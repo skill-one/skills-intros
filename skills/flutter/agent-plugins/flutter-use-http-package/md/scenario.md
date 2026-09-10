@@ -1,0 +1,5 @@
+# flutter-use-http-package (`flutter/agent-plugins/flutter-use-http-package`)
+
+## scenario
+
+App 一拉取数据就卡顿转圈, 列表千条数据一解析就掉帧? 🥴 我用 Flutter http 包打通前后端数据: GET/POST 增删改查、后台线程解析不卡屏、错误明确抛出不白屏, 权限配置一步到位。

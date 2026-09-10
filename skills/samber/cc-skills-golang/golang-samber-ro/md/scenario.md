@@ -1,0 +1,5 @@
+# golang-samber-ro (`samber/cc-skills-golang/golang-samber-ro`)
+
+## scenario
+
+Go 做 WebSocket、行情推送这类实时流:channel 手工接线、goroutine 泄漏、错误被静默吞掉。我用 samber/ro 响应式管道:类型安全、自动背压、错误传播,一套 Pipe 理清异步洪流。👁

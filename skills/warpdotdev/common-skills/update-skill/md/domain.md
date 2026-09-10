@@ -1,0 +1,7 @@
+# update-skill (`warpdotdev/common-skills/update-skill`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 为代码仓库编写和维护技能文件 (SKILL.md), 涉及结构规范与验证工具, 属开发工作流

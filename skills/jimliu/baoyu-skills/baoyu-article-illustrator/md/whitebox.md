@@ -1,0 +1,13 @@
+# baoyu-article-illustrator (`jimliu/baoyu-skills/baoyu-article-illustrator`)
+
+## whitebox
+
+- 预检: 按优先级加载 EXTEND.md 偏好配置 (无则先跑首次设置), 并检测用户提供的参考图
+- 分析文章: 判定内容类型 (技术/教程/叙事), 提炼 2~5 个核心论点, 定位需要配图的位置
+- 确认设置: 用一次 AskUserQuestion 让用户敲定配图类型/密度/风格/配色 — 强制门禁, 未确认不生成
+- 写大纲与提示词: 先落盘 outline.md, 再为每张图保存完整提示词到 prompts/NN-{type}-{slug}.md — 提示词文件必须先于任何图片生成存在
+- 批量出图并回填: 按 后端原生批处理 → 运行时并行调用 (默认4张) → 顺序生成, 成功后在文章对应段落后插入 markdown 图片引用
+
+- Type × Style × Palette 三维组合 (类型/风格/配色可自由搭配, 或用 preset 一步选定); 提示词强制使用分区模板 (ZONES/LABELS/COLORS/STYLE/ASPECT), LABELS 必须写入文章真实数据 (数字/术语/引文)
+- 图像后端解析链: 当前请求指定 > EXTEND.md 偏好 > 自动选择 (Codex 内置 imagegen 技能 → codex CLI 走 baoyu-image-gen → Cursor GenerateImage → 其他运行时原生工具 → 唯一非原生技能 → 询问用户); 两条硬禁令: 禁止用 SVG/HTML 代码渲染替代位图生成, 禁止用代码修补图内文字 — 只能改提示词重新生成
+- 参考图按 direct / style / palette 三类用途写入提示词 frontmatter, 后端支持时透传 (如 baoyu-image-gen 的 ref 参数)

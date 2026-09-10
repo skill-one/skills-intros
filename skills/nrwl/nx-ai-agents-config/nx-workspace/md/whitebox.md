@@ -1,0 +1,13 @@
+# nx-workspace (`nrwl/nx-ai-agents-config/nx-workspace`)
+
+## whitebox
+
+- 判断问题类型 (工作区结构 / 项目配置 / 依赖关系 / 报错排查), 映射到对应的 nx 命令
+- 查看 lockfile 确定包管理器, 决定 nx 前是否加 npx/pnpx/yarn
+- 执行 nx CLI 命令并带 --json 拿结构化输出 (如 nx show projects --json / nx show project <name> --json / nx graph --print)
+- 用 jq/grep 等命令行工具对 JSON 程序化计算答案 (计数/过滤/提取), 不人工数数或解析文本
+- 返回结论
+
+- CLI 为唯一事实来源: 项目完整配置必须用 `nx show project <name> --json` (含插件推断的 targets), 明确禁止直接读 project.json (只有部分配置); 依赖关系查 `nx graph --print`; 项目列表支持 glob / tag:xxx / 取反 (!pattern) 过滤
+- 程序化作答: 一律 --json 输出再交 jq/grep 计算, 而非手工解读文本; 配置语义可查 node_modules/nx/schemas/ 下的 project-schema.json 与 nx-schema.json
+- 外部依赖: nx CLI (可能经 npx/pnpx/yarn)、jq、grep; 全程只读探索不改工作区, 排查 'workspace 失同步' 只会给出 nx sync / nx reset

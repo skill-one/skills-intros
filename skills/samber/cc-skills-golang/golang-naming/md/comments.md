@@ -1,0 +1,10 @@
+# golang-naming (`samber/cc-skills-golang/golang-naming`)
+
+## comments
+
+- user: 从 Python 转来的新手, category: 坑, comment: 照 Python 习惯写 MAX_RETRIES、user_count, PR 被全数打回。Go 里大写=导出、小写=私有, 不是强调语气, 全改成 maxRetries 才过审。
+- user: 三年 Go 后端, category: 妙用, comment: 把文末 Common Mistakes 表当 code review 清单用。上周真抓到同事 StatusReady 从 iota 0 起写, 零值静默变 ready, 挪 StatusUnknown 到 0 才安全。
+- user: 开源库维护者, category: 注意, comment: 错误字符串要全小写、缩写词也不例外: 写 invalid ID 拼进 fmt.Errorf 中间很难看, 应为 invalid id; sentinel 错误再加包名前缀 mypackage: not found。
+- user: Java 老兵转 Go, category: 坑, comment: 听说 Go 不用 Get 前缀, 我顺手把 IsConnected() 改成 Connected(), 被 lint 打回。去 Get 只针对普通 getter, 布尔判断必须保留 Is/Has/Can。
+- user: 运维老哥, category: 注意, comment: 这技能只告诉你该改成什么名, 不帮你动手。我用 sed 全仓库替换, 弄坏了一处接口实现, 编译才炸。批量重命名要用 gopls, 不安全的改名它直接拒绝。
+- user: 团队 Tech Lead, category: 启发, comment: 反结巴规则让我反思包设计: 调用处永远带着包名, 如果标识符必须重复包名才通顺 (config.ParseConfig), 往往是包名没起好或包边界切错了。

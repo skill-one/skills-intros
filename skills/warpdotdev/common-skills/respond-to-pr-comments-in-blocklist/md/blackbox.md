@@ -1,0 +1,9 @@
+# respond-to-pr-comments-in-blocklist (`warpdotdev/common-skills/respond-to-pr-comments-in-blocklist`)
+
+## blackbox
+
+**function**: 帮你处理 GitHub PR (代码合并请求) 上的评审意见: 逐条带你过一遍、按你的决定改代码, 经你确认后把回复发到 GitHub 并把已解决的讨论标记为已解决。
+
+- input: 一个收到多条评审意见的 PR 分支 + 一句「帮我处理这些评审意见」, output: 每条意见对应的代码修改已提交推送, GitHub 上每条意见下多了一条回复, 相关讨论线程被标记为已解决
+- input: 「逐条来, 这条按你建议的方案改」, output: 该条意见对应的代码立即被修改并跑过验证, 然后继续带你处理下一条意见
+- input: 「先给我预览你准备回复的内容」, output: 一份按评论分组的回复草稿 (改了什么、为什么没改), 你确认后才发布到 GitHub, 没确认前一条都不会发出去

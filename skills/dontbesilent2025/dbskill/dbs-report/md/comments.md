@@ -1,0 +1,10 @@
+# dbs-report (`dontbesilent2025/dbskill/dbs-report`)
+
+## comments
+
+- user: 自由咨询顾问, category: 妙用, comment: 给客户按月对账用 --since 只合并本月存档，加上文件名带时间戳永不覆盖，两期报告摆一起就能看出结论怎么被修正的。
+- user: 第一次用的新手, category: 坑, comment: 直接敲 /dbs-report 提示「还没有可汇总的存档」，其实是项目名对不上。加 --slug 指定，存档目录名必须一字不差。
+- user: 个体创业者, category: 注意, comment: 报告不脱敏：真实收入、客户名字会原样进 markdown。发合伙人前我逐段自查删过一次，发出去前别跳过这步。
+- user: 公众号运营, category: 注意, comment: 它只出 markdown，别指望直接出排版好的。发公众号要再用 /dbs-wechat-html 转一步，裸粘微信后台格式会乱。
+- user: 连续创业者老手, category: 妙用, comment: 结论被推翻时新旧两条都保留、新的标在前，跟外部顾问对账我直接甩报告，省掉口头解释前因后果的时间。
+- user: 产品经理, category: 启发, comment: 「未解决的问题」段让我发现同一个待验证假设挂了三周没人碰。现在每周一先出报告扫这段，再定本周动作。

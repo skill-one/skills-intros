@@ -1,0 +1,5 @@
+# vue-best-practices (`vuejs-ai/skills/vue-best-practices`)
+
+## scenario
+
+接手别人的 Vue 项目:组件上千行,改一处崩三处;或自己写的页面越加越乱、越跑越卡、没人敢动。我按官方最佳实践拆分组件、理顺数据流、按需优化性能,交付清晰、可维护、不返工的代码。🧩

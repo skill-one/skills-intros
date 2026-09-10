@@ -1,0 +1,9 @@
+# docker-expert (`sickn33/agentic-awesome-skills/docker-expert`)
+
+## blackbox
+
+**function**: 帮你的应用打包成 Docker 容器镜像, 并把现有的镜像配置改得更快、更小、更安全。
+
+- input: 一个项目的 Dockerfile (或直接说「镜像太大了, 2GB」), output: 改写后的 Dockerfile, 镜像缩小到原来的几分之一, 并附上改动说明 (改了什么、为什么)
+- input: 项目文件夹路径 (说「帮我加上 Docker 部署」), output: 一套可直接运行的容器文件: Dockerfile + docker-compose.yml (应用+数据库一键启动) + .dockerignore
+- input: 一份 docker-compose.yml (或一句「容器启动就崩, 数据库连不上」), output: 排查结论 + 修好的配置文件, 涵盖启动顺序、网络、健康检查、资源限制等问题

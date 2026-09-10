@@ -1,0 +1,5 @@
+# convex-explain-app (`get-convex/agent-skills/convex-explain-app`)
+
+## scenario
+
+接手别人的代码,最痛的是:文件一堆,看不懂、不敢改。我能只读不动地把你的 Convex 应用讲清楚:数据表怎么关联、哪些接口对外暴露、有没有登录校验,画成一张准确的地图,让你放心决定下一步。

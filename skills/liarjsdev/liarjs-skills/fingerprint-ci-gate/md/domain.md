@@ -1,0 +1,7 @@
+# fingerprint-ci-gate (`liarjsdev/liarjs-skills/fingerprint-ci-gate`)
+
+## domain
+
+**domain**: 🧪 测试与质量
+
+**reason**: 本质是在 CI 里加一道指纹回归质检门：扫描浏览器、对比基线、不达标即拦截构建，属于自动化质量检查。

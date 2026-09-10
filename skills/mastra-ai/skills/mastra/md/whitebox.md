@@ -1,0 +1,13 @@
+# mastra (`mastra-ai/skills/mastra`)
+
+## whitebox
+
+- 先探测环境: 运行 ls node_modules/@mastra/ 确认 Mastra 包是否已安装
+- 按优先级查当前文档: 已安装 → 读 node_modules/@mastra/*/dist/docs/ 内置文档, 不够再看源码/类型定义; 未安装 → 拉取 mastra.ai/llms.txt 远程文档
+- 涉及模型/provider 时, 先运行 scripts/provider-registry.mjs 验证 provider key 和模型名, 不凭记忆猜
+- 只依据核实过的当前 API 写代码, 内部训练知识一律不信任
+- 用项目脚本或 Mastra Studio (npm run dev → localhost:4111) 验证结果
+
+- 反幻觉校验: 核心机制是不信任自身训练数据 (其中充满过期 API), 按 '内置文档 → 已安装源码 → 远程文档' 三级优先序核实, 保证代码匹配用户实际安装的版本
+- 问题→文档路由: 按问题类型 (项目创建/组件选型 Agent vs Workflow/报错排查/版本迁移/CLI 调用/链路分析) 分发到对应 reference 文件, 报错时优先假设是自身知识过期而非用户错误
+- 外部依赖: @mastra npm 包及其 node_modules 内置文档 (最可靠的事实来源); mastra api CLI (检查/调用本地、Mastra 平台或远程服务器的资源); scripts/provider-registry.mjs (模型注册表校验); Mastra Studio (可视化调试); mastra.ai/llms.txt (未安装包时的远程文档源); 不依赖外部 LLM API, 自身只做文档核实与代码生成

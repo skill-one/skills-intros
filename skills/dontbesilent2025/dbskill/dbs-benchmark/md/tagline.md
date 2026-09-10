@@ -1,0 +1,7 @@
+# dbs-benchmark (`dontbesilent2025/dbskill/dbs-benchmark`)
+
+## tagline
+
+- 模仿不是方法，是信仰。
+- 找对标只看利润，不谈自我。
+- 能干就执行，不能干就换。

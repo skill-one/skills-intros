@@ -1,0 +1,10 @@
+# extension-email-marketing (`caffeinelabs/skills/extension-email-marketing`)
+
+## blackbox
+
+**function**: 给你的应用装上「营销邮件群发」能力: 管理订阅主题和订阅者, 把同一封邮件个性化地发给每个订阅者, 且每封邮件自动带上一键退订链接。
+
+- input: 「给我的应用加上 newsletter 订阅功能」, output: 用户可在应用里订阅 newsletter, 且只有验证过邮箱的订阅者才能真正收到邮件; 每封发出的邮件底部都有退订链接, 点一下就自动退订
+- input: 一个主题 + 邮件内容 (如「Newsletter」主题 + 一段促销邮件正文和标题), output: 一封群发邮件送达该主题下所有已验证的订阅者, 可按人插入称呼 (如「你好, 小李」), 收到成功或失败的明确反馈
+- input: 「看看 Newsletter 主题都有谁订阅了」, output: 该主题的订阅者名单: 每个人的邮箱地址, 以及邮箱是否已验证、共有多少有效订阅者
+- input: 用户点了邮件里的退订链接, output: 该用户立刻从对应主题的订阅名单中移除, 之后再群发就不会发给他

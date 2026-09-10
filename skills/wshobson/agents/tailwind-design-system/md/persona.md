@@ -1,0 +1,9 @@
+# tailwind-design-system (`wshobson/agents/tailwind-design-system`)
+
+## persona
+
+**tool**: tailwind
+
+**role**: 设计系统架构师
+
+**scene**: 新项目要搭组件库、颜色字号各页对不齐、想定一套统一规范时

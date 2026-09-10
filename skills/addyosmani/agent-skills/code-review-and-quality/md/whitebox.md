@@ -1,0 +1,13 @@
+# code-review-and-quality (`addyosmani/agent-skills/code-review-and-quality`)
+
+## whitebox
+
+- 理解上下文: 先不看代码, 弄清变更目的、对应 spec 和预期行为变化
+- 先审测试: 检查测试是否存在、测的是行为还是实现细节、边界与回归是否覆盖
+- 按 5 轴逐文件走查实现: 正确性 → 可读性 → 架构 → 安全 → 性能
+- 给每条发现标注严重度 (Critical / 必改 / Nit / Optional / FYI), 按杠杆排序输出, 结构性问题同时给出具名重构方案
+- 核实验证情况 (跑了哪些测试、构建是否通过、有无手动验证) → 给出 Approve 或 Request changes 结论
+
+- 五轴审查模型: 每个变更强制通过 correctness / readability / architecture / security / performance 五维检查; 安全与性能的深查清单分别转交姊妹 skill `security-and-hardening` 与 `performance-optimization`
+- 严重度分级 + 尺寸门禁: 意见必须带前缀区分必改与可选, 高杠杆问题优先于琐碎意见; 审批标准是 '确实改善整体代码健康' 即通过 (不追求完美); 单次变更超过 ~1000 行强制要求拆分, 重构与新功能分开提交; 死代码先列出并询问、不擅自删
+- 外部工具与多模型模式: 依赖审查用 `npm audit` 查已知漏洞、读 changelog (而非只看版本号)、审 lockfile diff (git); 支持多模型交叉审查 — 模型 A 写码 → 模型 B 审查 → 模型 A 修复 → 人类终审

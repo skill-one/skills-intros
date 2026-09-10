@@ -1,0 +1,10 @@
+# create-pr (`warpdotdev/common-skills/create-pr`)
+
+## comments
+
+- user: 开源项目新手, category: 坑, comment: 第一次没 merge master 就开 PR, review 中途被要求重合, 冲突一堆当场卡壳. 现在开 PR 前必先 git fetch + merge origin/master.
+- user: 同时改三个仓库的老手, category: 妙用, comment: 开 PR 前先跑 git log base..HEAD --oneline 扫一眼, 有次发现混进一个调试 commit, 及时剔掉. 自查比被 reviewer 抓出来体面多了.
+- user: 文档兼职维护者, category: 注意, comment: 纯文档 PR 不用跑 cargo fmt 和 clippy. 我一开始每次都全量跑等十分钟, 后来只对代码改动跑, 提 PR 快了一倍不止.
+- user: 后端老兵, category: 启发, comment: 修 bug 必带回归测试, 且要能「修复前失败、修复后通过」, 测试名直接写防的是哪个 bug. 这条搬回自己团队后, 老毛病复发少了很多.
+- user: 带新人的 tech lead, category: 坑, comment: 组里新人把 Co-Authored-By 写进 PR 描述, 实际要放 commit message 末尾才生效, 且已有署名时别重复加. 我们已写进 checklist.
+- user: 流程控 PM, category: 注意, comment: 想自动关联 Linear, 标题要在开 PR 前就带上 [WARP-1234] 这种 ID, 建完再补标题挂不上. 我踩过一次, 手动关联还挺麻烦.

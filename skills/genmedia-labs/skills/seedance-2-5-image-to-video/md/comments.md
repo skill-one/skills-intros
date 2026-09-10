@@ -1,0 +1,10 @@
+# seedance-2-5-image-to-video (`genmedia-labs/skills/seedance-2-5-image-to-video`)
+
+## comments
+
+- user: 电商运营, category: 妙用, comment: 一张过审的产品图换 5 版动作提示词批量出片做 A/B,商品形状和 logo 一直没跑偏。提示词末尾记得加"无文字、无水印",不然成片容易冒出乱码字幕。
+- user: 第一次用的新手, category: 坑, comment: 图是竖版,我在提示词里求"要 16:9",出来还是竖的,白烧了几块钱。画幅只跟原图走,想要横屏就先把图裁好再传。
+- user: 短视频剪辑师, category: 坑, comment: 我拿它出 B-roll,没关声音,成片自带一段背景乐,素材没法用只能重跑。只要静音就手动写 generate_audio: false,别指望默认是静音。
+- user: 后端运维老哥, category: 注意, comment: 服务器上 login 走不通(要弹浏览器),设 RUNCOMFY_TOKEN 就行;图必须是公网直链,带登录态的图床链接拉不到;Ctrl-C 只能停排队中的任务,开跑就停不下来。
+- user: 自由摄影师, category: 启发, comment: 把"人物做什么"和"镜头怎么动"拆成两句话写,成片率明显变高;图里已有的脸、衣服、背景别再复述,只写要变的部分,省词还不漂移。
+- user: 精打细算的自媒体人, category: 妙用, comment: 先用 480p(每秒 0.17 刀)把动作方向试满意,再回 720p 出正片,一批片省了近一半钱。这页没有 seed,满意的片子当场存好,重跑不复现。

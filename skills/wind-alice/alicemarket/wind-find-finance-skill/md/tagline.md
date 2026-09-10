@@ -1,0 +1,7 @@
+# wind-find-finance-skill (`wind-alice/alicemarket/wind-find-finance-skill`)
+
+## tagline
+
+- 一句提问，精准匹配万得金融技能
+- 缺啥装啥，数据分析一步到位
+- 从取数到决策，一个入口全搞定

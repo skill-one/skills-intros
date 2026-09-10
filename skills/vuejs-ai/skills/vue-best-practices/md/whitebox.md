@@ -1,0 +1,13 @@
+# vue-best-practices (`vuejs-ai/skills/vue-best-practices`)
+
+## whitebox
+
+- 确认架构: 默认栈为 Vue 3 + Composition API + <script setup lang='ts'>; 项目若明确用 Options API 或 JSX, 转去加载对应技能。
+- 读取 4 份必读核心参考 (reactivity / sfc / component-data-flow / composables), 全程保持在上下文中。
+- 动手前先画组件边界图: 每个组件一句职责 + 显式的 props/emits 契约, 非小型功能必须拆分。
+- 按基础规范编码: 最小响应式状态 + computed 派生、SFC 按 script→template→style、props 下行事件上行、复杂逻辑抽 composable; 可选特性 (Transition/Teleport/性能等) 仅在需求出现时才加载对应参考。
+- 按结尾清单逐项自检 (行为正确、契约显式、拆分合理等) 后交付。
+
+- 纯指令集驱动, 不调用任何外部工具/库/模型 API: 知识全部内置于自身 references/*.md, 分'必读 4 篇'与'按需加载'两级, 由需求触发词决定加载哪篇 (如需 slots→component-slots.md, 大列表→perf-virtualize-large-lists.md)。
+- 校验靠客观规则而非主观判断: 组件拆分有硬性触发条件 (3+ 个独立 UI 区块 / 状态编排+多区块展示 / 模板块重复); 性能优化被强制排在功能验证之后; 结尾有逐项自检清单兜底。
+- 类型即契约: 用 TypeScript 的 defineProps / defineEmits / InjectionKey 把组件间数据流显式化; 覆盖范围为 Vue 3、SSR、Volar、vue-tsc 生态。

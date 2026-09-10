@@ -1,0 +1,7 @@
+# fingerprint-ci-gate (`liarjsdev/liarjs-skills/fingerprint-ci-gate`)
+
+## tagline
+
+- 让构建失败, 别让流量被封
+- 指纹回归, 提交即拦截
+- 封禁之前, 先在 PR 里现形

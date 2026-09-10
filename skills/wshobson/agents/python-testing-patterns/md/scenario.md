@@ -1,0 +1,5 @@
+# python-testing-patterns (`wshobson/agents/python-testing-patterns`)
+
+## scenario
+
+改一行代码,崩三个功能;bug 总在半夜上线后爆发,凌晨爬起来救火?我用 pytest 给代码装"安全网":每次改动自动验证,bug 当场现形,你只管睡安稳觉。😴

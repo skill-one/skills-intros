@@ -1,0 +1,7 @@
+# golang-samber-lo (`samber/cc-skills-golang/golang-samber-lo`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 专为 Go 代码而生: 用 samber/lo 替代手写循环, 做 Map/Filter/GroupBy 等集合变换、重构与库集成

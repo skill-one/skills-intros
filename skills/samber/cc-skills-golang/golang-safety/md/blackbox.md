@@ -1,0 +1,9 @@
+# golang-safety (`samber/cc-skills-golang/golang-safety`)
+
+## blackbox
+
+**function**: 审查并修复 Go 代码里容易埋雷的写法, 避免程序正常运行时突然崩溃 (panic) 或悄悄算错数据, 并直接给出改好的代码。
+
+- input: 一个 .go 源文件路径, output: 修改后的代码文件 + 逐条修改说明: 如「向 nil map 写入会 panic, 已加初始化」「defer 写在循环里会积压上万个未关闭文件, 已拆出循环」
+- input: 一段 Go 代码片段, 如刚写完的导出函数, output: 一份隐患清单 + 修正代码: 如 int64 转 int32 会静默变成负数、0.1+0.2 用 == 判断会失败、append 后两个切片共用内存互相污染
+- input: 一句话需求, 如「帮我设计一个 Config 配置类型」, output: 可直接使用的 Go 类型代码: 零值就安全 (var c Config 后直接调方法不会 panic), 对外返回的是副本, 调用方改不动内部数据

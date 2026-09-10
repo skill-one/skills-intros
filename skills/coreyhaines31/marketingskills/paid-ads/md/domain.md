@@ -1,0 +1,7 @@
+# paid-ads (`coreyhaines31/marketingskills/paid-ads`)
+
+## domain
+
+**domain**: 📈 商业运营
+
+**reason**: 付费广告投放属于市场营销与获客增长的核心环节

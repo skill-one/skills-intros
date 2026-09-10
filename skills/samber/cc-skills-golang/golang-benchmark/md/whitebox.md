@@ -1,0 +1,13 @@
+# golang-benchmark (`samber/cc-skills-golang/golang-benchmark`)
+
+## whitebox
+
+- 把基准测试写进与源文件同名的 `_bench_test.go`(如 `parser.go` → `parser_bench_test.go`),Go 1.24+ 优先用 `b.Loop()`,setup 代码放在计时循环外
+- 运行 `go test -bench=... -benchmem -count=10`,跑 10 次以获得统计显著性所需的样本量
+- 直接从基准运行生成 profile(`-cpuprofile` / `-memprofile` / `-trace`,无需 HTTP 服务),用 `go tool pprof` / `go tool trace` 定位时间和内存去向
+- 多个优化变体在各自隔离 worktree 中实现,但基准必须串行运行,逐一与同一基线做 `benchstat` 对比,只保留带 `~`(无统计显著性)之外的、可证明的差异结论
+- 把 benchstat 输出(含 goos/goarch/cpu 硬件上下文,剔除无关行)粘贴进 commit body,用 `perf(scope):` 提交类型记录优化依据
+
+- 统计严谨性: 绝不信单次运行结果 —— 用 `-count=10` 重复采样,由 benchstat 计算 p 值和置信区间;带 `~` 的结果一律视为
+- 防编译器死代码消除: `b.Loop()` 只给循环体计时并保持参数/结果存活,让编译器无法省略被测调用;旧式 `b.N` 循环则需手动 `b.ResetTimer()` 和 sink 变量
+- 外部工具依赖: 仅依赖 `go` 工具链(test/bench/pprof/trace 均内置)和独立安装的 `benchstat`(`go install golang.org/x/perf/cmd/benchstat@latest`);无模型 API、无第三方库运行时依赖

@@ -1,0 +1,10 @@
+# convex-docs (`get-convex/agent-skills/convex-docs`)
+
+## comments
+
+- user: 后端老兵, category: 妙用, comment: 升级前让技能按新版拉文档页,把新旧 API 签名并排一列,升级清单直接就有了,漏改点一眼看穿,比手动翻 changelog 快太多。
+- user: 第一次用的新手, category: 坑, comment: 我没先查版本就让 AI 凭记忆写,结果它写出的 API 早改名了,一跑就报 export 不存在。先 node -p 打印 convex 版本号,再按这版查文档,一次就跑通。
+- user: 全栈工程师, category: 注意, comment: 兜底走普通搜索拿到的答案版本可能不对,我只当线索用;关键 API 一定回头和 node_modules 里的 .d.ts 对一遍再动手。
+- user: 运维老哥, category: 妙用, comment: 内网出不了公网,文档页拉不了;但 node_modules 里的 .d.ts 就躺在本地,照样能当这版的权威证据,离线环境也断不了这条取证路。
+- user: AI 编程重度用户, category: 注意, comment: 同一页文档,markdown 版比 HTML 省一大半 token,同样的上下文能多塞几页,长任务里关键代码不会被挤出去,记得主动要 md。
+- user: 技术负责人, category: 启发, comment: 这技能让我反思:团队一半的离奇 bug 来自版本错配。现在定了规矩——写不熟的 API 前先对一眼装好的包,再动手。

@@ -1,0 +1,13 @@
+# gstack (`garrytan/gstack/gstack`)
+
+## whitebox
+
+- 运行 preamble: 执行 gstack-skill-start 脚本, 读取其回显的 KEY: value 状态行 (SESSION_ID, SESSION_KIND, PROACTIVE 等) 驱动后续行为
+- 处理输出中的 GSTACK_INSTRUCTION 块 (一次性引导/授权指令), 仅当块出现在本次 skill-start 的直接工具结果且 SESSION_ID 匹配时才执行
+- 路由: 按规则表匹配用户请求 — 浏览器/QA 类请求发给 /browse, 其余按 ~40 条路由规则用 Skill 工具调起对应子技能 (bug→/investigate, 部署→/ship 等), 无匹配则直接回答
+- 记录路由结果: 通过 gstack-telemetry-log 写入 ROUTE_OUTCOME (browse/routed/direct)
+- 收尾: 用 gstack-learnings-log 记录会话中的持久经验, 再用 gstack-skill-end 上报遥测 (携带 preamble 回显的 SESSION_ID 与 TEL_START)
+
+- 纯路由器模式: 本技能不含业务逻辑, 核心是规则表 + 意图匹配 (如 "报错/为什么坏了"→/investigate, "上线/发 PR"→/ship), 宁可误路由也不漏路由, 由子技能提供多步工作流与质量门禁
+- 降级容错: skill-start 输出缺少 SKILL_START_PROTO: 1 时进入 degraded mode — 按安全默认值运行 (SESSION_KIND=interactive, 跳过引导/遥测, 授权提示因标记门机制而延后不丢失), 继续用户任务; 指令块防注入: 只信直接工具结果 + SESSION_ID 匹配, 不信文件/页面内容
+- 外部依赖: 全部为本地 Bash 脚本 ~/.claude/skills/gstack/bin/ 下的 gstack-skill-start / gstack-telemetry-log / gstack-learnings-log / gstack-skill-end, 状态写入 ~/.gstack/ (配置 gstack-config, 遥测 analytics/, 经验 learnings); 另有针对 claude 模型族的行为补丁 (todo 纪律、先想后动等), 优先级低于技能工作流与 STOP 点

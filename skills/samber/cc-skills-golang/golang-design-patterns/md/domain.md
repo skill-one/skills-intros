@@ -1,0 +1,7 @@
+# golang-design-patterns (`samber/cc-skills-golang/golang-design-patterns`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: Go 语言设计模式与惯用写法, 服务于代码设计与重构。

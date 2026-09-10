@@ -1,0 +1,7 @@
+# dbs-content (`dontbesilent2025/dbskill/dbs-content`)
+
+## domain
+
+**domain**: ✍️ 内容创作
+
+**reason**: 专做选题到内容的诊断: 形式匹配、五维体检、封面标题, 不代写只把关。

@@ -1,0 +1,7 @@
+# python-testing-patterns (`wshobson/agents/python-testing-patterns`)
+
+## tagline
+
+- 测试先行,让 bug 无处遁形
+- 每一行代码,都有测试护航
+- pytest 深耕者,质量看得见

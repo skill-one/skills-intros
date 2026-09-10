@@ -1,0 +1,7 @@
+# email-sequence (`coreyhaines31/marketingskills/email-sequence`)
+
+## domain
+
+**domain**: 📈 商业运营
+
+**reason**: 邮件序列是自动化营销与客户生命周期运营, 服务业务增长与转化

@@ -1,0 +1,7 @@
+# gh-cli (`github/awesome-copilot/gh-cli`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: GitHub CLI 覆盖仓库/PR/Issue/Actions 等核心开发工作流, 属于代码协作与集成工具.

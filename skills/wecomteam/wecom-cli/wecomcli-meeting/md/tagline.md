@@ -1,0 +1,7 @@
+# wecomcli-meeting (`wecomteam/wecom-cli/wecomcli-meeting`)
+
+## tagline
+
+- 一句话开会，忙闲冲突提前躲
+- 散会即纪要，待办一件不漏
+- 查会改会取消会，开口就办

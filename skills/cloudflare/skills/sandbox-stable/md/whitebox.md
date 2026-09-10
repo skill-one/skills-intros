@@ -1,0 +1,13 @@
+# sandbox-stable (`cloudflare/skills/sandbox-stable`)
+
+## whitebox
+
+- 闸门检查: 先查应用的 npm 依赖和容器镜像, 确认是稳定线 (@cloudflare/sandbox 及配套稳定镜像, 非 @next)。
+- 命中 @next 依赖或迁移需求 → 立即停止, 移交给对应技能 (sandbox-next / sandbox-migrate-to-next), 不做半套混用。
+- 按检索映射表找到任务对应的官方文档页, 动手前先抓取; 已安装的稳定类型定义优先于记忆猜测。
+- 按 Contract 契约写代码: exec 接命令字符串、等命令结束、返回缓冲的 stdout/stderr/exitCode; 常驻/流式用稳定版专属 API。
+- 发布前检查: 包与镜像同在稳定线、按已装稳定类型通过类型检查、沙箱环境变量里无真实密钥。
+
+- 闸门路由: 对照依赖/镜像检查表做匹配分发 — 遇 @next 或想迁移 1.0 就换技能, 硬性禁止稳定 Worker 包配 @next 镜像 (或反之)。
+- 契约校验: 固定 API 形状不可违背 — exec(command 字符串) 返回缓冲结果; 长任务用 startProcess/execStream; 浏览器终端用 terminal(request); 隧道/大流量优先 RPC 而非已弃用的 HTTP/WebSocket。
+- 文档检索映射: 任务→URL 映射表驱动实现 (如 commands/sessions/files/tunnels 各有专页), 并用 rg 搜索已弃用 API 残留; 外部依赖为 @cloudflare/sandbox 稳定 npm 包、Cloudflare Containers、官方 Sandbox 文档与已安装的稳定 TS 类型, 不依赖任何模型 API。

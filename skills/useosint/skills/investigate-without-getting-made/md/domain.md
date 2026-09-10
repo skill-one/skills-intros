@@ -1,0 +1,7 @@
+# investigate-without-getting-made (`useosint/skills/investigate-without-getting-made`)
+
+## domain
+
+**domain**: 🛡️ 运维与安全
+
+**reason**: 核心是调查中的威胁建模、匿名性与防暴露等 OPSEC 安全实践, 面向安全场景而非研究本身。

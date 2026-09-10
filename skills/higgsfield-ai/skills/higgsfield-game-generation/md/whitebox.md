@@ -1,0 +1,13 @@
+# higgsfield-game-generation (`higgsfield-ai/skills/higgsfield-game-generation`)
+
+## whitebox
+
+- 环境引导: 安装 higgsfield CLI, 确认登录会话与部署能力, 定位技能自带脚本 (绝不凭记忆重写)
+- 规划: 读设计系统参考, 定下核心循环/胜负/输入方式, 先产出 assets.csv 清单与 STYLE FORMULA (此前不允许出现任何代码或视觉素材)
+- 并行生成: 一起发起独立资产生成任务, 任务运行期间同步编写游戏代码
+- 本地验证: 用 HTTP 服务实际运行游戏, 逐项检查完整循环、重启、缺失素材、控制台报错、响应式画布、触屏/手柄等
+- 打包部署: zip (index.html + 单一根模块) 后执行 higgsfield game deploy 拿到可玩 URL, 重开链接复测冒烟路径后交付
+
+- 两层前置门控: design/assets.csv 清单和 STYLE FORMULA 必须先于一切产物存在; 风格公式逐字节插入每个视觉生成提示词, 保证生成素材与程序化 canvas 绘图同属一套视觉系统
+- 执行引擎是 Higgsfield CLI: 提交前先以 JSON 检查模型契约 (model list / model get), 媒体参数收本地路径或历史任务 ID, 任务链的 JSON 存项目文件; 3D 动作用 preset list animation-action 检索预览让用户选, 仅原生 3D 不可用时才走 Meshy 兜底; 生成失败最多重试 2 次, 之后取最佳结果在代码层补偿或诚实修订清单
+- 交付正确性约束: 本地测试只走 HTTP (禁 file://); 包内必须恰好一个根代码模块 (logic.js 或 server.js); 更新必须带 --game-id 否则会生成重复新游戏; URL 只取 CLI 返回值, 永不手工拼装

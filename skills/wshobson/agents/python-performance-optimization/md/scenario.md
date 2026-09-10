@@ -1,0 +1,5 @@
+# python-performance-optimization (`wshobson/agents/python-performance-optimization`)
+
+## scenario
+
+Python 程序跑得慢?等半天没响应,内存爆了只能重启,却不知道卡在哪一行?我给代码"体检":先测量找出真正的元凶,再精准优化,不瞎改。让程序提速、内存瘦身,告别无效等待。⏱️

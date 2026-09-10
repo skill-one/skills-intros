@@ -1,0 +1,7 @@
+# golang-graphql (`samber/cc-skills-golang/golang-graphql`)
+
+## tagline
+
+- 一次查询,精准取数,接口零冗余
+- 告别 N+1,批量加载快而稳
+- 查得快、锁得住、跑得稳

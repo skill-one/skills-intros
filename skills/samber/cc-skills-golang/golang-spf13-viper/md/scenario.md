@@ -1,0 +1,5 @@
+# golang-spf13-viper (`samber/cc-skills-golang/golang-spf13-viper`)
+
+## scenario
+
+Go 服务改配置常出怪事:环境变量设了不生效、配置文件一丢服务就崩、测试互相污染排查半天。我用 viper 把命令行参数、环境变量、配置文件、默认值按优先级管成一条线——谁说了算,一目了然。🔧

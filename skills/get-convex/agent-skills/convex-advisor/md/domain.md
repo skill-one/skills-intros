@@ -1,0 +1,7 @@
+# convex-advisor (`get-convex/agent-skills/convex-advisor`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 读 Convex 部署 72h 健康数据, 到代码里定位性能/成本问题并给出修复 (数据库索引、并发冲突等), 本质是后端调试。

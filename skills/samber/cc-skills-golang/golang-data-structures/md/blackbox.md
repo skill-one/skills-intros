@@ -1,0 +1,9 @@
+# golang-data-structures (`samber/cc-skills-golang/golang-data-structures`)
+
+## blackbox
+
+**function**: 你给我 Go 代码或提问,我帮你选对数据结构、找出慢和错的原因,并直接给出改好的代码。
+
+- input: 一段在循环里不断往切片/映射里添加元素的 Go 代码, output: 改好的代码(加了预分配)+ 一句话说明为什么快
+- input: 提问:「Go 里怎么做优先队列?」, output: 一份可直接复制运行的完整代码示例
+- input: 一个需求:「我需要一个能装任意类型的去重 Set,还能判断包含」, output: 写好的泛型 Set 代码文件,拿去就能用

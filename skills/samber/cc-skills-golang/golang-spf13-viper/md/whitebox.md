@@ -1,0 +1,13 @@
+# golang-spf13-viper (`samber/cc-skills-golang/golang-spf13-viper`)
+
+## whitebox
+
+- 定位配置代码: 在 *.go 中找到 import github.com/spf13/viper 的使用点, 必要时 go get github.com/spf13/viper@latest
+- 接通文件源: SetConfigName + AddConfigPath 后 ReadInConfig, 用 errors.As 识别 ConfigFileNotFoundError 并优雅放行 (缺文件不该崩)
+- 接通环境变量: SetEnvPrefix + SetEnvKeyReplacer + AutomaticEnv 三件套一次性配齐, 缺一个嵌套键就静默失效
+- 绑定 flag 与结构体: 在 init() 或 PersistentPreRunE 里 BindPFlag (绝不在 RunE), 再用 Unmarshal 按 mapstructure 标签灌入 Go 结构体
+- 验证与隔离: go build / golangci-lint 检查, 测试中用 viper.New() 独立实例避免全局状态串味
+
+- 分层解析: 按固定优先级管道取值 — Set() > flag > env > 配置文件 > 远程 KV (etcd/Consul) > default, 首个命中即返回, 顺序不可重排 — 这条管道解释了大部分 '配置怎么没生效' 的 bug
+- 键名转换: 嵌套键 database.host 靠 SetEnvKeyReplacer("."→"_") + 前缀转成 MYAPP_DATABASE_HOST (标准库 strings.NewReplacer); 结构体映射依赖 mapstructure 库, 嵌套/下划线字段必须显式写 mapstructure 标签, 否则静默丢失
+- 校验与热重载: ConfigFileNotFoundError 用 errors.As 判别后放行, 只传播真实错误; 热重载走 WatchConfig + OnConfigChange, 底层是 fsnotify 监听 inode — vim 等原子重命名写入会换 inode 导致回调不触发, 测试要用 echo >> 追加。外部依赖: Go 工具链 (go, golangci-lint), 库: spf13/viper, mapstructure, fsnotify, spf13/cobra (flag 侧)

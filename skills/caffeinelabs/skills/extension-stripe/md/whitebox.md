@@ -1,0 +1,13 @@
+# extension-stripe (`caffeinelabs/skills/extension-stripe`)
+
+## whitebox
+
+- 管理员初始化：前端发现 isStripeConfigured() 为 false 时弹出配置面板，管理员提交 Stripe secretKey 与允许国家列表（如 ["US","CA","GB"]），经 admin 权限校验后由 setStripeConfiguration() 存入后端
+- 发起结账：前端 hook useCreateCheckoutSession() 调用后端 createCheckoutSession(items, successUrl, cancelUrl)，后端转交给内置 stripe.mo 模块，通过 HTTP outcall (PUT) 请求 Stripe 创建 checkout session，返回 Stripe 的 JSON 回复文本
+- 跳转 Stripe：前端 JSON.parse 回复得到 {id, url}，校验 url 非空后用 window.location.href 跳转到 Stripe 托管收银页（不走路由导航）
+- 支付回跳：用户在 Stripe 页付款后，Stripe 回跳 /payment-success（取消则 /payment-failure），由 @tanstack router 路由到对应的 PaymentSuccess/PaymentFailure 组件
+- 状态核验：通过 getStripeSessionStatus(sessionId) → getSessionStatus() 再发起一次 HTTP GET outcall 查询 Stripe，返回 #completed（含响应与用户 principal）或 #failed
+
+- 预置模块 + HTTP outcall：支付核心封装在不可修改的 mo:caffeineai-stripe/stripe.mo，仅暴露 createCheckoutSession (PUT) 和 getSessionStatus (GET) 两个入口，底层依赖 caffeineai-http-outcalls 让后端容器直接调用 Stripe API；每次调用携带 OutCall.Transform，由后端的 query 函数 transform 调用 OutCall.transform 规整 Stripe 响应后再返回
+- 前端解析与跳转防御：后端 createCheckoutSession 返回原始 JSON 文本，前端必须 JSON.parse 成 CheckoutSession 并校验 url 非空，否则抛错终止、绝不导航到 /undefined；用 @tanstack/react-query 的 useMutation + useActor 获取后端 actor，支付回调路径由 @tanstack router 承接
+- 权限校验：前置依赖 extension-authorization 技能；setStripeConfiguration 及商品的增删改均先检查 AccessControl.hasPermission(caller, #admin)，未授权直接 Runtime.trap

@@ -1,0 +1,12 @@
+# web-design-guidelines (`antfu/skills/web-design-guidelines`)
+
+## whitebox
+
+- 用 WebFetch 从 GitHub 拉取最新规则文件 (vercel-labs/web-interface-guidelines 仓库的 command.md 原文)
+- 读取用户指定的待审文件;若未指定,先反问用户要审查哪些文件/匹配模式
+- 将代码逐条对照拉取到的规则做全量检查
+- 以简短的 file:line 格式输出问题清单
+
+- 规则不内置、每次现拉:审查依据 100% 来自远程 markdown 文件,每次审查都重新 fetch,保证规则始终是最新版;核心外部依赖 = WebFetch 工具 + GitHub raw 内容源
+- 输出格式也由远端决定:command.md 里同时包含规则正文与输出格式说明,即拉取内容说了'怎么报'和'报什么'
+- 关键词触发进入固定流水线:由描述中的触发短语 ('review my UI'、'check accessibility'、'audit design' 等) 激活,然后走同一套 fetch → read → check → report 流程

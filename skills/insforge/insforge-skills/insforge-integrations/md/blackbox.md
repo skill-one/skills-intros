@@ -1,0 +1,9 @@
+# insforge-integrations (`insforge/insforge-skills/insforge-integrations`)
+
+## blackbox
+
+**function**: 帮你的应用接上「第三方登录」并保证每个用户只能看到自己的数据, 或给你的接口加上「链上按次付费」能力。
+
+- input: 「我的应用用 Clerk 登录, 想让每个用户在数据库里只能看到自己的记录」, output: 一套可直接使用的配置和代码: 后台(控制台)设置步骤、前端携带登录凭证的接入代码、数据库的访问限制规则 — 部署后用户彼此看不到对方数据
+- input: 「我们用的是 Auth0 / WorkOS / Kinde / Stytch / Better Auth 其中之一」, output: 对应登录服务商的完整接入方案: 后台配置说明、可运行的服务端和前端代码、需要设置的环境变量清单
+- input: 「想让我的 API 按次收费, 用户用稳定币 (USDG) 在链上支付」, output: 服务端 + 客户端代码: 未付款的请求会自动收到「请先支付」的响应, 用户扫码/签名付款后接口正常返回; 每笔支付记录存入数据库并实时显示在面板上

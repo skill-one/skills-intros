@@ -1,0 +1,7 @@
+# motion-doctrine (`heygen-com/hyperframes/motion-doctrine`)
+
+## domain
+
+**domain**: 🎨 设计多媒体
+
+**reason**: 技能是动画/视频的运动编排: 多场景转场、镜头连续性、节奏与视觉表演, 属于视觉音视频制作。

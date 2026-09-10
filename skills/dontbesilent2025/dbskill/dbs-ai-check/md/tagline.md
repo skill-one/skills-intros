@@ -1,0 +1,7 @@
+# dbs-ai-check (`dontbesilent2025/dbskill/dbs-ai-check`)
+
+## tagline
+
+- 逐句揪出 AI 指纹，看清你的文字
+- 太完美，就是不真实的信号
+- 不帮你伪装，帮你找到自己的写法

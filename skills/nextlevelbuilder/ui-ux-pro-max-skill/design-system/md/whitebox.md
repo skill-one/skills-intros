@@ -1,0 +1,13 @@
+# design-system (`nextlevelbuilder/ui-ux-pro-max-skill/design-system`)
+
+## whitebox
+
+- 解析任务目标与上下文 (目标、幻灯片位置、前一张的情绪)
+- 检索 slide-strategies.csv, 得到 deck 结构 + 情绪弧线 (emotion beats)
+- 逐张幻灯片查 4 个决策 CSV: 布局 (layout-logic) → 字号 (typography) → 颜色 (color-logic) → 背景图 (backgrounds), 并套用动画类
+- 按三层 design tokens 生成 HTML 幻灯片, 图表用 Chart.js 渲染
+- 运行 slide-token-validator.py 校验: 必须全部走 var() 引用, 禁止硬编码 hex
+
+- 三层 Token 架构做单一事实来源: primitive → semantic → component 逐层引用 CSS 变量 (--color-blue-600 → --color-primary → --button-bg), 所有幻灯片强制 import design-tokens.css, 语义层天然支持明暗主题切换
+- CSV 决策系统 + BM25 检索: 7 个 CSV 文件编码了 15 种 deck 结构、25 种布局、25 种文案公式 (PAS/AIDA/FAB)、25 种图表配置; search-slides.py 用 BM25 + 上下文参数 (位置/前一情绪) 检索最匹配模板; Duarte 'What Is ↔ What Could Be' 模式打断算法在 1/3 和 2/3 位置插入情绪反转
+- 外部依赖: Node.js 脚本生成/校验 token (generate-tokens.cjs 从 JSON 配置产出 CSS; validate-tokens.cjs 扫描源码中的硬编码值); Python 脚本做检索与幻灯片校验; Chart.js 4.4.1 经 CDN 加载画图; 背景图经 fetch-background.py 从 Pexels/Unsplash API 拉取

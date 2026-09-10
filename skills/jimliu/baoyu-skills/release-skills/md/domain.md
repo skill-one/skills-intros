@@ -1,0 +1,7 @@
+# release-skills (`jimliu/baoyu-skills/release-skills`)
+
+## domain
+
+**domain**: 🛡️ 运维与安全
+
+**reason**: 发布工作流: 版本号、changelog、打 tag、推 GitHub Release, 属于部署发布

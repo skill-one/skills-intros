@@ -1,0 +1,10 @@
+# fastapi-templates (`wshobson/agents/fastapi-templates`)
+
+## comments
+
+- user: 第一次用的新手, category: 坑, comment: 直接抄测试里的 sqlite 链接, 一跑就报 aiosqlite 找不到 → 先 pip install aiosqlite。异步库要配异步驱动, 换 postgres 还得装 asyncpg。
+- user: 后端老兵, category: 妙用, comment: dependency_overrides 不只能换数据库, 我拿它替换登录依赖, 测试里直接伪造已登录用户, 省掉造 token 那一套。
+- user: 接单的自由职业者, category: 注意, comment: 主文件只是目录骨架, 完整实现模式在 references/details.md 里。我一开始只看主页就开工, 后来才翻到, 少走了弯路。
+- user: 创业公司技术负责人, category: 启发, comment: 起初嫌 services 和 repositories 分层多余, 团队上人后, 新同事改代码不用问「逻辑放哪」, 评审直接指文件夹就行。
+- user: 从 Django 转过来的, category: 坑, comment: 在 async 路由里用 requests 调外部接口 → 整个服务像卡死。改用 httpx 的异步请求, 或把路由写成普通 def 让它自动跑线程。
+- user: 运维老哥, category: 注意, comment: 测试用内存 sqlite, 线上是 postgres, 事务和锁的行为不完全一致。涉及并发的逻辑别只信测试绿了, 灰度环境再验一遍。

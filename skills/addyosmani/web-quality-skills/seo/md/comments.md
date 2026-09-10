@@ -1,0 +1,10 @@
+# seo (`addyosmani/web-quality-skills/seo`)
+
+## comments
+
+- user: 电商独立站站长, category: 坑, comment: 曾把 /static/ 加进 robots.txt 的 Disallow,谷歌抓取时 CSS/JS 加载不了,页面被判渲染异常。删掉只挡 /admin/ 和 /api/,重新抓取才恢复。
+- user: 技术博客主, category: 注意, comment: 加 llms.txt 想被 AI 引用,石沉大海:它是实验性提案,没有产品承诺会读。封 GPTBot 只挡训练,ChatGPT 搜索看的是 OAI-SearchBot,别搞混。
+- user: 前端工程师, category: 妙用, comment: 别死磕 60 字符:中文是双宽,58 个汉字照样被截断。我改用设备模拟看标题实际显示宽度,再对齐 h1 和锚文本,减少谷歌改写标题的概率。
+- user: 第一次接手公司官网的新手, category: 注意, comment: 修完 Lighthouse 拿 100 分排名没动——它只管技术问题,收录排名要搜索引擎自己验证。现在我只汇报'技术清零,收录待谷歌确认',不再打包票。
+- user: 出海多语言站运营, category: 坑, comment: sitemap 塞了带参数的重复 URL,Search Console 一堆'已提交未收录'。只留规范地址、大站用 index 拆分、lastmod 真改了再更新,收录才干净。
+- user: 做了十年 SEO 的老油条, category: 启发, comment: 以前堆关键词、乱塞 schema 抢富摘要。现在先跑 Lighthouse 定技术问题,再查 robots、canonical,schema 只标页面真实内容,'能修的'和'等谷歌的'分开交付。

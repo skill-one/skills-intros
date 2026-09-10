@@ -1,0 +1,9 @@
+# multi-stage-dockerfile (`github/awesome-copilot/multi-stage-dockerfile`)
+
+## blackbox
+
+**function**: 把你的应用打包成 Dockerfile, 且最终镜像体积小、运行安全、构建快。
+
+- input: 一个 Node.js / Python / Go 项目文件夹, output: 一份可直接 docker build 的多阶段 Dockerfile, 只保留运行所需内容, 镜像比普通写法小很多
+- input: 一个已有的、镜像很臃肿的 Dockerfile, output: 优化后的 Dockerfile: 体积更小、不用 root 运行、改代码后重新构建更快
+- input: 一句需求描述, 如「帮我打包一个 React 前端, 用 Nginx 跑」, output: 对应的完整 Dockerfile, 附带 .dockerignore 建议, 复制粘贴即可构建

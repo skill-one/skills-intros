@@ -1,0 +1,9 @@
+# remotion-multimedia (`remotion-dev/skills/remotion-multimedia`)
+
+## persona
+
+**tool**: mediabunny
+
+**role**: 音视频测量员
+
+**scene**: 拿到一段音频或视频、想知道它有多长多宽, 再决定怎么用时

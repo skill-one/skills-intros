@@ -1,0 +1,5 @@
+# guizang-ppt-skill (`op7418/guizang-ppt-skill/guizang-ppt-skill`)
+
+## scenario
+
+明晚要上台,PPT 还在反复调字号?深夜排版,成品依旧土气。把主题丢给我,几分钟生成可翻页的网页 PPT:杂志感或瑞士风任选,自带演讲备注与提词,你只需专注讲话。🎤

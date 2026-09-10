@@ -1,0 +1,7 @@
+# golang-samber-mo (`samber/cc-skills-golang/golang-samber-mo`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: Golang 函数式类型库 samber/mo 的使用与代码实现, 属于写代码范畴

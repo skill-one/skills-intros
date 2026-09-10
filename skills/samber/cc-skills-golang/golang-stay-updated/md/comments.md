@@ -1,0 +1,10 @@
+# golang-stay-updated (`samber/cc-skills-golang/golang-stay-updated`)
+
+## comments
+
+- user: 转 Go 三年的后端老兵, category: 妙用, comment: 把开发者清单里的人按 GitHub/Bluesky 批量关注了一遍,库作者发新项目比 newsletter 早好几周,等于提前拿到情报。
+- user: 刚学 Go 两周的新手, category: 坑, comment: 我拿它查某个库的最新版本和漏洞,结果它只是资源导航,根本不查库;这类需求得去 pkg.go.dev,或用它配套的 pkg-go-dev 技能。
+- user: 订阅过 30 个源的信息收集控, category: 坑, comment: 上来把清单里 newsletter 全订了,一周十几封邮件只配标已读;后来按它 Quick Tips 只留 Golang Weekly 一份,才真的看进去。
+- user: 在国内远程写 Go 五年的后端, category: 注意, comment: 清单里 Slack、Reddit、YouTube 那批链接国内直连多数超时,先确认网络可达再收藏,不然 gophers Slack 邀请点开也白点。
+- user: Java 转 Go 半年的自学者, category: 启发, comment: 以前囤几十个 RSS 越囤越焦虑;现在只每周查一次 go.dev/blog 加 Dave Cheney 的博客,信息没少看,焦虑反而没了。
+- user: 带 5 人 Go 小组的技术 leader, category: 妙用, comment: 把这份清单整段贴进团队 onboarding 文档,新人自己按链接进 Slack、订 newsletter,不用我挨个口头推荐,还不漏。

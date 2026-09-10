@@ -1,0 +1,10 @@
+# react-native-best-practices (`callstackincubator/agent-skills/react-native-best-practices`)
+
+## comments
+
+- user: 独立接活的全栈, category: 妙用, comment: 直接描述症状「列表滚动掉帧」, 它按问题映射表从测量入手, 最后发现只是 ScrollView 换 FlashList, 没让我瞎加 memo.
+- user: 接手老项目的新手, category: 坑, comment: 上来就问「怎么让 app 变快」, 它坚持先测基线再优化. 没有改动前的数字, 改完根本没法验证是不是真变快了.
+- user: 三年 RN 老兵, category: 注意, comment: 它会核对库版本再给建议. 我提 FlashList 缺 estimatedItemSize, 被指出 v2 已废弃. 先确认自己库的版本号, 建议才对得上.
+- user: 被商店警告包体积的, category: 妙用, comment: 先打包 bundle 再用 source-map-explorer 看体积分布, 发现 barrel imports 吃掉几百 KB, 改成直接 import 后还能重新打包对比前后数字.
+- user: 带团队的 Tech Lead, category: 启发, comment: 「没测出问题就不推荐 memo」这条原则, 让我重审了团队里一堆凭感觉加的 useMemo——多数无效, 反而增加维护负担.
+- user: Flutter 转来的, category: 注意, comment: 性能分析依赖 react-devtools 工具链, release 包还得先接 inspector 才连得上. 环境没备好, 它只能给手动 Profiler 的替代流程.

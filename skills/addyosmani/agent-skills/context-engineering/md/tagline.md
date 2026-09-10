@@ -1,0 +1,7 @@
+# context-engineering (`addyosmani/agent-skills/context-engineering`)
+
+## tagline
+
+- 喂对上下文,AI 才有好输出
+- 该看时只看该看的,聚焦即效率
+- 上下文是杠杆:越精准,越强大

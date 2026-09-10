@@ -1,0 +1,7 @@
+# firecrawl-lead-gen (`firecrawl/firecrawl-workflows/firecrawl-lead-gen`)
+
+## domain
+
+**domain**: 📈 商业运营
+
+**reason**: 从网页和名录中提取销售线索并导出 CRM 可用格式, 服务于销售与客户获取。

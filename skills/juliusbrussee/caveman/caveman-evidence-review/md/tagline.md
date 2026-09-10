@@ -1,0 +1,7 @@
+# caveman-evidence-review (`juliusbrussee/caveman/caveman-evidence-review`)
+
+## tagline
+
+- AI 花在哪、省多少，条条有据
+- 只读审查，不动你系统分毫
+- 实测、推断、验证，三本账分得清

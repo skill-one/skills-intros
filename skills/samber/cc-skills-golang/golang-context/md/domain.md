@@ -1,0 +1,7 @@
+# golang-context (`samber/cc-skills-golang/golang-context`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: Golang context.Context 最佳实践, 属于写代码与重构范畴

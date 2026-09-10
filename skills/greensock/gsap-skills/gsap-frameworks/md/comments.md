@@ -1,0 +1,10 @@
+# gsap-frameworks (`greensock/gsap-skills/gsap-frameworks`)
+
+## comments
+
+- user: 刚上手 Vue 的新手, category: 坑, comment: 我在 setup 里直接写 gsap.to('.box'),一直报找不到目标。动画必须放 onMounted 里,DOM 挂载前元素根本不存在。
+- user: 维护多组件后台的老前端, category: 坑, comment: 两个组件都有 .item,不传 scope 时动画误伤了另一个组件。把容器 ref 传给 gsap.context 第二个参数才锁定。
+- user: Nuxt 独立开发者, category: 妙用, comment: SplitText 只有落地页在用,我用 useGSAP 暴露的 lazyLoadPlugin 按需加载,首屏包变小,别的页面完全不受影响。
+- user: Svelte 新人, category: 妙用, comment: 发现 Svelte 的 onMount 能直接 return 清理函数,里面写 ctx.revert() 即可,组件销毁自动执行,不用在外面存变量。
+- user: 接手老项目的前端, category: 注意, comment: 接口数据返回后列表撑长,滚动触发位置全偏了。在 nextTick 里调 ScrollTrigger.refresh() 后位置才恢复准确。
+- user: React 背景转来的开发, category: 注意, comment: 我照搬 React 的 useGSAP hook 直接报错。Vue/Svelte 要用 onMounted 加 gsap.context,React 该去查 gsap-react。

@@ -1,0 +1,7 @@
+# baoyu-compress-image (`jimliu/baoyu-skills/baoyu-compress-image`)
+
+## domain
+
+**domain**: 🎨 设计多媒体
+
+**reason**: 压缩与转换图片格式, 属于图像处理范畴

@@ -1,0 +1,7 @@
+# mobile-ios-design (`wshobson/agents/mobile-ios-design`)
+
+## tagline
+
+- 让 App 像苹果亲手打造的原生体验
+- 深谙苹果设计之道, 界面丝滑流畅
+- 每一像素, 都经得起 App Store 检验

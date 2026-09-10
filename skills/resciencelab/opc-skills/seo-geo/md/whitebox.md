@@ -1,0 +1,13 @@
+# seo-geo (`resciencelab/opc-skills/seo-geo`)
+
+## whitebox
+
+- Step 1 审计: 拿到目标 URL, 用本地脚本 seo_audit.py 做技术体检, 再用 curl 检查 meta 标签、robots.txt (确认 Googlebot/PerplexityBot/GPTBot 等 AI 爬虫未被屏蔽) 和 sitemap.xml
+- Step 2 关键词调研: 调用 WebSearch 查目标词的搜索量、难度、竞品策略和长尾词机会
+- Step 3 GEO 优化: 按普林斯顿 9 法改写内容 (引用来源 +40%、统计数据 +37%、流畅性+统计 = 最大提升), 生成 FAQPage Schema, 采用 answer-first 结构
+- Step 4 传统 SEO: 套模板补齐 meta 标签 + JSON-LD Schema, 过一遍清单 (H1 含主词、图片 alt、内链、移动端、加载 <3s)
+- Step 5 验证监控: 打开 Google Rich Results Test / validator.schema.org 校验结构化数据, 用 site: 查索引状态, 输出优化报告
+
+- 解析层: python3 scripts/seo_audit.py 免 API 跑技术检查 (title/meta/H1/robots/sitemap/加载时间); curl + grep 提取页面 meta 与 ld+json
+- 转换层: 内容生成都从 references/ 模板驱动 — schema-templates.md 出 JSON-LD, geo-research.md 出 9 法加权改写, platform-algorithms.md 出平台差异化策略 (ChatGPT 重品牌域名+30天更新、Perplexity 要求放行 PerplexityBot+FAQ Schema、Copilot 依赖 Bing 索引+页面 <2s、Claude 依赖 Brave 索引)
+- 校验层: 依赖外部工具 Google Rich Results Test 与 validator.schema.org 验证 Schema; 搜索引擎 site: 查询确认收录; 唯一硬性禁忌 — 关键词堆砌 (可见性 -10%)

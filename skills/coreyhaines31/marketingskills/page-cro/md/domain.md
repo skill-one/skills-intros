@@ -1,0 +1,7 @@
+# page-cro (`coreyhaines31/marketingskills/page-cro`)
+
+## domain
+
+**domain**: 📈 商业运营
+
+**reason**: 页面转化率优化 (CRO) 属于营销增长工作, 专注提升落地页/定价页的转化效果

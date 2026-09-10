@@ -1,0 +1,13 @@
+# ckm:design-system (`nextlevelbuilder/ui-ux-pro-max-skill/ckm:design-system`)
+
+## whitebox
+
+- 解析用户目标与上下文 (deck 类型、页数、slide 位置/前一页情绪)
+- 用 BM25 检索 slide-strategies.csv, 得到整体结构 + 情绪节拍
+- 逐页查 CSV 决策表 (布局/字号/配色/背景/动画)
+- 基于 design-tokens.css 生成 HTML 幻灯片 (图表走 Chart.js)
+- 用 slide-token-validator.py 校验, 确保无硬编码值
+
+- 三层 Token 架构: primitive → semantic → component, 组件只准引用 var() 不准写裸 hex; tokens.json 经 Node 脚本 generate-tokens.cjs 生成 tokens.css, validate-tokens.cjs 扫描代码中的硬编码值
+- CSV 决策系统 + BM25 检索: 8 张 CSV 表驱动选择 (策略/布局/排版/配色/背景/文案/图表), search-slides.py (Python BM25) 做检索与上下文推荐; 按 Duarte sparkline 在 1/3 与 2/3 位置插入情绪反转 (pattern break)
+- 外部依赖: Chart.js 4.4.1 (jsDelivr CDN) 渲染图表 (禁纯 CSS 柱状图); fetch-background.py 从 Pexels/Unsplash 取背景图; 产物为带导航 (键盘/点击/进度条) 的 HTML

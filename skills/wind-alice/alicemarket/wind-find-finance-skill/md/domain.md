@@ -1,0 +1,7 @@
+# wind-find-finance-skill (`wind-alice/alicemarket/wind-find-finance-skill`)
+
+## domain
+
+**domain**: 💰 支付金融
+
+**reason**: 专注金融数据、行情、估值、选股、仓位与交易计划的发现与安装路由

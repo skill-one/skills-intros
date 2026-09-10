@@ -1,0 +1,7 @@
+# best-practices (`addyosmani/web-quality-skills/best-practices`)
+
+## domain
+
+**domain**: 🧪 测试与质量
+
+**reason**: 核心是安全审计与代码质量审查(漏洞排查、代码审查), 而非从零写代码

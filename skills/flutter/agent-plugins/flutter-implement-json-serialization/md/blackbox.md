@@ -1,0 +1,9 @@
+# flutter-implement-json-serialization (`flutter/agent-plugins/flutter-implement-json-serialization`)
+
+## blackbox
+
+**function**: 帮你在 Flutter 项目里搞定 JSON 数据和代码对象之间的互相转换:你给 JSON 或接口地址,我给你能直接复制进项目用的 Dart 模型和取数代码。
+
+- input: 一段 JSON 数据,比如用户信息 {"id": 1, "name": "张三", "email": "zhang@example.com"}, output: 一个 Dart 模型类的完整代码:既能从 JSON 读出对象,也能把对象转回 JSON,字段类型一一对应、写错会明确报错
+- input: 一个接口地址(如 https://api.example.com/users/1)和说明你要哪些字段, output: 一个完整的数据获取函数代码:发请求、校验返回状态,成功拿到解析好的对象,失败直接抛出错误而不是静默返回空值
+- input: 一个会返回几千条数据的列表接口, output: 带后台解析的取数代码:大数据量的解析不占用主线程,App 界面滑动、点击不会因此卡顿

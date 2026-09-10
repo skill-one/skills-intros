@@ -1,0 +1,13 @@
+# ads (`coreyhaines31/marketingskills/ads`)
+
+## whitebox
+
+- 前置加载: 先探测产品营销上下文文件 (.agents/product-marketing.md / .claude/product-marketing.md / 旧名 product-marketing-context.md), 存在则先读
+- 补齐缺口: 按 Goals / Product & Offer / Audience / Current State 四类核对上下文, 只追问未覆盖且与本任务相关的信息
+- 意图路由: 将用户意图 (如 kill/keep/scale、审计、RSA 生成) 映射到路由表, 加载对应 reference 文档
+- 按规则作答: 应用加载的 playbook 阈值与框架 (如预算步进 +20%/次、间隔 3-5 天) 输出策略/审计/文案
+- 按规范交付: 特定任务走强制输出 spec (RSA 文案、账户审计各有独立规范与自检)
+
+- 解析层——上下文前置: 启动即读取本地产品营销上下文文件, 已覆盖的信息不重复问, 只收集缺口
+- 转换层——阈值下沉 + 意图路由: 主文件只是索引和框架, kill/keep/scale、CPL 保本数学、基准等硬阈值全部放在 13 个 references markdown 中; 涉及线上账户的操作决策必须先加载对应 playbook 再回答
+- 校验层——强制输出规范: Google RSA 文案走 rsa-output-spec.md (字符限制/模板/自检清单), 账户审计走 audit-guardrails.md (pass/fail/unknown 三态计分、证据不足记 unknown、含硬性停止项); 外部依赖: references 均为本地 markdown, 无运行时 API 依赖; 内容层提及的集成有——广告平台账户 (Google/Meta/LinkedIn/X/TikTok)、Ad Library 竞品研究 connectors + Slack 定时推送、AI 文案变体批量生成 (Claude/ChatGPT/Kong)

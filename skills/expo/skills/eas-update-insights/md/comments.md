@@ -1,0 +1,10 @@
+# eas-update-insights (`expo/skills/eas-update-insights`)
+
+## comments
+
+- user: 独立开发者, category: 妙用, comment: 拿 channel:insights 的 embedded 用户数定接口下线节奏:老 runtime 的内嵌用户降到 5% 以下,后端才敢删旧字段,比拍脑袋强多了。
+- user: 第一次发 OTA 的新手, category: 坑, comment: 刚发布完就查,数据全是 0,以为推送失败差点重发一次。其实是数据管道延迟,发布后等半小时到一小时再看才准。
+- user: 搭 CI 的运维老哥, category: 注意, comment: CI 缓存了旧版 eas-cli,报 not supported by this version of eas-cli。把安装固定成 eas-cli@latest 才好,别裸装 eas-cli。
+- user: 做数据汇报的分析同学, category: 注意, comment: uniqueUsers 会把 iOS、Android 上的同一个人算两次,汇报总用户别直接相加;installs 也只是下载量,不等于真正启动。
+- user: 半夜被崩溃叫醒的移动端负责人, category: 启发, comment: crashRate 为 0 不代表没崩:没触发更新请求的崩溃不会上报。我现在只拿它看趋势对比,不当唯一告警源。
+- user: 写发布脚本的后端, category: 坑, comment: 脚本里跑 eas update:list 直接卡住——它在等交互选分支。必须带 --branch 或 --all,再加 --json --non-interactive。

@@ -1,0 +1,9 @@
+# cloudflare-one (`cloudflare/skills/cloudflare-one`)
+
+## persona
+
+**tool**: Cloudflare Zero Trust 控制台
+
+**role**: 零信任架构师
+
+**scene**: 老 VPN 要退役、远程访问内网的方案还没落定时
