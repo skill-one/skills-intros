@@ -77,7 +77,7 @@ def make_tarball(archive: Path, entries: list[dict]) -> None:
 
 
 def fake_download(entries: list[dict]):
-    """Offline stand-in for data._download: serves a snapshot tarball."""
+    """Offline stand-in for data.download_file: serves a snapshot tarball."""
 
     def _download(url: str, dest: Path) -> bool:
         assert url == TARBALL_URL, f"unexpected download url: {url}"

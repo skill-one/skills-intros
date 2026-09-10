@@ -33,6 +33,9 @@ def _fake_output(model, name: str):
         return m.DomainClassification(domain=m.Domain.OFFICE, reason="离线演示用的固定分类")
     if model is m.IntroText:
         return m.IntroText(text=f"{name} 的离线演示档案文本, 用于验证管道, 不含真实内容。")
+    if model is m.ImagePrompt:
+        # ASCII only: the schema rejects a Chinese recipe, so the fake must obey it too
+        return m.ImagePrompt(text="a worker holding their tool, mid-task at the busy desk")
     if model is m.BlackBoxIntro:
         return m.BlackBoxIntro(
             function=f"{name} 的离线演示功能描述",

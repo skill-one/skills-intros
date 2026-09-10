@@ -1,7 +1,6 @@
 """DAG-driven generation; per-prompt files on disk act as the resume cache."""
 
 import asyncio
-import json
 import logging
 import sys
 import time
@@ -12,10 +11,11 @@ from pydantic import ValidationError
 
 from .config import Settings
 from .data import read_marker, read_skill_md, skill_md_path, stale_result_ids
+from .images import covers_on_disk
 from .models import SkillRecord
 from .outputs import (
     load_index,
-    prompt_result_path,
+    read_prompt_output,
     write_index,
     write_prompt_output,
     write_stats,
@@ -68,15 +68,6 @@ def _dump_messages(skill: SkillRecord, spec, messages: list[dict]) -> None:
         print(message["content"], file=sys.stderr)
 
 
-def _read_prompt_output(settings: Settings, skill_id: str, prompt_id: str) -> Any:
-    """One prompt's stored output dict, or None if absent or unreadable."""
-    path = prompt_result_path(settings, skill_id, prompt_id)
-    try:
-        return json.loads(path.read_text(encoding="utf-8"))
-    except (FileNotFoundError, json.JSONDecodeError):
-        return None
-
-
 def _dump(outputs: dict[str, Any]) -> dict[str, Any]:
     """Every prompt output as a plain dict, keyed by prompt id."""
     return {pid: out.model_dump(mode="json") for pid, out in outputs.items()}
@@ -98,7 +89,7 @@ def _load_cached(
     for spec_id in prompts.ordered_ids():
         if spec_id not in targets:
             continue
-        stored = _read_prompt_output(settings, skill.id, spec_id)
+        stored = read_prompt_output(settings, skill.id, spec_id)
         if stored is None:
             continue
         try:
@@ -192,6 +183,9 @@ def write_artifact_stats(settings: Settings, cov: dict) -> dict:
         "skills": {"total": cov["skills"], "complete": cov["complete"],
                    "remaining": cov["remaining"], "stale": stale},
         "prompts": cov["prompts"],
+        # rendered covers are counted from disk too: prompts.cover says how many
+        # recipes exist, this says how many of them have become a picture
+        "covers": {"rendered": covers_on_disk(settings)},
     }
     write_stats(settings, stats)
     return stats

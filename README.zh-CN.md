@@ -2,9 +2,9 @@
 
 为 [skill-one/skills-sh-mirror](https://github.com/skill-one/skills-sh-mirror) 收录的
 [agent skills](https://www.skills.sh) 生成的多角度中文档案：一个可查询的索引
-（`skills.jsonl`，带每个 skill 的分类与职业画像），加上每个 skill 完整的七份档案
-（`skills/`）。档案由 LLM 基于每个 skill 的 `SKILL.md` 生成，并按整体快照发布——快照自包含，
-读到什么就是什么，不需要别的东西。
+（`skills.jsonl`，带每个 skill 的分类与职业画像），加上每个 skill 完整的八份文字档案
+（`skills/`），以及为已经渲染出配图的那些 skill 准备的封面配图。档案由 LLM 基于每个 skill 的
+`SKILL.md` 生成，并按整体快照发布——快照自包含，读到什么就是什么，不需要别的东西。
 
 English: [README.md](README.md) · 开发指南（生产 / 扩展这份数据）：[DEVELOPING.zh-CN.md](DEVELOPING.zh-CN.md)
 
@@ -16,8 +16,9 @@ English: [README.md](README.md) · 开发指南（生产 / 扩展这份数据）
 └── skills/        每个 skill 一个目录，目录名就是它的 id
     └── vercel-labs/skills/find-skills/   ({owner}/{repo}/{slug})
         ├── domain.json  scenario.json  blackbox.json  whitebox.json
-        ├── tagline.json persona.json   comments.json
-        └── md/          同样七份内容的 markdown 版，方便阅读
+        ├── tagline.json persona.json   comments.json  cover.json
+        ├── cover.png    渲染出的配图（只有已经画过的 skill 才有）
+        └── md/          同样八份内容的 markdown 版，方便阅读
 ```
 
 `skills.jsonl` 的一行（真实数据）：
@@ -48,7 +49,7 @@ English: [README.md](README.md) · 开发指南（生产 / 扩展这份数据）
 `domain.domain` 是闭合枚举，可以直接筛：开发编程 · 测试与质量 · 数据分析 · 运维与安全 · 办公效率 ·
 内容创作 · 设计多媒体 · 知识管理 · 商业运营 · 支付金融 · 教育学习 · 生活服务 · 其他。
 
-索引只折入你真正会拿去筛选的两个角度，其余五个都是每个 skill 目录下的文件，各有各的结构——七个角度合计：
+索引只折入你真正会拿去筛选的两个角度，其余六个都是每个 skill 目录下的文件，各有各的结构——八个角度合计：
 
 | Prompt     | 结构                                     | 内容                                                        |
 | ---------- | ---------------------------------------- | ----------------------------------------------------------- |
@@ -59,6 +60,7 @@ English: [README.md](README.md) · 开发指南（生产 / 扩展这份数据）
 | `blackbox` | `{function, input_output[3–5]}`          | 黑盒视角：你给什么 → 你得到什么，不谈内部实现               |
 | `whitebox` | `{execution_flow[3–5], mechanisms[2–3]}` | 白盒视角：主路径流程、关键机制、真实依赖                    |
 | `comments` | `{comments[4–6]}`                        | 用户第一人称评论；`category` 通常为 妙用 / 坑 / 注意 / 启发 |
+| `cover`    | `{text}`                                 | 配图配方：一段英文文生图提示词，只描述画面主体               |
 
 `{...[n–m]}` 表示长度为 n~m 的数组；`input_output` 的元素是 `{input, output}`，`comments` 的元素是
 `{user, category, comment}`。一份 `comments.json` 的节选：
@@ -80,14 +82,16 @@ English: [README.md](README.md) · 开发指南（生产 / 扩展这份数据）
 }
 ```
 
-每个已发布的 skill 七个角度都是齐的；`stats.json` 再告诉你有多少个 skill、以及这些档案是基于哪一版
+每个已发布的 skill 八个角度都是齐的；`stats.json` 再告诉你有多少个 skill、以及这些档案是基于哪一版
 数据生成的：
 
 ```json
 {
+  "covers": { "rendered": 0 },
   "prompts": {
     "blackbox": 334,
     "comments": 334,
+    "cover": 334,
     "domain": 334,
     "persona": 334,
     "scenario": 334,
@@ -98,6 +102,11 @@ English: [README.md](README.md) · 开发指南（生产 / 扩展这份数据）
   "snapshot": { "ref": "dist-2026-09-09", "fetched_at": "2026-09-09T02:01:24Z" }
 }
 ```
+
+`prompts.cover` 数的是档案生成器写下的配图*配方*数；`covers.rendered` 数的是据这些配方真正画出来的配图数。
+两者分开计数，是因为配图是一个独立的产物、实测一张约 1.7 MB（1024x1024），且只为已经渲染过的 skill 存在
+——把 `cover.png` 当作每个
+skill 上「有则有、无则无」的东西来对待，缺失时不做任何兜底。
 
 `skills.total` 是上游快照的规模，`skills.complete` 是已经生成档案的部分，剩下的都在队列里。
 `snapshot.ref` 指出这些 hash 属于镜像的哪个 tag（见[与镜像数据关联](#与镜像数据关联)）。这些计数在每轮
@@ -114,11 +123,21 @@ English: [README.md](README.md) · 开发指南（生产 / 扩展这份数据）
 `*.json` 是给程序读的形式，也是缓存标记；`md/*.md` 是同一份内容的排版版。除 id、路径和字段名外，
 全部是中文。
 
+### 配图
+
+`cover.json` 只装一样东西：一段英文文生图提示词，说清**画什么**，由 skill 的职业画像推导而来——
+谁在干活、拿着什么、在用户需要他的那个场景里。这段配方会被校验（纯英文、逗号分隔短语），所以写成中文文案的回答会被重试，而不是被照着画出来。**画风**并不在其中：配图渲染时用的是该 skill `domain`
+分类所对应的风格，13 个分类各有一套固定风格，于是同一分类的配图像一个家族，画风也不会随措辞漂移。
+每张配图都是**一个正在干活的人**：这个取景规则是渲染器里的常量，不是对模型的请求，所以哪怕配方写得很单薄，
+出来的也是人物肖像，而不是一堆道具的静物画。配方与配图分开存放（`md/cover.md` 展示配方，`cover.png` 是成品），
+而重画一张配图不花任何 LLM 调用。
+
 ## 如何获取数据
 
 发布在 [`dist` 分支](../../tree/dist)上——分支根目录**就是**档案快照，因此每个 commit 都是一个完整
 状态，同一棵树也可以在网页上直接浏览。覆盖率随每次发布增长（要精确数字就数 `skills.jsonl` 的行数），
-档案本身压缩后不到 1 MB。可以按需拉单个文件，也能整包克隆。注意 `dist` 还附带一个内部
+文字档案本身压缩后不到 1 MB；渲染出的配图不计入这个数字，因为单张约 1.7 MB、且只有已经渲染过的
+skill 才有。可以按需拉单个文件，也能整包克隆。注意 `dist` 还附带一个内部
 `cache/skills-sh/` 数据集镜像（上游的 `SKILL.md`），供 CI 恢复、让 `generate` 不必再回上游拉取——
 它不属于档案 API，但整包克隆/下载 tarball 会把它一起带上（约 120 MB 文本）。按路径取单个文件不受影响。
 

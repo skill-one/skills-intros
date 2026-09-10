@@ -2,24 +2,27 @@
 
 The generator behind the dataset described in [README.md](README.md): it reads each skill's
 `SKILL.md` from [skills-sh-mirror](https://github.com/skill-one/skills-sh-mirror), asks an
-OpenAI-compatible LLM for seven structured angles per skill, and publishes the result to this
-repository's `dist` branch. Read the README first if you only want the data.
+OpenAI-compatible LLM for eight structured angles per skill, renders a cover image from one of them,
+and publishes the result to this repository's `dist` branch. Read the README first if you only want
+the data.
 
 中文: [DEVELOPING.zh-CN.md](DEVELOPING.zh-CN.md)
 
 ## Quickstart
 
 Needs Python 3.12+ and [uv](https://docs.astral.sh/uv/); LLM credentials go in a local `.env`
-(copy [`.env.example`](.env.example) — nothing is read from the network but the mirror and your own
-endpoint).
+(copy [`.env.example`](.env.example) — nothing is read from the network but the mirror, your own
+endpoint, and the image endpoint when you render covers).
 
 ```bash
 uv sync
 skills-profiles sync            # download the upstream snapshot (skipped when the tag is unchanged)
 skills-profiles run --limit 10  # generate profiles, most installed first; cached skills are free
+skills-profiles covers --limit 10       # render their covers, most installed first
 ```
 
-Or offline, end to end, no API calls: `skills-profiles run --limit 5 --dry-run`.
+Or offline, end to end, no API calls: `skills-profiles run --limit 5 --dry-run` and
+`skills-profiles covers --limit 5 --dry-run` (which writes a placeholder png).
 
 ## CLI
 
@@ -27,12 +30,14 @@ Or offline, end to end, no API calls: `skills-profiles run --limit 5 --dry-run`.
 |---|---|
 | `sync [--refresh]` | Pull the mirror's `dist` branch as one tarball into `cache/skills-sh`, unpacking only `skills.jsonl` and every `SKILL.md`. Records the tag in `SNAPSHOT.json` and skips the download when it is already current (`--refresh` forces it). Never touches the artifacts. |
 | `run [--limit N] [--prompts a,b] [--concurrency C] [--dry-run] [--debug] [--verbose]` | Generate what is missing: skills ordered by installs, `N` of them (`0` = every skill with gaps). Cached and `SKILL.md`-less skills are skipped and do not consume the budget. |
-| `invalidate [--skill ID]... [--prompts a,b] [--stale] [--all]` | Drop cached outputs so the next `run` refills them. `--stale` selects the skills whose upstream hash changed or that vanished (run `sync` first). Refuses a filter-less full wipe without `--all`. |
+| `covers [--limit N] [--concurrency C] [--dry-run] [--verbose]` | Render `cover.png` for the skills whose `cover` prompt is already filled in, `N` of them (`0` = every pending one). Draws no text and re-renders nothing that already has a picture; needs `SKILLS_PROFILES_IMAGE_API_KEY`. |
+| `invalidate [--skill ID]... [--prompts a,b] [--stale] [--all]` | Drop cached outputs so the next `run` refills them. `--stale` selects the skills whose upstream hash changed or that vanished (run `sync` first). Refuses a filter-less full wipe without `--all`. Invalidating `cover` takes its `cover.png` along, which is how a picture is redrawn. |
 
 Redoing work is never a `run` flag: `invalidate` deletes, `run` refills. A run prints a timed
 summary and overwrites `output/stats.json` (the artifact's state, not the run's). Skill-level
 failures — quota, connection — are isolated: the run continues, finished prompts stay on disk and
-get published, and only a total washout (every selected skill failed) exits non-zero.
+get published, and only a total washout (every selected skill failed) exits non-zero. `covers`
+follows the same rules for the same reasons.
 
 ## How it works
 
@@ -44,6 +49,8 @@ mirror dist branch tarball ──► cache/skills-sh (skills.jsonl + skills/<id>
                                                 ──► output/skills/<id>/<prompt>.json
                                                 ──► output/skills/<id>/md/<prompt>.md
                                                 ──► output/skills.jsonl (id + hash + domain + persona)
+                        cover.json + domain.json ──► `covers` hits the image endpoint
+                                                ──► output/skills/<id>/cover.png
 ```
 
 `output/` (the artifacts) and `cache/skills-sh` (upstream data) are separate roots: nothing fetched
@@ -52,8 +59,8 @@ from upstream is ever written next to a generated profile.
 Prompt DAG (edges mean "depends on the output of"):
 
 ```
-domain   scenario   blackbox   whitebox   tagline   persona   comments
-# no edges today: every built-in prompt is a root
+domain   scenario   blackbox   whitebox   tagline   comments      (roots)
+persona ──► cover                                                 (the picture is drawn from the portrait)
 # add `depends_on: [scenario]` to a prompt's frontmatter to chain it
 ```
 
@@ -63,11 +70,24 @@ Key design decisions:
   [`graphlib.TopologicalSorter`](https://docs.python.org/3/library/graphlib.html).
 - **Structured outputs.** Every prompt declares a pydantic schema (`output:` in its frontmatter);
   LLM calls go through [instructor](https://python.useinstructor.com/) over an OpenAI-compatible
-  client. Schemas live in `models.py`, which is also where the 13-value `Domain` taxonomy is defined.
+  client. Schemas live in `models.py`, which is also where the 13-value `Domain` taxonomy is defined
+  — each category carries its emoji, its classification hint and the style its covers share.
 - **File-based resume.** Each prompt's output is its own `<prompt_id>.json` (markdown copy in
   `md/`), committed the moment it is generated — output and cache in one file: present and
   schema-valid means no LLM call. Markdown is written first, json last, so a crash can leave a stray
   markdown but never a json without its copy. Resume granularity is per prompt.
+- **A cover is a recipe plus a render.** `cover` is an ordinary prompt, so it inherits the DAG, the
+  cache, the markdown copy and `invalidate`; `images.py` then assembles the picture from three
+  parts, and only the first is the model's: the **subject** (`cover.json` — the skill's persona as a
+  person doing their work, and `ImagePrompt` *validates* that it reads as one: English only, comma
+  phrases, a word cap, so instructor retries a recipe that came back as Chinese marketing prose
+  instead of the renderer drawing from it), the **framing** (`CHARACTER`, one full-body professional at the center,
+  a constant so no recipe can lose the person), and the **look** (`Domain.cover_style` per category,
+  which deliberately names medium/palette/light and *no props*: measured against the endpoint, props
+  in the style out-competed the subject and drew still lifes). Keeping the halves apart also keeps
+  the costs apart: re-rendering spends no LLM call, and re-running the DAG never re-renders a
+  picture. The picture's cache is the file's existence (`cover.png`), because the endpoint answers
+  with a url that expires within the hour — bytes are stored, urls never are.
 - **The index is a projection.** `skills.jsonl` is rewritten in full from what is on disk —
   `id`, the generation-time `hash`, and the `domain`/`persona` outputs re-read from their json — so a
   row can never drift from the files, and lines written before an aggregated prompt existed heal on
@@ -91,6 +111,12 @@ what is missing in it. Dependencies are inputs, so they reuse their stored json 
 only when missing or schema-invalid. Prompts outside the closure are untouched — nothing outside the
 selection is ever recomputed by accident. A skill left with no output at all is dropped from
 `skills.jsonl`, i.e. it counts as new again.
+
+The closure walks to dependencies, never to dependents: invalidating `persona` leaves a `cover`
+recipe — and the `cover.png` rendered from it — describing the older portrait. That keeps
+invalidation explicit, since nothing should be recomputed just because something upstream moved;
+when you do want the follow-on work, name it, e.g. `invalidate --prompts persona,cover`, which
+drops the picture along with its recipe.
 
 ## Adding a prompt
 
@@ -119,6 +145,10 @@ skills-profiles run --prompts my_angle --limit 0
 Decide whether the new angle belongs in the index: add its id to `AGGREGATED_PROMPTS` in
 `outputs.py` and it is folded into every `skills.jsonl` row from then on.
 
+A prompt that also produces a file that is not json registers its suffixes in `PROMPT_ASSETS`
+(`outputs.py`) — that is how `cover` owns `cover.png`, and why invalidating the prompt drops the
+rendered artifact with its recipe, so the two can never disagree.
+
 ## Project layout
 
 ```
@@ -129,11 +159,12 @@ src/skills_profiles/
 ├── models.py          # domain taxonomy + structured-output schemas
 ├── prompts.py         # frontmatter loader + DAG ordering + jinja2 rendering
 ├── llm.py             # instructor/openai client + offline FakeLLM
+├── images.py          # text-to-image client + cover selection + offline FakeImages
 ├── generate.py        # async DAG execution + file-based resume + coverage stats
-├── outputs.py         # per-prompt json output + md/ rendering + index + invalidation
+├── outputs.py         # per-prompt json output + md/ rendering + assets + index + invalidation
 ├── logging.py         # --verbose logging setup
-└── cli.py             # typer commands (sync / invalidate / run)
-.github/actions/publish-dist/   # the shared publish step used by both workflows
+└── cli.py             # typer commands (sync / invalidate / run / covers)
+.github/actions/publish-dist/   # the shared publish step used by all three workflows
 tests/                 # offline fixtures + end-to-end CLI tests
 ```
 
@@ -147,33 +178,46 @@ Resolution order (highest first): `SKILLS_PROFILES_*` env vars → local `.env` 
 | `SKILLS_PROFILES_BASE_URL` | – | OpenAI-compatible endpoint |
 | `SKILLS_PROFILES_API_KEY` | – | API key for the endpoint |
 | `SKILLS_PROFILES_LIMIT` | `10` | Skills per run (`0` = all; cached ones are skipped, not counted) |
-| `SKILLS_PROFILES_CONCURRENCY` | `2` | Max concurrent LLM calls, shared across skills and prompts |
+| `SKILLS_PROFILES_CONCURRENCY` | `2` | Max concurrent LLM calls / image requests, shared across skills and prompts |
 | `SKILLS_PROFILES_OUTPUT_DIR` | `output` | Artifacts directory |
 | `SKILLS_PROFILES_DATA_DIR` | `cache/skills-sh` | Upstream data directory |
 | `SKILLS_PROFILES_PROMPTS_DIR` | `prompts` | Prompt markdown directory (plus `_system.md`) |
+| `SKILLS_PROFILES_IMAGE_BASE_URL` | `https://api.siliconflow.cn/v1` | Text-to-image endpoint; covers are drawn from a service of their own |
+| `SKILLS_PROFILES_IMAGE_API_KEY` | – | Its key (`covers` refuses to run without it; `--dry-run` needs none) |
+| `SKILLS_PROFILES_IMAGE_MODEL` | `Kwai-Kolors/Kolors` | Any model the endpoint serves |
+| `SKILLS_PROFILES_IMAGE_SIZE` | `1024x1024` | Checked against the sizes the endpoint documents per model |
+| `SKILLS_PROFILES_IMAGE_STEPS` | `20` | `num_inference_steps` (1–100); `0` omits the field |
+| `SKILLS_PROFILES_IMAGE_GUIDANCE` | `7.5` | `guidance_scale` (≤ 20, documented as Kolors-only); `0` omits it for other models |
+| `SKILLS_PROFILES_IMAGE_LIMIT` | `10` | Covers rendered per run (`0` = every pending one) |
 
 ## Publishing (GitHub Actions)
 
-Two manually-triggered workflows share one publish lock (`concurrency: publish-dist`) and are split
+Three manually-triggered workflows share one publish lock (`concurrency: publish-dist`) and are split
 by concern:
 
 | Workflow | Pipeline | Tag |
 |---|---|---|
 | [`sync`](.github/workflows/sync.yml) | restore dist → sync upstream → `invalidate --stale` → publish | `dist-YYYY-MM-DD`, force-updated within a day |
 | [`generate`](.github/workflows/generate.yml) | restore dist → `run --limit <input, default 10>` → publish | `dist-<base>-N`, base = newest sync tag, N increments |
+| [`covers`](.github/workflows/covers.yml) | restore dist → `covers --limit <input, default 20>` → publish | `dist-<base>-N`, same counter as `generate` |
 
-Both workflows share two composite actions: [`restore-dist`](.github/actions/restore-dist/action.yml)
+All three share two composite actions: [`restore-dist`](.github/actions/restore-dist/action.yml)
 (one codeload request pulls the branch back into `output/` and `cache/`) and
 [`publish-dist`](.github/actions/publish-dist/action.yml) (mirror the working dirs back to `dist`,
 tag, prune to the retention window). `dist` is the single atomic snapshot: the profiles at its root
 plus a `cache/skills-sh/` dataset mirror. Because the dataset rides in the snapshot, **only `sync`
 ever touches upstream** — it re-downloads when the restored marker lags the newest tag; `generate`
-just reads the dataset the last `sync` published and never fetches. History is pruned to a rolling
-window (default `1 month`; the newest commit and the newest tag of each pattern are always kept as a
-floor).
+and `covers` just read the dataset the last `sync` published and never fetch. History is pruned to a
+rolling window (default `1 month`; the newest commit and the newest tag of each pattern are always
+kept as a floor).
+
+`covers` is the only workflow that adds binary weight: an existing `cover.png` is restored and kept
+(never re-rendered), and its `limit` input is therefore also the size policy — each picture is
+~1.7 MB each as measured at 1024x1024, and every later run fetches the whole branch back.
 
 ```bash
 gh workflow run generate.yml -f limit=50 -f concurrency=8   # one batch of profiles
+gh workflow run covers.yml -f limit=20                       # one batch of covers
 gh workflow run sync.yml                                    # refresh upstream, drop stale profiles
 ```
 
@@ -182,15 +226,19 @@ Required configuration (Settings → Secrets and variables → Actions):
 | Where | Name | Example |
 |---|---|---|
 | Secret | `SKILLS_PROFILES_API_KEY` | the endpoint's API key |
+| Secret | `SKILLS_PROFILES_IMAGE_API_KEY` | the text-to-image endpoint's key (only `covers` needs it) |
 | Variable | `SKILLS_PROFILES_BASE_URL` | `https://api.b.ai/v1` |
 | Variable | `SKILLS_PROFILES_MODEL` | `GLM-5.3-Flash` |
+| Variable | `SKILLS_PROFILES_IMAGE_BASE_URL`, `SKILLS_PROFILES_IMAGE_MODEL`, `SKILLS_PROFILES_IMAGE_SIZE` | optional; default to the documented Kolors endpoint at `1024x1024` |
 
 ## Testing
 
 The whole pipeline is verified offline: dataset parsing, DAG ordering, template rendering, resume
-skip, invalidation, dependency passing, markdown rendering, and a full CLI dry-run — no network
-access (`llm.py` provides a `FakeLLM`, and `conftest.py` replaces `data._download` with a fake that
-serves a snapshot tarball built from the fixtures).
+skip, invalidation, dependency passing, markdown rendering, the cover recipe's prompt/seed/payload
+construction, the endpoint's retry rules, and a full CLI dry-run of both `run` and `covers` — no
+network access (`llm.py` and `images.py` provide `FakeLLM` / `FakeImages`, `conftest.py` replaces
+`data.download_file` with a fake that serves a snapshot tarball built from the fixtures, and the
+image endpoint is reached only through a stubbed `urlopen`).
 
 ```bash
 uv run pytest

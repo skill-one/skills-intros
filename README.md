@@ -2,9 +2,10 @@
 
 Chinese multi-angle profiles for the [agent skills](https://www.skills.sh) collected by
 [skill-one/skills-sh-mirror](https://github.com/skill-one/skills-sh-mirror): a queryable index
-(`skills.jsonl`) carrying each skill's category and persona, plus all seven written profiles per
-skill (`skills/`). Profiles are LLM-generated from each skill's `SKILL.md` and published as whole
-snapshots — a snapshot is self-contained, so nothing else is needed to read it.
+(`skills.jsonl`) carrying each skill's category and persona, plus all eight written profiles per
+skill (`skills/`) and a cover image for the skills that have one. Profiles are LLM-generated from
+each skill's `SKILL.md` and published as whole snapshots — a snapshot is self-contained, so nothing
+else is needed to read it.
 
 中文: [README.zh-CN.md](README.zh-CN.md) · Dev guide (produce / extend this data): [DEVELOPING.md](DEVELOPING.md)
 
@@ -16,8 +17,9 @@ snapshots — a snapshot is self-contained, so nothing else is needed to read it
 └── skills/        one directory per skill, named after its id
     └── vercel-labs/skills/find-skills/   ({owner}/{repo}/{slug})
         ├── domain.json  scenario.json  blackbox.json  whitebox.json
-        ├── tagline.json persona.json   comments.json
-        └── md/          the same seven rendered as markdown, for reading
+        ├── tagline.json persona.json   comments.json  cover.json
+        ├── cover.png    the rendered picture (only where one exists)
+        └── md/          the same eight rendered as markdown, for reading
 ```
 
 Each `skills.jsonl` row (a real one):
@@ -48,8 +50,8 @@ Each `skills.jsonl` row (a real one):
 `domain.domain` is a closed enum, so it is directly filterable: 开发编程 · 测试与质量 · 数据分析 ·
 运维与安全 · 办公效率 · 内容创作 · 设计多媒体 · 知识管理 · 商业运营 · 支付金融 · 教育学习 · 生活服务 · 其他.
 
-The index folds in only the two angles you actually filter on. The other five are per-skill files,
-each with its own schema — seven angles in total:
+The index folds in only the two angles you actually filter on. The other six are per-skill files,
+each with its own schema — eight angles in total:
 
 | Prompt     | Shape                                    | Content                                                               |
 | ---------- | ---------------------------------------- | --------------------------------------------------------------------- |
@@ -60,6 +62,7 @@ each with its own schema — seven angles in total:
 | `blackbox` | `{function, input_output[3–5]}`          | outside view: what you hand it → what you get back, no internals      |
 | `whitebox` | `{execution_flow[3–5], mechanisms[2–3]}` | inside view: happy path, key mechanisms, real dependencies            |
 | `comments` | `{comments[4–6]}`                        | first-person user notes; `category` typically 妙用 / 坑 / 注意 / 启发 |
+| `cover`    | `{text}`                                 | the cover's recipe: an English text-to-image prompt, subject only     |
 
 `{...[n–m]}` = an array of that many entries; `input_output` items are `{input, output}`, `comments`
 items `{user, category, comment}`. An excerpt of one `comments.json`:
@@ -81,14 +84,16 @@ items `{user, category, comment}`. An excerpt of one `comments.json`:
 }
 ```
 
-Every published skill carries all seven angles; `stats.json` adds how many skills there are and says
+Every published skill carries all eight angles; `stats.json` adds how many skills there are and says
 what the profiles were built against:
 
 ```json
 {
+  "covers": { "rendered": 0 },
   "prompts": {
     "blackbox": 334,
     "comments": 334,
+    "cover": 334,
     "domain": 334,
     "persona": 334,
     "scenario": 334,
@@ -99,6 +104,12 @@ what the profiles were built against:
   "snapshot": { "ref": "dist-2026-09-09", "fetched_at": "2026-09-09T02:01:24Z" }
 }
 ```
+
+`prompts.cover` counts the cover *recipes* written by the profile generator; `covers.rendered`
+counts the pictures actually drawn from them. They are apart because a picture is a separate,
+1.7 MB artifact (measured, 1024x1024 Kolors) that only exists for the skills rendered so far —
+treat `cover.png` as
+present-or-absent per skill, and fall back to nothing when it is absent.
 
 `skills.total` is the upstream snapshot's size, `skills.complete` the part already profiled — the
 rest is still queued. `snapshot.ref` names the mirror tag these hashes belong to (see
@@ -118,15 +129,30 @@ Two guarantees the layout itself enforces:
 `*.json` is the machine form and the cache marker; `md/*.md` is the same text laid out for humans.
 Everything but ids, paths and field names is Chinese.
 
+### Covers
+
+`cover.json` holds one thing: an English text-to-image prompt saying **what to draw**, written from
+the skill's persona — who does the work, with what, in the moment the user needs it. That recipe is
+validated (English only, comma-separated phrases), so a profile that came back as prose is retried
+rather than drawn. The **look** is
+not in it: the picture is rendered with a style that belongs to the skill's `domain` category, one
+fixed style for each of the 13, so covers of one category read as a family and the style cannot drift
+with the wording. Every cover is **one person at work**: that framing is a constant in the renderer,
+not a request to the model, so even a thin recipe yields a portrait rather than a still life of props.
+Recipe and picture are stored apart (`md/cover.md` shows the recipe, `cover.png` is the picture), and
+re-drawing a picture costs no LLM call.
+
 ## How to get the data
 
 Published to the [`dist` branch](../../tree/dist) — the branch root _is_ the profile snapshot, so every
 commit is a complete state, and the same tree is browsable on the web. Coverage grows publish by
-publish — count `skills.jsonl` lines for the exact number — and the profiles are under 1 MB
-compressed. Individual files pull over HTTP; the whole branch clones in one request. Note that `dist`
-also carries an internal `cache/skills-sh/` dataset mirror (the upstream `SKILL.md` files) that CI
-restores so `generate` never re-fetches upstream — it is not part of the profile API, but a full
-branch clone/tarball does include it (~120 MB of text). Fetching files by path is unaffected.
+publish — count `skills.jsonl` lines for the exact number — and the text profiles are under 1 MB
+compressed; rendered covers are not part of that figure, since one is ~1.7 MB and only
+skills rendered so far have one. Individual files pull over HTTP; the whole branch clones in one
+request. Note that `dist` also carries an internal `cache/skills-sh/` dataset mirror (the upstream
+`SKILL.md` files) that CI restores so `generate` never re-fetches upstream — it is not part of the
+profile API, but a full branch clone/tarball does include it (~120 MB of text). Fetching files by
+path is unaffected.
 
 ### Fetch individual files
 

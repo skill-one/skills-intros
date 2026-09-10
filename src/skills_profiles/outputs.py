@@ -1,5 +1,6 @@
 """On-disk artifact layout under <output_dir>: one json per prompt in
-skills/<id>/ (with a markdown copy in md/), plus skills.jsonl — the skill
+skills/<id>/ (with a markdown copy in md/), the binary assets a prompt owns
+beside it (the cover prompt's rendered png), plus skills.jsonl — the skill
 index, one line per skill carrying its id, the upstream content hash its
 profiles were generated from, and the aggregated domain/persona outputs."""
 
@@ -13,9 +14,13 @@ from typing import Mapping
 from .config import Settings
 from .models import Domain
 
+SKILLS_SUBDIR = "skills"  # the per-skill artifact tree under output_dir
 MD_SUBDIR = "md"  # markdown browsing copies, kept out of the json directory
 INDEX_NAME = "skills.jsonl"  # the skill index: id, hash, aggregated domain/persona
 AGGREGATED_PROMPTS = ("domain", "persona")  # prompts folded into the index lines, derived from disk
+# file suffixes a prompt owns next to its json: they are its rendered artifacts,
+# so invalidating the prompt drops them together with the json (see invalidate)
+PROMPT_ASSETS: dict[str, tuple[str, ...]] = {"cover": (".png",)}
 
 logger = logging.getLogger(__name__)
 
@@ -23,7 +28,7 @@ logger = logging.getLogger(__name__)
 def skill_result_dir(settings: Settings, skill_id: str) -> Path:
     """Per-skill artifacts live under <output_dir>/skills/<owner>/<repo>/<slug>/
     (id-based, mirroring the upstream data/skills/ layout)."""
-    return settings.output_dir / "skills" / skill_id.replace(":", "_")
+    return settings.output_dir / SKILLS_SUBDIR / skill_id.replace(":", "_")
 
 
 def prompt_result_path(settings: Settings, skill_id: str, prompt_id: str) -> Path:
@@ -31,9 +36,19 @@ def prompt_result_path(settings: Settings, skill_id: str, prompt_id: str) -> Pat
     return skill_result_dir(settings, skill_id) / f"{prompt_id}.json"
 
 
+def prompt_asset_path(settings: Settings, skill_id: str, prompt_id: str,
+                      suffix: str) -> Path:
+    """One rendered, non-json artifact of a prompt (e.g. cover.png).
+
+    Lives in the skill directory like the json, not in `md/`: it is an artifact
+    consumers read, not a browsing copy.
+    """
+    return skill_result_dir(settings, skill_id) / f"{prompt_id}{suffix}"
+
+
 def prompt_markdown_path(settings: Settings, skill_id: str, prompt_id: str) -> Path:
     """The markdown copy of one prompt's output; kept in a `md/` subdir so the
-    skill directory itself only holds json."""
+    json directory itself only holds a prompt's own artifacts."""
     return skill_result_dir(settings, skill_id) / MD_SUBDIR / f"{prompt_id}.md"
 
 
@@ -90,7 +105,7 @@ def _ordered_line(settings: Settings, skill_id: str, line: Mapping) -> dict:
     if "hash" in line:
         ordered["hash"] = line["hash"]
     for key in AGGREGATED_PROMPTS:
-        stored = _read_prompt_output(settings, skill_id, key)
+        stored = read_prompt_output(settings, skill_id, key)
         if stored is not None:
             ordered[key] = stored
     ordered.update({k: v for k, v in line.items()
@@ -98,8 +113,8 @@ def _ordered_line(settings: Settings, skill_id: str, line: Mapping) -> dict:
     return ordered
 
 
-def _read_prompt_output(settings: Settings, skill_id: str, prompt_id: str) -> dict | None:
-    """One prompt's stored json, or None when absent or unreadable."""
+def read_prompt_output(settings: Settings, skill_id: str, prompt_id: str) -> dict | None:
+    """One prompt's stored json as a dict, or None when absent or unreadable."""
     try:
         return json.loads(
             prompt_result_path(settings, skill_id, prompt_id).read_text(encoding="utf-8"))
@@ -149,14 +164,17 @@ def write_prompt_output(settings: Settings, skill_id: str, prompt_id: str, outpu
 
 def invalidate(settings: Settings, skill_ids: Iterable[str] | None = None,
                prompt_ids: Iterable[str] | None = None) -> int:
-    """Delete cached prompt outputs so the next run regenerates them.
+    """Delete cached prompt outputs (and the assets they own) so the next run refills them.
 
     `skill_ids` None means every skill on record; `prompt_ids` None
-    means every prompt of each selected skill. A skill left without any output
-    is dropped from the index, i.e. it counts as new again; the index is then
-    rewritten so its aggregated copies match what is left on disk. This is the
-    only invalidation path: `invalidate --stale` uses it for skills whose
-    upstream hash changed. Returns the number of removed prompt outputs.
+    means every prompt of each selected skill. Dropping a prompt also drops the
+    rendered assets it owns (PROMPT_ASSETS), which is how a cover gets
+    re-rendered: one invalidation, then `run` refills the json and `covers` the
+    picture. A skill left without any output is dropped from the index, i.e. it
+    counts as new again; the index is then rewritten so its aggregated copies
+    match what is left on disk. This is the only invalidation path:
+    `invalidate --stale` uses it for skills whose upstream hash changed. Returns
+    the number of removed prompt outputs.
     """
     index = load_index(settings)
     targets = sorted(index) if skill_ids is None else list(dict.fromkeys(skill_ids))
@@ -167,6 +185,8 @@ def invalidate(settings: Settings, skill_ids: Iterable[str] | None = None,
                  else [prompt_result_path(settings, skill_id, p) for p in prompt_ids])
         for path in paths:
             _unlink(path.parent / MD_SUBDIR / f"{path.stem}.md")
+            for suffix in PROMPT_ASSETS.get(path.stem, ()):
+                _unlink(path.parent / f"{path.stem}{suffix}")
             removed += _unlink(path)
         if not _stored_jsons(settings, skill_id):
             shutil.rmtree(skill_result_dir(settings, skill_id), ignore_errors=True)

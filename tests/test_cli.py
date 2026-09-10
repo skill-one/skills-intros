@@ -74,7 +74,8 @@ def test_run_writes_a_stats_summary(settings, monkeypatch):
     result = runner.invoke(app, ["run", "--limit", "2", "--dry-run"])
     assert result.exit_code == 0, result.output
     assert "Done in" in result.output
-    assert "14 prompt(s) generated for 2/2 skill(s)" in result.output  # 2 skills x 7 prompts
+    # 2 skills x every prompt in prompts/
+    assert "16 prompt(s) generated for 2/2 skill(s)" in result.output
     assert "Coverage:" in result.output
     # progress lines list only the newly generated prompts, with seconds, no markers
     assert "*" not in result.output
@@ -83,7 +84,8 @@ def test_run_writes_a_stats_summary(settings, monkeypatch):
     stats = json.loads((settings.output_dir / "stats.json").read_text(encoding="utf-8"))
     assert stats["skills"] == {"total": 4, "complete": 2, "remaining": 2, "stale": 0}
     assert all(v == 2 for v in stats["prompts"].values())
-    assert set(stats) == {"snapshot", "skills", "prompts"}  # artifact state only, no run info
+    assert set(stats) == {"snapshot", "skills", "prompts", "covers"}  # state only, no run info
+    assert stats["covers"] == {"rendered": 0}  # a run writes recipes, never pictures
 
 
 def test_run_stats_snapshot_is_overwritten(settings, monkeypatch):

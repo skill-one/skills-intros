@@ -1,6 +1,7 @@
 """Tests for skills.jsonl parsing, snapshot sync and local SKILL.md reads."""
 
 import json
+import urllib.error
 from pathlib import Path
 
 import pytest
@@ -115,7 +116,7 @@ def test_sync_refuses_to_wipe_foreign_data(tmp_path, monkeypatch):
     data_dir.mkdir(parents=True)
     (data_dir / "user-file.txt").write_text("precious", encoding="utf-8")
 
-    monkeypatch.setattr(data_mod, "_download", fake_download([]))
+    monkeypatch.setattr(data_mod, "download_file", fake_download([]))
     with pytest.raises(RuntimeError, match="not a dataset directory"):
         sync_data(settings)
     assert (data_dir / "user-file.txt").read_text(encoding="utf-8") == "precious"
@@ -134,7 +135,7 @@ def test_sync_unpacks_only_what_a_run_reads(tmp_path, monkeypatch):
         seen.append(url)
         return served(url, dest)
 
-    monkeypatch.setattr(data_mod, "_download", recording)
+    monkeypatch.setattr(data_mod, "download_file", recording)
     report = sync_data(settings)
     assert seen == [TARBALL_URL]
     assert (report.data_dir / "skills.jsonl").exists()
@@ -165,6 +166,27 @@ def _seed_dataset(settings) -> None:
     (settings.data_dir / "skills.jsonl").write_text("[]\n", encoding="utf-8")
 
 
+def test_download_logs_never_carry_a_presigned_query(tmp_path, caplog, monkeypatch):
+    """A generated image's url holds a token and a signature in its query."""
+    def unreachable(url, timeout=None):
+        raise urllib.error.URLError("no route")
+
+    monkeypatch.setattr(data_mod.urllib.request, "urlopen", unreachable)
+    monkeypatch.setattr(data_mod.time, "sleep", lambda _s: None)
+    caplog.set_level("INFO")
+    with pytest.raises(RuntimeError) as excinfo:
+        data_mod.download_file("https://cdn.example/x.png?X-Amz-Signature=secret123",
+                               tmp_path / "out.png")
+
+    assert "https://cdn.example/x.png" in caplog.text, "the fetch stays identifiable"
+    assert "secret123" not in caplog.text and "secret123" not in str(excinfo.value)
+
+
+def test_url_without_query_keeps_the_path_readable():
+    assert data_mod.url_without_query("https://cdn.example/a/b.png?token=x#f") == (
+        "https://cdn.example/a/b.png")
+
+
 def test_sync_skips_download_when_the_tag_is_unchanged(tmp_path, monkeypatch):
     """A local snapshot already at the newest tag is not downloaded or pruned."""
     settings = make_settings(tmp_path)
@@ -176,7 +198,7 @@ def test_sync_skips_download_when_the_tag_is_unchanged(tmp_path, monkeypatch):
     def no_download(url: str, dest: Path) -> bool:
         called.append(url)
         raise AssertionError("sync should not download when the tag is unchanged")
-    monkeypatch.setattr(data_mod, "_download", no_download)
+    monkeypatch.setattr(data_mod, "download_file", no_download)
 
     report = sync_data(settings)
     assert called == []
@@ -186,7 +208,7 @@ def test_sync_skips_download_when_the_tag_is_unchanged(tmp_path, monkeypatch):
 
 
 def _serve(seen: list[str], entry: dict):
-    """Stand-in for data._download: writes a real tarball at any url."""
+    """Stand-in for data.download_file: writes a real tarball at any url."""
     def _download(url: str, dest: Path) -> bool:
         seen.append(url)
         make_tarball(Path(dest), [entry])
@@ -201,7 +223,7 @@ def test_sync_redownloads_when_the_tag_changed(tmp_path, monkeypatch):
     monkeypatch.setattr(data_mod, "latest_dist_tag", lambda: "dist-2026-09-09")
     entry = {"id": "o/r/s", "name": "s", "installs": "1", "source": "o/r", "hash": "h"}
     seen: list[str] = []
-    monkeypatch.setattr(data_mod, "_download", _serve(seen, entry))
+    monkeypatch.setattr(data_mod, "download_file", _serve(seen, entry))
     sync_data(settings)
     assert seen == [tarball_url("dist-2026-09-09")]
     assert read_marker(settings.data_dir).get("ref") == "dist-2026-09-09"
@@ -214,7 +236,7 @@ def test_sync_refresh_forces_a_download(tmp_path, monkeypatch):
     monkeypatch.setattr(data_mod, "latest_dist_tag", lambda: "dist-2026-09-09")
     entry = {"id": "o/r/s", "name": "s", "installs": "1", "source": "o/r", "hash": "h"}
     seen: list[str] = []
-    monkeypatch.setattr(data_mod, "_download", _serve(seen, entry))
+    monkeypatch.setattr(data_mod, "download_file", _serve(seen, entry))
     sync_data(settings, refresh=True)
     assert seen == [tarball_url("dist-2026-09-09")]
     assert read_marker(settings.data_dir).get("ref") == "dist-2026-09-09"
@@ -225,7 +247,7 @@ def test_sync_without_tags_always_downloads(tmp_path, monkeypatch):
     settings = make_settings(tmp_path)
     entry = {"id": "o/r/s", "name": "s", "installs": "1", "source": "o/r", "hash": "h"}
     seen: list[str] = []
-    monkeypatch.setattr(data_mod, "_download", _serve(seen, entry))
+    monkeypatch.setattr(data_mod, "download_file", _serve(seen, entry))
     sync_data(settings)
     assert seen == [TARBALL_URL]
     assert read_marker(settings.data_dir).get("ref") == DIST_BRANCH
@@ -243,7 +265,7 @@ def test_sync_replaces_the_previous_snapshot(tmp_path, monkeypatch):
     stale.parent.mkdir(parents=True)
     stale.write_text("stale", encoding="utf-8")
 
-    monkeypatch.setattr(data_mod, "_download", fake_download([
+    monkeypatch.setattr(data_mod, "download_file", fake_download([
         {"id": "o/r/s", "name": "s", "installs": "1", "source": "o/r", "hash": "h"},
     ]))
     sync_data(settings)
@@ -274,7 +296,7 @@ def test_sync_keeps_results_even_when_stale(tmp_path, monkeypatch):
         "o/r/dirless": "h3",
     }.items()})
 
-    monkeypatch.setattr(data_mod, "_download", fake_download([
+    monkeypatch.setattr(data_mod, "download_file", fake_download([
         {"id": "o/r/unchanged", "name": "u", "installs": "1", "source": "o/r", "hash": "h1"},
         {"id": "o/r/changed", "name": "c", "installs": "2", "source": "o/r", "hash": "new"},
         {"id": "o/r/other", "name": "x", "installs": "3", "source": "o/r", "hash": "h9"},

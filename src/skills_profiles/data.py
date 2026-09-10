@@ -61,25 +61,41 @@ def _not_published() -> RuntimeError:
     )
 
 
-def _download(url: str, dest: Path) -> bool:
+def url_without_query(url: str) -> str:
+    """`url` minus its query string, for logs.
+
+    A generated image's presigned url carries a short-lived security token and a
+    signature in its query, and a 1.7 KB line per attempt also buries the log.
+    """
+    return url.split("?", 1)[0]
+
+
+def download_file(url: str, dest: Path, timeout: float | None = None) -> bool:
     """Download url into dest atomically, retrying with exponential backoff.
 
-    False means "no such file upstream" (HTTP 404); a failure that survives all
-    retries raises RuntimeError.
+    Shared by `sync` (snapshot tarballs) and by the cover renderer (generated
+    images, whose provider url expires within the hour). False means "no such
+    file" (HTTP 404); a failure that survives all retries raises RuntimeError.
+    `timeout` bounds a single attempt: a caller that holds a concurrency slot
+    while downloading cannot afford an attempt that never finishes.
     """
     partial = dest.with_name(dest.name + ".part")
     last_error: Exception | None = None
     for attempt in range(1, MAX_DOWNLOAD_RETRIES + 1):
         try:
-            logger.info("Downloading %s (attempt %d/%d)", url, attempt, MAX_DOWNLOAD_RETRIES)
+            safe_url = url_without_query(url)
+            logger.info("Downloading %s (attempt %d/%d)", safe_url, attempt,
+                            MAX_DOWNLOAD_RETRIES)
             start = time.monotonic()
-            urllib.request.urlretrieve(url, partial)
-            logger.info("Downloaded %s in %.1fs", url, time.monotonic() - start)
+            with urllib.request.urlopen(url, timeout=timeout) as response, \
+                    open(partial, "wb") as out:
+                shutil.copyfileobj(response, out)
+            logger.info("Downloaded %s in %.1fs", safe_url, time.monotonic() - start)
             partial.replace(dest)
             return True
         except urllib.error.HTTPError as e:
             if e.code == 404:
-                logger.warning("No content at %s", url)
+                logger.warning("No content at %s", safe_url)
                 partial.unlink(missing_ok=True)
                 return False
             last_error = e
@@ -90,7 +106,7 @@ def _download(url: str, dest: Path) -> bool:
             time.sleep(2 ** attempt)
     partial.unlink(missing_ok=True)
     raise RuntimeError(
-        f"Failed to download {url} after {MAX_DOWNLOAD_RETRIES} attempts: {last_error}"
+        f"Failed to download {safe_url} after {MAX_DOWNLOAD_RETRIES} attempts: {last_error}"
     ) from last_error
 
 
@@ -102,7 +118,7 @@ def _download_snapshot(url: str, dest: Path) -> bool:
     """
     with tempfile.TemporaryDirectory() as tmp:
         archive = Path(tmp) / "snapshot.tar.gz"
-        if not _download(url, archive):
+        if not download_file(url, archive):
             return False
         unpacked = Path(tmp) / "unpacked"
         with tarfile.open(archive, "r:gz") as tar:
@@ -272,6 +288,24 @@ def load_skills(settings: Settings) -> list[SkillRecord]:
         )
     records.sort(key=lambda r: r.installs, reverse=True)
     return records
+
+
+def portfolio(settings: Settings, skills: list[SkillRecord]) -> list[SkillRecord]:
+    """The skills the pipeline serves: the most installed `settings.total_limit` of them.
+
+    `load_skills` returns the whole snapshot in install order; this is the single
+    place the dataset ceiling (`SKILLS_PROFILES_TOTAL_LIMIT`) is applied, so
+    `run` and `covers` both stop at the top N and can never drift apart. It is a
+    rank window, not a "count what got done" quota: a top skill with no recipe
+    yet, or a failed render, holds its slot rather than letting a lower skill
+    take its place, so `invalidate`-driven redraws reuse the same N skills.
+
+    Deliberately *not* folded into `load_skills`: `sync` and `invalidate --stale`
+    must still see the whole index, so a profiled skill that later slips past the
+    window is compared against its real upstream hash, not mistaken for a
+    deleted one. total_limit <= 0 serves every skill.
+    """
+    return skills if settings.total_limit <= 0 else skills[:settings.total_limit]
 
 
 def skill_md_path(settings: Settings, skill: SkillRecord) -> Path:

@@ -1,4 +1,4 @@
-"""Typer CLI: sync / invalidate / run."""
+"""Typer CLI: sync / invalidate / run / covers."""
 
 import asyncio
 import logging
@@ -7,10 +7,19 @@ import time
 import typer
 
 from .config import Settings
-from .data import load_skills, stale_result_ids, sync_data
+from .data import load_skills, portfolio, stale_result_ids, sync_data
 from .generate import RunStats, coverage, run_all, select_skills, write_artifact_stats
+from .images import (
+    PROMPT_ID as COVER_PROMPT_ID,
+    CoverStats,
+    FakeImages,
+    make_images,
+    run_covers,
+    select_cover_skills,
+)
 from .llm import FakeLLM, make_llm
 from .logging import setup_logging
+from .models import SkillRecord
 from .outputs import invalidate as invalidate_cache
 from .outputs import load_hashes
 from .prompts import load_prompt_set
@@ -18,6 +27,22 @@ from .prompts import load_prompt_set
 logger = logging.getLogger(__name__)
 
 app = typer.Typer(help="Generate multi-angle Chinese profiles for agent skills.")
+
+
+def served_skills(settings: Settings) -> list[SkillRecord]:
+    """The snapshot narrowed to the pipeline's window (`data.portfolio`).
+
+    `run` and `covers` both start here, so the one dataset ceiling
+    (`SKILLS_PROFILES_TOTAL_LIMIT`) bounds profiles and pictures alike without
+    either command re-implementing it; the cap is only announced when it trims.
+    """
+    every_skill = load_skills(settings)
+    skills = portfolio(settings, every_skill)
+    if len(skills) < len(every_skill):
+        logger.info("Serving the top %d of %d installed skills (total_limit=%d); "
+                    "the rest are never profiled or drawn",
+                    len(skills), len(every_skill), settings.total_limit)
+    return skills
 
 
 @app.command()
@@ -144,7 +169,7 @@ def run(
         only = ids
 
     start = time.monotonic()
-    skills = load_skills(settings)
+    skills = served_skills(settings)
     selected = select_skills(settings, prompt_set, skills, only)
     setup_seconds = time.monotonic() - start
     logger.info("Processing %d of %d skills with model=%s%s",
@@ -203,6 +228,99 @@ def run(
     # published, the rest regenerates on the next run. A total washout (every
     # selected skill failed) is one: it almost always means a systemic problem
     # (bad key, endpoint down) and retrying here would not help.
+    if stats.skills_failed:
+        logger.warning("%d skill(s) failed - see the errors above", stats.skills_failed)
+    if stats.skills_failed and stats.skills_failed == len(selected):
+        logger.error("Every selected skill failed - refusing to report success")
+        raise typer.Exit(1)
+
+
+@app.command()
+def covers(
+    limit: int | None = typer.Option(
+        None, "--limit",
+        help="How many covers to render this run, most installed first "
+             "(0 = every skill whose cover prompt is filled in but that has no "
+             "picture yet). Skills that already have one are skipped and do not count",
+    ),
+    concurrency: int | None = typer.Option(
+        None, "--concurrency",
+        help="Max concurrent image requests (defaults to SKILLS_PROFILES_CONCURRENCY or 2)",
+    ),
+    dry_run: bool = typer.Option(
+        False, "--dry-run", help="Write a placeholder png, no image API calls"
+    ),
+    verbose: bool = typer.Option(
+        False, "--verbose", "-v", help="Enable debug logging"
+    ),
+) -> None:
+    """Render each skill's cover.png from the `cover` profile `run` already wrote.
+
+    A cover is the subject stored in <skill>/cover.json plus the fixed style of
+    its category, so the two halves stay independent and separately resumable:
+    this command generates no text and leaves a skill with no `cover` output for
+    a later run. Dropping a picture to get a new one is `invalidate --prompts
+    cover`, which takes its json along, so both halves refill together.
+    """
+    setup_logging(verbose)
+    settings = Settings()
+    if limit is not None:
+        settings.image_limit = limit
+    if concurrency is not None:
+        settings.concurrency = concurrency
+    # fail before reading 9k index lines: a missing key is a config mistake, and
+    # a 401 per skill would only say so more slowly and more expensively
+    if not dry_run and not settings.image_api_key:
+        raise typer.BadParameter(
+            f"no image endpoint key - set SKILLS_PROFILES_IMAGE_API_KEY for "
+            f"{settings.images_url} (model {settings.image_model}), or use --dry-run"
+        )
+
+    start = time.monotonic()
+    skills = served_skills(settings)
+    selected = select_cover_skills(settings, skills)
+    logger.info("Rendering %d of %d skill(s) with model=%s size=%s%s",
+                len(selected), len(skills), settings.image_model, settings.image_size,
+                " (dry-run)" if dry_run else "")
+
+    done = 0
+    stats = CoverStats()
+
+    def on_done(_skill, written: int | None) -> None:
+        nonlocal done
+        done += 1
+        if written is None:
+            detail = "(failed)"
+        elif written >= 1_048_576:
+            detail = f"{written / 1_048_576:.1f} MB"
+        else:
+            detail = f"{written / 1024:.0f} KB"
+        logger.info("  [%d/%d] %s: %s", done, len(selected), _skill.id, detail)
+
+    if selected:
+        images = FakeImages() if dry_run else make_images(settings)
+        asyncio.run(run_covers(images, settings, selected, on_skill_done=on_done,
+                               stats=stats))
+    total_seconds = time.monotonic() - start
+    avg = stats.seconds / stats.rendered if stats.rendered else 0.0
+    logger.info("Done in %.1fs: %d cover(s) rendered (%.1f MB), %d failed",
+                total_seconds, stats.rendered, stats.bytes_written / 1e6,
+                stats.skills_failed)
+    if stats.rendered:
+        logger.info("Images: %d call(s), %.1fs total, %.1fs average per cover",
+                    stats.rendered, stats.seconds, avg)
+    # stats.json is the artifact's state, not the run's (see `run`): rewriting it
+    # here keeps the cover counter true whichever command published last
+    prompt_set = load_prompt_set(settings.prompts_dir)
+    cov = coverage(settings, prompt_set, skills)
+    artifact = write_artifact_stats(settings, cov)
+    logger.info(
+        "Coverage: %d/%d skill(s) complete, %d remaining | cover recipes: %d/%d, "
+        "rendered: %d",
+        cov["complete"], cov["skills"], cov["remaining"],
+        cov["prompts"].get(COVER_PROMPT_ID, 0), cov["skills"],
+        artifact["covers"]["rendered"],
+    )
     if stats.skills_failed:
         logger.warning("%d skill(s) failed - see the errors above", stats.skills_failed)
     if stats.skills_failed and stats.skills_failed == len(selected):

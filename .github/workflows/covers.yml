@@ -1,0 +1,79 @@
+name: covers
+
+# Manual: render cover images for the skills whose `cover` profile `generate`
+# already wrote, and publish the pictures inside the same `dist` snapshot as
+# `dist-<base>-N`. Renders nothing else: a skill with no `cover` output is left
+# for a later run, so batching covers is this workflow's `limit` input, and
+# filling in the text half is `generate`'s job.
+#
+# Every run starts on a fresh runner. `restore-dist` pulls the `dist` snapshot
+# back (one codeload request) — both the existing profiles, so an already
+# rendered `cover.png` is kept as the cache it is, and the dataset mirror the
+# index is read from. `image-limit` bounds how many new pictures one run adds:
+# a cover is a megabyte-scale artifact, and the whole branch is fetched back by
+# every later run, so the budget is the size policy.
+#
+# Repository configuration (Settings -> Secrets and variables -> Actions):
+#   Secret:   SKILLS_PROFILES_IMAGE_API_KEY
+#   Variable: SKILLS_PROFILES_IMAGE_BASE_URL, SKILLS_PROFILES_IMAGE_MODEL,
+#             SKILLS_PROFILES_IMAGE_SIZE (all optional: the CLI defaults to the
+#             documented SiliconFlow Kolors endpoint at 1024x1024)
+
+on:
+  workflow_dispatch:
+    inputs:
+      limit:
+        description: How many covers to render this run
+        default: "20"
+      concurrency:
+        description: Max concurrent image requests
+        default: "2"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: publish-dist
+  cancel-in-progress: false # never cancel a run that is about to push
+
+env:
+  # credentials only; every tunable is passed as a CLI argument
+  SKILLS_PROFILES_IMAGE_API_KEY: ${{ secrets.SKILLS_PROFILES_IMAGE_API_KEY }}
+  SKILLS_PROFILES_IMAGE_BASE_URL: ${{ vars.SKILLS_PROFILES_IMAGE_BASE_URL }}
+  SKILLS_PROFILES_IMAGE_MODEL: ${{ vars.SKILLS_PROFILES_IMAGE_MODEL }}
+  SKILLS_PROFILES_IMAGE_SIZE: ${{ vars.SKILLS_PROFILES_IMAGE_SIZE }}
+
+jobs:
+  covers:
+    runs-on: ubuntu-latest
+    # every network call here is bounded (config + provider timeouts, capped
+    # retries), so a run past this point is stuck: fail it instead of parking it
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - name: Install
+        run: uv sync
+
+      - name: Restore dist snapshot (profiles + dataset)
+        uses: ./.github/actions/restore-dist
+
+      - name: Render covers
+        run: |
+          args=()
+          if [ -n "${{ inputs.limit }}" ]; then
+            args+=(--limit "${{ inputs.limit }}")
+          fi
+          if [ -n "${{ inputs.concurrency }}" ]; then
+            args+=(--concurrency "${{ inputs.concurrency }}")
+          fi
+          uv run skills-profiles covers "${args[@]}"
+
+      - name: Publish to dist
+        uses: ./.github/actions/publish-dist
+        with:
+          tag-mode: date-counter

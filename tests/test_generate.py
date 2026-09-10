@@ -70,16 +70,16 @@ def stored_outputs(settings, skill_id: str) -> dict:
 async def test_full_run_produces_all_prompt_outputs(settings, prompt_set):
     skill = load_skills(settings)[0]
     record, _ = await run_one(FakeLLM(), settings, prompt_set, skill)
-    assert set(record["intros"]) == {"domain", "scenario", "blackbox",
-                                    "whitebox", "tagline", "persona", "comments"}
+    assert set(record["intros"]) == set(prompt_set.by_id)
 
 
 async def test_existing_results_skip_llm_calls(settings, prompt_set):
     skills = load_skills(settings)
+    prompts = len(prompt_set.by_id)
 
     first = CountingLLM(FakeLLM())
     await run_all(first, settings, skills, prompt_set)
-    assert first.calls == 4 * 7  # 4 skills x 7 prompts
+    assert first.calls == 4 * prompts  # every skill runs every prompt once
 
     second = CountingLLM(FakeLLM())
     results = await run_all(second, settings, skills, prompt_set)
@@ -91,6 +91,7 @@ async def test_cached_run_is_untouched_until_invalidated(settings, prompt_set):
     """Nothing regenerates until the cache is dropped: `invalidate` is the only
     way to make a run redo work."""
     skills = load_skills(settings)
+    prompts = len(prompt_set.by_id)
     await run_all(FakeLLM(), settings, skills, prompt_set)
 
     cached = CountingLLM(FakeLLM())
@@ -98,12 +99,12 @@ async def test_cached_run_is_untouched_until_invalidated(settings, prompt_set):
     assert cached.calls == 0
     assert len(results) == 4
 
-    assert invalidate(settings) == 28  # 4 skills x 7 prompts
+    assert invalidate(settings) == 4 * prompts  # every cached output of every skill
     assert load_hashes(settings) == {}  # emptied skills drop out of the record
 
     forced = CountingLLM(FakeLLM())
     results = await run_all(forced, settings, skills, prompt_set)
-    assert forced.calls == 4 * 7
+    assert forced.calls == 4 * prompts
     assert len(results) == 4
 
 
@@ -256,7 +257,7 @@ async def test_only_fills_in_missing_prompt_and_carries_over_rest(settings, prom
 
 async def test_only_generates_just_the_selected_prompt(settings, prompt_set):
     """With no stored results, `only` runs just the closure of the selection
-    (every built-in prompt is a root, so that is the prompt itself)."""
+    (`comments` depends on nothing, so its closure is itself)."""
     skills = load_skills(settings)
     llm = CountingLLM(FakeLLM())
     await run_all(llm, settings, skills[:1], prompt_set, only={"comments"})
@@ -266,8 +267,8 @@ async def test_only_generates_just_the_selected_prompt(settings, prompt_set):
     # a partial directory must not count as complete: a full run fills in the gaps
     llm = CountingLLM(FakeLLM())
     await run_all(llm, settings, skills[:1], prompt_set)
-    assert llm.calls == 6  # the other six prompts were still missing
-    assert len(stored_outputs(settings, skills[0].id)) == 7
+    assert llm.calls == len(prompt_set.by_id) - 1  # every other prompt was missing
+    assert len(stored_outputs(settings, skills[0].id)) == len(prompt_set.by_id)
 
 
 async def test_invalidated_prompt_regenerates_only_itself(settings, prompt_set):
@@ -287,9 +288,9 @@ async def test_invalidated_prompt_regenerates_only_itself(settings, prompt_set):
     assert llm.calls == 1
 
     # every other prompt is reused unchanged
-    assert len(stored_outputs(settings, skills[0].id)) == 7
+    assert len(stored_outputs(settings, skills[0].id)) == len(prompt_set.by_id)
     updated = stored_outputs(settings, skills[0].id)
-    for pid in ("domain", "scenario", "blackbox", "whitebox", "persona", "comments"):
+    for pid in set(prompt_set.by_id) - {"tagline"}:
         assert updated[pid] == before[pid]
 
 
@@ -299,14 +300,14 @@ async def test_run_preserves_prompts_outside_closure(settings, prompt_set):
     await run_all(FakeLLM(), settings, skills, prompt_set)
     before = stored_outputs(settings, skills[0].id)
 
-    # closure of a root prompt is just itself: only scenario was invalidated -> 1 call
+    # scenario depends on nothing, so its closure is itself: 1 invalidated -> 1 call
     invalidate(settings, [skills[0].id], {"scenario"})
     llm = CountingLLM(FakeLLM())
     await run_all(llm, settings, skills[:1], prompt_set, only={"scenario"})
     assert llm.calls == 1
     updated = stored_outputs(settings, skills[0].id)
-    assert len(updated) == 7
-    for pid in ("domain", "blackbox", "whitebox", "tagline", "persona", "comments"):
+    assert len(updated) == len(prompt_set.by_id)
+    for pid in set(prompt_set.by_id) - {"scenario"}:
         assert updated[pid] == before[pid]
 
 
@@ -375,6 +376,7 @@ async def test_crash_mid_run_keeps_completed_prompts(settings, prompt_set):
     rerun only regenerates what is missing."""
     skills = load_skills(settings)
     skill = skills[0]
+    prompts = len(prompt_set.by_id)
 
     class FlakyLLM:
         """Generates the first two prompts, then explodes."""
@@ -395,8 +397,8 @@ async def test_crash_mid_run_keeps_completed_prompts(settings, prompt_set):
 
     llm = CountingLLM(FakeLLM())
     await run_one(llm, settings, prompt_set, skill)  # cache rules apply
-    assert llm.calls == 5  # only the remaining five were regenerated
-    assert len(stored_outputs(settings, skill.id)) == 7
+    assert llm.calls == prompts - 2  # only the prompts still missing were regenerated
+    assert len(stored_outputs(settings, skill.id)) == len(prompt_set.by_id)
 
 
 async def test_coverage_counts_complete_and_remaining_skills(settings, prompt_set):
@@ -444,7 +446,7 @@ async def test_run_all_tallies_stats(settings, prompt_set):
     await run_all(FakeLLM(), settings, skills, prompt_set, stats=stats)
     assert stats.selected == 0  # the caller sets it; run_all only tallies records
     assert stats.skills_generated == 4
-    assert stats.prompts_generated == 4 * 7
+    assert stats.prompts_generated == 4 * len(prompt_set.by_id)
     assert stats.prompts_reused == 0
     assert stats.prompts_stale == 0
     assert stats.llm_seconds > 0
@@ -453,7 +455,7 @@ async def test_run_all_tallies_stats(settings, prompt_set):
     await run_all(FakeLLM(), settings, skills, prompt_set, stats=stats)
     assert stats.skills_generated == 0
     assert stats.prompts_generated == 0
-    assert stats.prompts_reused == 4 * 7
+    assert stats.prompts_reused == 4 * len(prompt_set.by_id)
     assert stats.llm_seconds == 0.0
 
 
@@ -465,7 +467,7 @@ async def test_prompts_within_a_skill_share_the_concurrency_pool(settings, promp
     llm = ConcurrencyTrackingLLM(FakeLLM())
     record, reused = await run_one(llm, settings, prompt_set, skill)
     assert not reused
-    assert llm.peak == 7  # all seven root prompts in flight together
+    assert llm.peak == 7  # the seven root prompts fan out at once; cover waits for persona
     assert set(record["prompt_seconds"]) == set(record["generated"])
 
     # the same pool caps skills and prompts together: another skill, concurrency 2
@@ -501,7 +503,7 @@ async def test_run_stats_count_stale_caches(settings, prompt_set):
     await run_all(FakeLLM(), settings, skills[:1], prompt_set, stats=stats)
     assert stats.prompts_generated == 1
     assert stats.prompts_stale == 1
-    assert stats.prompts_reused == 6
+    assert stats.prompts_reused == len(prompt_set.by_id) - 1
 
 
 async def test_run_stats_count_skills_without_source(settings, prompt_set):

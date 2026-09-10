@@ -2,39 +2,94 @@
 
 from enum import StrEnum
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 
 class Domain(StrEnum):
     """Usage-scenario taxonomy for skill classification.
 
-    Each member carries (value, emoji, description); the description doubles as
-    the classification hint injected into the domain prompt.
+    Each member carries (value, emoji, description, cover_style); the description
+    doubles as the classification hint injected into the domain prompt, and the
+    cover_style is the fixed look of the category — medium, palette and light,
+    never objects: what is drawn comes from the `cover` prompt and from the one
+    character framing images.py appends, so the 13 categories stay visually
+    distinct without any of them competing with the subject for the picture.
     """
 
-    def __new__(cls, value: str, emoji: str, description: str) -> "Domain":
+    def __new__(cls, value: str, emoji: str, description: str,
+                cover_style: str) -> "Domain":
         obj = str.__new__(cls, value)
         obj._value_ = value
         obj.emoji = emoji
         obj.description = description
+        obj.cover_style = cover_style
         return obj
 
     DEV_CODING = (
         "开发编程", "💻",
-        "写代码、调试、重构、数据库、API/框架集成、爬虫与浏览器自动化"
+        "写代码、调试、重构、数据库、API/框架集成、爬虫与浏览器自动化",
+        "flat vector illustration, deep indigo background, cyan and lime terminal glow",
     )
-    TESTING_QA = ("测试与质量", "🧪", "测试编写与测试框架、E2E/UI 自动化测试、代码审查、质量检查与 bug 排查工具")
-    DATA_ANALYSIS = ("数据分析", "📊", "SQL 查询、数据清洗、统计分析、可视化、报表与数据工程(ETL)")
-    OPS_SECURITY = ("运维与安全", "🛡️", "部署发布、云基础设施、监控告警、SRE、网络配置与安全防护")
-    OFFICE = ("办公效率", "🗂️", "docx/pdf/xlsx/ppt 等文档处理、邮件、日历、会议纪要、任务与项目管理")
-    CONTENT_CREATION = ("内容创作", "✍️", "文章写作、文案、翻译、技术文档、社媒内容、播客/脚本等, 以文字与信息为主体的创作")
-    DESIGN_MEDIA = ("设计多媒体", "🎨", "UI/平面设计、图像生成与编辑、视频剪辑、3D、品牌视觉等视觉与音视频制作")
-    KNOWLEDGE = ("知识管理", "🧠", "笔记与知识库(Obsidian/Notion 等)、信息检索、调研与深度研究、资料整理沉淀")
-    BUSINESS = ("商业运营", "📈", "市场营销、SEO、销售、客服、电商、增长与 CRM 等面向业务增长与客户的工作")
-    PAY_FINANCE = ("支付金融", "💰", "支付集成、账单与发票、金融理财、交易类技能")
-    EDUCATION = ("教育学习", "🎓", "教学备课、课程制作、学习辅导、刷题与面试准备")
-    LIFE = ("生活服务", "🏠", "旅行规划、饮食、健身健康、个人日常事务")
-    OTHER = ("其他", "❓", "仅当以上分类确实都不贴合时使用, 不要勉强归类")
+    TESTING_QA = (
+        "测试与质量", "🧪",
+        "测试编写与测试框架、E2E/UI 自动化测试、代码审查、质量检查与 bug 排查工具",
+        "flat vector illustration, teal background, amber highlights",
+    )
+    DATA_ANALYSIS = (
+        "数据分析", "📊",
+        "SQL 查询、数据清洗、统计分析、可视化、报表与数据工程(ETL)",
+        "flat vector illustration, navy background, coral and mint accents",
+    )
+    OPS_SECURITY = (
+        "运维与安全", "🛡️",
+        "部署发布、云基础设施、监控告警、SRE、网络配置与安全防护",
+        "flat vector illustration, slate blue background, warm orange glow",
+    )
+    OFFICE = (
+        "办公效率", "🗂️",
+        "docx/pdf/xlsx/ppt 等文档处理、邮件、日历、会议纪要、任务与项目管理",
+        "flat vector illustration, warm beige background, muted blue and terracotta",
+    )
+    CONTENT_CREATION = (
+        "内容创作", "✍️",
+        "文章写作、文案、翻译、技术文档、社媒内容、播客/脚本等, 以文字与信息为主体的创作",
+        "flat vector illustration, cream background, ink blue and ochre",
+    )
+    DESIGN_MEDIA = (
+        "设计多媒体", "🎨",
+        "UI/平面设计、图像生成与编辑、视频剪辑、3D、品牌视觉等视觉与音视频制作",
+        "flat vector illustration, off-white background, vivid magenta, cyan and yellow",
+    )
+    KNOWLEDGE = (
+        "知识管理", "🧠",
+        "笔记与知识库(Obsidian/Notion 等)、信息检索、调研与深度研究、资料整理沉淀",
+        "flat vector illustration, dusty violet background, mint accents",
+    )
+    BUSINESS = (
+        "商业运营", "📈",
+        "市场营销、SEO、销售、客服、电商、增长与 CRM 等面向业务增长与客户的工作",
+        "flat vector illustration, light grey background, navy and gold",
+    )
+    PAY_FINANCE = (
+        "支付金融", "💰",
+        "支付集成、账单与发票、金融理财、交易类技能",
+        "flat vector illustration, dark green background, gold accents",
+    )
+    EDUCATION = (
+        "教育学习", "🎓",
+        "教学备课、课程制作、学习辅导、刷题与面试准备",
+        "flat vector illustration, sky blue background, warm yellow accents",
+    )
+    LIFE = (
+        "生活服务", "🏠",
+        "旅行规划、饮食、健身健康、个人日常事务",
+        "flat vector illustration, soft peach background, sage and coral accents",
+    )
+    OTHER = (
+        "其他", "❓",
+        "仅当以上分类确实都不贴合时使用, 不要勉强归类",
+        "flat vector illustration, neutral grey background, one blue and one orange accent",
+    )
 
     @classmethod
     def taxonomy_text(cls) -> str:
@@ -50,6 +105,14 @@ class Domain(StrEnum):
             return value
         return f"{d.emoji} {d.value}"
 
+    @classmethod
+    def style_for(cls, value: str) -> str:
+        """The category's cover style; an unknown or missing value gets OTHER's."""
+        try:
+            return cls(value).cover_style
+        except ValueError:
+            return cls.OTHER.cover_style
+
 
 class DomainClassification(BaseModel):
     """Output schema for the `domain` prompt."""
@@ -62,6 +125,33 @@ class IntroText(BaseModel):
     """Output schema for free-text profile prompts (scenario)."""
 
     text: str = Field(description="介绍词正文, 100 个字以内")
+
+
+class ImagePrompt(BaseModel):
+    """Output schema for the `cover` prompt: one English line describing the picture.
+
+    Not just an `IntroText`, because this text feeds a text-to-image model rather
+    than a human. Measured against real endpoints: a recipe that came back as
+    Chinese marketing prose still validated as a string, and became a garbage
+    picture. Every rule below is therefore a rejection instructor hands back to
+    the model, so the recipe is corrected before it is stored.
+    """
+
+    text: str = Field(description="英文画面主体: 逗号分隔的短语, 40 词以内, 写那个人在做什么")
+
+    @field_validator("text")
+    @classmethod
+    def _english_phrase(cls, value: str) -> str:
+        value = " ".join(value.split()).strip().rstrip(".,;: ")
+        if not value:
+            raise ValueError("不能为空")
+        if not value.isascii():
+            raise ValueError("必须是纯英文 (ASCII), 不要出现中文")
+        if len(value.split()) > 60:
+            raise ValueError("超过 60 个英文单词, 请精简成逗号短语")
+        if any(mark in value for mark in "!?\"'()"):
+            raise ValueError("只要逗号分隔的短语, 不要问句/引号/括号")
+        return value
 
 
 class BlackBoxPair(BaseModel):
