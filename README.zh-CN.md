@@ -26,32 +26,39 @@ English: [README.md](README.md) · 开发指南（生产 / 扩展这份数据）
 {
   "id": "vercel-labs/skills/find-skills",
   "hash": "b146008599c31057cef1c145774cea5d5afb30e8f43fa802e47a4b461419aaaf",
-  "domain": {"domain": "开发编程", "reason": "面向开发者的技能包检索与安装工具, 属于 agent 开发工具链生态"},
-  "persona": {"tool": "npx skills", "role": "技能猎头", "scene": "你说「这活你不会吧」时,我出门找一个现成的技能装上"}
+  "domain": {
+    "domain": "开发编程",
+    "reason": "面向开发者的技能包检索与安装工具, 属于 agent 开发工具链生态"
+  },
+  "persona": {
+    "tool": "npx skills",
+    "role": "技能猎头",
+    "scene": "你说「这活你不会吧」时,我出门找一个现成的技能装上"
+  }
 }
 ```
 
-| 字段 | 含义 |
-|---|---|
-| `id` | skills.sh 的 skill id，`{owner}/{repo}/{slug}`——与镜像的 id 完全一致 |
-| `hash` | 上游记录的技能文件 SHA-256：档案描述的就是这一份内容 |
-| `domain` | `domain`：13 个固定使用场景分类之一；`reason`：一句话理由 |
-| `persona` | 把 skill 当一个职业——`tool` 趁手工具、`role` 角色、`scene` 高频场景 |
+| 字段      | 含义                                                                 |
+| --------- | -------------------------------------------------------------------- |
+| `id`      | skills.sh 的 skill id，`{owner}/{repo}/{slug}`——与镜像的 id 完全一致 |
+| `hash`    | 上游记录的技能文件 SHA-256：档案描述的就是这一份内容                 |
+| `domain`  | `domain`：13 个固定使用场景分类之一；`reason`：一句话理由            |
+| `persona` | 把 skill 当一个职业——`tool` 趁手工具、`role` 角色、`scene` 高频场景  |
 
 `domain.domain` 是闭合枚举，可以直接筛：开发编程 · 测试与质量 · 数据分析 · 运维与安全 · 办公效率 ·
 内容创作 · 设计多媒体 · 知识管理 · 商业运营 · 支付金融 · 教育学习 · 生活服务 · 其他。
 
 索引只折入你真正会拿去筛选的两个角度，其余五个都是每个 skill 目录下的文件，各有各的结构——七个角度合计：
 
-| Prompt | 结构 | 内容 |
-|---|---|---|
-| `domain` | `{domain, reason}` | 分类 + 理由——同时进索引 |
-| `persona` | `{tool, role, scene}` | 职业画像——同时进索引 |
-| `scenario` | `{text}` | 一段 100 字以内的场景化介绍，从用户痛点切入 |
-| `tagline` | `{taglines[3]}` | 3 条宣传短标语，每条 20 字以内 |
-| `blackbox` | `{function, input_output[3–5]}` | 黑盒视角：你给什么 → 你得到什么，不谈内部实现 |
-| `whitebox` | `{execution_flow[3–5], mechanisms[2–3]}` | 白盒视角：主路径流程、关键机制、真实依赖 |
-| `comments` | `{comments[4–6]}` | 用户第一人称评论；`category` 通常为 妙用 / 坑 / 注意 / 启发 |
+| Prompt     | 结构                                     | 内容                                                        |
+| ---------- | ---------------------------------------- | ----------------------------------------------------------- |
+| `domain`   | `{domain, reason}`                       | 分类 + 理由——同时进索引                                     |
+| `persona`  | `{tool, role, scene}`                    | 职业画像——同时进索引                                        |
+| `scenario` | `{text}`                                 | 一段 100 字以内的场景化介绍，从用户痛点切入                 |
+| `tagline`  | `{taglines[3]}`                          | 3 条宣传短标语，每条 20 字以内                              |
+| `blackbox` | `{function, input_output[3–5]}`          | 黑盒视角：你给什么 → 你得到什么，不谈内部实现               |
+| `whitebox` | `{execution_flow[3–5], mechanisms[2–3]}` | 白盒视角：主路径流程、关键机制、真实依赖                    |
+| `comments` | `{comments[4–6]}`                        | 用户第一人称评论；`category` 通常为 妙用 / 坑 / 注意 / 启发 |
 
 `{...[n–m]}` 表示长度为 n~m 的数组；`input_output` 的元素是 `{input, output}`，`comments` 的元素是
 `{user, category, comment}`。一份 `comments.json` 的节选：
@@ -59,8 +66,16 @@ English: [README.md](README.md) · 开发指南（生产 / 扩展这份数据）
 ```json
 {
   "comments": [
-    {"user": "后端老兵", "category": "妙用", "comment": "用 --owner 锁定官方源: npx skills find react --owner vercel-labs, 结果只剩 Vercel 家的, 不会被野包污染。"},
-    {"user": "团队技术负责人", "category": "坑", "comment": "只看搜索第一页就装, 换来个 80 安装量的弃坑包, 出问题没人管。现在先看安装量和 GitHub stars, 低于 100 的直接 pass。"}
+    {
+      "user": "后端老兵",
+      "category": "妙用",
+      "comment": "用 --owner 锁定官方源: npx skills find react --owner vercel-labs, 结果只剩 Vercel 家的, 不会被野包污染。"
+    },
+    {
+      "user": "团队技术负责人",
+      "category": "坑",
+      "comment": "只看搜索第一页就装, 换来个 80 安装量的弃坑包, 出问题没人管。现在先看安装量和 GitHub stars, 低于 100 的直接 pass。"
+    }
   ]
 }
 ```
@@ -70,9 +85,17 @@ English: [README.md](README.md) · 开发指南（生产 / 扩展这份数据）
 
 ```json
 {
-  "prompts": {"blackbox": 334, "comments": 334, "domain": 334, "persona": 334, "scenario": 334, "tagline": 334, "whitebox": 334},
-  "skills": {"complete": 334, "remaining": 8625, "stale": 0, "total": 8959},
-  "snapshot": {"ref": "dist-2026-09-09", "fetched_at": "2026-09-09T02:01:24Z"}
+  "prompts": {
+    "blackbox": 334,
+    "comments": 334,
+    "domain": 334,
+    "persona": 334,
+    "scenario": 334,
+    "tagline": 334,
+    "whitebox": 334
+  },
+  "skills": { "complete": 334, "remaining": 8625, "stale": 0, "total": 8959 },
+  "snapshot": { "ref": "dist-2026-09-09", "fetched_at": "2026-09-09T02:01:24Z" }
 }
 ```
 
