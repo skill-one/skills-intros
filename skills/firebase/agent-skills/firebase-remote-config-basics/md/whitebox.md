@@ -1,0 +1,13 @@
+# firebase-remote-config-basics (`firebase/agent-skills/firebase-remote-config-basics`)
+
+## whitebox
+
+- 接到任务后, 用 Firebase CLI 拉取当前云端模板到本地: remoteconfig:get -o remote_config.json
+- 按用户目标直接编辑 remote_config.json, 更新 conditions 数组和 parameters 映射
+- 强制暂停, 请用户审阅改动; 用户确认后才继续
+- 若缺 firebase.json 则生成映射, 执行 deploy --only remoteconfig 推送上线
+- 用 remoteconfig:versions:list 列出版本历史, 核验部署结果
+
+- 外部工具只有一个: Firebase CLI, 通过 npx -y firebase-tools@latest 免安装调用; 容错两条路径——npx 报 403 时回退到全局安装的 firebase 命令, 命令报'无活跃项目'时要求用户提供 Project ID 并在后续所有命令追加 --project 标志
+- 解析与转换的核心是把 remote_config.json 当作唯一事实源: 判断该用哪个信号 (如 device.country、percent 用户百分比), 再同步改 conditions 数组与 parameters 映射, 不经过任何中间抽象层
+- 校验环节是人工门而非自动校验: 部署前必须停下等用户确认; 部署时若环境未配置, 先补建 firebase.json 中的 remoteconfig.template 映射, 再做部分部署 (--only remoteconfig), 部署后用版本列表做最终核验

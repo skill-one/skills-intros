@@ -1,0 +1,5 @@
+# canvas-design (`anthropics/skills/canvas-design`)
+
+## scenario
+
+海报靠模板,千篇一律没质感;请设计师,贵且要等一周。🎨 我为你的活动、产品、礼物定制海报:先立一套设计哲学,再亲手绘成 PNG/PDF,每一笔都像美术馆展品般讲究。

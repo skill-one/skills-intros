@@ -1,0 +1,5 @@
+# design-an-interface (`mattpocock/skills/design-an-interface`)
+
+## scenario
+
+接口(软件之间的连接桥)设计靠第一感觉?往往上线后才发现难用,返工代价大。我会同时生成 3 套截然不同的设计方案,逐一对比优劣,帮你第一次就选对,少走弯路。🧭

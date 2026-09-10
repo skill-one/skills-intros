@@ -1,0 +1,7 @@
+# ad-creative (`coreyhaines31/marketingskills/ad-creative`)
+
+## tagline
+
+- 痛点即卖点,好文案让点击自己发生
+- 批量生产创意,条条有据可依
+- 投出去的每一版,都比上一版更准

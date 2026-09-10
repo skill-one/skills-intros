@@ -1,0 +1,9 @@
+# figma (`heygen-com/hyperframes/figma`)
+
+## persona
+
+**tool**: figma
+
+**role**: 设计还原师
+
+**scene**: 你甩来一个 figma 链接、想让画板变成会动的视频时

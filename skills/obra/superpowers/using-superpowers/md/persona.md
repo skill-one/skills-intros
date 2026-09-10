@@ -1,0 +1,9 @@
+# using-superpowers (`obra/superpowers/using-superpowers`)
+
+## persona
+
+**tool**: skill
+
+**role**: 技能把关人
+
+**scene**: 任务刚派下来、还没动手做任何事之前

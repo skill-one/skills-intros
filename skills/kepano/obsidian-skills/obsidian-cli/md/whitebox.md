@@ -1,0 +1,13 @@
+# obsidian-cli (`kepano/obsidian-skills/obsidian-cli`)
+
+## whitebox
+
+- 接收任务: 读写/检索 Obsidian 仓库内容 (笔记、任务、属性、标签、反向链接), 或插件/主题开发调试
+- 将任务映射为对应的 `obsidian` CLI 命令, 如 read / create / search / append / daily:append / property:set / tasks / tags / backlinks
+- 按 CLI 语法构造命令: 参数用 key=value (含空格加引号), 布尔开关作 flag; 用 file= 或 path= 定位文件, 需要时首参数 vault="名称" 指定目标仓库
+- 在 shell 中执行命令, 与正在运行的 Obsidian 实例交互并读取返回结果 (可用 --copy 进剪贴板, silent 阻止自动打开文件)
+- 若为插件开发: 改码后循环 plugin:reload → dev:errors 查错 → dev:screenshot / dev:dom 视觉验证 → dev:console 查日志, 有错则修复后重跑
+
+- 唯一执行通道是外部工具 `obsidian` CLI, 硬前提是 Obsidian 正在运行; 命令默认作用于最近聚焦的仓库, 首参数 vault="名称" 可切换目标仓库
+- 文件定位双模式: file=<name> 按 wikilink 语义解析 (只写名字, 不含路径和扩展名), path=<path> 为 vault 根目录起的精确路径; 二者皆缺省则取当前活动文件; 多行内容用 \n / \t 转义写入
+- 插件/主题调试机制: eval code="…" 在应用上下文执行 JavaScript (如 app.vault.getFiles().length), dev:css 查指定选择器的 CSS 属性值, dev:mobile on 切换移动端模拟; 命令真值以 `obsidian help` 为准 (始终最新)

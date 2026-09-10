@@ -1,0 +1,13 @@
+# content-strategy (`coreyhaines31/marketingskills/content-strategy`)
+
+## whitebox
+
+- 先读 .agents/product-marketing.md (或 .claude/ 变体、旧文件名 product-marketing-context.md), 已覆盖的信息不再问用户
+- 向用户收集四类缺口上下文: 业务与目标客户、客户研究、内容现状与资源、竞争格局
+- 对每个选题用 searchable (承接已有搜索需求) / shareable (制造新需求) 双轴分类, 关键词按买家阶段修饰词映射 (如 'what is'→认知期)
+- 多源产出选题: 解析用户提供的关键词导出/通话记录/问卷, web search 挖 Reddit/Quora 讨论与竞品博客空白
+- 按四因子加权打分 (客户影响 40% / 内容契合 30% / 搜索潜力 20% / 资源 10%) 排序, 输出内容支柱 + 优先选题 + 集群地图, 日历按 60/30/10 配比
+
+- 上下文预处理: 先读本地 markdown 背景文件再提问, 只补缺口 — 纯文件读取, 无外部依赖
+- 转换层: ① searchable/shareable 二分类决定内容写法; ② 修饰词→买家阶段映射 ('vs'→考虑期, 'pricing'→决策期, 'templates'→实施期); ③ 外链收益按格式倍率表评估 (如统计聚合页 4.25x vs 原创研究 0.80x)
+- 校验与排序: 每个选题 1-10 分打分 × 权重求和出总分, 强制输出 60% 可搜索 / 30% 可传播 / 10% 实验的日历配比; 外部依赖 = 宿主 LLM 本身 + web search + 用户可选提供的 Ahrefs/SEMrush/GSC 导出文件

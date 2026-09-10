@@ -1,0 +1,13 @@
+# convex-setup-auth (`get-convex/agent-skills/convex-setup-auth`)
+
+## whitebox
+
+- 确定 auth provider: 先从仓库信号推断 (依赖包如 @clerk/*、convex/auth.config.ts、env vars), 推断不出就先问用户, 不默认假设
+- 确认范围: 这次是 local-only 还是 production-ready
+- 读对应 references/{provider}.md, 并以官方文档 (docs.convex.dev 等) 为准获取当前接入步骤, 不凭记忆写
+- 实现: provider 接线 + env vars + convex/auth.config.ts; 后端受保护函数内用 ctx.auth.getUserIdentity() 校验身份, 按需加 users 表和所有权/角色检查
+- 验证: 登录态、受保护 query、env vars (production 则查生产配置); 有浏览器自动化工具就走真实注册/登录, 否则给手动检查清单
+
+- Provider-first 决策: 写任何 setup 代码前必须先定 provider, repo 已有则沿用; 防 cross-provider 混用 (如 Convex Auth 内建用户表, 不另建平行 users + storeUser 流程)
+- 文档驱动而非记忆驱动: 官方文档 (docs.convex.dev、labs.convex.dev/auth/authz) + 本地 reference 文件是唯一事实来源, 规避 provider CLI / Convex Auth 内部实现随版本变化导致的过时模式
+- 服务端身份校验模式: 不信任客户端传入的 userId; 函数内 await ctx.auth.getUserIdentity(), 缺失即抛 'Not authenticated', 再按 tokenIdentifier 索引查 users 表; 外部依赖: Convex 后端 + 所选 provider (Convex Auth / Clerk / WorkOS AuthKit / Auth0 / 自定义 JWT)

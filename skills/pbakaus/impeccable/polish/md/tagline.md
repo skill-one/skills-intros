@@ -1,0 +1,7 @@
+# polish (`pbakaus/impeccable/polish`)
+
+## tagline
+
+- 从能用到惊艳, 只差一次打磨
+- 放大十倍看, 依然挑不出毛病
+- 细节到位的那一刻, 产品才算完成

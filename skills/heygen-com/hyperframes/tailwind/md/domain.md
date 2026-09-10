@@ -1,0 +1,7 @@
+# tailwind (`heygen-com/hyperframes/tailwind`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: Tailwind CSS 样式编码与前端项目脚手架/调试，纯开发场景。

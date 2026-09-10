@@ -1,0 +1,13 @@
+# xlsx (`anthropics/skills/xlsx`)
+
+## whitebox
+
+- 被触发: 任务以表格文件 (.xlsx/.xlsm/.csv 等) 为主要输入或输出, 交付物必须是表格文件
+- 快速查看: markitdown file.xlsx 按工作表输出内容; 若要同时看公式和数值, 用 openpyxl 做两次 load_workbook (一次 data_only=True 取缓存值, 一次默认取公式字符串)
+- 生成/编辑: openpyxl 写入公式字符串而非硬编码结果, 沿用已有文件的字体/颜色/输入区约定; 大批量数据读写走 pandas
+- 重算: 运行 scripts/recalc.py (底层 LibreOffice) 就地重算全部公式, 读 JSON 的 status/total_errors, 按报错单元格修复
+- 循环第 4 步直至 errors_found 清零后才交付
+
+- 公式以字符串写入 XML, openpyxl 不缓存计算结果 —— 未重算前任何 data_only=True 读取/预览都得到 None; recalc.py 借 LibreOffice 真实求值并回写文件, errors_found 也 exit 0, 必须看 JSON 而非退出码
+- LibreOffice 兼容性约束选择公式: 仅 Excel-2007 时代函数 + 六个需 _xlfn. 前缀的函数 (如 MAXIFS); 禁用 XLOOKUP/FILTER 等溢出数组函数 —— openpyxl 写的文件无 spill 元数据, 会只填左上角一格且 total_errors 为 0 (静默截断), 查找用 INDEX/MATCH, 排序去重放 Python 侧做
+- 读模型必须两次加载: data_only=True 与默认模式各一次, 单次加载只能得到公式或值之一; 且 data_only=True 的工作簿一旦保存会用字面量永久覆盖所有公式

@@ -1,0 +1,7 @@
+# firebase-data-connect (`firebase/agent-skills/firebase-data-connect`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 构建 Firebase SQL Connect 后端：设计 PostgreSQL 数据模型、编写 GraphQL 查询/变更、生成类型安全 SDK 并部署，属于典型的数据库与应用开发。

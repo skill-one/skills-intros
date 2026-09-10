@@ -1,0 +1,9 @@
+# three (`heygen-com/hyperframes/three`)
+
+## persona
+
+**tool**: three.js
+
+**role**: 三维定帧动画师
+
+**scene**: 3D 动画在浏览器里流畅、一导出视频就掉帧错位时

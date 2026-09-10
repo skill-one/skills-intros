@@ -1,0 +1,13 @@
+# neon (`neondatabase/agent-skills/neon`)
+
+## whitebox
+
+- 触发匹配: 用户提到 Neon 或其能力词 (postgres, database, object storage, AI gateway, logs, backend 等) 或无账号场景 (neon.new, 临时数据库) 时激活。
+- 路由子技能: 任务命中子技能表时先检查是否已安装, 未安装则用 skills CLI 安装对应子技能 (如 neon-postgres, neon-functions)。
+- 鉴权检查: 查 NEON_API_KEY 或运行 `npx neon@latest profile list -o json`; 无有效账号则先征得用户同意, 走 Claimable 临时项目路径。
+- 初始化与链接: `neon init --agent` 装 CLI/MCP/技能, `neon link` 把 org/project/branch 写入 git-ignored 的 `.neon` 文件并自动拉取 DATABASE_URL 等环境变量。
+- 分支优先作业: 用 `neon checkout` 切换/创建分支, 用 `neon config plan`/`neon deploy --env` 应用 neon.ts 声明并把环境变量回拉到本地 .env。
+
+- 文档即事实源: 不靠训练数据、不猜 URL, 先抓 https://neon.com/docs/llms.txt 索引定位页面, 再在 URL 末尾加 `.md` (或带 Accept: text/markdown 头) 拿到 markdown 全文核实所有论断。
+- 声明式基础设施即代码: neon.ts 用 @neon/config 的 defineConfig 声明分支应有哪些服务 (Postgres/Auth/ buckets/Functions/AI Gateway), `neon status` → `config plan` → `deploy` 三段式对账 (读态/干跑 diff/实际应用); @neon/env 的 parseEnv 按声明校验并返回类型化环境变量, 缺变量直接报错而非静默置空。
+- 写时复制分支模型: 分支是与父分支共享数据的 copy-on-write 克隆, 写入以增量形式独立存储, 可随时改删; 依赖的外部工具: Neon CLI (npm i -g neon)、Neon MCP server (mcp.neon.tech)、skills CLI (npx skills add)、npm 包 @neon/config 与 @neon/env。

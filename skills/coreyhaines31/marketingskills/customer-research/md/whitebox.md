@@ -1,0 +1,13 @@
+# customer-research (`coreyhaines31/marketingskills/customer-research`)
+
+## whitebox
+
+- 先读项目上下文文件 `.agents/product-marketing.md`（若存在），跳过其中已回答的问题
+- 确定适用模式：用户有素材→Mode 1 分析；无素材→Mode 2 线上公开信号挖掘；需一手答案→Mode 3 访谈/问卷（多数任务混合模式，先挖后问）
+- 上下文不清时先问两个问题：研究目标是什么？手头已有什么材料？（其余问题再逐步追问）
+- 用统一提取框架解析每份素材：JTBD（任务）、痛点、触发事件、期望结果、客户原话、考虑过的替代方案
+- 主题聚类 + 频率×强度打分 + 逐条标注置信度（High/Medium/Low），按用户选定的交付物格式输出
+
+- 六字段提取 + 原话保留：访谈记录/问卷/工单/评论/流失笔记统一解析为固定字段（JTBD、痛点、触发、结果、原话、替代品），引用一律保留原文不转述——原话直接构成文案素材库（VOC quote bank）
+- 证据分级护栏：每条洞察标注置信度（3+ 独立来源且未经提示提及→High；单源→Low）；每段样本不足 5 个独立数据点不出人设/不下结论；附带偏差自检（评论偏重度用户、工单偏负面、Reddit 偏技术怀疑派）及 12 个月时效加权
+- 按需加载参考手册（关键外部依赖）：Mode 2 读 `references/source-guides.md`（Reddit/G2/Capterra/Hacker News/SparkToro 等平台的搜索策略与提取要点），Mode 3 动手前必读 `references/interviews-and-surveys.md`（PMF 问卷 40% 基准、5-why 追问、邀约模板）；数据源为公开网页，SKILL.md 未声明其他外部库或模型 API

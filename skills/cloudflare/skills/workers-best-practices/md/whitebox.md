@@ -1,0 +1,14 @@
+# workers-best-practices (`cloudflare/skills/workers-best-practices`)
+
+## whitebox
+
+- 接到 Workers 写码/评审/配置任务后, 不依赖预训练记忆, 先以项目已安装版本、生成的类型和 Wrangler 兼容性设置为基线。
+- 按任务相关性读取三份参考文档之一: configuration / runtime-patterns / platform-apis。
+- 记忆中缺失的证据, 检索 Cloudflare 官方文档或已安装的 Wrangler schema, 核实 API、配置、运行时行为和限额。
+- 按最佳实践和反模式清单写出代码或给出评审意见 (如缺失日志/追踪时标记)。
+- 用项目现有检查收尾: 绑定或 handler 契约改动做类型检查, 行为改动跑相关运行时测试; 窄改不要求全量 Workers 审计, 保留仓库必需检查。
+
+- 检索优先于预训练: skill 明确声明内置知识可能过时, 一切 API/配置/运行时/限额断言以检索为准; 依赖的外部资源: Cloudflare 文档站 (workers/best-practices 与 directory)、项目已安装的 Wrangler schema。
+- 三份参考文档按需查阅: configuration.md (兼容日期、绑定、生成类型、secrets、日志与追踪)、runtime-patterns.md (流式、请求状态、服务调用、安全)、platform-apis.md (handler 签名、绑定访问、序列化边界)。
+- 反模式清单驱动评审: 内置约 15 条已知反模式及对应后果与首选模式 (如缓冲无界响应、硬编码密钥、Math.random、未挂到 waitUntil 的异步、模块级可变请求状态、明文字符串比对密钥等), 评审时逐项核对。
+- 超出范围的任务显式分流: Durable Objects 转交 durable-objects skill, Workflows 引官方 Rules of Workflows 文档, Wrangler CLI 转交 wrangler skill。

@@ -1,0 +1,9 @@
+# remotion-captions (`remotion-dev/skills/remotion-captions`)
+
+## persona
+
+**tool**: @remotion/captions
+
+**role**: 视频字幕师
+
+**scene**: 视频和录音都做好了, 想让每句话准时出现在画面上时

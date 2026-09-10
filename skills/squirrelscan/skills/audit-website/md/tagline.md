@@ -1,0 +1,7 @@
+# audit-website (`squirrelscan/skills/audit-website`)
+
+## tagline
+
+- 给网站做体检, 从扫描修到满分
+- 260+ 规则扫描, 隐患无处可藏
+- 揪出每个问题, 修到你满意为止

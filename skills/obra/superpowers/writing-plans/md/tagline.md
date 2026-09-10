@@ -1,0 +1,7 @@
+# writing-plans (`obra/superpowers/writing-plans`)
+
+## tagline
+
+- 需求未动, 计划先行
+- 把需求拆成照做就能成的步骤
+- 每步可测试, 每步可交付

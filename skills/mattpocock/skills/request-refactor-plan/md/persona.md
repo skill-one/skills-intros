@@ -1,0 +1,9 @@
+# request-refactor-plan (`mattpocock/skills/request-refactor-plan`)
+
+## persona
+
+**tool**: github
+
+**role**: 重构规划师
+
+**scene**: 想重构一团乱代码、又怕改崩时

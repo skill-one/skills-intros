@@ -1,0 +1,7 @@
+# ubiquitous-language (`mattpocock/skills/ubiquitous-language`)
+
+## tagline
+
+- 一个词一个意思，团队不再各说各话
+- 业务与技术，从此说同一种语言
+- 钉死术语歧义，沟通零误差

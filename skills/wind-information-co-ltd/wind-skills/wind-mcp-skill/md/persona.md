@@ -1,0 +1,9 @@
+# wind-mcp-skill (`wind-information-co-ltd/wind-skills/wind-mcp-skill`)
+
+## persona
+
+**tool**: Wind终端
+
+**role**: 金融数据核查员
+
+**scene**: 需要股价、财报或宏观数据，却不放心凭记忆开口时

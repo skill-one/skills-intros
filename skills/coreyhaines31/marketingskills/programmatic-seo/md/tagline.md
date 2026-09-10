@@ -1,0 +1,7 @@
+# programmatic-seo (`coreyhaines31/marketingskills/programmatic-seo`)
+
+## tagline
+
+- 一套模板, 千页排名, 流量自动滚雪球
+- 用数据批量造页, 让搜索主动找上门
+- 不做凑数薄页, 页页都有真价值

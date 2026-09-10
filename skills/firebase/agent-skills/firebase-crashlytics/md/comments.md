@@ -1,0 +1,10 @@
+# firebase-crashlytics (`firebase/agent-skills/firebase-crashlytics`)
+
+## comments
+
+- user: 第一次接崩溃上报的新手, category: 坑, comment: 装完 SDK 就去读崩溃数据，一片空白。折腾半天才发现要先装 Firebase CLI 的 MCP server 才能查，顺序反了。
+- user: 安卓组五年老哥, category: 妙用, comment: 主动上报非致命异常，上线一周就抓到 3 个"差点变崩溃"的空指针，赶在用户投诉前修了。
+- user: iOS 独立开发, category: 坑, comment: 拿安卓的接入步骤套 iOS，初始化完全对不上。setup 文档是分平台的，先确认自己那份再看。
+- user: 三人小团队 CTO, category: 注意, comment: 只建了 Firebase 项目没注册具体应用，Crashlytics 一直开不了。它要求项目和 Android/iOS 应用两个都有。
+- user: 兼职维护老 App 的, category: 妙用, comment: 用自定义 key 标会员等级，崩溃列表一筛，发现只有付费用户在崩，修复优先级瞬间就不一样了。
+- user: 后端转移动的老兵, category: 启发, comment: 崩溃报告带上用户 ID 和自定义日志，能还原用户崩前几步操作。以前靠用户复述 bug，太被动了。

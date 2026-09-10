@@ -1,0 +1,7 @@
+# verification-before-completion (`obra/superpowers/verification-before-completion`)
+
+## domain
+
+**domain**: 🧪 测试与质量
+
+**reason**: 核心是质量把关: 完成声明前必须跑验证命令拿证据, 杜绝"应该没问题"

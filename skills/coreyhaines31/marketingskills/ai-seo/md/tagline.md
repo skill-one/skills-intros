@@ -1,0 +1,7 @@
+# ai-seo (`coreyhaines31/marketingskills/ai-seo`)
+
+## tagline
+
+- 用户问AI,AI就推荐你
+- 被AI引用,胜过排名靠前
+- 让每一次AI回答,都有你

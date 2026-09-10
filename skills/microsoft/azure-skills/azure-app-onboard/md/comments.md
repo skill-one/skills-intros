@@ -1,0 +1,10 @@
+# azure-app-onboard (`microsoft/azure-skills/azure-app-onboard`)
+
+## comments
+
+- user: 独立开发者, 第一次上云, category: 妙用, comment: 我只有一句点子、没写一行代码, 它直接给我起步项目+架构+部署, 一晚上 demo 就跑在云上了。
+- user: 后端老兵, category: 妙用, comment: 迁 5 年的老项目没重写一行, 它扫出技术栈自动选服务。最值钱的是"被否掉的备选方案"那段理由, 我整段抄进了评审文档。
+- user: 第一次用的新手, category: 坑, comment: 没 az login 就开始, 第一步验证登录直接停住。先在终端跑 az login 再来, 一次顺过。
+- user: 前端转全栈, category: 注意, comment: 它管从 0 到上线, 不管上线后省钱——问怎么降账单会被转去 azure-cost。部署前先看每月预估费用, 点头才动真格。
+- user: 运维老哥, category: 注意, comment: 权限不足别慌, 它会列出缺的角色并附上 az role assignment 命令, 原样贴给管理员就行。MCP 断连时费用估算会缺数据, 批准前看一眼 assumptions。
+- user: 创业公司 CTO, category: 启发, comment: 部署失败它停下来让我选重试/跳过/中止, 不瞎自动重试烧钱。这套"先批再动"的节奏, 我把团队审批流程也照着改了。

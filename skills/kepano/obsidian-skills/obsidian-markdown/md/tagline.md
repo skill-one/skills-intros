@@ -1,0 +1,7 @@
+# obsidian-markdown (`kepano/obsidian-skills/obsidian-markdown`)
+
+## tagline
+
+- 笔记不是孤岛, 而是知识之网
+- 链接即思考, 想法彼此相连
+- 一份笔记, 织成你的第二大脑

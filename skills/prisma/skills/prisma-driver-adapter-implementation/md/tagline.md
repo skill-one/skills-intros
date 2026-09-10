@@ -1,0 +1,7 @@
+# prisma-driver-adapter-implementation (`prisma/skills/prisma-driver-adapter-implementation`)
+
+## tagline
+
+- 数据零失真, 事务零泄漏, 出错可溯源
+- 做数据库与代码之间, 最稳的那座桥
+- 让每一次事务, 精准落地, 干净收尾

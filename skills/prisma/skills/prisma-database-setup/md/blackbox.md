@@ -1,0 +1,9 @@
+# prisma-database-setup (`prisma/skills/prisma-database-setup`)
+
+## blackbox
+
+**function**: 你告诉我用哪种数据库,我直接给你能复制进项目的完整数据库连接配置和出错时的修法。
+
+- input: 「我要给新项目连 PostgreSQL 数据库」, output: 一份完整的 schema 配置 + 初始化代码,复制进项目即可跑通
+- input: 「我的项目原本用 SQLite,想换成 MySQL」, output: 需要修改的配置代码 + 一步步的换库操作清单
+- input: 一段数据库报错信息,如「Error: P1001 Can't reach database server」, output: 排查方向说明和对应的修复代码/配置

@@ -1,0 +1,5 @@
+# higgsfield-marketplace-cards (`higgsfield-ai/skills/higgsfield-marketplace-cards`)
+
+## scenario
+
+新品上架,请摄影师又贵又慢,AI 修的图还总过不了平台审核、点击率上不去?把产品图发我,几分钟生成合规主图、卖点图、场景图全套电商图片,直接拉高转化。📸

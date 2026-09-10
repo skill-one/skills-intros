@@ -1,0 +1,10 @@
+# better-auth-best-practices (`better-auth/skills/better-auth-best-practices`)
+
+## comments
+
+- user: 第一次接 Better Auth 的新手, category: 坑, comment: 表名叫 users,我照表名写了 modelName: "users",登录一直报查不到账号;改成 Prisma 模型名 "user" 才通。它认模型名,不认表名。
+- user: 独立开发者, category: 妙用, comment: 配完环境变量我直接 curl /api/auth/ok,返回 {"status":"ok"} 就确认服务通了,不用写代码排查。每次改完配置先跑这一下再继续。
+- user: 全栈后端, category: 坑, comment: 加 organization 插件后忘重跑 CLI,建组织的接口直接报缺表。现在动 plugins 数组必重跑 npx auth@latest generate 和 migrate。
+- user: 高并发服务维护者, category: 注意, comment: 接了 Redis 做 secondaryStorage 后,数据库 session 表一直是空的——session 默认全进 Redis。想同时落库要显式开 storeSessionInDatabase: true。
+- user: 兼职测试的前端, category: 坑, comment: 测改邮箱功能时,以为验证码会发到新邮箱,盯着新邮箱等到超时。实际是先发确认邮件到旧邮箱,点了确认新邮箱才收到,写用例前要知道这个顺序。
+- user: 在意包体积的 H5 开发, category: 妙用, comment: 之前从 "better-auth/plugins" 导入两个插件,构建体积降不下来;改成按路径如 "better-auth/plugins/two-factor" 导入,包小了一截。

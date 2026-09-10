@@ -1,0 +1,10 @@
+# wrangler (`cloudflare/skills/wrangler`)
+
+## comments
+
+- user: 第一次部署 Workers 的新手, category: 坑, comment: 我在控制台手改了环境变量, 后面 `wrangler deploy` 一跑全被覆盖回配置文件的旧值。控制台改动必须先同步回 wrangler.jsonc 再部署。
+- user: 半夜值班的后端, category: 注意, comment: `wrangler secret put` 会立即生成新版本并上线, 不是只存个值。想改完审查后再发布, 得走 `wrangler versions secret` 流程, 我直接推过半成品。
+- user: 运维老哥, category: 坑, comment: 回滚代码后以为全恢复了, 结果 KV 里的脏数据还在——回滚只回 Worker 代码, 绑定的资源和数据不跟着回, 数据得自己修。
+- user: 独立开发者, category: 妙用, comment: 配置字段记不清别去搜旧博客, 直接翻 node_modules 里 wrangler 的 config-schema.json, 按项目实际装的版本查, 不会被过期文档带偏。
+- user: 全栈程序员, category: 注意, comment: 本地 dev 的 Worker 也可能连的是真实远程资源, 测写入前先核对 binding 指向本地还是线上, 我差点把测试数据写进生产 KV。
+- user: 从 Vercel 搬家的前端, category: 启发, comment: `deploy --dry-run` 通过只证明构建打包 OK, 远端资源是否可用另说。我现在改完配置必做 dry-run + 真机冒烟, 两道关都过才算完。

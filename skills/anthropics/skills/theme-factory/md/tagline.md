@@ -1,0 +1,7 @@
+# theme-factory (`anthropics/skills/theme-factory`)
+
+## tagline
+
+- 内容你定, 颜值我来
+- 十款主题即选即用, 更可量身定制
+- 一键换装, 页页都是专业范

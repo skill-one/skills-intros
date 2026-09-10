@@ -1,0 +1,7 @@
+# distill (`pbakaus/impeccable/distill`)
+
+## tagline
+
+- 删繁就简, 本质自现
+- 设计做减法, 用户少费力
+- 每个元素, 都该有存在的理由

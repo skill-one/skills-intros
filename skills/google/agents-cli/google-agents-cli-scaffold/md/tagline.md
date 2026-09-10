@@ -1,0 +1,7 @@
+# google-agents-cli-scaffold (`google/agents-cli/google-agents-cli-scaffold`)
+
+## tagline
+
+- 一条命令,智能体项目即刻起跑
+- 重复配置我包办,你只管创意
+- 今天搭原型,明天就上线

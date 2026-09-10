@@ -1,0 +1,7 @@
+# remotion-to-hyperframes (`heygen-com/hyperframes/remotion-to-hyperframes`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 本质是把 Remotion (React) 代码移植/重构为 HyperFrames (HTML+GSAP), 属于框架间的代码迁移工作。

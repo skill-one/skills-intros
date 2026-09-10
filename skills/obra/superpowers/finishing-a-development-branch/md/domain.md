@@ -1,0 +1,7 @@
+# finishing-a-development-branch (`obra/superpowers/finishing-a-development-branch`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 专注 git 分支收尾: 测试验证、合并/PR、工作区清理

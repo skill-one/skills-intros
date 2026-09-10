@@ -1,0 +1,5 @@
+# google-agents-cli-observability (`google/agents-cli/google-agents-cli-observability`)
+
+## scenario
+
+Agent 上线后突然答错、或慢到卡顿, 你只能盯着日志干瞪眼瞎猜? 我帮你给 Agent 装上"黑匣子 + 行车记录仪"✈️: 哪一步慢、哪步出错、问了什么答了什么, 全程看得分明, 排障不再靠猜。

@@ -1,0 +1,7 @@
+# find-animation-opportunities (`emilkowalski/skills/find-animation-opportunities`)
+
+## tagline
+
+- 该不该动, 我来把关
+- 只提案真正值得动的瞬间
+- 克制动效, 精确到毫秒

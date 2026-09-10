@@ -1,0 +1,7 @@
+# google-agents-cli-observability (`google/agents-cli/google-agents-cli-observability`)
+
+## tagline
+
+- 让智能体的每一步,都有迹可循
+- 一眼看清 AI 决策,延迟报错秒定位
+- 上线即监控,生产问题不再盲查

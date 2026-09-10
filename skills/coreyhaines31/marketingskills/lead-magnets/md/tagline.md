@@ -1,0 +1,7 @@
+# lead-magnets (`coreyhaines31/marketingskills/lead-magnets`)
+
+## tagline
+
+- 一份好资料,换一批精准客户
+- 让访客心甘情愿留下邮箱
+- 把内容价值,变成获客名单

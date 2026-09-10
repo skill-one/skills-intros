@@ -1,0 +1,5 @@
+# higgsfield-soul-id (`higgsfield-ai/skills/higgsfield-soul-id`)
+
+## scenario
+
+拍视频要反复出镜、请团队、租场地——费时费钱;普通 AI 生成,脸又总不像你。我只需 5–20 张照片,为你训练专属数字分身,之后生成任何图片、视频,脸始终是你。一次训练,终身复用 🎬

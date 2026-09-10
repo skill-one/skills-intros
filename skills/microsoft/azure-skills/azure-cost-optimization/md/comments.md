@@ -1,0 +1,10 @@
+# azure-cost-optimization (`microsoft/azure-skills/azure-cost-optimization`)
+
+## comments
+
+- user: 运维老哥, category: 坑, comment: 拿 Contributor 账号跑, 列资源没问题, 一查费用就报权限错。查账单要单独的 Cost Management Reader 角色, 跑之前先找管理员加好。
+- user: 三人初创技术合伙人, category: 妙用, comment: azqr 扫出 4 块删了 VM 却忘删的磁盘和 2 个空闲公网 IP, 一直在偷偷计费。报告每项带 Portal 直达链接, 核对后删掉, 月省一百多刀。
+- user: 第一次用的新手, category: 注意, comment: 先装 azqr、az 的 costmanagement 扩展并 az login, 否则第一步环境检查就过不去。报告里 💰 是真账单数据, 📊 是估算, 汇报给老板前先分清。
+- user: 重度用 Redis 的后端, category: 妙用, comment: 提问时带上「Redis」三个字, 会走专门分析路径。我的缓存 CPU 峰值不到 10%, 它直接给了降 SKU 建议加官方价格对比, 不用自己翻定价页。
+- user: 兼职 FinOps 的财务, category: 注意, comment: output 目录存了原始查询结果 JSON, 我直接归档当审计凭证, 比口头汇报硬气。另外它绝不自动删资源, 所有删除命令都要自己确认执行, 正合我们的变更流程。
+- user: 刚接手祖传云资源的人, category: 启发, comment: 利用率只看最近 14 天, 我们月底才跑批的机器被建议降配。有低频大任务的工作负载, 降配建议得对照自己的任务日历再核一遍再动手。

@@ -1,0 +1,7 @@
+# playwright-cli (`microsoft/playwright-cli/playwright-cli`)
+
+## tagline
+
+- 你说网址, 剩下我来
+- 会点会填会测, 网页操作全包
+- 让浏览器替你加班

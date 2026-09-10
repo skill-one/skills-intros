@@ -1,0 +1,7 @@
+# web-artifacts-builder (`anthropics/skills/web-artifacts-builder`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 核心是初始化 React 项目、编写前端代码并打包为 HTML 产物, 属于典型开发编程场景

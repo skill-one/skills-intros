@@ -1,0 +1,13 @@
+# music-to-video (`heygen-com/hyperframes/music-to-video`)
+
+## whitebox
+
+- Step 0: 确立唯一音乐源并 init 项目 (npx hyperframes init), 音轨落位 assets/bgm.mp3 — 用户没给音频则经 /media-use 按情绪生成
+- Step 1: analyze-beatgrid.py 对音轨做唯一一次分析, 产出 audiomap.json (能量相位/onset/rolls/静音/hard_stops/key_moments/短语/bpm/时长)
+- Step 2+3: 按音乐真实变化把轨道切成 ~1-6 个 frame 写 STORYBOARD.md 骨架, 再补全计划 (选品牌预设、逐帧定模板/素材处理+文案), validate-plan.mjs 校验通过后交用户审批 (自主模式则公告后继续)
+- Step 4: 每个 frame 派发一个 frame-worker 子代理 (能并行则并行), 各自产出自包含的 compositions/frames/NN-<frame_id>.html
+- Step 5+6: assemble-index.mjs 拼装 index.html → 在项目上跑 hyperframes check --snapshots 过检并自查快照 → 用户批准后 hyperframes render 输出 renders/video.mp4
+
+- 单一权威节拍分析器: analyze-beatgrid.py (Python 3 + librosa + numpy + soundfile) 只跑一次, audiomap.json 是全流程唯一时间基准, 禁止再用别的工具或耳朵重测; 其中仅 bpm/beats_sec 需判断可信度 — 真有节奏的音乐按节拍硬切 (beat_cut), 平缓音乐视网格为外加节拍器, 改按乐句推进 (phrase_flow)
+- 一帧一文件 + 子代理隔离: 每个 frame = 一个自包含 composition; frame-worker 收到指定 STORYBOARD 块后把 audiomap 锚点换算成帧内局部时间 (local_t = track_t − span 起点), 组间 0ms 硬切, 写 seek-safe 文件且不跑 hyperframes CLI (项目尚未拼装, CLI 只对装好的项目有效); 帧数跟随不同处理手法数而非节拍数, 密度加在帧内 group 里
+- 确定性装配 + 校验链: validate-plan.mjs (计划↔audiomap 对账, 时长/铺满/缺 src 为硬错误) → assemble-index.mjs (按累积 data-start 引用帧文件、BGM 挂 track 11、帧间硬切、无转场注入器) → hyperframes check (结构 lint + 无头浏览器运行时/布局/运动/对比度门禁 + 快照) → render (-q draft, 30fps MP4); 唯二用户门禁在 Step 3 计划与 Step 6 渲染, 模板与动效基元目录 (GSAP) 为内容地基, 零素材也能出片

@@ -1,0 +1,5 @@
+# higgsfield-websites (`higgsfield-ai/skills/higgsfield-websites`)
+
+## scenario
+
+深夜灵感冒出,却不会写代码,点子只能烂在备忘录里?🎯 我把想法变成真正上线的网站、应用或游戏:设计、画面素材、发布上线全包,几天给你一个能分享给朋友的网址。说清你想要什么,剩下的交给我。

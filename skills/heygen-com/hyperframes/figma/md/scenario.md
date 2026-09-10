@@ -1,0 +1,5 @@
+# figma (`heygen-com/hyperframes/figma`)
+
+## scenario
+
+设计稿在 Figma,做视频却要手抄动效、逐帧截图,改个品牌色还得全盘返工——痛。把 Figma 链接发我:素材、配色、组件、动效一次导入成可渲染动画,改一处品牌色,全局自动更新。🎬

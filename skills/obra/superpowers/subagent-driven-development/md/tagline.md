@@ -1,0 +1,7 @@
+# subagent-driven-development (`obra/superpowers/subagent-driven-development`)
+
+## tagline
+
+- 每任务专职代理, 每步独立过审
+- 不提问不搁浅, 计划一路交付到底
+- 分工隔离, 步步把关, 质量稳

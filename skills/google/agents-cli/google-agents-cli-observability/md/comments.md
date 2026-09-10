@@ -1,0 +1,10 @@
+# google-agents-cli-observability (`google/agents-cli/google-agents-cli-observability`)
+
+## comments
+
+- user: 刚接手同事项目的后端, category: 坑, comment: 先 deploy 过的项目再跑 infra 会状态冲突，只能删了重部署，会话全丢。二手项目务必先 infra 后 deploy。
+- user: 金融行业做合规的工程师, category: 注意, comment: 部署后 GCS/BigQuery 默认存完整 prompt 和回复，且不受 trace 内容开关控制。对话涉敏就去掉上传配置，先过合规再开。
+- user: SRE 老哥, category: 妙用, comment: 零埋码，Trace explorer 展开调用链，慢的不是模型是某个 execute_tool，直接优化它，比翻日志快。
+- user: 第一次上线 LLM 应用的新手, category: 坑, comment: 想让 trace 带内容，开关设成 true 是无效值，静默回退成不记录。只认 SPAN_ONLY、SPAN_AND_EVENT 这类枚举。
+- user: 爱接第三方平台的全栈, category: 注意, comment: 接 AgentOps 后原生 trace 断流了——它替换而非并存。想两边都留就换 Phoenix 这类自托管平台。
+- user: 精打细算的独立开发者, category: 启发, comment: 账单教会我别四层全开：trace 常开足够日常排障，内容捕获和 BigQuery 分析按需开，保留期设短，成本立刻降下来。

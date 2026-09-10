@@ -1,0 +1,13 @@
+# just-scrape (`scrapegraphai/just-scrape/just-scrape`)
+
+## whitebox
+
+- 接到任务后按升级模式选命令: 没有 URL 先 search, 有 URL 抓内容用 scrape, 要结构化数据用 extract, 批量整站用 crawl, 定时追踪变化用 monitor
+- 开工前体检: just-scrape validate 验证 CLI 与 SGAI_API_KEY, just-scrape credits 确认剩余额度
+- 再用一次最小请求 (如抓 example.com) 验证链路通, 才开始真实工作
+- 执行目标命令, 加 --json 并用 shell 重定向把结果写入 .just-scrape/ 目录存档
+- 用 jq / rg / head 增量读取结果文件, 读取前先查 .just-scrape/ 现有文件和 history, 不重复抓取
+
+- 命令路由 (升级模式): 按「有无 URL / 是否要结构化 / 是否批量 / 是否周期性」映射到 search → scrape → extract → crawl → monitor 五个子命令, scrape 出原始格式 (markdown/html/截图等), extract 专出结构化 JSON
+- AI 结构化转换: 依赖 ScrapeGraph AI 的模型 API (默认 https://v2-api.scrapegraphai.com, 需 SGAI_API_KEY 环境变量), 用 -p 自然语言提示词 + 可选 --schema JSON Schema 强约束输出形状
+- 失败回退与额度控制: 页面抓空时按 --mode js --stealth --scrolls 逐级加码重试; 批量任务前先查 credits, 且 search -p 可在搜索结果上直接抽取, 避免二次抓取浪费额度

@@ -1,0 +1,7 @@
+# remotion-render (`remotion-dev/skills/remotion-render`)
+
+## tagline
+
+- 一行指令, 成片即刻交付
+- 代码到视频, 一步到位
+- 帧帧精准, 专业渲染

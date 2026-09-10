@@ -1,0 +1,7 @@
+# colorize (`pbakaus/impeccable/colorize`)
+
+## tagline
+
+- 告别灰暗, 每一抹色彩都有深意
+- 克制用色, 让界面有温度有个性
+- 不只是好看, 是有目的的色彩

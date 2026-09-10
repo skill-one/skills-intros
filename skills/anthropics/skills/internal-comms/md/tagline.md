@@ -1,0 +1,7 @@
+# internal-comms (`anthropics/skills/internal-comms`)
+
+## tagline
+
+- 内部汇报难题,一次写到位
+- 周报简报 FAQ,统统交给我
+- 让团队消息,清晰有力传达

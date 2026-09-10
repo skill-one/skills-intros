@@ -1,0 +1,13 @@
+# higgsfield-generate (`higgsfield-ai/skills/higgsfield-generate`)
+
+## whitebox
+
+- Bootstrap: 确认 higgsfield CLI 在 PATH 上 (缺失则跑 curl 安装脚本), 并用 higgsfield account status 校验登录态, 过期则等用户交互式登录
+- 选模型: 按任务意图套默认映射 (图像→GPT Image 2, 视频→Seedance 2.0, 音频→Seed Audio 1.0 等), 用 higgsfield model list --json | jq 把显示名解析成 job_set_type ID
+- 传输入: 媒体 flag 直接收本地路径或 UUID, CLI 自动上传路径、自动区分 job id 与 upload id, 无需预上传
+- 一步提交: higgsfield generate create <job_set_type> [媒体/参数 flags] --wait, 阻塞至任务终态并直接在 stdout 打印结果
+- 交付: 只输出生成物的主 URL + 一句话摘要 (模型、时长等), 不暴露内部 ID / JSON / 原始成本
+
+- 全链路封装 CLI: 所有操作走 higgsfield 单个二进制 (curl 脚本安装), 不直连模型 API; 机器可读输出靠 --json + jq; 底层实际调用 Higgsfield 托管的各模型 (GPT Image 2、Seedance 2.0、Nano Banana 2、Seed Audio 1.0 等)
+- Schema 驱动的参数校验: 不确定参数时用 higgsfield model get <job_set_type> --json 查一次, 只传必需项, 其余吃 schema 默认值; 服务端对非致命值返回 adjustments 自动矫正 (如 aspect_ratio=99:99 就近映射), 对非法声明参数返回结构化错误
+- 发现护栏与意图路由: 找功能/模型时先跑无过滤全量模型列表再核对 job_set_type 命名, 不只信语义搜索或 --help; 按任务意图+所需输入而非输出类别路由 (如视频质量分析路由到 brain_activity/Virality Predictor, 它是视频进文本出的分析, 不是文本生成模型)

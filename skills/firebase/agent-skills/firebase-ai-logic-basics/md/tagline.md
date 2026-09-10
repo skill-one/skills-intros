@@ -1,0 +1,7 @@
+# firebase-ai-logic-basics (`firebase/agent-skills/firebase-ai-logic-basics`)
+
+## tagline
+
+- 零后端，让应用直连 Gemini AI
+- 从原型到上线，AI 接入一步到位
+- 文字图像语音，多模态一站集成

@@ -1,0 +1,5 @@
+# just-scrape (`scrapegraphai/just-scrape/just-scrape`)
+
+## scenario
+
+盯竞品价格、追商品库存,天天手动刷新、复制粘贴到手抽筋?🤯 我能自动搜索、抓取网页,把信息整理成结构化数据,还能定时监控页面变化,一有动静就通知你。你只管看结果。

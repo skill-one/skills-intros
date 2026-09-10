@@ -1,0 +1,7 @@
+# critique (`pbakaus/impeccable/critique`)
+
+## tagline
+
+- 总监级眼光, 审出设计真问题
+- 不客套, 每条批评都带改法
+- 一眼识破 AI 味, 评分说话

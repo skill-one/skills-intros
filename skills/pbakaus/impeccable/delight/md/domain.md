@@ -1,0 +1,7 @@
+# delight (`pbakaus/impeccable/delight`)
+
+## domain
+
+**domain**: 🎨 设计多媒体
+
+**reason**: 为界面添加微交互、动画与个性, 本质是 UI 体验设计打磨

@@ -1,0 +1,9 @@
+# imagegen-frontend-mobile (`leonxlnx/taste-skill/imagegen-frontend-mobile`)
+
+## blackbox
+
+**function**: 把你的 App 想法直接画成一套高级感、风格统一的手机界面设计图(出的是图片,不是代码)。
+
+- input: 「帮我设计一个冥想 App 的欢迎页 + 首页」, output: 两张放在干净手机样机里的界面设计图,构图呼吸感强、文字清晰可读,颜色克制有质感
+- input: 「一个记账 App 的 4 屏引导流程」, output: 4 张顺序连贯、视觉语言完全统一的引导页设计图,能看出真实的用户操作动线
+- input: 「这个健身 App 首页改成 iOS 深色风格」, output: 一张重新设计后的深色 iOS 风格首页界面图,层级和导航逻辑保持原生 App 的真实感

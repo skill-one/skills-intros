@@ -1,0 +1,13 @@
+# firebase-crashlytics (`firebase/agent-skills/firebase-crashlytics`)
+
+## whitebox
+
+- 先校验前置条件: 必须已有 Firebase 项目和对应的 Firebase 应用 (Android 或 iOS), 否则无法开通 Crashlytics
+- 按用户平台加载对应参考文档 (references/android_setup.md 或 references/ios_setup.md), 指导在应用代码中接入 Crashlytics SDK
+- 如需让崩溃报告更有用, 指导调用 SDK 能力: 自定义 key、自定义日志、设置用户标识、上报非致命异常
+- 如需查看采集到的崩溃数据, 通过 Firebase CLI 内置的 MCP server 读取
+- 更细粒度的定制需求, 指向官方文档中对应平台的 Customize Crash Reports 页面
+
+- 平台路由分发: skill 本体只存流程骨架和文档索引, 具体接入步骤按平台拆分到 references/ 目录下的 android_setup.md / ios_setup.md, 触发时按需加载
+- 崩溃数据读取依赖外部工具链: Firebase CLI 的 MCP server (工具调用协议服务, 让外部程序能以标准方式读写 Firebase 数据); CLI 可经 npx -y firebase-tools@latest 调用, 但按 skill 定义并非硬性依赖
+- 唯一声明的业务依赖是 Firebase 侧资源 (项目 + 应用 + SDK), SKILL.md 未涉及任何模型 API 或额外第三方库

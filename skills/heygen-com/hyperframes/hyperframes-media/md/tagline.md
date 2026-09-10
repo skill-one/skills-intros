@@ -1,0 +1,7 @@
+# hyperframes-media (`heygen-com/hyperframes/hyperframes-media`)
+
+## tagline
+
+- 配音配乐音效字幕, 一个引擎全搞定
+- 文字秒变专业配音, 无需录音棚
+- 让每一帧画面, 都有声音

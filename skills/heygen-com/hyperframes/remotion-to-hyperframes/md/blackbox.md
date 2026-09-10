@@ -1,0 +1,9 @@
+# remotion-to-hyperframes (`heygen-com/hyperframes/remotion-to-hyperframes`)
+
+## blackbox
+
+**function**: 把你已有的 Remotion (React 写的) 视频源码, 一比一搬成 HyperFrames (HTML) 格式, 画面效果与原视频保持一致——只做这一件事, 且只认 Remotion 源码。
+
+- input: 一个 Remotion 项目的源码文件夹 (React 视频代码), output: 一个能直接打开播放的 HyperFrames HTML 文件, 动画、转场、音频的时序与原视频一致; 另附一份说明文档, 写清少数无法完全对等、做了近似处理的地方
+- input: 一个用 React 状态逻辑 (useState/useEffect) 驱动动画的 Remotion 项目, output: 一条明确的「无法翻译」答复, 而不是硬翻出一个播放不对的文件, 并附替代做法建议
+- input: 「帮我把这个 After Effects 工程转成 HyperFrames」或「照着我的 Remotion 视频重新做一个」, output: 告知这不在范围内——不会反向导出、也不接非 Remotion 源码, 并指出正确的入口是按新视频来做

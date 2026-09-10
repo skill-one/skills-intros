@@ -1,0 +1,9 @@
+# setup-ts-deep-modules (`mattpocock/skills/setup-ts-deep-modules`)
+
+## blackbox
+
+**function**: 给 TypeScript 仓库立规矩:每个包只暴露几个入口文件,任何绕过入口、直接引用包内部代码的写法都会在跑检查命令时报错。
+
+- input: 一个 TypeScript 仓库的路径, output: 改好的仓库:多了 1 个可复制的示例包(看完即懂怎么写)、1 份包规范说明,且项目原有的统一检查命令会自动拦下越界 import,无需你另跑新命令
+- input: 一段越界引用,比如在 tests 里写 import { x } from "../lib/内部文件", output: 检查命令报错,明确指出哪条 import 违规、在哪个文件;删掉后检查恢复通过
+- input: 已带类似检查配置的仓库(不想覆盖旧配置), output: 新规矩并入现有配置而非覆盖,并逐条告诉你加了什么

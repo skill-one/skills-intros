@@ -1,0 +1,7 @@
+# web-artifacts-builder (`anthropics/skills/web-artifacts-builder`)
+
+## tagline
+
+- 一句想法,交付成品级网页
+- 复杂应用,装进一个文件
+- 真组件真交互,拒绝花架子

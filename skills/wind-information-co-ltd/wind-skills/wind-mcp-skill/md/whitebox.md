@@ -1,0 +1,12 @@
+# wind-mcp-skill (`wind-information-co-ltd/wind-skills/wind-mcp-skill`)
+
+## whitebox
+
+- 定路由：按标的类型（股票/基金/指数/债券/公告文档/宏观/跨标的聚合）匹配 7 个 server_type 之一，只读该领域契约文件确定参数
+- 发命令：cd 到 skill 目录，通过本地 CLI 执行 node scripts/cli.mjs call <server_type> <tool_name> '<params_json>'，默认串行
+- 读回执：成功解析 content[0].text 里的数据对象；失败拿到 {ok:false, code, message} 错误信封，按 code/message 修正参数后可重试（重试前过一遍自检清单）
+- 收口：只基于 Wind 返回值作答，附数据来源声明，输出完成状态（DONE / DONE_WITH_LIMITS / NO_RESULTS / OUT_OF_SCOPE 等）
+
+- 契约驱动，不靠记忆：参数名和字段值一律取自对应领域契约（references/stock.md 等），不读其它领域契约、不外推；标的/意图不落在任何一行时直接判 OUT_OF_SCOPE，不伪装支持
+- 错误信封 + 自检重试：本地/参数/网络错误有明确 code（AUTH_ERROR、PARAM_VALIDATION_ERROR 等），接口层固定 backend_error；修正前逐条自检（不改 server_type/tool_name、只按 message 修指定字段）；批量调用先发探针，探针失败立即终止整批，避免错误扩散
+- 外部依赖：本地 Node CLI（scripts/cli.mjs）连 Wind 的 7 个 MCP 服务取数，API Key 需实跑验证；兜底工具 wind-alice 仅在所有专项路径都失败且征得用户同意后才转交

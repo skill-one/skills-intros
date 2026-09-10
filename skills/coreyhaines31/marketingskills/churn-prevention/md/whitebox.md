@@ -1,0 +1,13 @@
+# churn-prevention (`coreyhaines31/marketingskills/churn-prevention`)
+
+## whitebox
+
+- 加载产品上下文: 先探测 .agents/product-marketing.md (或 .claude/ 同名文件、旧版 product-marketing-context.md), 存在则读取复用
+- 补齐缺口信息: 流失率、账单平台、用户使用数据、B2B/B2C 等约束 — 上下文已覆盖的不重复问
+- 分流: 自愿流失 (用户主动取消) → 设计/优化取消流程; 非自愿流失 (扣款失败) → 配置 dunning (催缴)
+- 产出交付物: 取消流程按 Trigger→退订调研→动态 offer→确认→取消后处理 的固定序列; dunning 按 pre-dunning→智能重试→催缴邮件→宽限期→硬取消
+- 附度量与迭代: 挽留率 25-35% 等指标基线、队列分析、单变量 A/B 测试方案
+
+- 上下文前置加载: 按固定路径顺序探测产品上下文文件, 读到则只追问未覆盖项, 减少来回提问
+- 原因→offer 条件映射: 退订调研 (单选, 5-8 个原因) 的答案决定动态挽留 offer — 太贵→20-30% 折扣 2-3 月、用得少→暂停 1-3 月、缺功能→路线图+时间表、技术问题→升级支持, 拒绝一刀切折扣; offer 后保留始终可见的『继续取消』选项 (无暗黑模式)
+- 信号加权健康分 + 外部工具: 登录频率×0.30 + 功能使用×0.25 + 支持情绪×0.15 + 账单健康×0.15 + 互动×0.15 → 0-100 分, 分档触发主动干预 (无强制扣款端依赖: Stripe Smart Retries / 卡片自动更新); A/B 测试用 PostHog feature flag 分流 + 漏斗分析, 催缴邮件走 customer-io / Stripe 内置; 深入细节委托给 references/cancel-flow-patterns.md、references/dunning-playbook.md 及 emails/paywalls/ab-testing 等关联技能

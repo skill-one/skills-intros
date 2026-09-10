@@ -1,0 +1,7 @@
+# prisma-postgres (`prisma/skills/prisma-postgres`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 核心是数据库创建、CLI 命令与 API/SDK 集成, 属典型开发编程场景

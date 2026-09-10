@@ -1,0 +1,5 @@
+# lead-magnets (`coreyhaines31/marketingskills/lead-magnets`)
+
+## scenario
+
+你发了篇爆文，几千人看完就走，一个邮箱都没留下——流量来了又走，每次都从零开始。我能帮你策划"钩子"型赠品（清单、模板、指南），设计留资页面和话术，让陌生访客变成能反复触达的邮箱名单。📩

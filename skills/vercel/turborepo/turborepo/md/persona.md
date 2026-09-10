@@ -1,0 +1,9 @@
+# turborepo (`vercel/turborepo/turborepo`)
+
+## persona
+
+**tool**: turbo
+
+**role**: 构建提速师
+
+**scene**: 十几个包的 monorepo 改了一处、CI 跑得越来越慢时

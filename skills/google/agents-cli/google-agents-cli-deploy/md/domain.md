@@ -1,0 +1,7 @@
+# google-agents-cli-deploy (`google/agents-cli/google-agents-cli-deploy`)
+
+## domain
+
+**domain**: 🛡️ 运维与安全
+
+**reason**: 技能核心是部署发布与云基础设施 (Agent Runtime/Cloud Run/GKE、CI/CD、密钥配置、回滚), 不涉及写代码。

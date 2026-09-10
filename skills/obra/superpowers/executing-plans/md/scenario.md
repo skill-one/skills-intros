@@ -1,0 +1,5 @@
+# executing-plans (`obra/superpowers/executing-plans`)
+
+## scenario
+
+你辛苦写好开发计划, 执行时却步步踩坑: AI 不看文档瞎改, 跳过验证, 遇到问题硬猜, 改完一地鸡毛 🔥. 我会先审计划找漏洞, 再逐条执行、逐步验证, 遇阻立即停下问你, 绝不瞎猜. 你的计划, 稳稳落地.

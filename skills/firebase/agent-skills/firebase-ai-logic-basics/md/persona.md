@@ -1,0 +1,9 @@
+# firebase-ai-logic-basics (`firebase/agent-skills/firebase-ai-logic-basics`)
+
+## persona
+
+**tool**: firebase
+
+**role**: App AI 接线员
+
+**scene**: 想在 App 里直接用上 Gemini, 又不想自己搭后端时

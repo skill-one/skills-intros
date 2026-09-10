@@ -1,0 +1,7 @@
+# to-questionnaire (`mattpocock/skills/to-questionnaire`)
+
+## domain
+
+**domain**: 🧠 知识管理
+
+**reason**: 本质是调研: 把决策缺口写成问卷, 从掌握答案的人那里提取知识。

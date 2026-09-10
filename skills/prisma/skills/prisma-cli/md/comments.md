@@ -1,0 +1,10 @@
+# prisma-cli (`prisma/skills/prisma-cli`)
+
+## comments
+
+- user: 全栈班学员，用 Bun 开发, category: 坑, comment: 踩过：bunx prisma init 没加 --bun，CLI 悄悄回落到 Node 跑，排查半天。Bun 项目每条命令都写 bunx --bun prisma。
+- user: 前端转全栈，跟旧教程踩坑, category: 坑, comment: 照旧教程以为 migrate dev 会自动更新类型、灌 seed，结果类型是旧的、表是空的。新版要手动补 prisma generate 和 db seed。
+- user: 运维老哥, category: 注意, comment: 上线只跑 migrate deploy，用 migrate status 查漏。migrate reset 会清空整库，生产服务器上想都别想。
+- user: 后端老兵, category: 妙用, comment: 改 schema 前先跑 migrate diff 加 --script，直接吐出将要执行的 SQL，审完再动手，贴进 code review 一目了然。
+- user: 让 AI 助手管库的独立开发者, category: 注意, comment: 让 AI 跑 reset 被当场拦下，它要求用户明确说同意，之前聊过的「没问题」不算数。危险命令前必先问，是保护不是卡你。
+- user: 赶毕设的学生党, category: 妙用, comment: prisma dev 一条命令起本地 Postgres，不用装 Docker；再开 prisma studio 网页里直接看表改数据，毕设调试快多了。

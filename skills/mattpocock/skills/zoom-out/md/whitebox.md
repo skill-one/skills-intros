@@ -1,0 +1,12 @@
+# zoom-out (`mattpocock/skills/zoom-out`)
+
+## whitebox
+
+- 用户手动触发 zoom-out (skill 标记 disable-model-invocation, 模型不会自动调用)
+- skill 将固定提示注入 agent: 我对这块代码不熟, 请上升一层抽象
+- agent 换用更高层视角, 梳理相关模块与调用方 (callers) 的关系
+- agent 按项目领域术语表 (domain glossary) 的词汇, 输出一张模块地图
+
+- 固定提示词模板: skill 本体就是一句话指令, 直接交给 agent, 无任何解析/转换/校验逻辑
+- 零外部依赖: 不调用任何外部工具、库或模型 API, 全靠 agent 自身的代码探索与理解能力
+- 术语锚定: 要求输出必须采用项目 domain glossary 的词汇, 保证地图与项目语言一致

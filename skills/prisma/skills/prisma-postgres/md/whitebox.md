@@ -1,0 +1,13 @@
+# prisma-postgres (`prisma/skills/prisma-postgres`)
+
+## whitebox
+
+- 接收任务后, 先与 "When to Apply" 清单匹配: Console 建库 / create-db 即时供给 / 本地项目连接 / Management API / SDK 集成
+- 按 Rule Categories 优先级定位工作流: create-db-cli 和 management-api 是 CRITICAL, SDK 和 Console 是 HIGH
+- 读取 references/ 下对应规则文件, 获取精确命令、参数与 auth 流程
+- 输出可直接执行的命令或配置 (如 npx create-db@latest、prisma postgres link、api.prisma.io/v1 调用)
+- 附加约束提醒: 一次性连接串和 token 立即保存、临时库 ~24h 自动删除、销毁命令需 --confirm <id>
+
+- 优先级路由: 四类规则各带前缀 (create-db-cli / management-api / management-api-sdk / console-and-connections), CRITICAL 优先于 HIGH, 决定先应用哪套规则
+- 主文档只做索引不做细节, 细节按需下沉加载 references/*.md 四个文件; 官方策略: 快速上手先 create-db-cli.md, 程序化供给切 management-api.md 或 management-api-sdk.md
+- 外部依赖 (全部来自 SKILL.md): npx create-db@latest (别名 create-pg/create-postgres, 含 create()/regions() 编程接口); @prisma/cli (database create/list/connection/usage/backup); prisma postgres link; Management API (https://api.prisma.io/v1, OpenAPI 文档在 /doc 与 /swagger-editor); npm 包 @prisma/management-api-sdk (createManagementApiClient 用已有 token, createManagementApiSdk 处理 OAuth + token 刷新)

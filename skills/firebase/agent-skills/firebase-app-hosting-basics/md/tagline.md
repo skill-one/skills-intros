@@ -1,0 +1,7 @@
+# firebase-app-hosting-basics (`firebase/agent-skills/firebase-app-hosting-basics`)
+
+## tagline
+
+- 代码一推, 全栈应用即刻上线
+- 零配置托管 SSR, 部署快如闪电
+- 连接 GitHub, 每次提交自动上线

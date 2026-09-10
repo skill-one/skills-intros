@@ -1,0 +1,7 @@
+# hyperframes-media (`heygen-com/hyperframes/hyperframes-media`)
+
+## domain
+
+**domain**: 🎨 设计多媒体
+
+**reason**: 专做音视频素材: 配音 TTS、背景音乐与音效、字幕/卡拉OK、转写与抠图, 服务视频/多媒体制作。

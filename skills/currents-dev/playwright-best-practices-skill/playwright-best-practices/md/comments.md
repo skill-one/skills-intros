@@ -1,0 +1,10 @@
+# playwright-best-practices (`currents-dev/playwright-best-practices-skill/playwright-best-practices`)
+
+## comments
+
+- user: 修过三年 flaky 的测试开发, category: 坑, comment: 以前 sleep(3000) 满天飞, CI 十次挂三次。把显式等待全换成断言自动等待后, 同一套用例连跑两周零失败。
+- user: 第一次写 E2E 的前端, category: 坑, comment: 照 DevTools 复制 .btn-lg 这类 class 当选择器, 前端一改样式测试全红。换成按角色加文案定位后, 页面改版也没再挂过。
+- user: 管 CI 的运维老哥, category: 妙用, comment: 给用例打 @smoke 标签, PR 上用 --grep 只跑十几条冒烟, 夜里才全量回归, 流水线从 40 分钟压到 6 分钟。
+- user: 后端转全栈, category: 妙用, comment: 注册流程要收真实验证码邮件, 根本进不了 CI。改用邮件验证 mock 后 30 秒跑完全流程, 还能随手测验证码过期的报错分支。
+- user: 测试组长, category: 注意, comment: 开并行前先隔离数据: 四个 worker 共用一个测试账号, 下单用例互相清掉购物车, 挂得莫名其妙。按 worker 分账号后失败才归零。
+- user: 接外包的自由开发者, category: 启发, comment: 指南里有 POM vs fixtures 的选型参考。我以前无脑全上 POM, 小项目纯属自找维护负担, 现在先看场景再定结构。

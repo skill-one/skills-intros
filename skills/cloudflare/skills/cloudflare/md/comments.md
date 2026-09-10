@@ -1,0 +1,10 @@
+# cloudflare (`cloudflare/skills/cloudflare`)
+
+## comments
+
+- user: 第一次上云的独立开发者, category: 妙用, comment: 我只说"用户要传图片",没点名任何产品,它直接把 R2(云存储)配上,还提醒要不要搭个数据库存文件的元数据。
+- user: 维护老 Pages 站的前端, category: 注意, comment: 新站它一律推 Workers 而不是 Pages。我老的 Pages 站没动,真要迁就先走迁移指南评估,别直接新建重写。
+- user: 踩过版本回滚坑的全栈, category: 坑, comment: 以为回滚代码就能回到从前——它明说 rollback 不会还原已连资源的数据,新版本写坏库里数据就只能自己修。上线前先备份。
+- user: 后端老兵, category: 启发, comment: 它选型先问"要不要按房间/文档协调状态",一句话分清 Durable Objects 和 D1。这套问法我直接搬进团队评审了。
+- user: 选型的架构师, category: 注意, comment: 想存版本化文件树时,Artifacts 还在闭测,先确认账号有权限再按它设计,不然整个方案要推倒重来。
+- user: 前端转 AI 的新手, category: 妙用, comment: 做站内问答先套 AI Search 现成管线,需要自定义检索才换 Vectorize + Workers AI,预计两周的活半天跑通。

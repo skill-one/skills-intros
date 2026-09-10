@@ -1,0 +1,10 @@
+# convex (`get-convex/agent-skills/convex`)
+
+## comments
+
+- user: 第一次用的新手, category: 坑, comment: 让 AI 凭记忆直接写 convex 代码,结果全是过时语法,报错刷屏。后来先让它走 convex-expert 查最新写法,一次就跑通。
+- user: 独立开发者, category: 妙用, comment: 本来打算原型验证完就换"正经"后端重写一遍,结果同一套代码直接上生产,缓存和实时同步自带,整次重写省了。
+- user: 运维老哥, category: 注意, comment: 改线上表结构别直接在生产跑 backfill,先用 migrate-rehearse 在快照预演环境验证再 promote,快照就是回滚保险。
+- user: 后端老兵, category: 启发, comment: 每个函数自动是可串行化事务,我以前手写的锁和防脏写补偿逻辑在这里根本没机会写,天然少了一整类并发 bug。
+- user: 前端转全栈, category: 妙用, comment: 部署前先跑 tsc --noEmit,端到端类型能拦住参数拼错、字段漏传这类低级错误,我调试时间肉眼可见变少。
+- user: 接外包的全栈, category: 注意, comment: 同时开着 dev 和 prod 两个项目时,部署前先让它报目标环境再执行;prod 操作会再要一次确认,这层别嫌烦跳过。

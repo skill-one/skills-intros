@@ -1,0 +1,7 @@
+# receiving-code-review (`obra/superpowers/receiving-code-review`)
+
+## domain
+
+**domain**: 🧪 测试与质量
+
+**reason**: 专精代码审查反馈的处理: 先验证再实现, 而非盲目照单全收

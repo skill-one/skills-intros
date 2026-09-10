@@ -1,0 +1,7 @@
+# azure-reliability (`microsoft/azure-skills/azure-reliability`)
+
+## domain
+
+**domain**: 🛡️ 运维与安全
+
+**reason**: Azure 云应用的可靠性评估与配置(可用性、容灾、SRE 范畴)

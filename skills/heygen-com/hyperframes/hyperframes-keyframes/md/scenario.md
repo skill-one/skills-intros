@@ -1,0 +1,5 @@
+# hyperframes-keyframes (`heygen-com/hyperframes/hyperframes-keyframes`)
+
+## scenario
+
+想让画面推近、平移出电影感?手动调:一顿一顿、进度条一拖就黑屏、导出才发现末帧穿帮。我专做镜头动画:一套姿态规划推拉摇移,逐帧验证后才交付——顺滑、可回放、不翻车。🎬

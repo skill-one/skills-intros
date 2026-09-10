@@ -1,0 +1,7 @@
+# ad-creative (`coreyhaines31/marketingskills/ad-creative`)
+
+## domain
+
+**domain**: 📈 商业运营
+
+**reason**: 广告创意与投放素材属于市场营销与增长工作

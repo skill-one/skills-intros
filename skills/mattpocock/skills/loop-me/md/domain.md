@@ -1,0 +1,7 @@
+# loop-me (`mattpocock/skills/loop-me`)
+
+## domain
+
+**domain**: 🗂️ 办公效率
+
+**reason**: 通过追问把重复的日常流程拷问成可委派的工作流规范, 属于任务与流程自动化设计

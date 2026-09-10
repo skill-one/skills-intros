@@ -1,0 +1,7 @@
+# receiving-code-review (`obra/superpowers/receiving-code-review`)
+
+## tagline
+
+- 先验证再动手,拒绝盲目附和
+- 有错就改,有理敢驳
+- 逐项核实,每一改都经测试

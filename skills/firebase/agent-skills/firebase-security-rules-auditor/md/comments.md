@@ -1,0 +1,10 @@
+# firebase-security-rules-auditor (`firebase/agent-skills/firebase-security-rules-auditor`)
+
+## comments
+
+- user: 后端安全老兵, category: 妙用, comment: 我以为 hasOnly() 限制了可改字段就安全，审计指出它不管"谁能改"——任何登录用户都能改别人资料。补上属主校验才堵住。
+- user: 第一次用的新手, category: 坑, comment: 拿它排查 firebase deploy 报错，白问一轮。它只审计规则内容，CLI 部署、Auth 配置都不归它管，报错去查官方文档。
+- user: 独立开发者·上线前自查, category: 注意, comment: 把 firestore 和 storage 规则一起贴再评分。我只贴前者得 4 分，补上 storage 才暴露没限字符串长度的 DoS 风险。
+- user: 安全顾问, category: 妙用, comment: 输出的 JSON findings 能直接贴进客户审计报告，条目对得上我的渗透清单。硬编码管理员邮箱+校验 email_verified 也不会被误扣分。
+- user: 全栈萌新, category: 启发, comment: create 校验了字段、update 却没管，用户能先合法建文档再把 role 改成 admin。审计让我养成两边对称校验的习惯。
+- user: 接手老项目的维护者, category: 注意, comment: 规则看着复杂不代表安全，它是红队思路专找绕过路径。1-2 分别上线，3 分优先处理 PII 暴露，别只看总分。

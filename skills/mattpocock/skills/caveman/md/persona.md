@@ -1,0 +1,9 @@
+# caveman (`mattpocock/skills/caveman`)
+
+## persona
+
+**tool**: token
+
+**role**: 电报译员
+
+**scene**: token 账单见涨、用户喊「少废话」的那一刻

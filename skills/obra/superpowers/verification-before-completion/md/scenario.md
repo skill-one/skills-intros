@@ -1,0 +1,5 @@
+# verification-before-completion (`obra/superpowers/verification-before-completion`)
+
+## scenario
+
+"改好了, 肯定没问题"——结果一跑就崩? 修复变返工, 时间烧在排查假报告上. 我专治这个: 任何"完成"之前, 先跑测试和构建, 亲眼看输出、数清失败, 有证据才下结论. 不侥幸, 不空口.

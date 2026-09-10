@@ -1,0 +1,9 @@
+# browser-act-skill-forge (`browser-act/skills/browser-act-skill-forge`)
+
+## blackbox
+
+**function**: 你说想要哪个网站上的什么数据(或要在网站上做什么操作),我先帮你把数据拿到手,同时做成一个可反复使用的专属工具——以后一句话就能自动再跑,不用重新折腾。
+
+- input: 「把 news.ycombinator.com 首页的文章标题和链接都抓下来」, output: 一个包含全部文章标题和链接的数据文件(表格/JSON),数据已核验完整
+- input: 「从这个网站采集几千条商品记录,不要有重复」(附网址), output: 全部无重复的商品数据文件,外加一个专属采集工具——以后每天一条命令就能自动更新
+- input: 某个竞品爬虫/SaaS 产品的介绍页面, output: 一个功能相同的自有工具,在本地直接干同样的事,不用注册对方服务、不用付对方的钱

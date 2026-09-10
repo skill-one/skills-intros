@@ -1,0 +1,7 @@
+# sales-enablement (`coreyhaines31/marketingskills/sales-enablement`)
+
+## domain
+
+**domain**: 📈 商业运营
+
+**reason**: 专做销售物料: 售卖 PPT、异议应对、演示话术、客户画像等, 直接服务成交

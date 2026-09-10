@@ -1,0 +1,13 @@
+# cold-email (`coreyhaines31/marketingskills/cold-email`)
+
+## whitebox
+
+- 读上下文: 探测并读取 .agents/product-marketing.md (或 .claude/ 变体、旧文件名), 已覆盖的信息不再向用户追问
+- 收集任务输入: 收件人、目标结果、价值点、证明、研究信号; 缺项不阻塞, 有多少写多少并标注缺口
+- 起草主邮件: 从 frameworks.md 选一个结构 (或自由写作), 产出主题行 + 正文 + 单一低门槛 CTA
+- 自检: 朗读测试、删掉个性化开头是否仍成立、you/your 占比、禁用词过滤, 不合格即重写
+- 若用户要序列: 追加 3~5 封跟进邮件, 每封换新角度, 间隔递增, 最后一封为 breakup email
+
+- 输入解析 = 上下文缓存优先: 先探测固定路径的 product-marketing 上下文文件, 命中则直接吸收, 只对缺口提问 — 目标是最少追问轮次内可动笔
+- 转换 = 框架选择而非字段填充: 从 references/ 下 6 个按需加载的 markdown (frameworks/subject-lines/personalization/follow-up-sequences/benchmarks 等) 中检索决策依据, 再自由写作; 主题行走独立规则集 (2-4 词、小写、无标点花招)
+- 校验 = 生成后自检清单: 逐句价值裁剪、个性化与问题挂钩检查、单 CTA 低摩擦验证、AI 味/黑名单术语过滤; 无外部工具/库/模型 API — 纯指令 + 本地参考文件, 执行完全依赖 LLM 自身

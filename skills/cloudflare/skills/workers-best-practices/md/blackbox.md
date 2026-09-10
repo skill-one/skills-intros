@@ -1,0 +1,10 @@
+# workers-best-practices (`cloudflare/skills/workers-best-practices`)
+
+## blackbox
+
+**function**: 帮你写出、检查和修正能稳定跑在 Cloudflare Workers (Cloudflare 上运行代码的服务) 上的程序, 找出内存、安全、配置方面的坑并给出修改。
+
+- input: 一个 Worker 项目的代码文件路径, output: 一份审查报告: 逐条指出问题 (如把大文件一次性读进内存会撑爆、密钥写死在源码里会泄露) + 每条附修改后的代码
+- input: 一句需求描述, 如「写一个接收 GitHub Webhook 的 Worker」, output: 可直接部署的 Worker 代码, 自带结构化日志、错误处理和类型定义
+- input: wrangler 配置文件 (wrangler.jsonc / wrangler.toml), output: 修正后的配置: 开启日志和追踪、更新兼容日期、标出失效或不合规的字段
+- input: 一段报错信息或线上异常截图, output: 问题定位说明 + 对应代码的修复方案

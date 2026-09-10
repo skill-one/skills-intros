@@ -1,0 +1,5 @@
+# zoom-out (`mattpocock/skills/zoom-out`)
+
+## scenario
+
+接手陌生项目,上千行代码两眼一抹黑:不敢改、怕改崩。说一声"zoom out",我带你跳出细节,画出模块地图——谁调用谁、哪里能动、哪里别碰,全局一目了然。🗺️

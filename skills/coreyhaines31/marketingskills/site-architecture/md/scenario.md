@@ -1,0 +1,5 @@
+# site-architecture (`coreyhaines31/marketingskills/site-architecture`)
+
+## scenario
+
+网站像个杂物间:页面越堆越多,访客找不到路,搜索引擎也不收录?🗂️ 我帮你规划页面层级、导航和网址结构,画出清晰站点地图,让访客 3 次点击内到达任何页面,SEO 跟着受益。

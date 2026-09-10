@@ -1,0 +1,7 @@
+# supabase (`supabase/agent-skills/supabase`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 专注数据库、认证、API 集成等 Supabase 后端开发任务

@@ -1,0 +1,13 @@
+# executing-plans (`obra/superpowers/executing-plans`)
+
+## whitebox
+
+- 声明启用 executing-plans skill，同时告知搭档：若有子代理（Claude Code、Codex CLI 等）环境，会建议改用 subagent-driven-development
+- 确保隔离工作区：用 git worktree 新建或验证现有工作区，然后读取计划文件
+- 批判性审查计划——有疑点或缺口就先停下来向人提问；无问题则把计划项建成 todos
+- 逐任务执行：标记 in_progress → 严格按计划步骤操作 → 运行计划中指定的验证 → 标记 completed
+- 全部任务完成并验证后，转入 finishing-a-development-branch 子技能收尾（验证测试、给出选项、执行选择）
+
+- 隔离机制：依赖 git worktree 保证实施不在 main/master 上进行（无用户明确同意绝不直接开工），改动与主分支天然隔离
+- 熔断机制：遇到阻塞（依赖缺失、测试失败、指令不明、验证反复失败）立即停止执行并向人提问，绝不靠猜；计划被更新或方向需重估时回到审查步骤重跑
+- 子技能复用：执行结束强制交接给 superpowers:finishing-a-development-branch 完成收尾，两个 skill 通过显式调用衔接

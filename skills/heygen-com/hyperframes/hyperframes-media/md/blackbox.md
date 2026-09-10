@@ -1,0 +1,9 @@
+# hyperframes-media (`heygen-com/hyperframes/hyperframes-media`)
+
+## blackbox
+
+**function**: 给视频配齐"声音"：把文字变成配音、生成/挑选背景音乐和音效、把录音转成带时间点的字幕、把人物照片抠成透明底。
+
+- input: 一段台词文本，如「欢迎收看本期节目」, output: 一条配音音频文件（wav/mp3），并附每个字的出现时间点，可直接驱动逐字动画字幕
+- input: 一个氛围描述或音效名，如「轻快的夏日吉他」「玻璃碎裂」, output: 对应的背景音乐文件（mp3）和音效文件（mp3），直接可插入视频时间轴
+- input: 一段录音文件，如 interview.mp3, output: 带时间戳的字幕文件（每个词的起止时间），可排成普通字幕、卡拉OK式逐字高亮等样式

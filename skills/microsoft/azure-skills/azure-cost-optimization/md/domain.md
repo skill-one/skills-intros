@@ -1,0 +1,7 @@
+# azure-cost-optimization (`microsoft/azure-skills/azure-cost-optimization`)
+
+## domain
+
+**domain**: 🛡️ 运维与安全
+
+**reason**: 核心是分析 Azure 云资源使用与账单, 找闲置资源、优化 VM/存储配置, 属于云基础设施运维。

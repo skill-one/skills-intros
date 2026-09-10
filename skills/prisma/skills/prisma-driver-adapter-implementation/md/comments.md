@@ -1,0 +1,10 @@
+# prisma-driver-adapter-implementation (`prisma/skills/prisma-driver-adapter-implementation`)
+
+## comments
+
+- user: 数据库中间件老手, category: 妙用, comment: 弄清 commit/rollback 只是收尾钩子、真正的 COMMIT 由 Prisma 经 executeRaw 发，我的事务代码砍掉一半，也不再重复提交报错。
+- user: 第一次写驱动适配的新手, category: 坑, comment: 我把迁移脚本按分号切割执行，函数体内的分号把语句切碎全报错。要用驱动原生多语句能力或真 SQL 解析器，别手动切。
+- user: 运维老哥, category: 坑, comment: 适配器 dispose() 时把我外部传入的连接池一起关了，共用这个池的另一个服务当场断连。只该释放它自己创建的资源。
+- user: 电商支付后端, category: 注意, comment: 大整数经 JS number 会静默截断，我的交易单号末位悄悄变了没人发现。Int64 必须保住 64 位精度，上线前拿超长单号测一遍。
+- user: 开源贡献者, category: 妙用, comment: 错误映射里保留 originalCode/originalMessage，没匹配上的报错走 P2039 兜底也能带出驱动原文，排查不用抓包瞎猜。
+- user: 全栈独立开发, category: 启发, comment: 以前我习惯把所有异常包成「未知错误」吞掉，照这套规范改成非驱动错误原样上抛后，自己代码里的 bug 再也藏不住了。

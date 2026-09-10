@@ -1,0 +1,7 @@
+# firebase-data-connect (`firebase/agent-skills/firebase-data-connect`)
+
+## tagline
+
+- 一次建模,后端与 SDK 自动生成
+- 关系型数据库,默认安全上线
+- 写条查询,数据实时到手

@@ -1,0 +1,5 @@
+# google-agents-cli-publish (`google/agents-cli/google-agents-cli-publish`)
+
+## scenario
+
+你辛苦搭好并部署了 AI 智能体,却在终端里孤零零运行——同事看不到、用不上,价值卡在最后一公里😤。我一条命令帮你把它登记进 Gemini Enterprise,全公司即刻可用,还有问题排查兜底。

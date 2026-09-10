@@ -1,0 +1,7 @@
+# firebase-basics (`firebase/agent-skills/firebase-basics`)
+
+## tagline
+
+- 一条命令，Firebase 配置全搞定
+- 登录建项目下配置，全程免手动
+- 五分钟起步，从零接入 Firebase

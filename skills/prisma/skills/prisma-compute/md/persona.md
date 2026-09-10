@@ -1,0 +1,9 @@
+# prisma-compute (`prisma/skills/prisma-compute`)
+
+## persona
+
+**tool**: @prisma/cli
+
+**role**: 部署上线师
+
+**scene**: 应用写完、一条命令要送上线上却卡在部署报错时

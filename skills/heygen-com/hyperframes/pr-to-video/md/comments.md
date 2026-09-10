@@ -1,0 +1,10 @@
+# pr-to-video (`heygen-com/hyperframes/pr-to-video`)
+
+## comments
+
+- user: 开源维护者, category: 妙用, comment: 发版前把当周合并的 PR 各出一条视频贴进 release notes，片尾自动署上贡献者头像，比纯文字 changelog 反响好。
+- user: 第一次用的新手, category: 坑, comment: 我开头只说"帮我做个视频"，它直接把我引去别的入口。必须给真实 PR 链接或 owner/repo#编号，否则它没料可讲。
+- user: 私有仓后端, category: 注意, comment: 私有库的 PR 先 gh auth login 再来，不然它拉不到 diff 会直接停下，宁可不做也不瞎编——脾气不错，但你凭证得先备好。
+- user: 挑音色的产品经理, category: 注意, comment: 默认配音是女声，我明确说"要男声"它才换，含糊说"好听点"会被忽略。开口第一次就讲清性别和语气最省事。
+- user: 独立接单的全栈, category: 妙用, comment: 它不逐文件念 diff，而是先讲清改动解决了什么问题。队友的百行大 PR 我都先看视频再读码，十分钟省半小时。
+- user: 技术负责人, category: 启发, comment: 它会先停下让我确认分镜稿。为了过这关我得先想清这个改动到底讲了什么故事，比我平时写 PR 描述还认真。

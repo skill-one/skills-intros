@@ -1,0 +1,13 @@
+# docx (`anthropics/skills/docx`)
+
+## whitebox
+
+- 按任务分流选主路径: 新建走 docx-js 脚本, 编辑现有文件走 unzip 解包改 XML, 只读取内容走 pandoc 转 markdown
+- 新建: 写 Node 脚本直接 require 预装的 docx (npm) 库生成 .docx, 不预先 npm install
+- 编辑: 解包后删除符号链接 (外部来源不信任) → merge_runs.py 合并碎片化文本 run → 原地编辑 word/document.xml → zip -Xr 重打包; 旧 .doc 先用 soffice 转成 .docx
+- 校验: validate.py 做 XSD 模式校验; 红线场景加 --author 检查是否有改动漏标 tracked changes
+- 验收: LibreOffice 无头转 PDF → pdftoppm 转 jpg → 逐页读图确认最终渲染效果
+
+- docx 本质 = ZIP 压缩包内的 XML 文件集: 读取靠 pandoc -t markdown 抽取; 编辑靠 "解包→改 XML→重打包", 不重建文档——因为 docx-js 只能从零生成, 打不开已有文件
+- run 碎片合并: Word 会把一段可见文本拆成多个 <w:r> run (拼写检查/修订标记所致), 导致短语在 XML 里不是连续字符串; merge_runs.py 把相邻同格式 run 合并, 不改内容不改渲染, 使查找替换可行; 同理批注需六个交叉关联文件, 由 comment.py 代写并给出 <w:commentRangeStart/End> 锚点
+- 外部依赖: docx (npm, 预装) 生成文档 · pandoc 读内容 · LibreOffice (soffice) 转 PDF/旧格式转换 · pdftoppm (Poppler) 渲染成图片供人审阅 · 自带脚本 merge_runs.py / validate.py / comment.py / accept_changes.py

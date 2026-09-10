@@ -1,0 +1,10 @@
+# writing-skills (`obra/superpowers/writing-skills`)
+
+## comments
+
+- user: 第一次写技能的新手, category: 坑, comment: 没跑基线就直接写技能, 写的全是 agent 本来就会的常识, 上线后行为零变化. 先让它裸跑翻车一次, 记下原话再对症写, 一次见效.
+- user: prompt 工程师, category: 坑, comment: 把流程摘要塞进 description, agent 照摘要干活直接跳过正文, 少做一半步骤. 改成只写 Use when 触发条件, 它才肯读完整个技能.
+- user: 团队技能库维护者, category: 妙用, comment: 纠输出格式别用「不要啰嗦」式禁令, 越禁越多. 直接给正面模板: 输出就这几部分、按这个顺序. agent 没得讨价还价, 一次改对.
+- user: 被 AI 找借口气到的独立开发者, category: 妙用, comment: agent 总用「这次特殊」绕规则. 我把每句借口记进技能里的对照表逐条堵死, 再补一句「字面违规就是精神违规」, 这类抬杠整类消失.
+- user: 技术文档写手, category: 注意, comment: 在好用的模板后加了半句「除非情况特殊」, agent 输出立刻从稳定变随机. 想留例外就写成独立条件句, 别挂在规则尾巴上.
+- user: 兼职玩 agent 的全栈, category: 注意, comment: 技能每次对话都载入, 我第一版塞了 2000 词, 又慢又贵. 大段参考拆成独立文件, 主文档只留 500 词内概览, 立省一半 token.

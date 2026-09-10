@@ -1,0 +1,13 @@
+# google-agents-cli-deploy (`google/agents-cli/google-agents-cli-deploy`)
+
+## whitebox
+
+- 确认任务契合部署技能 (部署 agent、CI/CD、secrets、排错), 并用决策矩阵与用户敲定目标平台: Agent Runtime / Cloud Run / GKE
+- 若项目还是原型, 先跑 `agents-cli scaffold enhance . --deployment-target <target>` 补齐部署配置
+- 把评估分数和测试结果展示给用户, 明确问 "Ready to deploy to dev?" 并等待人工批准 (绝不擅自 deploy)
+- 获批后执行 `agents-cli deploy` 及各旗标 (--project/--region/--service-account/--secrets 等), 由 CLI 打包项目并部署
+- 用 `agents-cli deploy --status` 轮询进度 (Agent Runtime 需 5-10 分钟), 完成后用 `agents-cli run --url ... --mode a2a` 验证
+
+- 单命令管线: 一切经由 agents-cli (uv tool install google-agents-cli) 执行, 它把 Terraform、Docker (从项目 Dockerfile 构建镜像)、gcloud 封装成经过测试的流程; 需要旗标未覆盖的功能时用 --dry-run 打印完整 gcloud 命令再自行改写
+- 目标差异处理: 三种目标均为容器化部署 (任何语言可用); Agent Runtime 即原 Vertex AI Agent Engine, 无 gcloud CLI, 只能靠 agents-cli + Python SDK; GKE 拒绝扩缩旗标, 改由 Terraform 清单管理; OAuth 用户授权场景只支持 Agent Runtime
+- 安全与校验模型: 密钥走 GCP Secret Manager (--secrets ENV=SECRET 注入环境变量); 双服务账号架构 (app_sa=运行时身份, cicd_runner_sa=CI/CD 身份) + 必需 API 前置开启; 常见 403 报错有固定的 IAM 缺权限映射表; 扩缩遵循 "内存约束并发" 模型 — 峰值内存 ≈ 基线 + 并发×单请求内存, 擅提 --concurrency 不加 --memory 是 OOM 主因

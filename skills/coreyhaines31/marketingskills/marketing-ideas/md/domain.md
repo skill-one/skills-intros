@@ -1,0 +1,7 @@
+# marketing-ideas (`coreyhaines31/marketingskills/marketing-ideas`)
+
+## domain
+
+**domain**: 📈 商业运营
+
+**reason**: 为 SaaS 产品提供 139 个营销灵感与增长策略, 直接服务于业务增长

@@ -1,0 +1,7 @@
+# stitch-design-taste (`leonxlnx/taste-skill/stitch-design-taste`)
+
+## domain
+
+**domain**: 🎨 设计多媒体
+
+**reason**: 生成 UI 设计规范 (DESIGN.md), 管控字体、配色、布局与动效的视觉品质

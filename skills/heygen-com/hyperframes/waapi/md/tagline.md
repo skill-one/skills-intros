@@ -1,0 +1,7 @@
+# waapi (`heygen-com/hyperframes/waapi`)
+
+## tagline
+
+- 原生动画, 帧帧精准
+- 轻量代码, 电影级动效
+- 告别重库, 丝滑依旧

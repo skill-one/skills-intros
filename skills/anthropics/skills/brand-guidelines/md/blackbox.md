@@ -1,0 +1,9 @@
+# brand-guidelines (`anthropics/skills/brand-guidelines`)
+
+## blackbox
+
+**function**: 把你的文档或幻灯片换成 Anthropic 官方品牌外观:统一的品牌配色 + 标题/正文专用字体,不改内容只改观感。
+
+- input: 一份 .pptx 演示文稿文件, output: 同一份内容但已套用 Anthropic 品牌外观的 .pptx:标题换成 Poppins 字体、正文换成 Lora 字体、图形点缀换为品牌橙/蓝/绿
+- input: 一个文档路径 + 一句话「帮我改成 Anthropic 的风格」, output: 排版后的文件:深灰黑标题文字、米白背景、强调色自动按橙→蓝→绿循环,层级和内容原样保留
+- input: 一份自己随手做的、配色花哨的幻灯片, output: 视觉统一规范的版本:花哨颜色收敛为品牌色板,字体与字号层级对齐官方标准,可直接对外展示

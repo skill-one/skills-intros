@@ -1,0 +1,10 @@
+# firebase-data-connect (`firebase/agent-skills/firebase-data-connect`)
+
+## blackbox
+
+**function**: 把你的 App 想法变成一个真实可用的云端数据库后端 (Firebase + PostgreSQL): 设计表和关系、写好带权限控制的增删改查、配置数据实时刷新, 并生成 App 里直接调用的代码, 最后帮你部署上线。
+
+- input: 一句话描述想法, 如「做一个电影评分 App, 用户能收藏电影、写短评」, output: 一套可部署的数据库后端定义 (建表 + 关系 + 带权限的读写操作), 部署后你的 App 就能直接存取数据
+- input: 已有的 schema.gql 文件 + 一句新需求, 如「加个'收藏'功能, 每个人只能看到自己的收藏」, output: 改好的 schema 文件和配套的查询/写入操作, 自带权限限制 (别人无法看到你的收藏)
+- input: 「帮我把这个数据库接进我的网页 / 安卓 / iOS 应用」, output: 生成的类型安全 SDK 代码文件夹 (App 里直接调用函数即可读写数据库; 字段名写错会立刻报错提示, 而不是上线后才发现)
+- input: 「部署上线」, output: 已发布到云端的 PostgreSQL 数据库服务, 以及一个可本地测试的模拟环境 (不花钱就能先试跑)

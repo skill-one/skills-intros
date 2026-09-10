@@ -1,0 +1,10 @@
+# qa (`mattpocock/skills/qa`)
+
+## comments
+
+- user: 第一次参与开源的新手, category: 坑, comment: 我一开始只说「按钮坏了」,被来回追问了三个问题。后来改成「预期 vs 实际 + 复现路径」一句话给全,一次就立了。先想清楚 bug 怎么触发,别光吐槽。
+- user: 开源项目维护者, category: 妙用, comment: 我一口气倒了三个混在一起的问题,它拆成三个薄 issue 还标了阻塞关系,三个同学可以并行认领互不踩脚。口头乱吐槽反而被它理顺了。
+- user: 后端老兵, category: 启发, comment: 它写的 issue 不带文件名和行号,全用项目术语描述行为,半年后大重构回来还能看懂。我以前爱在 issue 里写行号,第二天代码一动就作废。
+- user: 运维老哥, category: 注意, comment: gh(GitHub 命令行工具)要先登录、且当前在仓库目录里,否则提 issue 当场报错很尴尬。我现在开场前先跑一下 gh auth status 确认。
+- user: 产品经理, category: 注意, comment: 它不会先给你草稿审阅,描述完就直接提到 GitHub 再甩链接。团队有打标签、命名规范的话,对话里提前说,或者事后自己补编辑。
+- user: 兼职测试, category: 妙用, comment: 我改成边测边报:测出一个描述一个、单独立 issue,不再攒到最后写成一大坨混合报告。拆开报的问题修得明显更快。

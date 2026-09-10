@@ -1,0 +1,7 @@
+# figma (`heygen-com/hyperframes/figma`)
+
+## tagline
+
+- 设计稿进来, 成片出去
+- 像素级还原, 品牌色不跑偏
+- Figma 一键动起来, 渲染次次可复现

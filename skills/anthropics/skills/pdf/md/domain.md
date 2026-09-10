@@ -1,0 +1,7 @@
+# pdf (`anthropics/skills/pdf`)
+
+## domain
+
+**domain**: 🗂️ 办公效率
+
+**reason**: PDF 文件处理是典型办公文档操作, 直接归入文档处理类

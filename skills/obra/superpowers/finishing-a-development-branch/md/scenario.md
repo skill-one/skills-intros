@@ -1,0 +1,5 @@
+# finishing-a-development-branch (`obra/superpowers/finishing-a-development-branch`)
+
+## scenario
+
+功能写完、测试通过,收尾却犯难:合主干还是发 PR?旧分支留着碍事,删了又怕丢代码。我来逐项核对,给出三个明确选项,清理时绝不误删文件——收尾零焦虑,一行代码都不丢。✅

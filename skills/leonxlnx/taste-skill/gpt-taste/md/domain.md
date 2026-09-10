@@ -1,0 +1,7 @@
+# gpt-taste (`leonxlnx/taste-skill/gpt-taste`)
+
+## domain
+
+**domain**: 🎨 设计多媒体
+
+**reason**: 核心是 UI/UX 视觉设计与 GSAP 动效工程, 产出高端网页界面

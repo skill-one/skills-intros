@@ -1,0 +1,10 @@
+# social-content (`coreyhaines31/marketingskills/social-content`)
+
+## blackbox
+
+**function**: 把你已有的素材或想法, 变成各大平台 (LinkedIn、X/Twitter、小红书、抖音、Instagram 等) 能直接复制发布的社交媒体内容。
+
+- input: 一篇博客文章的文本或链接, output: 一套拆解好的帖子: LinkedIn 文案、X 推文串、小红书/Instagram 图文各一条, 每条都可直接复制发布
+- input: 「我想发短视频, 主题是新手如何记账」, output: 一份 30 秒短视频脚本: 开场 3 秒说什么话、画面配什么、字幕写什么、结尾引导观众做什么, 逐秒标好
+- input: 「我每周只有 2 小时经营账号」, output: 一周内容排期表: 精确到周几、几点、在哪个平台发什么, 附上提前写好的全部文案
+- input: 一段播客或访谈的文字稿, output: 从中挑出的 3-5 个亮点片段, 每个片段都配好能独立成篇的标题、字幕和发布文案

@@ -1,0 +1,13 @@
+# higgsfield-marketplace-cards (`higgsfield-ai/skills/higgsfield-marketplace-cards`)
+
+## whitebox
+
+- 解析用户请求并选定范围: 常用套装映射为 --scope (main/product-images/aplus/full-set), 自定义子集映射为重复 --asset 参数
+- 至多问一句简短确认, 尽量拿到商品图 (--image); 用户只给文字或 URL 时, 商品信息足够明确才继续
+- 用 Bash 拼出并执行一条 higgsfield marketplace-cards create 命令, 附上 --prompt 及可选上下文参数 (--category/--product_context/--brand_context/--visual_style)
+- CLI 先调用后端增强器 (合规规则与提示词模板私存于后端), 后端创建 nano_banana_2 生图任务并返回结果
+- 只打印图片 URL + 简短标签交付, 不输出 JSON/任务 ID/内部模型名/增强后的提示词
+
+- 意图→CLI 参数路由: 本技能不自己写最终生图提示词, 只用短句 --prompt 传达商品与上架意图; 提示词增强、合规规则、模板均由后端私有完成, 技能层只做参数编排
+- 执行链路依赖 higgsfield CLI: 不在 PATH 时经官方 curl 安装脚本装好, 认证失败则让用户跑 higgsfield auth login; 实际生图由后端创建的 nano_banana_2 任务完成
+- 增量复用与输出净化: 已有完成的主图任务时用 --main-job <id> 只追加副图/A+ 模块; 交付层只保留 URL+标签, 其余内部细节默认全部屏蔽

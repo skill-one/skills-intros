@@ -1,0 +1,10 @@
+# google-agents-cli-deploy (`google/agents-cli/google-agents-cli-deploy`)
+
+## comments
+
+- user: 第一次用的新手, category: 坑, comment: Agent Runtime 部署 5 分钟没输出,我以为卡死 Ctrl+C 重跑,结果后台其实一直在跑,重复了一份。改用 deploy --status 每 60 秒查一次,别急着重跑。
+- user: 刚接手别人项目的工程师, category: 坑, comment: 以为部署前必须先跑 infra single-project,白等半天 Terraform 建资源。其实 deploy 单独就能跑,只有要日志和 BigQuery 分析才装它。
+- user: 后端老兵, category: 注意, comment: 调并发别只改一个数:并发提到 16 还配默认 4Gi 直接 OOM,先爆的一定是内存。跑脚手架自带的 load test,延迟高提并发,爆内存提内存,一起动。
+- user: 运维老哥, category: 妙用, comment: 403 不用瞎提权,报错文案直接对号入座:Cannot act as service account 是缺 serviceAccountUser,Secret access denied 就给 app_sa 补 secretAccessor。
+- user: DevOps 搭 CI 的, category: 妙用, comment: flag 没暴露的功能别硬扛,用 --dry-run 打印完整 gcloud 命令,拷出来补上自己要的参数再跑,等于绕开 flag 限制,CI 里特好使。
+- user: 做企业内部助手的全栈, category: 注意, comment: 要用户 OAuth 授权读 Drive,我在 Cloud Run 上绕了两天,它根本不支持托管 OAuth 流程;换 Agent Runtime 加 Gemini Enterprise,一次跑通。

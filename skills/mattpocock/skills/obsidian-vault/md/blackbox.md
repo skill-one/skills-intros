@@ -1,0 +1,9 @@
+# obsidian-vault (`mattpocock/skills/obsidian-vault`)
+
+## blackbox
+
+**function**: 帮你在这个 Obsidian 笔记库里找笔记、写笔记、把相关笔记串起来。
+
+- input: 「帮我找一下笔记库里有没有讲 RAG 的笔记」, output: 一份匹配到的笔记清单（文件名 + 在哪篇里被提到）
+- input: 「新建一篇讲注意力机制的笔记，内容如下：……」, output: 笔记库里多出一篇排版好的新笔记，标题规范，文末自动链上相关的已有笔记
+- input: 「把 RAG 相关的笔记都归拢到一起」, output: 一篇「RAG Index」汇总页，列出所有相关笔记的链接，点进去就能跳转

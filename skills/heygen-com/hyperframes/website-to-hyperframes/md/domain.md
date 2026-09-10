@@ -1,0 +1,7 @@
+# website-to-hyperframes (`heygen-com/hyperframes/website-to-hyperframes`)
+
+## domain
+
+**domain**: 🎨 设计多媒体
+
+**reason**: 把网站捕获并制作成专业视频 (分镜/配音/动效合成), 属于视觉与音视频制作

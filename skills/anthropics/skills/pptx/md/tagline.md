@@ -1,0 +1,7 @@
+# pptx (`anthropics/skills/pptx`)
+
+## tagline
+
+- 一句需求,专业演示即刻成型
+- 你的想法,值得更会说话的页面
+- 从内容到设计,只交付能赢的 PPT

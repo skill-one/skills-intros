@@ -1,0 +1,13 @@
+# receiving-code-review (`obra/superpowers/receiving-code-review`)
+
+## whitebox
+
+- 通读全部评审意见，不即时反应、不先表态（禁止 "You're absolutely right!" 类表演式回应）
+- 逐条理解并复述需求；只要有一条不清楚，全部暂停实现，先向对方澄清
+- 对照代码库现实核验：grep 实际调用点、检查构建目标/平台兼容性、确认建议不破坏既有功能
+- 回应：建议成立则直接修并在代码中体现（不感谢、不客套）；不成立则用技术理由反驳，或上报 human partner 裁决
+- 按 "阻断性 → 简单 → 复杂" 顺序逐项实现，每项单独测试，最后验证无回归
+
+- 校验机制：外部建议默认存疑（"be skeptical, but check carefully"），用代码库事实裁决——grep 查功能是否真的被调用（YAGNI：无人调用则建议删除而非"实现规范"）、构建目标 vs API 版本要求、既有测试作反证；无法核验时明确说 "I can't verify without X" 而非硬上
+- 来源分级路由：来自 human partner 的反馈 → 理解后信任执行，但范围不清仍要问；来自外部 reviewer → 过五项检查（对当前代码库是否正确/是否破坏功能/现实现存在的原因/跨平台是否成立/reviewer 是否了解完整上下文）才动手；与 partner 既定架构决策冲突则停下讨论
+- 外部依赖：grep（代码库检索，YAGNI 核查用）；gh CLI / GitHub API（行内评论必须回在评论串内 gh api repos/{owner}/{repo}/pulls/{pr}/comments/{id}/replies，而非 PR 顶层评论）；本地测试/构建链（逐项测试与回归验证用）

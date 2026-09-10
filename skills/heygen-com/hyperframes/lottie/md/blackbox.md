@@ -1,0 +1,10 @@
+# lottie (`heygen-com/hyperframes/lottie`)
+
+## blackbox
+
+**function**: 把 Lottie 动画文件 (After Effects 导出的动画, JSON 或 .lottie 格式) 嵌进 HyperFrames 视频页面, 并保证渲染视频时动画逐帧精准同步 🎬
+
+- input: 一个 After Effects 导出的动画 JSON 文件 (如 assets/logo-reveal.json), output: 一段嵌入好的页面代码: 在 HyperFrames 里播放/导出视频时, 这个 logo 揭示动画会严格跟着时间轴走, 拖到哪一帧就显示哪一帧
+- input: 一个 .lottie 动画压缩包 (如 assets/product-flow.lottie), output: 嵌入完成的页面代码, 动画正常显示, 自动关掉自动播放和循环, 不会在导出的视频里抢跑或乱跳
+- input: 「页面里要同时有背景动画、图标动画、撒花动画三个 Lottie」, output: 一段让三个动画共用同一时间轴的页面代码, 导出视频时它们逐帧同步出现
+- input: 「我的动画在导出的视频里不动 / 位置不对」, output: 修好的嵌入代码, 并通过 hyperframes lint / validate 两道检查

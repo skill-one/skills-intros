@@ -1,0 +1,13 @@
+# firebase-security-rules-auditor (`firebase/agent-skills/firebase-security-rules-auditor`)
+
+## whitebox
+
+- 接收待审计的 Firebase 安全规则文本 (Firestore / Cloud Storage)
+- 以红队渗透测试员视角, 主动构造攻击序列 (如 create 合法文档后再 update 成恶意状态) 尝试绕过规则
+- 逐项跑完强制审计清单: update 绕过、权限字段来源、业务逻辑、资源耗尽、类型安全、hasOnly 所有权检查
+- 按 1~5 分评分标准打分 (5 为安全)
+- 输出固定 JSON 报告: score + summary + findings
+
+- 纯静态对抗推理: 不假设'规则复杂=安全', 而是主动寻找可串成绕过链的操作序列; 全程不依赖任何外部工具、库或模型 API, 只靠读规则文本推理
+- 清单驱动校验: 固定 6 项检查点 (create/update 不一致、request.resource.data 中的 role/ownerId 权限来源、规则与业务逻辑匹配、字符串/数组大小限制、is string/is int 类型校验、hasOnly/diff 需搭配所有权检查); 特例: 硬编码管理员邮箱不扣分, 前提是同时校验 email_verified 且无自我提权空间
+- 结构化输出: 按 skill.md 规定的固定 schema 返回 JSON, 每条 finding 含 check/severity (critical~minor)/issue/recommendation, 评分有明确锚点 (1=越权泄露, 5=完整校验+严格所有权)

@@ -1,0 +1,10 @@
+# supabase (`supabase/agent-skills/supabase`)
+
+## blackbox
+
+**function**: 帮你搭建和修好带「云端数据库 + 用户登录」的应用 (基于 Supabase 平台): 建表、管权限、排查报错、接入你的前端代码。
+
+- input: 一句现象描述, 如「用户登录后查自己的订单, 返回的一直是空数组」, output: 问题原因的中文解释 + 一段修好的权限规则 SQL, 可直接粘贴到数据库里执行
+- input: 一段需求, 如「做个博客: 文章所有人能看, 只有作者本人能改和删」, output: 完整的建表语句 + 权限规则 (谁在什么条件下能读/写哪些数据), 跑一遍就能用
+- input: 一段报错信息, 如「new row violates row-level security policy」, output: 这句话到底卡在哪一步的解读 + 具体修复方案, 并能帮你验证改完真的通了
+- input: 你的前端项目代码 (如 Next.js) 和 Supabase 项目地址, output: 接好登录、读写数据的修改后代码, 包括浏览器和服务端各自的接法

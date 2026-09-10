@@ -1,0 +1,10 @@
+# firebase-basics (`firebase/agent-skills/firebase-basics`)
+
+## comments
+
+- user: 全栈独立开发者, category: 妙用, comment: 以前每加一个 App 就得跑控制台手动下 google-services.json, 还常下错项目. 现在一行 apps:sdkconfig 直接拉到本地, 配置再没和云端对不上过.
+- user: 远程开发的后端, category: 坑, comment: SSH 到服务器跑 login 会一直卡着等浏览器, 以为 CLI 坏了. 加 --no-localhost 走复制链接验证就过了, 无浏览器环境直接用这个.
+- user: 第一次用 Firebase 的新手, category: 注意, comment: 建项目随手起了个大写名, 直接报错. 项目 ID 只能小写、数字、连字符, 6-30 位且全局唯一, 建完改不了, 想好再填.
+- user: 接手老项目的开发, category: 坑, comment: 全局装的 firebase 是老版本, 跑 projects:create 提示不认识. 统一用 npx -y firebase-tools@latest 前缀后每次都是新版, 再没缺过命令.
+- user: 被派来做 App 的移动端, category: 注意, comment: 它只管 CLI 登录、建/切项目、拉配置文件这三件事, 不碰 Hosting 和 Firestore. 上手前搞清边界, 省得找错地方.
+- user: 运维老哥, category: 启发, comment: 让命令行替我完成'去控制台点点点下载配置'这步, 才发现手工操作导致文件和云端不一致有多常见. 能脚本化的步骤别留在浏览器里.

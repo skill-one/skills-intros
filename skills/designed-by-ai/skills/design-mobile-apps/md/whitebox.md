@@ -1,0 +1,13 @@
+# design-mobile-apps (`designed-by-ai/skills/design-mobile-apps`)
+
+## whitebox
+
+- 鉴权前置: 检查 SLEEK_API_KEY; 缺失则走 device flow (POST /device/start → 给用户展示 verificationUrl+userCode → 每 interval 秒 POST /device/poll, 用户批准后一次性拿到 key)
+- 建项目: POST /api/v1/projects 创建项目, 每个设计变体一个独立项目 (各自有独立 theme/style)
+- 发设计请求: POST /chat/messages 把完整意图一次性发出 (不拆屏幕、不替用户加需求), 附风格方向段落或 referenceId (二选一) 及 source 标识; 拿 runId 后轮询 run 状态 (2s 起退避到 5s, 5 分钟上限), 直到 completed/failed
+- 截图交付: POST /screenshots 给每个新建/更新的屏幕出图并展示 (默认 viewport 图给用户看, fullHeight 全页图用于自查折叠区); 出过图才算完成
+- 落码 (可选): GET /components/:componentId 取 activeVersion 的完整 HTML, 原型直接存 .html 零构建; 原生框架实现则 HTML 当实现参考 + 截图当视觉目标
+
+- 单一主机 REST API: 所有请求只发往 https://sleek.design, Bearer token 鉴权, 按 scope 控权 (projects:read/write, chats:read/write, screenshots 等, 建议按需最小授权); idempotency-key 头支持安全的重试重发
+- 异步 run 模型: 聊天消息返回 runId 后轮询 (也可 ?wait=true 阻塞最长 300s); 每项目同时只允许一个 active run, 409 时等完成或 cancel; 响应体必须先写文件再解析 (绕开 zsh 会把字符串里的 \n 展开成真实换行导致 JSON 损坏)
+- 外部依赖: 图标体系为 Iconify (格式 prefix:name, SVG 从 api.iconify.design 拉取嵌入), 字体从 HTML 头部 <link> 标签提取 Google Fonts; 组件带 versions[]+activeVersion, prompt 中出现 pin block 时改为实现指定历史版本 (截图请求用 componentVersionOverrides/themeVersionOverrides 映射)

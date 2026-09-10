@@ -1,0 +1,12 @@
+# optimize (`pbakaus/impeccable/optimize`)
+
+## whitebox
+
+- 测现状: 采集 Core Web Vitals (LCP/INP/CLS)、加载时间、包体积、帧率、网络请求瀑布
+- 定位瓶颈: 回答四个问题——哪里慢(加载/交互/动画)、什么导致、多严重、影响谁
+- 按策略逐层修复: 加载(图片/JS包/字体/CSS)→渲染(读写批量、虚拟滚动)→动画(GPU)→框架/网络
+- 验证: 对比优化前后 Lighthouse 分数, 在低端真机和 3G 弱网复测, 确认功能无回归
+
+- 测量先行, 拒绝盲目优化: 改动前后都必须量化, 优先修最大瓶颈; 依赖 Chrome DevTools (Lighthouse/Performance)、WebPageTest、webpack-bundle-analyzer 等工具, 无任何模型 API 依赖
+- 修复手法是固定模式库: 图片用 WebP/AVIF+srcset+懒加载; JS 靠代码分割/tree shaking; 动画只动 transform/opacity 走 GPU; React 用 memo/useMemo + react-window 长列表虚拟化; CSS 用 aspect-ratio 预留空间防布局抖动
+- 以 Core Web Vitals 阈值为验收线: LCP<2.5s、INP<200ms、CLS<0.1; 硬约束: 不牺牲可访问性、不破坏功能、不在首屏内容上懒加载

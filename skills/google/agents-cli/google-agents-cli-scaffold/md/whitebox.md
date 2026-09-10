@@ -1,0 +1,13 @@
+# google-agents-cli-scaffold (`google/agents-cli/google-agents-cli-scaffold`)
+
+## whitebox
+
+- 强制前置: 加载 /google-agents-cli-workflow 完成 Phase 0, 先问清 agent 要做什么、需要哪些工具/API、要原型还是完整部署
+- 把用户选择映射为 CLI 标志: 模板(默认 adk)、部署目标(agent_runtime/cloud_run/gke)、会话存储、CI/CD runner
+- 执行 agents-cli scaffold create 生成项目 (先 --prototype), 遵守约束: 项目名 ≤26 字符小写、绝不预先 mkdir、按 IDE 自动选引导文件名
+- 加载 /google-agents-cli-workflow 开发工作流, 定制 app/agent.py、app/tools.py、.env, 保留 manifest 与部署配置; 用 agents-cli run + eval run 验证
+- 原型跑通后, 先向用户确认再执行 scaffold enhance 增量追加部署/CI/CD
+
+- 强制澄清门 + 严格编程模式: 新项目不澄清不许动手; CLI 为严格模式, 所有必填参数必须以标志显式传入否则抛 UsageError; CI/CD runner 与 git 仓库等关键决策禁止静默默认, 必须先问用户
+- 模板化生成 + A2A 内建: 唯一内建模板 adk, 其他框架走模板仓库路径 (--agent <path>); A2A 协议面由脚手架内建、严禁手写; 生成 Dockerfile/Terraform/agents-cli-manifest.yaml 等运行时基础设施文件
+- 原型优先生命周期: --prototype 跳过 CI/CD 与 Terraform 快速迭代, 再用 enhance 增量补部署、upgrade 保留自定义升级; 验证依赖 agents-cli run 冒烟 + agents-cli eval run 系统评测, 禁止写断言 LLM 回复内容的 pytest。外部依赖: agents-cli CLI (经 uv tool install google-agents-cli 安装, 依赖 uv), 关联技能 /google-agents-cli-workflow 等, 部署目标为 Google Cloud (Vertex AI Agent Runtime / Cloud Run / GKE)

@@ -1,0 +1,7 @@
+# colorize (`pbakaus/impeccable/colorize`)
+
+## domain
+
+**domain**: 🎨 设计多媒体
+
+**reason**: 为灰暗单调的界面注入有策略的色彩， 属于 UI/视觉设计范畴

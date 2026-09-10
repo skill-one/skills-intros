@@ -1,0 +1,7 @@
+# to-questionnaire (`mattpocock/skills/to-questionnaire`)
+
+## tagline
+
+- 你缺的不是答案, 是会问的问题
+- 一份问卷, 让懂的人替你想清楚
+- 决策卡壳? 问对人, 一问就清

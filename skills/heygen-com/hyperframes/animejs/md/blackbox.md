@@ -1,0 +1,9 @@
+# animejs (`heygen-com/hyperframes/animejs`)
+
+## blackbox
+
+**function**: 为 HyperFrames 视频（把网页动画渲染成视频的工具）编写 Anime.js 动画代码，保证动画和视频时间轴逐帧精确同步、渲染不跑偏。
+
+- input: 从 animejs.com 抄来的一段 Anime.js 示例代码, output: 改造后的代码：同一动画效果，但在 HyperFrames 里逐帧渲染时播放位置完全正确，不会跳帧或错位
+- input: 一个 HyperFrames 的 HTML 合成文件 + 一句话需求（如「标题淡入上浮，然后装饰条从左展开」）, output: 改好的 HTML 文件：动画已按需求加入，可直接随视频渲染
+- input: 一段中文描述（如「让图标转一圈并淡入，1.2 秒完成」）, output: 一份可直接嵌入 HyperFrames 页面的动画代码，动画总时长与描述一致

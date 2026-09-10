@@ -1,0 +1,12 @@
+# waapi (`heygen-com/hyperframes/waapi`)
+
+## whitebox
+
+- 在 HTML 中定义元素并标注 HyperFrames 片段属性(data-start / data-duration / data-track-index)
+- 在脚本里同步创建动画: 对每个元素调用 element.animate() 传入关键帧和有限 duration, 设 fill:"both", 创建后立即 pause()
+- 渲染时 HyperFrames 的 waapi 适配器调用 document.getAnimations(), 把每个动画的 currentTime 设为 HyperFrames 时间(毫秒)后暂停, 实现逐帧确定性渲染
+- 用 npx hyperframes lint 和 npx hyperframes validate 校验合成结果
+
+- 确定性时间驱动: 不用浏览器自由时钟(requestAnimationFrame / timers / performance.now), 也避免用 animation.finished 等回调承载渲染关键状态; 适配器通过 seek currentTime 来定点求值动画状态
+- 时间对齐: WAAPI seek 的是文档级动画时间, 片段局部起始时间需用 delay 参数建模, 或依赖 HyperFrames 片段属性控制元素可见性来对齐时间轴
+- 约束与依赖: 要求有限 duration/iterations(禁用无限循环), fill:"both" 保证 seek 后状态持久, 优先用 transform/opacity 而非布局属性; 仅依赖原生浏览器 Web Animations API, 无 GSAP 依赖

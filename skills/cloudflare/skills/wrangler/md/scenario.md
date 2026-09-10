@@ -1,0 +1,5 @@
+# wrangler (`cloudflare/skills/wrangler`)
+
+## scenario
+
+想把自己的应用部署到 Cloudflare (全球加速网络), 却被命令行报错、配置文件搞得焦头烂额? 🤯 我精通 Wrangler 部署工具: 从本地调试、绑定数据库/密钥, 到安全上线与回滚, 一步步带你跑通, 不猜命令、不瞎改配置, 改完必验证。

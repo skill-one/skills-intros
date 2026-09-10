@@ -1,0 +1,10 @@
+# firebase-remote-config-basics (`firebase/agent-skills/firebase-remote-config-basics`)
+
+## comments
+
+- user: 第一次接需求的新手, category: 坑, comment: 以为部署完用户立刻生效，其实要等客户端拉取激活。后来按官方加载策略写：启动先激活上次拉到的值、后台再拉新值下次用，用户不用干等。
+- user: 十年安卓老兵, category: 妙用, comment: 我把 get 导出的 JSON 提交进 git，改配置像改代码一样有 diff 可 review，线上出问题用 versions:list 对照历史，一眼定位是哪次改坏的。
+- user: 运维老哥, category: 坑, comment: CI 里 npx 拉 firebase-tools 报 403 卡住流水线，别死磕 npx，全局 npm install -g firebase-tools 后直接用本地 firebase 命令就绕过去了。
+- user: iOS 独立开发者, category: 注意, comment: 只建了 Firebase 项目以为就能用，结果 Remote Config 要求项目里先注册一个 Android 或 iOS 应用，没有 app 根本配不了，白折腾半小时。
+- user: 做增长运营的, category: 妙用, comment: conditions 里用 percent 写灰度：先放 5% 用户开新开关，观察没问题再改比例逐步放量，全程不用发版，产品催得急也不慌。
+- user: 带团队的技术负责人, category: 注意, comment: 改完模板 deploy 前一定自己打开 JSON 核对 percent 数值，差一个零就是从 5% 变全量放量，部署前人工过目这步不能省。

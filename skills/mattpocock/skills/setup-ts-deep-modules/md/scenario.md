@@ -1,0 +1,5 @@
+# setup-ts-deep-modules (`mattpocock/skills/setup-ts-deep-modules`)
+
+## scenario
+
+项目一大，谁都爱从别家包里翻"内部零件"，改一处崩三处，代码评审也拦不住。我给你的仓库装上门禁：每个包只留几个入口文件，钻内部？直接报错🚨。装完我会故意闯一次，证明警报真的会响。

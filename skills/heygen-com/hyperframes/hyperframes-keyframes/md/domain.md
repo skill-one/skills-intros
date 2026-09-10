@@ -1,0 +1,7 @@
+# hyperframes-keyframes (`heygen-com/hyperframes/hyperframes-keyframes`)
+
+## domain
+
+**domain**: 🎨 设计多媒体
+
+**reason**: 为视频合成编写 2D/3D 关键帧动画 (镜头推拉、平移、遮罩等), 属于视觉动效制作

@@ -1,0 +1,10 @@
+# sales-enablement (`coreyhaines31/marketingskills/sales-enablement`)
+
+## comments
+
+- user: 首次创业的技术创始人, category: 注意, comment: 它开局会先问产品卖点、目标客户、怎么卖这些背景问题。先写成一段话备好再开工,不然来回问答很耗时间。
+- user: 五年AE, category: 妙用, comment: 把客户沟通记录原文贴给它再写提案,用词会贴着客户自己的话走。上次客户回邮件说"你们最懂我们",成单了。
+- user: 市场转岗产品营销的新人, category: 坑, comment: 以为能直接输出成品 PPT,其实给的是逐页大纲加讲稿,排版还得自己做。先知道这点再排时间,不白等。
+- user: 销售赋能经理, category: 坑, comment: 竞品对比页、官网文案它不接,会让你找别的技能。我混着提需求绕了弯路,开口前先确认要的是不是销售用材料。
+- user: 销售VP, category: 启发, comment: 它坚持让销售先试读初稿。照做后代表真的会直接用、不改稿,以前市场写的材料八成在销售硬盘里吃灰。
+- user: 带新人团队的销售主管, category: 注意, comment: 异议文档要开口指定"速查表"格式——一屏的表格销售通话时才真翻;默认的长文档只有培训那天被翻过一次。

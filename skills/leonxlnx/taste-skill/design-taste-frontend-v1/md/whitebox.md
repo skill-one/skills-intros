@@ -1,0 +1,13 @@
+# design-taste-frontend-v1 (`leonxlnx/taste-skill/design-taste-frontend-v1`)
+
+## whitebox
+
+- 接收前端生成请求, 锁定三个基线拨盘 (DESIGN_VARIANCE=8 / MOTION_INTENSITY=6 / VISUAL_DENSITY=4); 用户 prompt 里的显式要求可动态覆盖它们, 且不修改配置文件
+- 依赖验证 (强制): 生成任何第三方 import 前先核对 package.json, 缺包则先输出 npm install 命令, 绝不假设库已存在
+- 按 Section 3~7 的规则引擎产出 React/Next.js + Tailwind 代码: 排版、配色、布局决策由拨盘值驱动, 同时执行 AI-tell 黑名单与替换白名单
+- 交互隔离: 涉及动效/玻璃态的组件抽成顶部带 'use client' 的叶子组件, Server Component 只负责静态布局; 依赖动效时校验 Tailwind v3/v4 语法版本后用 Framer Motion
+- 输出可直接上线的干净代码 (含 Loading/Empty/Error 状态与 :active 触觉反馈)
+
+- 拨盘驱动配置: 三个全局变量 8/6/4 分别映射到布局 (对称 → 偏移 → 非对称/masonry)、动效 (纯 CSS :hover → 过渡级联 → Framer Motion 滚动编排)、密度 (画廊留白 → 常规 → cockpit 密排), 是全部生成逻辑的输入变量
+- 反套路规则引擎: 黑名单 (Inter 字体、AI 紫渐变、居中 Hero、三列等宽卡片、emoji、纯黑 #000、h-screen、John Doe 式假数据/假数字) 逐一映射到白名单替换 (Geist/Outfit/Satoshi、中性底+单一降饱和强调色、CSS Grid 替代 flex 百分比数学、min-h-[100dvh]、@phosphor-icons/react 或 @radix-ui/react-icons 图标、picsum.photos 种子占位图、有机脏数据)
+- 性能与动效纪律: 只动画 transform/opacity, 禁 top/left/width/height; 磁性悬停等连续动画禁用 React useState, 只用 Framer Motion 的 useMotionValue/useTransform 在渲染循环外跑; 永续微动效必须 React.memo 且隔离为独立微型 Client Component; GSAP/ThreeJS 仅限独立整页滚动叙事, 绝不与 Framer Motion 混入同一组件树

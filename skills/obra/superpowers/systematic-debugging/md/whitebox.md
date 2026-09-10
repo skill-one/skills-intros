@@ -1,0 +1,12 @@
+# systematic-debugging (`obra/superpowers/systematic-debugging`)
+
+## whitebox
+
+- Phase 1 查根因：仔细读错误信息、稳定复现、检查最近改动 (git diff 等)，多层系统则在每个组件边界打日志取证，并沿调用栈反向追踪坏值来源
+- Phase 2 找参照：在同一代码库定位相似的正常实现，完整逐行阅读参考实现，列出坏例与好例的全部差异
+- Phase 3 验假设：写下单一明确假设 (X 是根因因为 Y)，一次只改一个变量做最小测试；无效则回 Phase 1 换新假设，禁止叠加修复
+- Phase 4 修根因：先建最小失败测试用例锁定问题，只做一处根因修复，再验证测试通过且不破坏其他测试
+
+- 铁律门禁 (Iron Law): Phase 1 未完成禁止提出任何修复；一旦出现「先快速试一下」「大概改成 X」类想法立即停止并返回 Phase 1——这是硬性行为约束，不依赖任何工具
+- 组件边界插桩定位：对多层系统 (如 CI→构建→签名) 在每层边界记录进出数据与环境变量，一次运行即定位断裂层；示例依赖 shell 命令与系统工具 (env, git, security, codesign)
+- 失败熔断升级：累计 3 次修复失败即停止修复，判定为架构问题而非假设错误，先与人类伙伴讨论是否重构；配套技术文件 root-cause-tracing.md / defense-in-depth.md / condition-based-waiting.md，测试环节引用 superpowers:test-driven-development 与 superpowers:verification-before-completion 两个技能

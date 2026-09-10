@@ -1,0 +1,12 @@
+# obsidian-markdown (`kepano/obsidian-skills/obsidian-markdown`)
+
+## whitebox
+
+- 在文件顶部写入 frontmatter，定义 title / tags / aliases 等属性
+- 用标准 Markdown 组织正文，叠加 Obsidian 专属语法（callout、==高亮==、%%注释%%、LaTeX、Mermaid 等）
+- 用 [[wikilink]] 连接库内笔记；需要内嵌内容时给 wikilink 加 `!` 前缀（如 ![[image.png|300]]）
+- 在 Obsidian 阅读视图中验证笔记渲染是否正确
+
+- 语法分层：把 Obsidian 语法当作 CommonMark/GFM 的扩展层，只处理扩展部分（wikilink、embed、callout、frontmatter 属性、block ID `^id`、注释、高亮、数学、Mermaid、脚注），标准 Markdown 视为已知前提直接沿用
+- 链接决策规则：库内笔记一律用 [[wikilink]]（重命名时由 Obsidian 自动追踪更新），仅外部 URL 用 [text](url)；嵌入 = wikilink 加 `!` 前缀
+- 参考文件查表 + 渲染校验：callout / embed / property 的完整类型与高级用法查随附的 CALLOUTS.md、EMBEDS.md、PROPERTIES.md，不凭空编造；无外部库或模型 API 依赖，最终正确性以 Obsidian 本体阅读视图的渲染结果为准

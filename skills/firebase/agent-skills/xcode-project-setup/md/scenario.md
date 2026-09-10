@@ -1,0 +1,5 @@
+# xcode-project-setup (`firebase/agent-skills/xcode-project-setup`)
+
+## scenario
+
+痛点:给 iOS 项目加 Firebase 等依赖,要在 Xcode 里反复点选、手填参数,漏配 -ObjC 编译项,App 一启动就闪退,排查半天。我一条命令完成装包、链接文件、注入关键配置,自动跳过已装项,不碰坏工程文件,让你专注写代码。📱

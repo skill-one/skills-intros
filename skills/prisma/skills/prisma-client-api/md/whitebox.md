@@ -1,0 +1,13 @@
+# prisma-client-api (`prisma/skills/prisma-client-api`)
+
+## whitebox
+
+- 触发: 用户提到 Prisma 查询相关关键词 (prisma query / findMany / create / update / delete / $transaction) 或涉及 CRUD、筛选、关联、事务、client 配置
+- 分类: 将需求映射到按优先级排列的 8 个规则类别 (constructor → model-queries → query-options → filters → relations → transactions → raw-queries → client-methods)
+- 查参考: 打开对应 references/*.md 文件 (如 references/transactions.md) 获取该类的详细 API 与示例
+- 组织答案: 结合 Quick Reference 表格与 Quick Examples 生成 Prisma Client 代码 (TS), 如 new PrismaClient({ adapter }) + findMany({ where, orderBy, take })
+- 输出: 返回可用的查询代码, 并附上相关参考文件路径与官方文档链接
+
+- 关键词触发 + 类别路由: 靠 description 中的触发词识别任务, 再用「优先级-类别-前缀」表定位到唯一的 references 参考文件, 而非全量加载
+- 表格驱动的答案骨架: 用方法表 (findUnique/upsert/groupBy…)、查询选项表 (where/select/include/omit/take/skip/cursor…)、筛选操作符表 (equals/in/contains/some/none…) 组装查询结构
+- 外部依赖: Prisma ORM Client (v7.9.1) 的 API 形态 + TypeScript 类型检查; client 构造依赖 driver adapter 模式 (如 @prisma/adapter-pg, 由 DATABASE_URL 驱动)

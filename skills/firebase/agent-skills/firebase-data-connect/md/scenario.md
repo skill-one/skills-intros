@@ -1,0 +1,5 @@
+# firebase-data-connect (`firebase/agent-skills/firebase-data-connect`)
+
+## scenario
+
+想做个带数据的 App(记账、订单、社区)?自己搭数据库贵、慢,数据还可能被人乱看乱改。我用 Firebase SQL Connect 帮你:设计数据表、配好访问权限、自动生成前端可直接调用的代码,安全省心上线。🗄️🔒

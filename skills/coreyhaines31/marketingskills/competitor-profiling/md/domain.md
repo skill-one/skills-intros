@@ -1,0 +1,7 @@
+# competitor-profiling (`coreyhaines31/marketingskills/competitor-profiling`)
+
+## domain
+
+**domain**: 📈 商业运营
+
+**reason**: 核心是竞品调研与 SEO 分析, 服务市场营销、销售与业务增长决策

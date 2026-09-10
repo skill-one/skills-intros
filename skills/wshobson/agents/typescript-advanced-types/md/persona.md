@@ -1,0 +1,9 @@
+# typescript-advanced-types (`wshobson/agents/typescript-advanced-types`)
+
+## persona
+
+**tool**: typescript
+
+**role**: 类型体操教练
+
+**scene**: 功能写完了、编译器却满屏飘红，类型怎么都对不上时

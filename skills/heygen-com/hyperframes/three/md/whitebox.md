@@ -1,0 +1,13 @@
+# three (`heygen-com/hyperframes/three`)
+
+## whitebox
+
+- 识别任务契合技能——为 HyperFrames 组合创建确定性 Three.js/WebGL 画布层，按契约开始实现
+- 同步创建 scene、camera、renderer、材质与资产，模型/纹理/HDR 在渲染关键 seek 前加载完，不在渲染时远程拉取
+- 写 renderAt(time)：物体旋转、相机运动、动画一律由 HyperFrames 时间驱动，不用 requestAnimationFrame 或 Date.now()/时钟差值
+- 监听 hf-seek 事件，收到即按 detail.time 精确渲染那一帧；renderer 尺寸与 pixelRatio 固定（如 1920×1080、ratio 1）
+- 编辑后运行 npx hyperframes lint 和 npx hyperframes validate 完成校验
+
+- 确定性时间契约：HyperFrames 的 three 适配器（packages/core/src/runtime/adapters/three.ts）每次 seek 设置 window.__hfThreeTime 并派发 CustomEvent("hf-seek", { detail: { time } })，渲染以该 time 为唯一真值源，逐帧可复现
+- 动画与状态定位：GLTF/剪辑动画用 AnimationMixer.setTime(time) 直接 seek，多个 mixer 共用同一 time；避免依赖前帧历史的后处理和自由运行循环
+- 外部依赖：Three.js 以 ESM 从 CDN 引入（示例 three@0.181.2 经 jsdelivr +esm）；校验走 HyperFrames CLI，API 文档参考 threejs.org 的 WebGLRenderer 与 AnimationMixer 页

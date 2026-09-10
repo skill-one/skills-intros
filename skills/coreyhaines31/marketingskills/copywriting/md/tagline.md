@@ -1,0 +1,7 @@
+# copywriting (`coreyhaines31/marketingskills/copywriting`)
+
+## tagline
+
+- 把你的价值, 写成用户想点的那句话
+- 清晰有力, 每个字都为转化服务
+- 从标题到按钮, 让访客停下的文案

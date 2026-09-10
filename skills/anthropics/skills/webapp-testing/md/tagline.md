@@ -1,0 +1,7 @@
+# webapp-testing (`anthropics/skills/webapp-testing`)
+
+## tagline
+
+- 上线之前, 我先当你的第一个用户
+- 点遍每个按钮, 拦下每个 bug
+- 你的网页跑不跑得通, 我说了算

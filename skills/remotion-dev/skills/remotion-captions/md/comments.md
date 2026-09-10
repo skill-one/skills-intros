@@ -1,0 +1,10 @@
+# remotion-captions (`remotion-dev/skills/remotion-captions`)
+
+## comments
+
+- user: 第一次做口播视频的新手, category: 坑, comment: 直接把写好的文案贴进去让它排字幕, 结果它只认 Caption 格式的 JSON. 后来让它先转写我录的音频, 一次跑通.
+- user: 前端工程师, category: 注意, comment: startMs/endMs 是毫秒不是秒. 我按秒填, 两分钟的视频字幕全挤在开头两秒里. 1分30秒要写 90000.
+- user: 字幕组搬运老手, category: 妙用, comment: 网上下载的 srt 别重新转写, 直接导入文件, 时间轴原样保留. 每条视频的转写费用全省了.
+- user: 播客主理人, category: 妙用, comment: 没画面也能用: mp3 音频直接转出带时间轴的字幕, 配张封面图就是视频. 我的播客切片全这么量产.
+- user: 兼职做字幕的在校生, category: 启发, comment: 以前边听边敲字幕, 现在先转写再校对, 活儿从「听写」变成「审核」, 交付速度快了一倍.
+- user: 从剪映转过来的剪辑师, category: 注意, comment: srt 导入的字幕没有逐字时间戳(置信度为 null), 做逐字高亮会翻车. 要这效果就用音频重新转写一份.

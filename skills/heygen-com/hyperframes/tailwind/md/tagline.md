@@ -1,0 +1,7 @@
+# tailwind (`heygen-com/hyperframes/tailwind`)
+
+## tagline
+
+- 类名即样式, 帧帧皆精准
+- 预览即渲染, 样式零闪烁
+- v3 迁 v4, 排雷一步到位

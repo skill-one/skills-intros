@@ -1,0 +1,14 @@
+# convex-performance-audit (`get-convex/agent-skills/convex-performance-audit`)
+
+## whitebox
+
+- 收集性能信号: 优先用现成的 insights 数据, 否则跑 `npx convex insights --details`; 若没有运行时信号, 直接基于代码审计 (受约束条件收紧)
+- 按信号路由表归类问题类型, 读取对应的 reference 文件: 读取放大→hot-path-rules, OCC 冲突→occ-conflicts, 订阅成本→subscription-cost, 函数超限→function-budget
+- 圈定一个具体的用户流程: 记录入参函数、客户端调用点、读写的表、该路径是读多还是写多
+- 追踪完整读写集: 逐个 ctx.db.get/query 和 patch/replace/insert, 识别跨表关联、JS 侧过滤、全文档读取, 并找出触碰同一批表的所有兄弟函数
+- 按 reference 的修复顺序改代码, 兄弟函数一并修成同一模式, 最后验证结果一致、无遗漏读取、回退逻辑可用
+
+- 确定性路由: 不靠猜, 用信号→reference 映射表直接定位参考文档; 多类问题重叠时先读最相关的, 症状未消再查其他
+- 信号来源分层: Convex CLI insights (--details, CLI 太旧时用 npx -y convex@latest 兜底) 是一等信号源, convex-doctor 的发现只作提示不作事实依据; 两者都缺时退化为纯代码审计, 并严格按守则保守判断
+- 升级闸门: 遇到侵入性/迁移型大改动 (摘要表、文档拆分、分页重构、需迁移的新索引) 先停下来给选项, 不直接动手; 涉及新旧状态过渡的正确性问题时, 依赖 convex-migration-helper 技能
+- 规模守则: 小流量、弱信号时不建议摘要表/文档拆分/改抓取策略等结构性改造; Convex 小表全扫往往是可接受的, 不为'不够理想'而造无谓的结构性工作

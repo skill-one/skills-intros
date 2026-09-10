@@ -1,0 +1,7 @@
+# azure-app-onboard-prereq (`microsoft/azure-skills/azure-app-onboard-prereq`)
+
+## domain
+
+**domain**: 🛡️ 运维与安全
+
+**reason**: 评估代码库能否部署到 Azure 云平台, 属于部署发布与云基础设施范畴

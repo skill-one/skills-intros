@@ -1,0 +1,10 @@
+# vercel-react-view-transitions (`vercel-labs/agent-skills/vercel-react-view-transitions`)
+
+## comments
+
+- user: 第一次用的新手, category: 坑, comment: 以为包上 <ViewTransition> 点按钮就有动画,结果纹丝不动。普通 setState 不触发,必须放进 startTransition、useDeferredValue 或 Suspense 里才会动。
+- user: 接私活的独立前端, category: 妙用, comment: 列表点图放大到详情:外层 VT 挂 key 管列表动画,内层 VT 挂 name={photo-${id}} 管跨页变形,两层缺一就静默失效,名字带 id 防重复挂载。
+- user: Vue 转过来的全栈, category: 坑, comment: 没写 default="none",后台轮询每刷新一次就全局淡入一次,页面一闪一闪像抽风。共享元素和类型化页面 VT 都要加 default="none",否则任何无关更新都会触发。
+- user: 管无障碍审查的前端组长, category: 注意, comment: 两个前提: Safari 要 18.2+,老 iPhone 瞬切无动画是正常降级,别当 bug 修; prefers-reduced-motion 那段 CSS 要手动抄进全局样式,库不会自动带。
+- user: Next.js 三年老用户, category: 注意, comment: Next.js 里别装 react@canary,App Router 已内置,重装反而依赖错乱。router.back() 和浏览器后退不带类型,方向滑动不会播,要方向感就用 push 指定 URL。
+- user: H5 活动页开发, category: 坑, comment: enter/exit 死活不播,排查半天发现是 VT 外面套了层 div。它必须出现在任何 DOM 节点之前。列表同理: ViewTransition 和 map 之间别插 div,一插就不动。

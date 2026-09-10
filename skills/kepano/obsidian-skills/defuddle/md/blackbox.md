@@ -1,0 +1,9 @@
+# defuddle (`kepano/obsidian-skills/defuddle`)
+
+## blackbox
+
+**function**: 给我一个网页链接, 我把里面的正文干干净净地取出来给你——没有广告、没有侧边栏、没有导航菜单, 只剩真正想读的内容。
+
+- input: 一篇博客文章的 URL (如 https://example.com/post/123), output: 文章正文, 整理成干净的 Markdown 文本, 广告和杂乱元素全部去除
+- input: 一个在线文档页面的 URL + 「帮我存下来」, output: 一个 content.md 文件, 内容是排版好的文档正文, 可直接阅读或二次加工
+- input: 一个网页 URL + 「只要标题和简介」, output: 该页面的标题和描述文字, 不含正文

@@ -1,0 +1,9 @@
+# firebase-auth-basics (`firebase/agent-skills/firebase-auth-basics`)
+
+## blackbox
+
+**function**: 给你的应用加上「用户登录」功能: 用户能注册、登录, 且每人只能访问自己的数据。
+
+- input: 一句话需求, 如「给我的网页加上 Google 登录」, output: 能直接跑起来的登录代码 + 配置好的 Firebase 项目, 用户点一下就能用 Google 账号登录
+- input: 你现有的应用代码 (网页 / Flutter / Android), output: 接好登录功能后的代码: 用户可注册、登录、退出, 登录后显示其昵称和头像
+- input: 一个存用户数据的数据库 (如 Firestore), output: 一套安全规则并部署生效: 未登录的人一律拒之门外, 登录用户也只能读写自己的数据

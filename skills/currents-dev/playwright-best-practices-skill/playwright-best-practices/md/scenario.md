@@ -1,0 +1,5 @@
+# playwright-best-practices (`currents-dev/playwright-best-practices-skill/playwright-best-practices`)
+
+## scenario
+
+每次发版前, 团队熬夜人肉把页面点一遍, 又慢又累, 上线后还是翻车挨骂。我是 Playwright 自动化测试专家, 能造一个不知疲倦的"测试机器人", 几分钟点完上百个场景, 把 bug 拦在上线前。🤖

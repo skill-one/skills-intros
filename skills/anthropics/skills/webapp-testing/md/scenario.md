@@ -1,0 +1,5 @@
+# webapp-testing (`anthropics/skills/webapp-testing`)
+
+## scenario
+
+🖥️ 网站做好了,怕藏着 bug?手动一页页点按钮、填表单,费时又容易漏。我能像真人一样自动操作网页:逐项点验、截图留证、抓报错日志,把前端问题一次查清。

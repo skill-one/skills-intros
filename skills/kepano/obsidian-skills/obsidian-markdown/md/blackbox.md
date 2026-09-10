@@ -1,0 +1,9 @@
+# obsidian-markdown (`kepano/obsidian-skills/obsidian-markdown`)
+
+## blackbox
+
+**function**: 帮你写出能在 Obsidian 笔记软件里正确显示的笔记:双链、标签、标注框、嵌入、高亮等特殊格式都能排好。
+
+- input: 一段随手记的会议内容(纯文本草稿), output: 一份规范的 Obsidian 笔记文件 (.md):带标题/日期/标签的头部信息,重点内容用标注框和高亮标出,提到的项目名自动变成可点击的双链
+- input: 一篇普通 Markdown 笔记文件, output: 改写后的 Obsidian 版本:内部引用变成 [[双链]],重要段落加上 [!tip]/[!warning] 标注框,补充标签和别名,在 Obsidian 里渲染无报错
+- input: 「帮我把读书笔记和这本书的作者、主题关联起来」+ 几个 .md 文件, output: 更新后的笔记:笔记之间用 wikilinks 互相连接,链接到指定章节,相关笔记开头加上嵌入 (![[...]]) 或关联链接,方便在关系图谱中看到联系

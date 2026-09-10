@@ -1,0 +1,5 @@
+# typescript-advanced-types (`wshobson/agents/typescript-advanced-types`)
+
+## scenario
+
+深夜上线突然报错、改一处代码崩十处?多半是数据格式没对齐。我专攻 TypeScript 高级类型系统,能在写代码阶段就拦住隐患,让重构、接口对接、组件复用都安全可控,少熬夜,多安心 🌙

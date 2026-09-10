@@ -1,0 +1,7 @@
+# neon-postgres (`neondatabase/agent-skills/neon-postgres`)
+
+## tagline
+
+- 数据库自动伸缩，闲置归零省钱
+- 秒开分支克隆，放心试错不心疼
+- 一秒回到过去，数据恢复零成本

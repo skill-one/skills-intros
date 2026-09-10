@@ -1,0 +1,7 @@
+# social-content (`coreyhaines31/marketingskills/social-content`)
+
+## tagline
+
+- 一条内容, 全网开花
+- 3 秒抓住眼球, 停住每一次滑动
+- 你只管忙事业, 爆款交给我

@@ -1,0 +1,5 @@
+# prisma-postgres-setup (`prisma/skills/prisma-postgres-setup`)
+
+## scenario
+
+新项目要用数据库,却卡在注册控制台、建库、抄连接串、改配置一堆报错,半小时起步还未必跑通。我一条龙搞定:建库→拿连接串→配好 Prisma 项目→跑通验证,你只需贴一个令牌。🚀

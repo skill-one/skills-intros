@@ -1,0 +1,13 @@
+# prisma-mongodb-upgrade (`prisma/skills/prisma-mongodb-upgrade`)
+
+## whitebox
+
+- 触发: MongoDB 项目问到升级 Prisma / "prisma 7 mongodb" / "prisma next mongodb" 等信号时接管。
+- 先划两条红线: 绝不建议升 v7 (v7 没有 MongoDB 连接器), 也绝不借机把项目改写到 SQL 数据库上。
+- 按决策表判断去留; 其中事务阻塞项 ($transaction 使用情况) 用 grep 扫代码取证, 不问用户。
+- 若迁 Prisma Next: 按引用文件给出 schema / client API / 迁移方式 (db push → plan/migrate/verify/sign) 的映射, 迁移前后跑 verify-cutover-checklist 保证同一数据库不动数据。
+- 若留 v6: 给保留方案 (锁最新 6.x + 跟踪安全公告 + 保持经典配置), 待 Next GA 或阻塞解除再复评。
+
+- 硬约束守门: 两条 never 规则 (不推 v7、不改 SQL 库) 优先级最高, 先于一切建议输出。
+- 证据式校验: 对 Prisma Next 的一切行为断言, 行动前先核对项目实际安装的 @prisma-next/* 版本 (skill 本身验证于 prisma-next commit a2791c5, Next 为 pre-1.0、需 MongoDB 8.0+ 和 mongodb@^7); 关键事实用 grep 取证。
+- 引用文件分流: 机制细节拆在 5 个 references 中按需加载 — stay-or-migrate 决策、schema-contract-mapping、client-api-mapping (含事务/原始查询缺口, 名字对得上、行为不保证对等)、migrations-mapping、verify-cutover-checklist; 迁移完成后按交接规则把日常交给 Prisma Next 自己的 skills, 本 skill 只做发现桥梁。

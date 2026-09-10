@@ -1,0 +1,7 @@
+# prisma-upgrade-v7 (`prisma/skills/prisma-upgrade-v7`)
+
+## tagline
+
+- v6 到 v7,照做即上线
+- 你写代码,升级的坑我来填
+- 破坏性变更,逐条拆解不错漏

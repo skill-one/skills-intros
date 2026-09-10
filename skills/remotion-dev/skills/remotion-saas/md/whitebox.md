@@ -1,0 +1,13 @@
+# remotion-saas (`remotion-dev/skills/remotion-saas`)
+
+## whitebox
+
+- 接收与 Remotion 相关的任务 (如: 做一个表单提交后渲染视频的应用, 或视频编辑器)
+- 按框架指南选定起点: 克隆或参考官方 SaaS 模板; 同时确定前端框架 (React/Vue/Angular/Svelte)
+- 用 <Player> 组件把 Remotion 视频预览嵌入 Web 应用
+- 按渲染指南在客户端渲染与服务器端渲染之间做选择, 并接好渲染管线
+- 交付: 形态可以是『简单表单 → 直连渲染』, 也可以是复杂视频编辑器
+
+- 模板驱动: 不从零搭建, 以官方 SaaS 模板为克隆/参考起点, 附带框架选型指南
+- <Player> 嵌入机制: React 组件承载 Remotion 预览; 非 React 栈 (Vue/Angular/Svelte) 走官方适配文档接入
+- 渲染双轨: 客户端渲染 或 服务器端渲染; 服务端可选 Remotion Lambda、Vercel、Node.js、Cloudflare 等运行环境

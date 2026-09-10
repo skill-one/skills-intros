@@ -1,0 +1,7 @@
+# xcode-project-setup (`firebase/agent-skills/xcode-project-setup`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 专为 iOS/Xcode 项目安装依赖、集成 Swift 包而生的开发工具技能

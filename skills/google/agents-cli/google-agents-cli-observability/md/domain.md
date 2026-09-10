@@ -1,0 +1,7 @@
+# google-agents-cli-observability (`google/agents-cli/google-agents-cli-observability`)
+
+## domain
+
+**domain**: 🛡️ 运维与安全
+
+**reason**: 为线上 Agent 提供链路追踪、日志与监控告警, 属云上可观测性运维范畴。

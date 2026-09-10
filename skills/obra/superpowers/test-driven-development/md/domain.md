@@ -1,0 +1,7 @@
+# test-driven-development (`obra/superpowers/test-driven-development`)
+
+## domain
+
+**domain**: 🧪 测试与质量
+
+**reason**: 核心纪律是测试先行：先写失败测试再写实现，一切围绕测试编写与质量保障

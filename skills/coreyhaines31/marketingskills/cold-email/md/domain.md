@@ -1,0 +1,7 @@
+# cold-email (`coreyhaines31/marketingskills/cold-email`)
+
+## domain
+
+**domain**: 📈 商业运营
+
+**reason**: 写 B2B 冷启动邮件与跟进序列, 属于销售触达与获客范畴

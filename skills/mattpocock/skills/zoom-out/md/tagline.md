@@ -1,0 +1,7 @@
+# zoom-out (`mattpocock/skills/zoom-out`)
+
+## tagline
+
+- 迷失代码? 我带你升空看地图
+- 陌生的代码区, 一张地图秒懂
+- 跳出细节, 全局尽收眼底

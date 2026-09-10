@@ -1,0 +1,10 @@
+# embedded-captions (`heygen-com/hyperframes/embedded-captions`)
+
+## comments
+
+- user: 知识区UP主, category: 坑, comment: 我把每句话都做成嵌入大字, 成片像弹幕轰炸; 改回默认字幕条+只挑最高潮那一个词放大, 反而有人夸有电影感.
+- user: 字幕组老司机, category: 注意, comment: 素材中段才冒出来的内嵌字幕, 开头抽三帧根本看不见, 成片两套字幕打架. 先用1fps把整片拼成缩略图墙扫一遍再进流程.
+- user: 访谈片剪辑师, category: 坑, comment: 双人对谈直接喂进去被拒了. 按镜头切开, 每段单人各跑一遍再拼回来就过, 别硬塞.
+- user: 留学生口播博主, category: 坑, comment: 我口音重, 转写出来一串自信的乱码差点直接用. 先通读 transcript.json, 读不通就换 medium 模型重试一次, 还乱就放弃别做.
+- user: 第一次用的新手, category: 坑, comment: 选了'炸'字主题后一直盯着 final.mp4 干等, 其实产物叫 final_fx.mp4, 文件早躺在旁边了.
+- user: 短视频工作室主理人, category: 妙用, comment: 口播里全是'呃''就是', 本打算手动改字幕稿, 后来发现填充词默认不上屏, 口条不干净也能出干净成片, 省半小时.

@@ -1,0 +1,10 @@
+# obsidian-bases (`kepano/obsidian-skills/obsidian-bases`)
+
+## comments
+
+- user: 第一次用的新手, category: 坑, comment: 公式里嵌双引号时外层必须用单引号：我写 "if(done,"Yes")" 直接 YAML 报错白屏，改成 'if(done, "Yes")' 秒好。
+- user: 用 Bases 管项目进度的自由设计师, category: 坑, comment: 两个日期相减得到的是时长不是数字，必须先取 .days 再 round；due 留空的笔记要用 if() 包住，否则整个视图报错。
+- user: 五年库龄的 Obsidian 老玩家, category: 妙用, comment: 一个 .base 配多个视图，笔记里用 ![[xx.base#视图名]] 只嵌某一个，筛选条件改一处，所有引用同步更新。
+- user: 日记连续打卡 300 天的学生, category: 妙用, comment: 用正则过滤文件名 /^\d{4}-\d{2}-\d{2}$/ 后，日记索引只收标准日期命名的笔记，随手记的杂文不会混进表格。
+- user: 拿 Bases 做旅行攻略的背包客, category: 注意, comment: map 视图不是开箱即用：要先装 Maps 社区插件，笔记里还得有经纬度属性，否则建好也是空视图。
+- user: 从 Dataview 迁移的前插件党, category: 启发, comment: 以前 dataview 查询散在笔记里难维护，现在筛选、公式、展示分层写进 YAML，表头用 displayName 改中文，列尾挂 Sum/Average 就有汇总。

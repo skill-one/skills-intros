@@ -1,0 +1,7 @@
+# emil-design-eng (`emilkowalski/skills/emil-design-eng`)
+
+## domain
+
+**domain**: 🎨 设计多媒体
+
+**reason**: 核心是 UI 打磨与交互动效设计 (设计工程), 让界面细节更有质感。

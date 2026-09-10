@@ -1,0 +1,7 @@
+# edit-article (`mattpocock/skills/edit-article`)
+
+## domain
+
+**domain**: ✍️ 内容创作
+
+**reason**: 专注文章编辑: 调整结构、提升清晰度、精炼文字, 属于以文字为主体的创作加工

@@ -1,0 +1,7 @@
+# sales-enablement (`coreyhaines31/marketingskills/sales-enablement`)
+
+## tagline
+
+- 把功能讲成收入, 把话术变成订单
+- 三秒可查, 一页制胜
+- 销售要的不是文档, 是签下的合同

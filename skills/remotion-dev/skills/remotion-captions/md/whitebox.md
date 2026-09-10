@@ -1,0 +1,12 @@
+# remotion-captions (`remotion-dev/skills/remotion-captions`)
+
+## whitebox
+
+- 接收字幕任务, 判定属于哪类: 转写 (音频/视频→字幕)、展示/动画 (字幕上屏)、还是从 .srt 导入
+- 按 skill.md 路由, 加载对应子文档 (transcribe-captions.md / display-captions.md / import-srt-captions.md) 获取具体指令
+- 把数据处理为统一的 Caption JSON (字段: text, startMs, endMs, timestampMs, confidence)
+- 按子文档要求校验并输出: 字幕 JSON, 或渲染字幕的 Remotion 代码
+
+- 统一数据契约: 一切字幕必须规范化为 Caption 类型 JSON (text, startMs, endMs, timestampMs, confidence, 可选 pageBreakAfter), 类型定义来自 @remotion/captions 库
+- 模块化按需加载: skill.md 本身只是索引, 三条能力各对应一份子文档, 触发时才读取——转写细节 (用什么模型/工具) 不在 skill.md 中, 需查 transcribe-captions.md
+- 格式互转: .srt 文件通过 import-srt-captions.md 的流程解析后, 同样归一到 Caption JSON

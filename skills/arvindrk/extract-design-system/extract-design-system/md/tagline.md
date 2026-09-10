@@ -1,0 +1,7 @@
+# extract-design-system (`arvindrk/extract-design-system/extract-design-system`)
+
+## tagline
+
+- 一个网址, 一键提取网站设计基因
+- 配色字体间距, 原样搬进你的项目
+- 看中谁的设计, 就把谁变成你的

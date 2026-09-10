@@ -1,0 +1,9 @@
+# claude-handoff (`mattpocock/skills/claude-handoff`)
+
+## blackbox
+
+**function**: 把当前对话「交接」给一个新的后台代理，让它带着全部进度立刻接着干活，你不用重新解释一遍。
+
+- input: 对话做到一半时说："接下来专注修登录 bug，交接出去", output: 一个已开跑的新代理（名字类似"Fix login bug"），从当前进度无缝继续修 bug
+- input: 不带任何说明，直接喊交接, output: 一个完整接手当前上下文的后台代理，立刻从断点继续，你随时可用 claude agents 查看或管理它
+- input: "把整理文档的活交给下一个，重点是排版", output: 一个以"整理文档排版"为重点的后台任务，立即启动并开始干活

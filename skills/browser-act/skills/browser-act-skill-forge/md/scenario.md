@@ -1,0 +1,5 @@
+# browser-act-skill-forge (`browser-act/skills/browser-act-skill-forge`)
+
+## scenario
+
+还在手动翻页抄数据?复制粘贴到手抽筋,条数一多还容易漏、易重复。我能把你的采集需求一次摸清、打包成可复用技能:下次一句话,自动批量抓取,从此告别苦力 🛠️

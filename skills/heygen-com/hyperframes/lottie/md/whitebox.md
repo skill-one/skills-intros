@@ -1,0 +1,13 @@
+# lottie (`heygen-com/hyperframes/lottie`)
+
+## whitebox
+
+- 从本地 assets/ 加载动画资产 (lottie-web 的 JSON 或 dotLottie 的 .lottie 文件)
+- 创建播放器: lottie-web 用 loadAnimation, dotLottie 用 new DotLottie(), 均设 autoplay:false / loop:false
+- 把每个播放器实例 push 进 window.__hfLottie 全局注册表
+- HyperFrames 适配器读取注册表, 把所有播放器 seek 到合成时间轴的同一时刻
+- 用 npx hyperframes lint / validate 校验合成
+
+- 确定性 seek 而非播放: 动画进度完全由外部时间轴驱动 — lottie-web 用 goToAndStop(timeMs, false), dotLottie 按 player 类型用 frame 或 percentage API; 不调用 play()
+- window.__hfLottie 注册表: 所有播放器实例集中注册, HyperFrames 校验和运行时据此发现并统一 seek, 支持 JSON/.lottie/多动画混用
+- 依赖外部库: lottie-web (Airbnb, bodymovin), @lottiefiles/dotlottie-web (LottieFiles), 以及 HyperFrames CLI 做 lint/validate; 资产必须本地化, 渲染时不依赖远程 path

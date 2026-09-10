@@ -1,0 +1,13 @@
+# animejs (`heygen-com/hyperframes/animejs`)
+
+## whitebox
+
+- 收到 HyperFrames 合成中写 Anime.js 动画的任务
+- 在合成初始化阶段同步创建 animation/timeline, 硬性设 autoplay: false (动画不自带时钟)
+- 把每个返回实例 push 到 window.__hfAnime 注册表
+- HyperFrames 运行时通过适配器对每个注册实例调用 instance.seek(timeMs) 驱动进度
+- 改动后跑 npx hyperframes lint / validate 校验
+
+- 时钟归属反转: 确定性靠 'autoplay: false + 有限时长/循环次数 + 禁用 wall-clock 回调' 保证, 动画完全被动地被 seek
+- 注册表契约: 显式 window.__hfAnime.push(...) 替代 anime.running 自动发现; 适配器只要求实例暴露 seek()/pause() (最好有 play()), 因此 IIFE 构建和 ES module 构建均可接入
+- 外部依赖: Anime.js 本体 (jsDelivr CDN 引入, 如 anime.iife.min.js 或 +esm), HyperFrames 适配器 packages/core/src/runtime/adapters/animejs.ts, 校验工具 npx hyperframes lint/validate

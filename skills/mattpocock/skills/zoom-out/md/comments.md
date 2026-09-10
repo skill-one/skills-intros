@@ -1,0 +1,10 @@
+# zoom-out (`mattpocock/skills/zoom-out`)
+
+## comments
+
+- user: 跨组接手的后端, category: 妙用, comment: 接手陌生仓库先敲 zoom-out 拿模块地图，再挑两条关键调用链下钻，比挨个读文件快一半。
+- user: 带团队的技术负责人, category: 妙用, comment: 评审前先 zoom-out 一遍，看改动落在地图哪个位置、牵连哪些调用方，提意见不再靠猜。
+- user: 第一次用的新手, category: 坑, comment: 我以为聊代码时它会自动触发，等半天没动静。它关掉了自动调用，必须手动敲命令才生效。
+- user: 独立开发老哥, category: 坑, comment: 在没文档的私人项目直接跑，地图全是 utils、service 这类空泛词。先补个 domain glossary 再用。
+- user: 前端转岗的全栈, category: 注意, comment: 它只给地图不给细节。拿到模块图后要接着点名问"这个函数谁在调用"，别指望一步出答案。
+- user: 后端老兵, category: 启发, comment: 用几次才承认：我以前总先扎进函数细节。先拿地图再下钻，排查问题的方向感完全不同。

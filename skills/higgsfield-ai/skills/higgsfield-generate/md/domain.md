@@ -1,0 +1,7 @@
+# higgsfield-generate (`higgsfield-ai/skills/higgsfield-generate`)
+
+## domain
+
+**domain**: 🎨 设计多媒体
+
+**reason**: 生成图像、视频、3D 模型与音效/音乐等视觉音视频资产，核心是多媒体制作。

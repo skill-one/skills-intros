@@ -1,0 +1,5 @@
+# convex-performance-audit (`get-convex/agent-skills/convex-performance-audit`)
+
+## scenario
+
+Convex 应用越用越慢:页面卡顿、读取量飙升、保存频报冲突、账单失控——而你只改了一处,别处照样慢。我顺着读写路径逐条排查,定位真正瓶颈,并连同同类隐患一起修复。🔍

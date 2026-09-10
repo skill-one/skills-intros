@@ -1,0 +1,10 @@
+# revops (`coreyhaines31/marketingskills/revops`)
+
+## comments
+
+- user: B2B SaaS 市场负责人, category: 坑, comment: 没给背景就问评分模型,拿到的是通用模板,分值全靠拍。后来把 ACV、月线索量、在用的 CRM 先写清,输出才能落地。先答它开头的六个问题再聊。
+- user: 销售运营新人, category: 妙用, comment: 把过去 20 个成单客户贴给它反测评分模型,只命中 11 个,证明权重有问题。上线前先拿历史成单回测一遍,不然模型等于盲打。
+- user: Salesforce 老管理员, category: 注意, comment: 它是流程设计顾问,不替你点 CRM 后台。想拿到能照做的细节,必须明说'我们用 Salesforce'或 HubSpot,否则只给通用方案文档。
+- user: SDR 团队主管, category: 妙用, comment: 拿它'5 分钟内联系转化率高 21 倍'的数据,向老板要到了自动派单预算,比讲道理管用。另外让被拒 MQL 带原因码回流,市场终于知道砍哪类投放。
+- user: 外贸 SMB 创始人, category: 启发, comment: 一直以为市场销售甩锅是人的问题。它点醒:销售不肯跟进的 MQL,定义就是错的,必须两边共同定。对齐会现在固定每月一次。
+- user: PLG 增长经理, category: 注意, comment: 问它冷邮件和定价,它直接让我去看对应技能。它只管评分、路由、交接、流水线这条管道,别当万能增长顾问用。

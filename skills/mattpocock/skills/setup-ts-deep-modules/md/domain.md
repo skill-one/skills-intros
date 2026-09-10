@@ -1,0 +1,7 @@
+# setup-ts-deep-modules (`mattpocock/skills/setup-ts-deep-modules`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 为 TypeScript 仓库配置依赖边界规则, 属于代码架构与工程化任务。

@@ -1,0 +1,13 @@
+# webapp-testing (`anthropics/skills/webapp-testing`)
+
+## whitebox
+
+- 按决策树分流: 静态 HTML 直接读源码找选择器; 动态 webapp 则确认服务器是否已在运行
+- 服务器未运行时, 用 with_server.py 托管其生命周期 (先跑 --help 查用法), 自动化脚本里只写 Playwright 浏览器逻辑
+- 打开页面并等待 networkidle, 确保 JS 执行完毕再继续
+- 侦察渲染后的真实状态: 全页截图 + 读取 DOM + 枚举按钮/链接/输入框, 从中确定选择器
+- 用确定的选择器执行操作与验证, 结束后关闭浏览器
+
+- 侦察先行 (reconnaissance-then-action): 动态应用必须等 networkidle 后再查 DOM, 否则 JS 未执行完会拿到过期结构; 用 screenshot()/content()/locator().all() 采集渲染态再行动
+- 辅助脚本黑盒化: with_server.py 负责启动/就绪等待/清理一个或多个本地服务器 (按 --port 探测), 主流程不读它的源码, 只当命令行工具调用
+- 依赖栈: Python + Playwright (sync API) + 无头 Chromium, 全部本地运行, 不依赖任何模型 API

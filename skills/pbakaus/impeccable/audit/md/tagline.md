@@ -1,0 +1,7 @@
+# audit (`pbakaus/impeccable/audit`)
+
+## tagline
+
+- 五维体检，一键出分，问题按轻重排好队
+- 不只找问题，更告诉你先修哪一个
+- 看得见评分，追得到代码行

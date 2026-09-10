@@ -1,0 +1,7 @@
+# firebase-crashlytics (`firebase/agent-skills/firebase-crashlytics`)
+
+## tagline
+
+- 崩溃无处遁形,稳定触手可及
+- 让每一次闪退,都有迹可循
+- 用户还没投诉,崩溃已修好

@@ -1,0 +1,5 @@
+# firebase-hosting-basics (`firebase/agent-skills/firebase-hosting-basics`)
+
+## scenario
+
+网站做好了,却卡在"怎么上线"?买服务器、配证书,坑多还慢🤯 我一条命令帮你部署到全球 CDN(全球加速),自动配 HTTPS 安全证书,上线前先生成预览链接让你过目,满意再发布。

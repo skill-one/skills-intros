@@ -1,0 +1,10 @@
+# convex-quickstart (`get-convex/agent-skills/convex-quickstart`)
+
+## comments
+
+- user: 独立开发者, 靠周末做 side project, category: 妙用, comment: 跑完它会列个计划先问我确认, 我就在确认那步砍掉不要的功能. 比让它一口气写完再返工, 至少省一半来回.
+- user: 第一次让 AI 做全栈的新手, category: 坑, comment: 以为模板自带登录, 跑起来才发现没有——它是刻意极简. 要用户系统就一开始说"加登录", 不然拿到的是干净底子.
+- user: 后端老兵, category: 妙用, comment: 我只要代码不要起服务, 说一句它就跳过启动, 后端代码规整地放进项目对应目录, 一份多余的说明文档都没生成, 拿走就能改.
+- user: 前端转全栈, category: 注意, comment: 数据库是 Convex 自带的, 它不会也不该给你装 Postgres. 别按老习惯想"先配库", 直接说清要存什么数据就行.
+- user: 产品经理, 自己动手验证点子, category: 启发, comment: 以前收的 demo 代码常跑不起来, 这次它真把本地服务起好、网址打开给我看. 我学会先要"能跑的骨架", 再谈细节.
+- user: 机器上挂着在用的 Convex 云项目, category: 注意, comment: 我登录过 Convex 账号, 它没有强切到匿名模式, 原来那个能发布的云部署和连接配置都原样保留. 有云端项目的人可以放心.

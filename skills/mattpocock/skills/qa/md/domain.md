@@ -1,0 +1,7 @@
+# qa (`mattpocock/skills/qa`)
+
+## domain
+
+**domain**: 🧪 测试与质量
+
+**reason**: 交互式 QA 会话: 澄清 bug、探索代码上下文、自动建 GitHub issue, 属于质量检查与 bug 排查

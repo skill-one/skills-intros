@@ -1,0 +1,7 @@
+# faceless-explainer (`heygen-com/hyperframes/faceless-explainer`)
+
+## tagline
+
+- 一段文字, 一支讲解视频
+- 不露脸, 也能把话讲明白
+- 让每个想法, 都看得见听懂

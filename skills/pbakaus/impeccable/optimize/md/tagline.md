@@ -1,0 +1,7 @@
+# optimize (`pbakaus/impeccable/optimize`)
+
+## tagline
+
+- 先测量, 后优化, 只治真慢
+- 秒开不卡顿, 流畅即口碑
+- 让加载快一半, 让体验看得见

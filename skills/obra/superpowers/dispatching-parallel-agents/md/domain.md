@@ -1,0 +1,7 @@
+# dispatching-parallel-agents (`obra/superpowers/dispatching-parallel-agents`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 面向多任务调试场景: 并行派发子代理同时修复多个独立故障 (如多文件测试失败), 属编程工作流编排。

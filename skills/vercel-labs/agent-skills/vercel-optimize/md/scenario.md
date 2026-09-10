@@ -1,0 +1,5 @@
+# vercel-optimize (`vercel-labs/agent-skills/vercel-optimize`)
+
+## scenario
+
+月底账单突然翻倍,首页却越来越慢?网站部署在 Vercel 上,烧钱又卡顿,却不知道问题藏在哪条路由。💸 我从真实线上数据入手,逐条定位到具体代码,只给有依据的省钱、提速方案。

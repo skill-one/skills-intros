@@ -1,0 +1,7 @@
+# implement-spec (`mattpocock/skills/implement-spec`)
+
+## tagline
+
+- 一份规格书，一条分支，全部落地
+- 任务并行开工，规格一次交付
+- 从需求到评审，交付不返工

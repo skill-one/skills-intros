@@ -1,0 +1,5 @@
+# subagent-driven-development (`obra/superpowers/subagent-driven-development`)
+
+## scenario
+
+拿到开发计划却落不了地:自己逐任务写码,上下文越滚越乱,中断后忘了进度、重复返工,质量全靠自己盯。我为每个任务派全新助手独立实现、逐一过审,账本记录进度,全程连跑不打扰,直到整分支交付 ✅

@@ -1,0 +1,7 @@
+# defuddle (`kepano/obsidian-skills/defuddle`)
+
+## tagline
+
+- 网页再乱, 一键还你干净正文
+- 滤掉广告杂讯, 只读真正内容
+- 剥去导航干扰, 直达文章干货

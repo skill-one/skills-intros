@@ -1,0 +1,5 @@
+# vercel-react-view-transitions (`vercel-labs/agent-skills/vercel-react-view-transitions`)
+
+## scenario
+
+点开商品, 页面"啪"地硬切, 图片生硬跳进详情——像廉价网页, 不像原生 App 📱。我用 React 原生 ViewTransition, 几行代码让元素平滑放大、翻页有方向感, 不装重型动画库, 老浏览器自动降级 ✨

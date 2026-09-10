@@ -1,0 +1,5 @@
+# extract-design-system (`arvindrk/extract-design-system/extract-design-system`)
+
+## scenario
+
+看中一个好网站,想把自己的项目做成同款风格,却只能一个个吸色、翻代码找字体,折腾几小时还凑不齐?给我网址,我自动提取它的配色、字体、间距、圆角,直接生成可用的样式文件,几分钟搭好设计底座。🎨

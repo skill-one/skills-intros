@@ -1,0 +1,10 @@
+# hyperframes-keyframes (`heygen-com/hyperframes/hyperframes-keyframes`)
+
+## comments
+
+- user: 第一次剪视频的新手, category: 坑, comment: 想用 keyframes 剪掉素材中段, 不行——裁剪拼接归 hyperframes-core 管, 这技能只做画面内的动效, 别像我一样绕弯。
+- user: 写了三年 GSAP 的前端, category: 坑, comment: 顺手写了 tl.play(), 渲染停在第一帧。要 paused 构建 + 注册进 window.__timelines, 播放归渲染器管。
+- user: 做短视频的运营, category: 妙用, comment: 空镜拍平了也能救: 加 punch-in 和缓慢位移缩放, 一个 wrapper 摆几个 zoom 状态就是运镜, 不用切素材。
+- user: 做卡点视频的剪辑师, category: 注意, comment: 想做先慢后快的变速? 只支持整段恒定倍速, 没有变速曲线。我先在剪辑软件里变速导出, 再当新素材放上时间轴。
+- user: 前端转视频的新手, category: 注意, comment: 示例里的位移数值和时长不能照抄, 我抄了一回, 元素直接飞出画面。数字要按自己页面的尺寸和时长重新推。
+- user: 拍片子的摄影师, category: 启发, comment: 以前运镜全靠现场推拉摇, 现在固定机位拍回来后期补缩放位移就行, 省了滑轨稳定器, 出组轻多了。

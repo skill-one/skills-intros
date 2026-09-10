@@ -1,0 +1,7 @@
+# docx (`anthropics/skills/docx`)
+
+## tagline
+
+- 你说需求，我交文档
+- 创建修订批注，全都拿手
+- 让每一页都专业得体

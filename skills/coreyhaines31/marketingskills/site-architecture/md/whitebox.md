@@ -1,0 +1,13 @@
+# site-architecture (`coreyhaines31/marketingskills/site-architecture`)
+
+## whitebox
+
+- 先读产品营销上下文文件 (.agents/product-marketing.md 等三种候选路径), 已覆盖的信息不再重复问
+- 向用户收集缺口信息: 业务目标、现状 (新站还是重构、需保留的 URL)、站点类型、内容清单
+- 按站点类型 (SaaS/内容/电商/文档/混合/小企业 6 种) 匹配深度与 URL 模板, 用 3-click rule 和 flat vs deep 权衡设计页面层级
+- 设计 URL 结构、导航 (header 4-7 项、footer 分列、面包屑) 与内链 (hub-and-spoke、无孤儿页)
+- 输出五件套: ASCII 层级树、Mermaid 视觉站点图、URL 映射表、导航规格、内链计划
+
+- 上下文预读: 按顺序探测三种上下文文件路径, 命中则跳过重复提问, 只问缺失项
+- 查表驱动的规则引擎: 站点类型→层级/URL 模式、页面类型→URL pattern、URL↔面包屑必须对齐, 全部靠内置规则表推导; 无外部库或模型 API, 仅按需引用本地参考文件 references/site-type-templates.md、navigation-patterns.md、mermaid-templates.md
+- 硬约束校验: header ≤7 项、URL 全小写连字符且禁日期/ID、改 URL 必配 301 重定向、每页至少一条入链; 图示二选一—ASCII 树 (快速草稿) 或 Mermaid graph TD+subgraph (导航分区/复杂关系)

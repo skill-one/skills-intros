@@ -1,0 +1,9 @@
+# systematic-debugging (`obra/superpowers/systematic-debugging`)
+
+## persona
+
+**tool**: log
+
+**role**: 排障工程师
+
+**scene**: 程序报错刷屏、正要上手乱改一通时

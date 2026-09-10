@@ -1,0 +1,10 @@
+# audit-website (`squirrelscan/skills/audit-website`)
+
+## comments
+
+- user: 第一次用的新手, category: 坑, comment: 我以为扫完就是全站结论，直接拿分数去验收，结果默认 quick 模式只扫了 25 页。签收前一定让它跑 -C full 再出报告。
+- user: 个人博客站长, category: 注意, comment: 一开始给它本地 dev server 的地址，线上才有的跳转、缓存问题全看不到。要扫线上网址，改的时候再回到本地代码。
+- user: 外包接单的前端, category: 妙用, comment: 修完让它用 report --diff 出前后分数对比，直接贴给客户当验收凭证，比一堆截图有说服力，尾款当场结了。
+- user: Shopify 店铺运营, category: 坑, comment: 直接扫我的 Shopify 店，被 Cloudflare 拦了还以为工具不行。后来让它加 -H 带访问头再扫，一次就过。
+- user: 五人前端组长, category: 注意, comment: 别让它一口气改完所有问题，提交堆一起很难回滚。分批改，每批跑一遍构建确认没挂，再继续下一批。
+- user: 做了十年 SEO, category: 启发, comment: 原以为体检是代码的事，报告里一半是死链、重复标题这类内容问题。现在每次发文我都让它顺手复查一遍。

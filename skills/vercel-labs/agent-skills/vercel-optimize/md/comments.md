@@ -1,0 +1,10 @@
+# vercel-optimize (`vercel-labs/agent-skills/vercel-optimize`)
+
+## comments
+
+- user: Next.js 独立开发者, category: 妙用, comment: 先按14天真实流量锁定要查的路由,再只读相关文件,结论直接带行号。默认只查6个候选,想全查加 --max-candidates all,别嫌它查得少。
+- user: 第一次用的新手, category: 坑, comment: 没在项目目录跑 vercel link 就启动,第一步就被拦。先 link --project 项目名,团队项目再加 --team,重跑才会开始收数据。
+- user: 个人项目学生党, category: 注意, comment: 路由级建议依赖付费的 Observability Plus。没开时它给两条路:开通后重跑,或接受受限纯代码审计,不会偷偷降级。查询配额用尽要等 UTC 零点重置。
+- user: 创业公司后端, category: 坑, comment: CLI 登的是个人号就在公司仓库跑了,它直接停下问我要审计哪个项目和团队,不替你猜。先 vercel link 对准目标项目并带 --team,再重跑。
+- user: Astro 站长, category: 注意, comment: Astro 只有有限支持,开跑前会问是否继续受限审计,路由数据可能对不回源码。要完整的路由级代码建议,选 Next.js/SvelteKit/Nuxt。
+- user: 带团队的技术负责人, category: 启发, comment: 只说省多大量级,不给美元数;SSE 长连接路由有证据才说有问题;查不动的明标「本次未调查」。这种克制让我敢直接把结论拿去汇报。

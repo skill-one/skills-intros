@@ -1,0 +1,13 @@
+# extract-design-system (`arvindrk/extract-design-system/extract-design-system`)
+
+## whitebox
+
+- 先问清两件事: 目标公开网站的 URL, 以及只要提取结果、还是连起步 token 文件一起要。
+- 确认该 URL 公开可访问后, 安装 Playwright 的 chromium, 再运行 npx extract-design-system <url> 执行提取。
+- 读取生成的 .extract-design-system/normalized.json, 归纳出主色/辅助色/强调色、检测到的字体、间距/圆角/阴影梯度。
+- 若用户只要提取产物就到此为止 (--extract-only 可跳过 token 文件生成); 若已有 normalized.json 只想重新生成 token 文件, 改跑 npx extract-design-system init。
+- 向用户解释四个产出文件 (raw.json / normalized.json / design-system/tokens.json / tokens.css), 且在改动任何现有项目代码前必须先征得确认。
+
+- 无头浏览器抓取: 依赖 Playwright + Chromium 打开公开页面作为提取数据源, 网站本身不提供 API。
+- 两段式数据管线: CLI 先产出原始提取结果 raw.json, 再规范化为 normalized.json; 起步 token 文件 (tokens.json / tokens.css) 由 normalized.json 派生, 因此可随时用 init 子命令重新生成而不必重新抓取。
+- 人工校验兜底: 提取结果不当作权威——若是动态渲染或部分加载的页面, 明确告知结果不完整, 不臆测未提取到的组件或语义 token; 触碰用户项目现有样式/配置前一律需要单独确认。

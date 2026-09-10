@@ -1,0 +1,7 @@
+# higgsfield-soul-id (`higgsfield-ai/skills/higgsfield-soul-id`)
+
+## tagline
+
+- 一次训练,AI 从此只画你
+- 一张脸,炼成专属数字分身
+- 照片几张,影像千变,始终是你

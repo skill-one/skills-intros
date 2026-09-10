@@ -1,0 +1,13 @@
+# browser-act (`browser-act/skills/browser-act`)
+
+## whitebox
+
+- 任务触发: 用户请求命中 skill 描述的场景 (抓取/渲染网页、填表、截图、多账号会话等) 时加载本 skill
+- 拉取真实工作流: 立即执行 `browser-act get-skills core --skill-version 2.0.2`, 由 CLI 下发与已安装版本匹配的操作指南 (stub 本身不含工作流)
+- 执行命令: 通过唯一放行的 Bash 通道 `browser-act:*` 调用 CLI, 驱动完整浏览器引擎完成导航/交互/提取/截图/网络捕获
+- 敏感操作闸门: 首次安装、创建浏览器、登录、提交表单、上传文件前, 暂停并取得用户明确批准
+- 返回结果: 输出提取内容、截图或捕获的 XHR/HAR 响应
+
+- 版本自洽机制: 工作流指令不由本地 stub 硬编码, 而是 CLI 在运行时下发与安装版本一致的内容, 指南永不过期
+- 权限收敛: allowed-tools 限定为 `Bash(browser-act:*)`, 只能跑 browser-act 命令; 配合 Confirmation Gate 在创建/删除浏览器及敏感操作前强制人工确认
+- 本地优先隐私: cookie、登录态、页面内容、凭据、浏览器 profile 全部存本地不上传; 唯一出站数据是 solve-captcha 被调用时的验证码图片。依赖: Python 3.12+, uv (安装 browser-act-cli), chrome-direct 模式需本地 Chrome (经 CDP 连接, 需用户显式确认)

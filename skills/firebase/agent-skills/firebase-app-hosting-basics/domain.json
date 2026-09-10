@@ -1,0 +1,1 @@
+{"domain": "运维与安全", "reason": "核心是部署发布 Next.js/Angular 应用到云平台 (Firebase App Hosting), 涉及 CI/CD、密钥管理与计费配置, 属于部署与云基础设施场景"}

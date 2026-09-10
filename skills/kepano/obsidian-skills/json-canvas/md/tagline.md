@@ -1,0 +1,7 @@
+# json-canvas (`kepano/obsidian-skills/json-canvas`)
+
+## tagline
+
+- 把脑中的网, 画成眼前的图
+- 节点连线间, 思路一目了然
+- 一块画布, 装下整个思考

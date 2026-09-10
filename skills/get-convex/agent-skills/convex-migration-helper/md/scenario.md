@@ -1,0 +1,5 @@
+# convex-migration-helper (`get-convex/agent-skills/convex-migration-helper`)
+
+## scenario
+
+线上用户数据要改结构(比如给所有人加必填字段)?直接改会被 Convex 拒绝部署,硬来则新旧数据混杂、应用报错。我给你分步方案:先放宽格式→后台分批迁移→再收紧校验,不停机、可试跑、能回滚 🔧

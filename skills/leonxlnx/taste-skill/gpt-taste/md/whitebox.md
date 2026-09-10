@@ -1,0 +1,12 @@
+# gpt-taste (`leonxlnx/taste-skill/gpt-taste`)
+
+## whitebox
+
+- 抽签定样式: 以用户提示词的字符数取模为种子, 模拟执行 Python random.choice(), 硬性选定 1 个 Hero 布局、1 个字体栈、3 个组件架构、2 个 GSAP 动效范式
+- 先出计划后写码: 在写任何 UI 代码前, 先输出 <design_plan> 块, 记录抽签结果并逐项自检 (AIDA 结构 / Hero 换行数学验证 / Bento 网格密度证明 / 廉价标签扫查 / 按钮对比度)
+- 生成页面: 校验全部通过后, 按 AIDA 顺序组装 React + Tailwind 代码 — 导航栏 → Hero (超宽容器大标题) → Bento 网格 → GSAP 滚动章节 → 高对比 CTA + Footer
+- 注入动效: 用真实 GSAP (@gsap/react + ScrollTrigger) 实现 pin / 卡片堆叠 / 逐字 scrub, 整页外包 overflow-x-hidden 防横向滚动条
+
+- 伪随机化反偏见: LLM 天生偷懒, 总选同一套布局 — 因此强制在 <design_plan> 里模拟 Python 脚本执行 (确定性种子 = 提示词字符数取模), 抽选结果必须严格遵守, 禁止两次输出相同 UI
+- 前置校验门禁: 不出计划不写码 — H1 必须用 max-w-5xl/6xl + clamp 字号数学上保证 ≤3 行; Bento 网格必须启用 grid-auto-flow: dense 且 col-span/row-span 严丝合缝零空格; 'SECTION 01' 类元标签永久封禁
+- 外部依赖: React + Tailwind CSS (布局样式), GSAP (@gsap/react, ScrollTrigger — 钉住/堆叠/scrub), picsum.photos 种子图 (配灰度/混合模式滤镜去 stock 感), @phosphor-icons/react 图标, 字体限 Satoshi/Cabinet Grotesk/Outfit/Geist (禁 Inter)

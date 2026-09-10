@@ -1,0 +1,5 @@
+# find-animation-opportunities (`emilkowalski/skills/find-animation-opportunities`)
+
+## scenario
+
+界面功能都对,却总"死气沉沉"——点击没反馈、弹窗凭空闪现,用户说不清哪里怪,只觉得廉价。我扫描代码,只挑真正值得动效的几处,给出精确参数(时长/曲线),并明确劝退不该动的。克制,才显高级。

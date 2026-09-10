@@ -1,0 +1,13 @@
+# caveman (`mattpocock/skills/caveman`)
+
+## whitebox
+
+- 监听触发词: 用户说 "caveman mode" / "talk like caveman" / "use caveman" / "less tokens" / "be brief" 或 /caveman 即激活。
+- 改写输出: 每轮回复按压缩规则改写 — 删冠词/填充词/客套/对冲语, 技术实质全保留。
+- 持久生效: 激活后每一轮回复持续生效, 不随轮次回退、不漂移回啰嗦。
+- 持续循环: 直到用户说 "stop caveman" 或 "normal mode" 才关闭。
+
+- 关键词触发: 纯短语匹配 (见上), 无需外部解析器或工具。
+- 规则式压缩 (~75% token): 碎片句 + 短同义词 (fix 而非 "implement a solution for") + 常用缩写 (DB/auth/config/req/res/fn/impl) + 箭头表因果 (X -> Y); 模板 = [thing] [action] [reason]。三类内容原样保留: 技术术语、代码块、错误引文。
+- Auto-Clarity 例外 (状态机切换): 安全警告/不可逆操作确认/易误读的多步骤序列/用户要求澄清时, 临时切回正常清晰表达, 该部分讲完自动恢复 caveman — 防止压缩导致误读。
+- 外部依赖: 无 — 纯提示词层行为规则, 不依赖任何外部工具/库/模型 API。

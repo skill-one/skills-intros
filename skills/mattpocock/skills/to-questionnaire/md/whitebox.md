@@ -1,0 +1,13 @@
+# to-questionnaire (`mattpocock/skills/to-questionnaire`)
+
+## whitebox
+
+- 触发: 用户带来一个自己答不了、需要向第三方获取信息的决策
+- 第 1 轮追问 (一次对话): 问收件人——角色、专业水平、与用户的关系, 定下问卷语气和需携带的背景量
+- 第 2 轮追问 (一次对话): 问用户要拿回什么——具体决策或事实, 产出一份明确的清单
+- 按固定模板撰写问卷, 问题瞄准'收件人知道 / 用户不知道'的信息差, 写入当前目录 to-questionnaire-<slug>.md (slug 取自主题)
+- 收尾: 逐项核对第 2 轮清单中每一项都有对应问题, 向用户报告文件路径
+
+- 访谈边界控制: 'Grill the send, not the subject'——只问用户'发给谁、要什么回来'(他们必然能答), 关于主题本身的问题留给问卷去问收件人
+- 固定 Markdown 模板: discovery questionnaire 结构 (Purpose / From / To / 答案用途 + Context 段 + How to answer 段 + 按主题分组的 ## 小节 + Anything else 收尾兜底); 每个问题只含一个观点, 下方直接给答案占位符, 易被误读处附一行 why this matters; 问题按重要性降序, 因为异步场景可能只有一轮机会
+- 产出物与验收: 纯 Markdown 文件写入磁盘, 无外部依赖——不调用任何工具、库或外部模型 API, 验收标准 = 文件存在且覆盖用户点名的全部条目

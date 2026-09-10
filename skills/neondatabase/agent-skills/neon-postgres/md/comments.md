@@ -1,0 +1,10 @@
+# neon-postgres (`neondatabase/agent-skills/neon-postgres`)
+
+## comments
+
+- user: 第一次用的新手, category: 坑, comment: 拿 -pooler 地址跑 Prisma 迁移，报 prepared statement "s0" already exists；把 directUrl 指向不带 -pooler 的直连地址就通了。
+- user: 独立开发者, category: 妙用, comment: 副业项目没人访问时闲置 5 分钟自动休眠，一个月只剩几毛钱存储费；代价是回来首个查询慢几百毫秒，能接受。
+- user: 后端老兵, category: 坑, comment: Vercel 函数每个请求各开连接，用直连地址很快把连接数打满报错；应用一律走 -pooler，只有迁移和 LISTEN/NOTIFY 才直连。
+- user: 运维老哥, category: 注意, comment: 实例休眠重启后 pg_stat_statements 和缓存命中率全归零，别拿刚冷启动的统计下结论，先跑一轮真实流量再看。
+- user: 前端全栈, category: 妙用, comment: EXPLAIN 里加 PREFETCH 和 FILECACHE 参数，能看到哪些页命中 Neon 缓存；我靠它向团队解释清了首查慢、二查快的原因。
+- user: DBA转型的后端, category: 启发, comment: 改表前先在生产数据的分支上试跑迁移，错了删分支重来即可，从此不用凌晨锁库赌运气，整个发布节奏都变了。

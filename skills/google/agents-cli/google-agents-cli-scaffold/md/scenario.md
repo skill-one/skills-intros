@@ -1,0 +1,5 @@
+# google-agents-cli-scaffold (`google/agents-cli/google-agents-cli-scaffold`)
+
+## scenario
+
+想做个 AI 智能体,却被搭框架、写部署配置卡住,折腾几天还跑不起来?🤯 我一条命令生成可直接运行的项目骨架,后续一条命令加部署、自动构建,升级还不丢你的改动。从想法到跑通,当天搞定。

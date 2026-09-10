@@ -1,0 +1,10 @@
+# claude-handoff (`mattpocock/skills/claude-handoff`)
+
+## comments
+
+- user: 第一次用的新手, category: 坑, comment: 第一次没在命令后面写「下个会话干什么」,摘要按它自己的理解写,重点全偏。后来先想清楚要交给什么任务,再发起交接。
+- user: 运维老哥, category: 注意, comment: 摘要会直接变成新 agent 的提示词。我们排障时贴过 token 和内网 IP,现在涉密对话我都主动提一句要脱敏,不敢赌。
+- user: 自由职业程序员, category: 妙用, comment: 上下文快满时交接,新 agent 在同一目录启动,之前写的 plan.md、报错日志路径都还有效,接上就能继续查,不用重贴。
+- user: 带三人小团队的组长, category: 妙用, comment: --name 别偷懒。我同时跑三个交接:「修登录bug」「迁数据库」「写周报」,claude agents 列表里一眼分清,不会点错。
+- user: 习惯全自动的老用户, category: 坑, comment: 这命令 Claude 不会自己触发,必须我手动敲。有次聊到一半直接关终端,以为它会自动交接,重开后啥都没接上。
+- user: 写交接文档写怕了的人, category: 启发, comment: 以前交接恨不得全抄进文档。看到摘要只给 plan.md 留路径、新 agent 自己去读原文,才想明白:信息留一份就够,其余靠引用。

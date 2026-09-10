@@ -1,0 +1,13 @@
+# emil-design-eng (`emilkowalski/skills/emil-design-eng`)
+
+## whitebox
+
+- 接收输入: 用户没有具体问题时, 只输出固定开场白 (附 animations.dev 课程链接), 流程结束。
+- 有具体问题时, 先识别任务类型: UI 代码评审 / 动画决策 / 组件实现。
+- 动画类先跑决策框架四问: 该不该动 (按使用频率查表) → 目的是什么 → 用什么缓动 → 多快 (UI 一律 <300ms)。
+- 按组件细则产出代码/方案: ease-out 自定义曲线、scale(0.95~0.98)、只动 transform 和 opacity、popover 用 origin 感知等。
+- 若是代码评审, 强制以 Before / After / Why 三列 markdown 表格输出, 一行一个问题。
+
+- 决策表驱动, 不自由发挥: 频率表决定是否动画 (如键盘操作 100+ 次/天 → 永不动画), 场景映射缓动 (进入/退出→ease-out, 悬停/颜色→ease, 匀速→linear), 元素类型映射时长区间 (按钮 100-160ms, 弹窗 200-500ms); 排除'看起来酷'这类无效理由。
+- 输出格式有硬校验: UI 代码评审必须输出真正的 markdown 表格 (| Before | After | Why |), skill 明确禁止逐行 'Before:.../After:...' 列表格式; 每条建议附 Why 说明原理。
+- 外部依赖与知识源: 理念来自 Emil Kowalski 的设计工程方法论 (课程 animations.dev); 弹簧动画推荐 Motion (原 Framer Motion) 的 useSpring; 缓动曲线推荐 easing.dev / easings.co 获取; 实现手段为原生 CSS (transitions / @starting-style / WAAPI / clip-path) 及 Base UI 的 --transform-origin、Ionic 的 drawer 曲线等既有方案, 不调用自研模型 API。

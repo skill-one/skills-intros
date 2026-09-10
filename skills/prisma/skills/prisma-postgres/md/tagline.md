@@ -1,0 +1,7 @@
+# prisma-postgres (`prisma/skills/prisma-postgres`)
+
+## tagline
+
+- 一条命令,秒级拥有数据库
+- 从创建到管理,一条链路搞定
+- 免费秒开,随建随用零门槛

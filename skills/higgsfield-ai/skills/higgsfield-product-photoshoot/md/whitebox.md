@@ -1,0 +1,13 @@
+# higgsfield-product-photoshoot (`higgsfield-ai/skills/higgsfield-product-photoshoot`)
+
+## whitebox
+
+- Bootstrap: 若 `higgsfield` 不在 PATH, 用 curl 安装脚本装 CLI; 跑 `higgsfield account status` 校验登录态, 未登录则让用户交互式执行 `higgsfield auth login` 并等待确认
+- 访谈: 按输入类型 (Type A–F) 问最多 4 个带选项的短问题, 补齐模式与缺口; 上下文已能推出的问题直接跳过
+- Mode 选择: 按意图 (而非表面关键词) 从 10 个模式中选 1 个, 有歧义时用 tie-breaker: 平台优先 > 格式优先 > 更具体类型优先
+- 生成: 执行单条命令 `higgsfield product-photoshoot create --mode <mode> --prompt <短描述> [--image ...] [--count 1-10] [--aspect_ratio ...]`; backend 组装最终 prompt 并提交模型, 期间静默轮询
+- 交付: URL 从 stdout 返回, 最终回复只打印图片 URL 列表, 不带 JSON/ID/增强后的 prompt
+
+- prompt 组装完全外包给 backend enhancer: 它按 mode 持有专用摄影词汇与结构化模板, CLI 端绝不手写 gpt_image_2 prompt; 模型固定为 `gpt_image_2`, 不自动切换其他图像模型
+- 图像输入: `--image` 可重复, 接受本地路径 (自动上传) 或已有 upload UUID; `--count` 出多变体时 backend 跨变体切换 preset/光照/角度/配色, social_carousel 与 ad_creative_pack 则自动锁定全套视觉系统; 分辨率固定 2k; 每种 mode 有默认宽高比, 仅用户明确要求时用 `--aspect_ratio` 覆盖 (合法值 1:1~16:9 共 9 种)
+- 外部依赖: Higgsfield CLI (curl 脚本安装, 走 `higgsfield auth login` 认证), 本技能 allowed-tools 仅 Bash, 一切操作都通过 shell 命令完成

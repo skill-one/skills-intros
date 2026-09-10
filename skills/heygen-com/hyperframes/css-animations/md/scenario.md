@@ -1,0 +1,5 @@
+# css-animations (`heygen-com/hyperframes/css-animations`)
+
+## scenario
+
+写 CSS 动画时,常遇到:预览正常、导出却乱了套;无限循环停不下来;想暂停定位却做不到。我专做"可逐帧控制"的动画:每个元素与时间轴精确对齐,可暂停、可拖动、可重放,导出与预览完全一致。🎬

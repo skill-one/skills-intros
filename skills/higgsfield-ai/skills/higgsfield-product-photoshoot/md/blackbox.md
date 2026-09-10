@@ -1,0 +1,9 @@
+# higgsfield-product-photoshoot (`higgsfield-ai/skills/higgsfield-product-photoshoot`)
+
+## blackbox
+
+**function**: 上传一张产品照片, 告诉我用途和风格, 我直接给你能发布的品牌级产品图 (电商图、社交媒体图、广告图、横幅等)。
+
+- input: 一张冷萃咖啡瓶照片 + "要 3 张 Instagram 生活方式感的产品图", output: 3 个图片链接: 咖啡瓶出现在阳光厨房台面等真实场景中的成品图, 各不相同
+- input: 一张蜡烛产品照 + "做一张 Pinterest 竖版图", output: 1 个图片链接: 2:3 竖版、氛围感摆拍风格的 Pinterest 尺寸成图
+- input: 一张已有的产品图 + "改成圣诞氛围、走高级简约风", output: 1 个图片链接: 同一产品换上圣诞布景和色调的新图, 主体产品不变

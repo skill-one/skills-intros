@@ -1,0 +1,10 @@
+# prisma-postgres-setup (`prisma/skills/prisma-postgres-setup`)
+
+## comments
+
+- user: 被 Prisma 5 惯坏的老用户, category: 坑, comment: 我按 Prisma 5 的老习惯把 url 写进 schema.prisma,结果怎么都连不上。新版连接串必须放 prisma.config.ts,schema 里只留 provider,照旧写法必踩。
+- user: 第一次用的新手, category: 注意, comment: 开跑前先去 Console → Workspace Settings 建好服务令牌,别拿登录账号当令牌。报 401 就是令牌无效或过期,重建一个即可。
+- user: 后端老兵, category: 妙用, comment: 数据库数量到上限时,它会列出我已有项目让我选着删,删完自动重试建库,不用自己去控制台腾位置,全程没断。
+- user: 运维老哥, category: 注意, comment: 它往 .env 是追加不是覆盖,老变量不会丢;但提交代码前先确认 .gitignore 里有 .env,别把连接串推上仓库。
+- user: 前端转全栈, category: 坑, comment: 我复制了带 pooled 的连接串,连是连上但行为不对。要用 endpoints.direct 那条直连串,其余端点是给旧 Accelerate 用的。
+- user: 带团队的技术负责人, category: 启发, comment: 以前图快用 db push,上了 CI 才发现没迁移历史没法部署。现在新项目一律先 migrate dev --name init,流水线直接复用。

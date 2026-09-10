@@ -1,0 +1,5 @@
+# stitch-design-taste (`leonxlnx/taste-skill/stitch-design-taste`)
+
+## scenario
+
+用 AI 生成界面,总是紫色渐变 + Inter 字体 + 三张一样的卡片,一眼"AI 味",改十遍也不高级?🎨 我为你定制一份 DESIGN.md 设计规范——精确的色彩、字体、布局与动效规则,贴进 Stitch,每一屏都克制、耐看、不撞脸。

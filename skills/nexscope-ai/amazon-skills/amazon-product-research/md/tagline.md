@@ -1,0 +1,7 @@
+# amazon-product-research (`nexscope-ai/amazon-skills/amazon-product-research`)
+
+## tagline
+
+- 选品不靠猜，数据给你答案
+- 一份报告，看透市场虚实
+- 避开红海，先赢在调研

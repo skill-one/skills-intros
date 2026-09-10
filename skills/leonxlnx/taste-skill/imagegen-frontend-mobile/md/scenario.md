@@ -1,0 +1,5 @@
+# imagegen-frontend-mobile (`leonxlnx/taste-skill/imagegen-frontend-mobile`)
+
+## scenario
+
+想做App却不会设计?自己画被嫌廉价,请设计师动辄上万还等两周。把想法告诉我,我直接生成高级感的App界面图:多屏风格统一、文字清晰,像真实产品截图。融资演示、说服投资人、和开发沟通,一图顶千言。📱✨

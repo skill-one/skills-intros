@@ -1,0 +1,7 @@
+# json-canvas (`kepano/obsidian-skills/json-canvas`)
+
+## domain
+
+**domain**: 🧠 知识管理
+
+**reason**: 创建和编辑 Obsidian 的 .canvas 可视化画布（思维导图/流程图），属于笔记与知识库范畴

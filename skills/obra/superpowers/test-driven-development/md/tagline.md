@@ -1,0 +1,7 @@
+# test-driven-development (`obra/superpowers/test-driven-development`)
+
+## tagline
+
+- 测试先行，Bug 无处遁形
+- 红灯验真，绿灯交付
+- 每行代码，都经失败淬炼

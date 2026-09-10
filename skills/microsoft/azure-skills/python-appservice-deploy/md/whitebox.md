@@ -1,0 +1,13 @@
+# python-appservice-deploy (`microsoft/azure-skills/python-appservice-deploy`)
+
+## whitebox
+
+- 解析上下文: 仅应用名需交互输入, 资源组/计划/区域/订阅按默认规则推导 (如 <app>-rg)
+- 探测框架 (仅提示不拦截), 并按是否已有 azure.yaml 选择部署通道: 有 → azd 路径, 无 → az CLI 路径
+- 确保资源存在: 依次创建/校验 资源组 → 计划 (P0v3 --is-linux) → Web App (运行时 PYTHON:3.14), 遇瞬时 ARM 错误按重试规则处理
+- 配置启动命令与构建开关: Flask/Django 留空靠 Oryx 自动识别, FastAPI 固定 uvicorn 命令; 设 SCM_DO_BUILD_DURING_DEPLOYMENT=true
+- 执行部署 (azd deploy 或 az webapp deploy --type zip), 输出部署后消息并立即停止 — 不做任何部署后验证
+
+- 全流程通过 Azure MCP 工具驱动: mcp_azure_mcp_subscription_list / group_list / appservice / azd (仅在存在 azure.yaml 时用 azd 通道)
+- 分步决策委托给 references/*.md 文件: 框架检测 (detect.md)、双部署路径 (deploy-azd.md / deploy-azcli.md)、启动命令表 (startup-commands.md)、错误矩阵 (errors.md)
+- 内置硬性守卫规则: 部署后禁止日志/健康探测 (App 需 2-3 分钟预热), --runtime 必须用冒号格式 "PYTHON:3.14" (竖线是 shell 操作符), 永不用已弃用的 az webapp up

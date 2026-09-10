@@ -1,0 +1,7 @@
+# pptx (`anthropics/skills/pptx`)
+
+## domain
+
+**domain**: 🗂️ 办公效率
+
+**reason**: 专精 .pptx/.potx 文件的创建、编辑、解析与排版质检, 属于典型文档处理

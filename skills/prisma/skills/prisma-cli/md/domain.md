@@ -1,0 +1,7 @@
+# prisma-cli (`prisma/skills/prisma-cli`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: Prisma ORM CLI 服务于数据库建模、迁移与客户端生成, 属于开发编程场景。

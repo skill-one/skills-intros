@@ -1,0 +1,7 @@
+# obsidian-cli (`kepano/obsidian-skills/obsidian-cli`)
+
+## domain
+
+**domain**: 🧠 知识管理
+
+**reason**: 专为 Obsidian 笔记库打造: 读写笔记、搜索、任务与属性管理一站搞定

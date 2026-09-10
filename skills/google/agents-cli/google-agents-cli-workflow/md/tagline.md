@@ -1,0 +1,7 @@
+# google-agents-cli-workflow (`google/agents-cli/google-agents-cli-workflow`)
+
+## tagline
+
+- 从想法到上线,智能体一条龙搞定
+- 每个智能体,先考过试再上岗
+- 改代码像做手术,精准不越界

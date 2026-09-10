@@ -1,0 +1,9 @@
+# prisma-driver-adapter-implementation (`prisma/skills/prisma-driver-adapter-implementation`)
+
+## blackbox
+
+**function**: 帮你编写和修复 Prisma ORM (把 Node.js 代码连到数据库的工具) 的数据库驱动适配器代码，并检查这类代码的坑。
+
+- input: 一份没写完的适配器代码（如 adapter.ts），说明它要接哪个数据库, output: 补全后的完整代码：事务正确提交/回滚、支持嵌套事务、数据库报错能被正确翻译
+- input: 一段描述，如「我的 Prisma 报 P2039，嵌套事务总是失败」+ 相关代码, output: 指出具体有问题的代码位置，并给出修改后的版本
+- input: 已有的适配器实现代码，请求检查, output: 一份问题清单：哪里会丢数据精度、哪里会泄漏数据库连接、哪里报错信息被吞掉，以及对应改法

@@ -1,0 +1,9 @@
+# animation-vocabulary (`emilkowalski/skills/animation-vocabulary`)
+
+## blackbox
+
+**function**: 你用大白话描述一个见过的网页动效 (动画), 我告诉你它的准确专业名称, 让你知道该向设计师或 AI 怎么提需求。
+
+- input: 「弹窗打开时那个带点弹跳、好像弹出过头再缩回来的效果叫什么?」, output: 「Pop in — 元素出现时带轻微过冲, 像弹进位置。另可选: Bounce, 区别在于回弹次数更多、更俏皮。」
+- input: 「就是 iPhone 上滑到底会被拽住再弹回去的那种感觉。」, output: 「Rubber-banding — 拖过边界时的阻力和回弹 (iOS 过度滚动的手感)。」
+- input: 「页面还没加载完时, 那个灰色的占位条上面有一道亮光滑来滑去。」, output: 「Skeleton / Shimmer — 加载中的占位块, 带一道流动的光泽。」

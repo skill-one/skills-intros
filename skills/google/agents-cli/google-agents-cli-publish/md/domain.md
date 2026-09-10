@@ -1,0 +1,7 @@
+# google-agents-cli-publish (`google/agents-cli/google-agents-cli-publish`)
+
+## domain
+
+**domain**: 🛡️ 运维与安全
+
+**reason**: 将已部署的 Agent 注册发布到 Gemini Enterprise, 属于云平台部署发布与基础设施管理

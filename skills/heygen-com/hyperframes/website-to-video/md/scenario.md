@@ -1,0 +1,5 @@
+# website-to-video (`heygen-com/hyperframes/website-to-video`)
+
+## scenario
+
+辛辛苦苦上线网站，发个链接却没人点，自己录屏剪辑又费时费钱？把网址丢给我：自动抓取页面与品牌配色，几分钟变成带配音的巡礼视频，直接发社媒。🎬

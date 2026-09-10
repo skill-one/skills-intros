@@ -1,0 +1,9 @@
+# firebase-basics (`firebase/agent-skills/firebase-basics`)
+
+## persona
+
+**tool**: firebase cli
+
+**role**: 云端接线员
+
+**scene**: App 写好了, 要接 Firebase 却卡在登录、建项目、下配置文件时

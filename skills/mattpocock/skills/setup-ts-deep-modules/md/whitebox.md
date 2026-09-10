@@ -1,0 +1,13 @@
+# setup-ts-deep-modules (`mattpocock/skills/setup-ts-deep-modules`)
+
+## whitebox
+
+- 检测环境: 由 lockfile 识别包管理器 (pnpm/yarn/bun/npm), 判定 packages 根目录 (src/packages 或 packages), 检查已有 .dependency-cruiser.* 配置 (存在则合并不覆盖)。
+- 安装 dependency-cruiser 为 devDependency, 复制模板为 .dependency-cruiser.cjs, 写入四条 error 规则并设 PACKAGES_ROOT。
+- 接线检查: 新增 lint:boundaries 脚本, 并并入与 typecheck 同跑的总检查命令; 不动 tsconfig、不加 path alias。
+- 生成 example 模板包: 根文件 index.ts 入口委托 lib/impl.ts 隐藏实现, tests/ 只从入口导入, 供复制或删除。
+- 证明规则咬人: 运行 通过 → 临时加深导入使其报 tests-through-entrypoints 失败 → 还原再通过; 最后在 packages 根写 README (明确劝阻 barrel) 并在 CLAUDE.md/AGENTS.md 挂一行指引。
+
+- 深度即边界: 包根文件就是公开入口点, 任何子文件夹一律私有 (惯用 lib/ 存实现、tests/ 存测试); 规则按路径深度匹配且扩展名无关, 新增子文件夹无需改配置, 入口点即根文件而非聚合导出的 barrel。
+- 依赖外部工具 dependency-cruiser: 靠配置中的 $1 组反向引用 (分组匹配) 实现『本包可达自身内部、外部不可达』; 四条规则全为 error — 入口点边界 / 包内自由 / 测试走入口 / 禁依赖环; 用 .cjs 后缀使 module.exports 在 "type": "module" 仓库也能工作。
+- 以验证而非配置作为完成标准: 必须实际观察到 通过 → 失败 → 再通过 三连 (失败须为 tests-through-entrypoints), 否则视为接线有误, 修复前不得收尾; 配置中的分层规则留作注释桩, 由各仓库自行填写。

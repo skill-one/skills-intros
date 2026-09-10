@@ -1,0 +1,9 @@
+# using-superpowers (`obra/superpowers/using-superpowers`)
+
+## blackbox
+
+**function**: 任何任务交给我, 我都先确认"该用什么正确做法"再动手, 然后严格照做法执行到交付, 不跳步、不瞎猜。
+
+- input: "帮我修这个 bug", 附上报错信息和代码文件, output: 先告诉你找到的真正原因, 再给出修复后的代码——不是凭感觉乱试一通
+- input: "我想做一个记账小网页", output: 先反问几个关键需求 (给谁用、记哪些字段), 确认后交付能直接跑起来的成品
+- input: 一段任务描述, 如 "把这份 Markdown 周报转成 PDF", output: 按对应方法一步步完成的最终产物, 如排版好的 PDF 文件

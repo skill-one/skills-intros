@@ -1,0 +1,7 @@
+# typescript-advanced-types (`wshobson/agents/typescript-advanced-types`)
+
+## tagline
+
+- 类型即防线, Bug 止于编译期
+- 复杂类型难题, 一型破万码
+- 精于类型, 忠于安全, 成于代码

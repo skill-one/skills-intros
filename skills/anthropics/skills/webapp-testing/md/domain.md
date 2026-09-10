@@ -1,0 +1,7 @@
+# webapp-testing (`anthropics/skills/webapp-testing`)
+
+## domain
+
+**domain**: 🧪 测试与质量
+
+**reason**: 专注用 Playwright 对 Web 应用做 E2E/UI 自动化测试: 验证功能、调试 UI、截图与日志排查

@@ -1,0 +1,12 @@
+# defuddle (`kepano/obsidian-skills/defuddle`)
+
+## whitebox
+
+- 接收用户提供的 URL (排除以 .md 结尾的纯 markdown 链接, 那类不走本技能)
+- 调用命令行工具: defuddle parse <url> --md
+- Defuddle 抓取页面并剔除导航、广告等杂乱元素, 转成干净的 markdown
+- 将精简后的内容返回给用户 (可选: 用 -o 存为文件, 或用 -p 只取 title/description 等元数据)
+
+- 核心依赖外部 CLI 工具 Defuddle (npm 包, 未装时先 npm install -g defuddle), 由它完成"去噪 + 转 markdown"的正文提取
+- 输出格式可切换: --md (markdown, 首选) / --json (HTML+markdown) / 不加参数 (HTML) / -p <属性名> (单个元数据字段), 不同场景选不同格式以省 token
+- 路由校验规则: .md 结尾的 URL 本身已是 markdown, 直接用 WebFetch, 不经 Defuddle 处理

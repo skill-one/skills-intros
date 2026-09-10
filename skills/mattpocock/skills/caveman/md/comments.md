@@ -1,0 +1,10 @@
+# caveman (`mattpocock/skills/caveman`)
+
+## comments
+
+- user: 第一次用的新手, category: 坑, comment: 顺口说了句「be brief」,之后十几个回合都保持极简,想切回正常忘了指令。后来才知道说「stop caveman」就行。
+- user: 天天烧API额度的后端, category: 妙用, comment: 长对话调代码全开caveman,token消耗明显降。关键是术语不省略,该答的技术点一个不少,省的是废话。
+- user: 运维老哥, category: 妙用, comment: 实测删库场景:碰破坏性命令前它会自动切回完整句子警告,确认完才继续简短。安全这块有兜底,敢在生产环境用。
+- user: 技术文档写手, category: 启发, comment: 看它输出才意识到自己平时写作废话太多。现在写文档模仿「事+动作+原因」句式,评审同事说读起来清楚多了。
+- user: 爱调bug的测试工程师, category: 妙用, comment: 意外发现:报错原文它一字不落引用,不跟着简写。排查时照样能复制错误信息直接搜索定位。
+- user: 前端实习生, category: 注意, comment: 多步骤操作指南它不会压缩,自动切完整句子,不怕看漏步骤;问「什么意思」也会先切回完整话解释,再恢复极简。

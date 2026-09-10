@@ -1,0 +1,7 @@
+# slack-gif-creator (`anthropics/skills/slack-gif-creator`)
+
+## domain
+
+**domain**: 🎨 设计多媒体
+
+**reason**: 用代码生成适配 Slack 的动画 GIF, 属于视觉内容制作。

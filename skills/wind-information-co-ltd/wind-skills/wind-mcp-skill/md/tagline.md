@@ -1,0 +1,7 @@
+# wind-mcp-skill (`wind-information-co-ltd/wind-skills/wind-mcp-skill`)
+
+## tagline
+
+- 不猜行情，让真数据说话 📊
+- 一句话，直达权威金融数据 ⚡
+- 选股查市问宏观，万得一下全知道 🎯

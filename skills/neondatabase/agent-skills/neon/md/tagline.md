@@ -1,0 +1,7 @@
+# neon (`neondatabase/agent-skills/neon`)
+
+## tagline
+
+- 一句话, 秒开云端数据库
+- 数据可分支, 后端一站配齐
+- 你专注写应用, 后端交给 Neon

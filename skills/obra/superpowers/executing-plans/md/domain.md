@@ -1,0 +1,7 @@
+# executing-plans (`obra/superpowers/executing-plans`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 核心是按实施计划逐步写代码、跑验证、用 git worktree/分支完成开发交付。

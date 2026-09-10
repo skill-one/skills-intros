@@ -1,0 +1,13 @@
+# vercel-react-native-skills (`vercel-labs/agent-skills/vercel-react-native-skills`)
+
+## whitebox
+
+- 识别任务类型: 用户请求命中 React Native/Expo、长列表、动画、导航、图片、字体配置等触发词, 进入技能范围
+- 按固定优先级表匹配规则类别: List Performance (CRITICAL) → Animation → Navigation → UI → State → Rendering → Monorepo → Configuration
+- 读取命中的规则文件 rules/<前缀><名称>.md, 拿到该规则的'为什么重要 + 错误示例 + 正确示例'
+- 对照正确示例审查/改写用户代码并输出; 需要全量上下文时查编译版总文档 AGENTS.md
+
+- 规则文件即知识库: 约 30 条规则各自独立存为 md 文件, 用前缀分类, 触发与解析本质是文件名匹配, 不是模型即兴发挥
+- 优先级驱动决策: 固定的 8 级优先级表 (CRITICAL→LOW) 决定处理顺序, 保证长列表性能等高影响问题先于配置类问题
+- 对错代码对照校验: 每条规则内置 incorrect/correct 两段代码示例, 判断依据是与示例模式比对, 而非凭感觉
+- 零外部依赖: 纯 markdown 规则集, 不调用任何外部工具、库或模型 API (SKILL.md 未声明其他依赖, 不编造)

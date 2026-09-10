@@ -1,0 +1,7 @@
+# lottie (`heygen-com/hyperframes/lottie`)
+
+## tagline
+
+- 动画即视频, 帧帧精准可控
+- AE 动效直出, 渲染零意外
+- 一行接入 Lottie, 成片更简单

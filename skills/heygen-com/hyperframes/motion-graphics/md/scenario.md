@@ -1,0 +1,5 @@
+# motion-graphics (`heygen-com/hyperframes/motion-graphics`)
+
+## scenario
+
+数据再硬,做成静态 PPT 就没人看——汇报冷场,找视频组排期又太重。给我一个数字或一句标题,10 秒做成会动的图表/文字动画,直接出 MP4 或透明贴片,插进你的视频。

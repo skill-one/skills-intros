@@ -1,0 +1,7 @@
+# google-agents-cli-adk-code (`google/agents-cli/google-agents-cli-adk-code`)
+
+## tagline
+
+- 从想法到 AI 智能体，只差一句话
+- 你出需求，我写代码，智能体稳落地
+- 智能体开发难题，问我一句就见效

@@ -1,0 +1,7 @@
+# ai-seo (`coreyhaines31/marketingskills/ai-seo`)
+
+## domain
+
+**domain**: 📈 商业运营
+
+**reason**: AI SEO 属于市场营销/SEO 范畴, 目标是让品牌在 AI 搜索中被引用, 服务业务增长

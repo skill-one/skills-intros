@@ -1,0 +1,7 @@
+# churn-prevention (`coreyhaines31/marketingskills/churn-prevention`)
+
+## domain
+
+**domain**: 📈 商业运营
+
+**reason**: 核心是留住客户: 挽回流失、留存策略、催缴复购, 属于增长与 CRM 范畴

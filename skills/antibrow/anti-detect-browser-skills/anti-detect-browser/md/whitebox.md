@@ -1,0 +1,13 @@
+# anti-detect-browser (`antibrow/anti-detect-browser-skills/anti-detect-browser`)
+
+## whitebox
+
+- 脚本实例化 SDK (key 从环境变量读) 并调用 launch({fingerprint tags, profile, proxy}); 首次运行会下载并缓存闭源 Chromium 内核 (~190MB, macOS ~320MB)
+- profile 名解析到 ~/.anti-detect-browser/profiles/<id>/ 目录; 新档案从真实设备库抽取一份完整指纹 (30+ 类别 / 500+ 参数), 冻结写入 persona.json, 之后再不重新生成
+- 启动前先经代理解析出口 IP, 连同时区与 WebRTC 身份一并写入指纹, 保证地理位置自洽
+- 以引擎级 (C++/Blink) 注入启动 Chromium: Canvas/WebGL/字体/navigator/时区等在内核内应答, 代理认证 (HTTP 407 / SOCKS5 RFC 1929) 也由内核网络栈完成, 不走扩展
+- 返回标准 Playwright 的 browser/page 对象, 脚本照常驱动页面; cookie 与会话落在 profile 目录, 下次同名启动直接恢复登录态
+
+- 引擎级伪装而非 JS 补丁: 无可被 Function.prototype.toString / property descriptor 探测的注入脚本, worker、OffscreenCanvas、WebGL/WebGPU 交叉校验在内核内天然一致; 所有值采自同一台真实机器, 不存在 AMD renderer 配 Intel vendor 这类自相矛盾
+- 一人一格 + 确定性重放: persona 冻结后每次启动逐字节重放同一 UA/GPU/屏幕/字体/canvas 种子 (值相同且逐次调用稳定); deviceType:'android' 用包内置的 3 台真实手机数据, 需内核 151+, 且档案创建时定型不可改
+- 外部依赖: npm anti-detect-browser (Node≥18) 或 PyPI antibrow (Py 3.9-3.13), 基于 playwright-core 暴露标准 Playwright API; 依赖库 ws/socks/yauzl/adm-zip/@modelcontextprotocol/sdk, MCP 控制走 browser-mcp-agent; 运行期网络交互仅有签名 license token 兑换 (约每日一次, 无代码下发)

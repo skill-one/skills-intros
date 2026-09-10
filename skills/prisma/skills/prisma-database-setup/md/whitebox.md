@@ -1,0 +1,13 @@
+# prisma-database-setup (`prisma/skills/prisma-database-setup`)
+
+## whitebox
+
+- 从请求/触发词识别目标数据库 provider（如 "configure postgres"→postgresql、"setup mongodb"→mongodb）
+- 打开对应 references/<provider>.md 规则文件获取该库的详细配置；MongoDB 一律走 references/mongodb.md
+- 写 prisma/schema.prisma：datasource 块设 provider；Prisma 7 SQL 项目用 prisma.config.ts 配连接 URL，MongoDB 则把 url = env("DATABASE_URL") 写在 schema 里
+- 安装 prisma + @prisma/client，SQL 项目按库选 driver adapter 实例传入 PrismaClient，执行 npx prisma generate 生成客户端
+- 校验环境并收尾：Node.js ≥20.19 / TS ≥5.4（Bun 用 bunx --bun prisma），此后每次 schema 变更都重跑 generate
+
+- Provider 路由 + 硬编码特例分支：按 provider 字符串套对应参考文件模板；MongoDB 是明确例外——停留在 Prisma 6.x、generator 用 prisma-client-js（无需显式 output）、禁止套用 Prisma 7 的 SQL adapter/prisma.config.ts 模式
+- Driver adapter 注入：SQL 库不直连，而是把适配器实例传入 new PrismaClient({ adapter })，一库一适配器——PostgreSQL/CockroachDB/Prisma Postgres→@prisma/adapter-pg + pg；Prisma Postgres 边缘/serverless→@prisma/adapter-ppg + @prisma/ppg；MySQL→@prisma/adapter-mariadb + mariadb；SQLite→@prisma/adapter-better-sqlite3；Turso/LibSQL→@prisma/adapter-libsql；SQL Server→@prisma/adapter-mssql；MongoDB 不装任何 @prisma/adapter-*
+- 显式 output + 重新生成约束：generator 必须显式声明 output 路径（如 ../generated），PrismaClient 从该路径 import；每次 schema 变更后必须重跑 prisma generate；连接串经 dotenv/config 读 process.env.DATABASE_URL

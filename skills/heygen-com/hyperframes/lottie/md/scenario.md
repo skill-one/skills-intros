@@ -1,0 +1,5 @@
+# lottie (`heygen-com/hyperframes/lottie`)
+
+## scenario
+
+做视频时,AE 导出的动画一播放就"跑"——和字幕对不上、导出画面时快时慢。我把 Lottie 动画锁进时间轴 🎯,逐帧精确定位,导出所见即所得,不再碰运气。

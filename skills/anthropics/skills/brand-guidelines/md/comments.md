@@ -1,0 +1,10 @@
+# brand-guidelines (`anthropics/skills/brand-guidelines`)
+
+## comments
+
+- user: 运营实习生, category: 坑, comment: 没先装 Poppins 和 Lora 字体就直接生成,标题回退成了 Arial,和官网观感差一截。先装好这两个字体再跑,一次成型。
+- user: 咨询顾问老张, category: 注意, comment: 标题 24pt 及以上才会套 Poppins。我原稿里一堆 20pt 小标题没被换字体,记得先把小标题调到 24pt 再套样式。
+- user: 后端转的独立开发者, category: 妙用, comment: 非文字形状会在橙、蓝、绿三个品牌色间自动轮换配色,流程图的框子不用我逐个挑色,出来就自带统一品牌感。
+- user: 行政主管姐姐, category: 妙用, comment: 浅灰 #e8e6dc 做卡片底、深色 #141413 做正文,比我瞎配的灰底黑字耐看多了,直接把这套色值抄进了团队模板规范。
+- user: 外包设计, category: 注意, comment: 它是按 PPT 文件来处理的,我先拿 Word 文档试没生效,换成 pptx 才正常,别拿错文件类型。
+- user: 自由译者, category: 启发, comment: 以前每页随手配色,客户 deck 风格忽冷忽热。固定用一套色板后发现,少做选择反而让整套页面更稳。

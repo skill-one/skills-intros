@@ -1,0 +1,7 @@
+# implement-spec (`mattpocock/skills/implement-spec`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 核心工作是按规格 (spec) 和任务票用代码实现完整功能并交付 PR, 典型开发场景

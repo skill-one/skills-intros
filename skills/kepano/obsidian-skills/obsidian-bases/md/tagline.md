@@ -1,0 +1,7 @@
+# obsidian-bases (`kepano/obsidian-skills/obsidian-bases`)
+
+## tagline
+
+- 笔记变数据库, 散乱归秩序
+- 一次配置, 千篇笔记自动成表
+- 筛选分组计算, 让笔记开口说话

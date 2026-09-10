@@ -1,0 +1,7 @@
+# copy-editing (`coreyhaines31/marketingskills/copy-editing`)
+
+## domain
+
+**domain**: ✍️ 内容创作
+
+**reason**: 专注文案的编辑润色与改写优化, 本质是文字工作

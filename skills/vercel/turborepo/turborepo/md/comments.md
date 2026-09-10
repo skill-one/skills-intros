@@ -1,0 +1,10 @@
+# turborepo (`vercel/turborepo/turborepo`)
+
+## comments
+
+- user: 第一次用的新手, category: 坑, comment: 改了 .env 里的接口地址,构建却直接命中缓存出旧结果。Turbo 自己不读 .env 文件,必须把它写进任务的 inputs 里才会让缓存失效。
+- user: 前端团队负责人, category: 妙用, comment: CI 里用 turbo run build --affected,只构建变更包和依赖它的包,没改的全跳过。基准分支不是 main 的话,设个 TURBO_SCM_BASE 就行。
+- user: 运维老哥, category: 坑, comment: CI 脚本死活拿不到 GITHUB_TOKEN,查半天发现默认严格模式会过滤未声明的变量。加进 globalPassThroughEnv 就通了,别一上来就 --env-mode=loose。
+- user: 全栈独立开发者, category: 注意, comment: 在子包里手写 prebuild 去 cd 构建依赖是白费:依赖没在 package.json 里声明 workspace:*,^build 根本不认。先声明依赖,再删掉 prebuild。
+- user: 后端老兵, category: 启发, comment: 以前图省事在仓库根放一个 .env,所有包共享变量,改一行全仓库缓存失效。按包拆开后缓存粒度变细,哪个包用哪个变量也一目了然。
+- user: TS 仓库维护者, category: 注意, comment: typecheck 用 tsc --noEmit 也要配 outputs:tsconfig 开了 incremental 会偷偷写 .tsbuildinfo。缓存行为不对劲时,用 --dry 或 --summarize 看哈希输入。

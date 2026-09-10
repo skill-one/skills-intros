@@ -1,0 +1,9 @@
+# deploy-to-vercel (`vercel-labs/agent-skills/deploy-to-vercel`)
+
+## blackbox
+
+**function**: 把你的网站/应用一键发到互联网上，交给你一个随时能打开的网址。
+
+- input: 一个本地网页项目文件夹（如 ./my-app，说一句「部署这个」）, output: 一个可公开访问的预览链接（如 https://my-app-abc123.vercel.app），浏览器打开就能看到你的网站
+- input: 一个打包好的项目压缩包（.tgz 文件）, output: 上线成功的网址 + 一个「认领」链接，点开后可把这次部署转到你自己的 Vercel 账号下管理
+- input: 一句「把最新的改动发布上去」（项目已关联）, output: 提交并推送后自动触发重新部署，你拿到本次改动的最新预览链接

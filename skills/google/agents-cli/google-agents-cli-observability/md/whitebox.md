@@ -1,0 +1,13 @@
+# google-agents-cli-observability (`google/agents-cli/google-agents-cli-observability`)
+
+## whitebox
+
+- 识别请求命中可观测性场景（追踪/监控/日志/调试生产流量）；部署类、API 代码类请求不属于本技能，指向对应 skill
+- 对照观测层级表，先问用户要哪几层：Cloud Trace 常开；prompt-response logging / BigQuery Analytics / 第三方平台按需叠加
+- 项目未搭建则先 scaffold；agent_runtime 部署必须保证 `agents-cli infra single-project`（Terraform）先于首次 `agents-cli deploy`
+- 按所选层级落地配置：设置遥测环境变量（如 LOGS_BUCKET_NAME、COMPLETION_HOOK）或启用 BQ 插件；ADK 项目按需 fetch adk.dev 文档页获取细节
+- 运行验证命令确认 traces / 日志生效；异常时按 troubleshooting 表逐项核对（SA 角色、env vars、启动接线）
+
+- 解析：请求按四层观测表映射到具体配置路径——Cloud Trace（全模板默认开）、prompt-response logging（需 Terraform 基础设施）、BigQuery Agent Analytics（scaffold 时 --bq-analytics opt-in）、第三方平台（AgentOps/Phoenix/MLflow 等，经 OpenTelemetry 接入）；层级可组合
+- 校验：两道硬约束——① 部署顺序：agent_runtime 若 SDK 已先 deploy，只给两条补救路径（删实例走 Terraform 接管 / 保实例 + re-deploy 补 env vars + 手动授予 IAM 角色 roles/storage.admin、cloudtrace.agent 等）；② env var 取值合法性：OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT 只认 NO_CONTENT/EVENT_ONLY/SPAN_ONLY/SPAN_AND_EVENT，true/false 无效回退 NO_CONTENT；内容捕获双档独立——GCS/BigQuery 层由 COMPLETION_HOOK=upload + LOGS_BUCKET_NAME 控制，不受 trace 层开关影响
+- 外部依赖：agents-cli CLI（uv tool install google-agents-cli）、Terraform（single-project 模块建服务账号/GCS bucket/BigQuery dataset）、OpenTelemetry（span 体系）、Google Cloud（Trace/Logging/GCS/BigQuery）；ADK 深层细节不凭记忆，按 references/adk-docs.md 索引 fetch adk.dev 页面

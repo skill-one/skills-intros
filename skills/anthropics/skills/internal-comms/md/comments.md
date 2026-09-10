@@ -1,0 +1,10 @@
+# internal-comms (`anthropics/skills/internal-comms`)
+
+## comments
+
+- user: 创业公司技术负责人, category: 妙用, comment: 每周五把零散记录直接丢给它, 按 Progress/Plans/Problems 三段出周报, 格式固定后老板 30 秒扫完, 没再让我返工。
+- user: 第一次用的新手, category: 坑, comment: 我只说"帮我写个内部通知", 它反问我要哪种类型, 白等一轮。直接说"这是 3P 周报 / FAQ / 全员邮件", 一步到位。
+- user: 客服团队主管, category: 妙用, comment: 把一周里重复被问的问题和我随口的回答一起贴进去, 生成统一口径的 FAQ, 新人照着回, 口径不再打架。
+- user: 运维老哥, category: 注意, comment: 写事故报告别只丢一句"服务挂了", 时间线、影响范围、恢复动作要一起给它——它管结构和措辞, 素材得自己供。
+- user: 行政 HR, category: 注意, comment: 第一次让它写全员信, 口吻偏通用 AI 腔。先贴一篇团队以往的通知当参照, 输出立刻贴脸, 不用逐句改。
+- user: 被周报折磨的中层, category: 启发, comment: 每次被迫填 Problems 一栏, 才发现自己以前的周报只写进展、藏着风险。阻塞项摆上台面后, 反而更快拿到资源。

@@ -1,0 +1,13 @@
+# google-agents-cli-eval (`google/agents-cli/google-agents-cli-eval`)
+
+## whitebox
+
+- 准备数据集: 编辑 tests/eval/datasets/ 下的 eval_cases JSON (单轮直接给 prompt; 没数据时用 eval dataset synthesize 让 LLM 模拟用户生成多轮轨迹)
+- 跑评测: 执行 agents-cli eval run (= generate + grade 串联), 对每条用例运行 agent 生成 trace 并打分, 结果落盘到 artifacts/grade_results/results_<ts>.{json,html}
+- 分析失败: 打开最新 results 文件, 逐条看指标得分和 judge 评判理由, 按内置的'失败指标→修复动作'对照表定位原因
+- 修 agent: 按分析结果改 prompt/工具描述/指令或数据集 (仅当用户明确要求时才跑 eval optimize 的 GEPA 提示词优化, 因为昂贵且慢)
+- 验证回归: eval compare <旧results> <新results> 确认目标指标提升且其他指标未退化, 循环 2→3→4 直到通过, 通过后再扩用例
+
+- 命令链拆解: 全部依赖 agents-cli CLI (uv tool install 安装, 需先装 uv)。eval generate 通过 HTTP 驱动 agent——ADK 项目自动起 fast_api_app.py 或 adk api_server, 打 /apps/... 和 /run_sse 路由记轨迹; eval grade 用 LLM-as-judge 给 trace 打分 (--qps 控制对 judge 模型的请求速率)
+- 指标分发: eval_config.yaml 的 metrics_to_run 是选择列表, 逐名解析——匹配 custom_metrics 池就用自定义, 否则用内置指标; 自定义指标按字段路由: prompt_template → LLM 评审指标, custom_function → 本地进程内执行 Python (可设 execution: remote 走 Vertex AI CodeExecution 沙箱, 需配 GCP project+region)
+- 数据契约: 数据集分两种形态——推断输入 (喂给 generate) 和打分输入 (含 function_call/function_response 的完整 trace, 由工具生成不手写); 打分时每条轨迹暴露 {prompt}/{response}/{agent_data} 三个占位符给指标模板, 而 {reference}/{context} 只在你手写的用例上才有值, generate 不会凭空造

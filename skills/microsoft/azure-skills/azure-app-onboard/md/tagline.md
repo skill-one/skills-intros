@@ -1,0 +1,7 @@
+# azure-app-onboard (`microsoft/azure-skills/azure-app-onboard`)
+
+## tagline
+
+- 代码不动,应用直接上云
+- 先看成本,再决定要不要部署
+- 从想法到云端,一条流水线跑通

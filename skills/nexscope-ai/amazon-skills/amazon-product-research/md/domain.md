@@ -1,0 +1,7 @@
+# amazon-product-research (`nexscope-ai/amazon-skills/amazon-product-research`)
+
+## domain
+
+**domain**: 📈 商业运营
+
+**reason**: 面向 Amazon 卖家的选品调研与市场机会分析, 属电商业务增长工作

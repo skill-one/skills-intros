@@ -1,0 +1,10 @@
+# algorithmic-art (`anthropics/skills/algorithmic-art`)
+
+## comments
+
+- user: 独立设计师, category: 妙用, comment: 给客户出图不再来回传文件, 只发一个 seed 数字, 对方在同一个文件里输入相同数字, 看到的画面分毫不差。
+- user: 第一次用的新手, category: 坑, comment: 把 html 下载到本地断网打开是白屏, p5.js 要从网上加载。用之前确保联网, 网页版里用则没这问题。
+- user: 前端老兵, category: 妙用, comment: 全部代码内联在一个 html 里, 零依赖。我直接改源码里参数区的滑杆上下限做二次调整, 不用装任何环境。
+- user: 新媒体运营, category: 注意, comment: 默认画布是 1200×1200 正方形, 公众号首图够用; 要横幅或竖版海报得提前开口, 导出的 PNG 也就是这个分辨率。
+- user: 插画师, category: 注意, comment: 让它仿某位艺术家的画风会被拒, 版权红线。改成描述想要的那种氛围和元素, 出来的东西反而更贴合需求。
+- user: 产品经理, category: 启发, comment: 它先写一页『算法哲学』再动手写代码, 相当于先立设计原则再实现。我把这套流程搬进了自己的需求评审。

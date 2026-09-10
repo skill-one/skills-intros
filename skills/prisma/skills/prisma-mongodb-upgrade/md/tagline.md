@@ -1,0 +1,7 @@
+# prisma-mongodb-upgrade (`prisma/skills/prisma-mongodb-upgrade`)
+
+## tagline
+
+- MongoDB 升级迷局，一步看清
+- 不换库不搬数据，稳迁 Next
+- 决策有据，迁移有法，升级不慌

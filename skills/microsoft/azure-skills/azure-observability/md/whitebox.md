@@ -1,0 +1,13 @@
+# azure-observability (`microsoft/azure-skills/azure-observability`)
+
+## whitebox
+
+- 接到任务后, 先按监控策略映射表把需求归类到对应服务: Monitor 指标 / App Insights 链路 / Log Analytics 日志 / Alerts / Workbooks
+- 确认 Azure MCP 已启用; 未启用则引导执行 /azure:setup 或 /mcp 开启
+- 调用对应 MCP 工具: azure__monitor (monitor_metrics_query / monitor_logs_query)、azure__kusto (kusto_query)、azure__applicationinsights (component_list)
+- 按需套用内置 KQL 模板 (近期异常、请求性能、资源用量) 改写后执行查询
+- 返回查询结果; 需要程序化接入时引用 references/ 下的 SDK 速查文档, 出边界任务转介对应 skill
+
+- 双通道执行: 优先走 Azure MCP Server 工具 (azure__monitor / azure__kusto 等); MCP 不可用时降级为 az monitor CLI (如 log-analytics query、metrics list)
+- KQL 模板库: 预置三类高频查询——AppExceptions (1 小时内错误)、AppRequests (按接口聚合平均耗时)、AzureMetrics (按资源聚合 CPU), 日志查询统一用 KQL 语言执行
+- 服务路由与边界: 用"监控什么→用哪个服务→查哪个指标"策略表选通道; 三类任务明确转介——SDK 接入→appinsights-instrumentation, Kusto/ADX 集群→azure-kusto, 成本分析→azure-cost-optimization

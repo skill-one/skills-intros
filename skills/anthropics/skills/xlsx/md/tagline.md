@@ -1,0 +1,7 @@
+# xlsx (`anthropics/skills/xlsx`)
+
+## tagline
+
+- 数据再乱,理成一张好表
+- 公式自己算,改一处全表动
+- 交付即用,零错误专业表格

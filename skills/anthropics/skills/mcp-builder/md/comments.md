@@ -1,0 +1,10 @@
+# mcp-builder (`anthropics/skills/mcp-builder`)
+
+## comments
+
+- user: 独立开发者, category: 妙用, comment: 写完别急着部署, 先跑 npx @modelcontextprotocol/inspector, 不用自己写测试客户端就能点工具、看原始返回, 调试省一半时间。
+- user: 第一次写 MCP 的新手, category: 注意, comment: 动手前先定传输方式: 本地用 stdio, 远程部署用 streamable HTTP。我按 stdio 写完才说要上线远程服务, 几乎重写了一遍。
+- user: 运维老哥, category: 注意, comment: 远程服务选无状态 JSON 模式, 别用有状态会话——有状态没法横向扩容, 负载均衡还得配粘性会话, 纯属给自己找事。
+- user: 接外包的全栈, category: 妙用, comment: 把"写 10 道评估题"从最后一步提前到开发前: agent 选错工具的题, 多半是工具描述含糊。先改描述再交付, 验收一次过。
+- user: AI 产品工程师, category: 坑, comment: 评估题别问"最新版本""当前数据"这类时效题, 答案一变就没法比对。只出答案稳定、能用字符串比对验证的题。
+- user: 从 API 开发转来的后端, category: 启发, comment: 报错信息要写给 LLM 看: 错在哪、下一步怎么办。回头看我平时给同事写的报错全是甩锅, 现在自己写接口也按这个标准改了。
