@@ -1,0 +1,5 @@
+# caveman-review (`juliusbrussee/caveman/caveman-review`)
+
+## cover
+
+Weary software reviewer in glasses and hoodie leaning close to twin glowing monitors, red pen hovering over notepad, sticky notes scattered across desk, magnifying glass beside mechanical keyboard, dim office late at night

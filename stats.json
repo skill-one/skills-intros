@@ -5,7 +5,7 @@
   "prompts": {
     "blackbox": 826,
     "comments": 825,
-    "cover": 100,
+    "cover": 110,
     "domain": 826,
     "persona": 826,
     "scenario": 826,
@@ -13,8 +13,8 @@
     "whitebox": 826
   },
   "skills": {
-    "complete": 100,
-    "remaining": 900,
+    "complete": 110,
+    "remaining": 890,
     "stale": 0,
     "total": 1000
   },
