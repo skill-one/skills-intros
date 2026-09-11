@@ -1,0 +1,13 @@
+# extension-http-outcalls (`caffeinelabs/skills/extension-http-outcalls`)
+
+## whitebox
+
+- 按功能选一种服务端边界 (标识符 / 分页 / 时间窗 / 地域 / 条数) 写进请求 URL; 单实体查询必须用标识符边界, 严禁拉全量再在罐内过滤
+- 用 mo:caffeineai-http-outcalls 的 httpRequest / httpGetRequest / httpPostRequest 发起 outcall, 附 transform 回调, 响应字节被库硬 cap 在 1 MB
+- 用 curl 1:1 复现 Motoko 里的确切请求 (同方法 / 路径 / 参数 / 头 / 体), 并把一个代表性用户输入端到端追到最终请求
+- 用 curl --fail-with-body 校验成功状态及 app 实际消费的每个响应字段与类型 (仅是合法 JSON 不算通过)
+- 对确切 URL + 方法跑 check_canister_api_compliance; 全部通过才算完成、才可部署, 失败则查官方文档修正请求并重跑
+
+- 有界请求机制: maxResponseBytes 可下调但库统一 cap 在 defaultMaxResponseBytes (1 MB); 五种边界不可互换 — 用小分页去搜单个实体是反模式, 工作量仍随整个集合增长
+- IC HTTP outcall 机制: transform 回调由 IC 在 outcall 时执行 (声明为 query), 所有请求以 is_replicated = ?false 执行; 依赖 mops 包 caffeineai-http-outcalls (~0.1.4)
+- 双重校验闸门: curl 负责 1:1 请求与响应契约 (合规工具不探测 app 侧), check_canister_api_compliance 机械探测端点并按 1 MB / 10,000 条测量 — 超过 1/4 字节上限或 1,000 条即提前拒绝, 且位于部署门禁之后

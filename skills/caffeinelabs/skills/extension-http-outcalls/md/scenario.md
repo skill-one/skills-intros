@@ -1,0 +1,5 @@
+# extension-http-outcalls (`caffeinelabs/skills/extension-http-outcalls`)
+
+## scenario
+
+想让 App 实时查天气、汇率、航班?直接接外部接口常导致卡死崩溃——一次拉回海量数据,程序被撑爆。我专治这个:让后端按需取数,只拿刚好要的那一小份,且每次调用先实测验证,稳定上线。🌤️

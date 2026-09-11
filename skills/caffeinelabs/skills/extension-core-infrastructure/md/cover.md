@@ -1,0 +1,5 @@
+# extension-core-infrastructure (`caffeinelabs/skills/extension-core-infrastructure`)
+
+## cover
+
+A focused technician in a hoodie, crouched behind a half-built app skeleton of wireframe panels, plugging a key-shaped cable from a login card into a compact server box, loose wires and tools spread on the desk

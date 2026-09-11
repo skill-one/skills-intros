@@ -1,0 +1,7 @@
+# ai-avatar-video (`qu-skills/superpowers/ai-avatar-video`)
+
+## domain
+
+**domain**: 🎨 设计多媒体
+
+**reason**: 生成 AI 数字人讲解视频与口型同步, 属于音视频制作。

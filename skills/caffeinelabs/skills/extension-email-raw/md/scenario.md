@@ -1,0 +1,5 @@
+# extension-email-raw (`caffeinelabs/skills/extension-email-raw`)
+
+## scenario
+
+组织会议、班级活动要通知一群人?一封封发太累,手动抄送还容易漏人、写错。我能一次发邮件给 50 人内的收件人、抄送、密送列表——比如给确认参会者发通知、给待定者抄送,一封搞定,不重不漏。📮

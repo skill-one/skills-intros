@@ -1,0 +1,5 @@
+# git-workflow-and-versioning (`addyosmani/agent-skills/git-workflow-and-versioning`)
+
+## cover
+
+Software engineer in a dark hoodie, headphones around neck, typing at a keyboard, desk buried in sticky notes and crumpled papers, dual monitors glowing with tangled branching diagrams, empty coffee cups scattered around

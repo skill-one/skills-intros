@@ -1,0 +1,5 @@
+# layout (`pbakaus/impeccable/layout`)
+
+## cover
+
+A web layout designer in a rolled-sleeve shirt leaning toward his monitor, dragging alignment guides across a finished webpage with uneven card spacing, squinting, color swatches pinned on the wall, coffee mug and ruler on the desk

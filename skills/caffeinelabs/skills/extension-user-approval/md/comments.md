@@ -1,0 +1,10 @@
+# extension-user-approval (`caffeinelabs/skills/extension-user-approval`)
+
+## comments
+
+- user: 第一次用的新手, category: 注意, comment: 装完编译不过别慌, 它依赖 extension-authorization(权限基础件)才能跑。先把那个按指南装好, 再回来配审批, 我就是顺序搞反白折腾一小时。
+- user: 全栈独立开发者, category: 坑, comment: 我把 include MixinUserApproval 写进了自己的 mixin 文件, 直接编译报错。官方要求必须写在 main.mo 里, approvalState 也要在 actor 顶层声明, 别学我绕弯。
+- user: 后端老兵, category: 坑, comment: 我自定义的 public 接口忘了加审批判断, pending 用户照样能调。mixin 只保护它自带的那四个接口, 自己写的接口每个都要手动套 isApproved 检查。
+- user: SaaS 独立开发者, category: 妙用, comment: 拿它做内测资格发放: 初始化时老管理员自动放行, 新用户全是 pending, 我在管理面板逐个批。想做白名单制产品, 这套现成流程省了我自己写审批表。
+- user: 前端打工人, category: 注意, comment: 后端只提供接口, 前端拦截要自己搭: 页面加载先查 isCallerApproved, 未通过就显示申请按钮并挡住主功能。别以为接上后端就全自动, UI 层得自己写全。
+- user: 运维老哥, category: 坑, comment: 迁移代码里我把两个 initState 顺序写反, 编译直接报错。必须先初始化 accessControlState, 再把它传进 UserApproval.initState, 依赖顺序不能乱。

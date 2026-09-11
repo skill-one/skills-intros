@@ -1,0 +1,5 @@
+# interview-me (`addyosmani/agent-skills/interview-me`)
+
+## cover
+
+A bespectacled requirements interviewer in a neat shirt, leaning forward mid-question, one hand raised, pen poised over a clipboard, sitting at a small meeting table with a vague half-drawn product sketch, empty whiteboard behind, attentive listening gaze

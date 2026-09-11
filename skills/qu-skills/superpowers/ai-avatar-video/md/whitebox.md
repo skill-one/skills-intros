@@ -1,0 +1,13 @@
+# ai-avatar-video (`qu-skills/superpowers/ai-avatar-video`)
+
+## whitebox
+
+- 用户请求命中触发词 (avatar video / talking head / lipsync 等) 后, 确认 belt CLI 已装并 `belt login` 登录 inference.sh
+- 按场景选模型: 默认 P-Video-Avatar (自带 TTS), 多人/高拟真口型改用 OmniHuman / PixVerse
+- 组装输入 JSON (人像图 URL + voice_script 或 audio URL + voice / voice_prompt / resolution), 执行 `belt app run <app-id> --input '<json>'`
+- 若模型无内置 TTS, 先跑 Inworld TTS-2 / Kokoro 生成语音, 再把 audio_url 喂给 avatar 模型
+- 等待推理完成, 输出视频 (画幅比例跟随输入图片), 返回给用户
+
+- 唯一执行通道: 通过 Bash 调用 `belt` CLI (allowed-tools 仅 Bash(belt *)), 所有能力都是 `belt app run <app-id> --input '<json>'` 的 JSON 传参, 本地不跑模型
+- 多应用流水线串联: 上一步的输出 URL 作为下一步输入 —— p-image 生成人像 → p-video-avatar; 配音流程 fast-whisper 转写 → 翻译 → kokoro TTS → latentsync 对口型
+- 参数化控制 + 成本选型: voice / voice_language / voice_prompt 控制音色语气, video_prompt 控制动作与场景, resolution (720p/1080p) 控制清晰度; 默认选 P-Video-Avatar 因其 ~1.83s/s、$0.025/s, 比 OmniHuman 快 15 倍、便宜 6 倍

@@ -1,0 +1,10 @@
+# extension-core-infrastructure (`caffeinelabs/skills/extension-core-infrastructure`)
+
+## blackbox
+
+**function**: 给网页应用加上完整的登录能力: 用户可用 Google / 微软账号一键登录, 或用公司账号登录, 刷新页面不掉线; 登录后应用自动连上后端 (存放数据的服务器) 读写该用户的数据。
+
+- input: 一段需求: "给应用加登录, 用户用 Google 账号登录", output: 带 "Continue with Google" 按钮的登录页, 点击弹窗授权 Google 账号, 登录成功进入应用; 同时保留普通登录方式作为备选
+- input: 一段需求: "用户刷新页面后要保持登录状态", output: 刷新后用户仍是登录状态, 直接看到自己的内容, 不用重新登录; 点「退出登录」后立即回到登录页
+- input: 一段需求: "公司员工要用公司自己的账号系统 (如 Okta) 登录", output: 登录页多一个输入框, 填入公司域名 (如 acme.com) 即可用公司账号登录
+- input: 一段需求: "登录后要显示这个用户自己的数据", output: 应用只对已登录用户放行, 自动连上后端取回并显示该用户的数据; 换账号登录时数据自动跟随切换

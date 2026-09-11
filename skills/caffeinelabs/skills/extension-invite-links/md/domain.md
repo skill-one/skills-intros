@@ -1,0 +1,7 @@
+# extension-invite-links (`caffeinelabs/skills/extension-invite-links`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 为应用生成邀请链接与 RSVP 功能的后端模块和前端组件代码

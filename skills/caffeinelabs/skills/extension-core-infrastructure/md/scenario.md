@@ -1,0 +1,5 @@
+# extension-core-infrastructure (`caffeinelabs/skills/extension-core-infrastructure`)
+
+## scenario
+
+做个应用,登录最头疼:自建账号体系,密码存储、会话管理全是坑,还容易泄露。我提供开箱即用的登录基础设施——一键接入 Google、微软或公司 SSO 登录,自动管理会话与后端连接,安全又省心。🔐

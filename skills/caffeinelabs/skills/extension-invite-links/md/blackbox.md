@@ -1,0 +1,9 @@
+# extension-invite-links (`caffeinelabs/skills/extension-invite-links`)
+
+## blackbox
+
+**function**: 给你的页面加上「邀请链接 + 活动报名」功能: 你生成专属邀请链接发出去, 宾客点链接免登录填表报名, 你登录后就能看到统计和名单。
+
+- input: 一个还没有报名功能的页面, output: 一个管理后台: 点按钮生成新邀请链接, 每个链接可一键复制直接发给朋友
+- input: 宾客打开你分享的链接 (如 yoursite.com?code=abc123), 无需注册登录, output: 宾客看到一个简单表单: 填姓名、选「来 / 不来」, 提交后显示「感谢回复」
+- input: 你以管理员身份登录, output: 数据看板: 总回复人数、来 / 不来的人数统计, 以及每位宾客的姓名、状态、提交时间的名单表格

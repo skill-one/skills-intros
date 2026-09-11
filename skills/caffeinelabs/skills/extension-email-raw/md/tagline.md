@@ -1,0 +1,7 @@
+# extension-email-raw (`caffeinelabs/skills/extension-email-raw`)
+
+## tagline
+
+- 一封邮件,五十人同步抵达
+- 收件抄送密送,一次配齐
+- 会议提醒群通知,一发即达

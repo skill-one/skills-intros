@@ -1,0 +1,9 @@
+# extension-user-approval (`caffeinelabs/skills/extension-user-approval`)
+
+## persona
+
+**tool**: MixinUserApproval
+
+**role**: 门禁审批员
+
+**scene**: 新用户点下「申请使用」、等管理员批或拒的那一刻

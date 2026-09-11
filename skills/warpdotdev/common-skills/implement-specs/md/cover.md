@@ -1,0 +1,5 @@
+# implement-specs (`warpdotdev/common-skills/implement-specs`)
+
+## cover
+
+A software engineer in a hoodie, headphones around neck, holding printed spec papers in one hand, other hand hovering over keyboard, dual monitors with empty editor, checkmarks on approved documents, sticky notes and coffee mug on desk

@@ -1,0 +1,5 @@
+# dbs-xhs-title (`dontbesilent2025/dbskill/dbs-xhs-title`)
+
+## cover
+
+A focused Chinese content editor at a cluttered late-night desk, flipping through a thick formula binder with color-coded index tabs, surrounded by crumpled discarded paper drafts, crossing out lines on a note card with a pen, sticky notes everywhere, warm desk lamp glow

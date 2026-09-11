@@ -1,0 +1,7 @@
+# ai-image-generation (`qu-skills/superpowers/ai-image-generation`)
+
+## domain
+
+**domain**: 🎨 设计多媒体
+
+**reason**: 核心能力是用 50+ AI 模型生成与编辑图像, 纯视觉产出

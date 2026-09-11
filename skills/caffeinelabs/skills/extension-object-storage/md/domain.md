@@ -1,0 +1,7 @@
+# extension-object-storage (`caffeinelabs/skills/extension-object-storage`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 为应用集成文件存储能力 (图片/视频/文档), 涉及后端 Mixin 与前端 API 代码编写

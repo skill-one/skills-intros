@@ -1,0 +1,7 @@
+# extension-user-approval (`caffeinelabs/skills/extension-user-approval`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 为应用后端集成用户审批模块， 含代码接入、API 调用与管理界面开发

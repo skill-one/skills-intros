@@ -1,0 +1,5 @@
+# sandbox-migrate-to-next (`cloudflare/skills/sandbox-migrate-to-next`)
+
+## cover
+
+A software engineer in a dark hoodie, headphones around neck, carefully lifting a glowing glass cube from an old metal platform onto a newer identical one, dual monitors with red and green diff bars behind, a red warning lamp glowing on the desk

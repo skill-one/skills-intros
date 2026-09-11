@@ -1,0 +1,13 @@
+# extension-authorization (`caffeinelabs/skills/extension-authorization`)
+
+## whitebox
+
+- 初始化: migration 里调 AccessControl.initState() 建权限状态, main.mo 中 include MixinAuthorization(accessControlState, null) 自动挂载标准授权端点。
+- 前端经 useInternetIdentity hook 弹出 Internet Identity 登录, 第一个成功登录的用户自动成为 admin, 无需 token/secret。
+- 每个后端公开函数先跑守卫: hasPermission(state, caller, #admin/#user) 不通过即 Runtime.trap("Unauthorized")。
+- 前端用 isAuthenticated 决定渲染登录页还是应用; 新 principal 首次登录且查无 profile 时弹姓名设置框。
+- 登出时调 clear() 并 queryClient.clear(), 清掉身份会话和全部缓存数据。
+
+- Mixin 模式注入: MixinAuthorization 在编译期把授权端点织入 actor, include 行必须放 main.mo (自定义 mixin 不行); lint 规则由 mops 包自带, 想换自定义认证只能整体卸载 caffeineai-authorization 包, 不支持注释抑制。
+- RBAC 三角色校验: #admin / #user / #guest, 匿名 principal 视为 guest; assignRole 内置 admin-only 守卫; 查询用 query({caller})、写操作用 shared({caller}) 拿到 caller 再做 ownership 校验。
+- 外部依赖: mops 包 caffeineai-authorization ~1.0.0 (后端库) + npm @caffeineai/core-infrastructure ^1.3.0 (前端登录 hook); MixinAuthorization 第二参数可选回调, 登录时接收 II 验证过的 name/email/SSO 域 (email 只取 II 的 verified_email, 永不读未验证的 email 键)。

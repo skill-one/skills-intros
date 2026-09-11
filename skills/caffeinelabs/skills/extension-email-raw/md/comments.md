@@ -1,0 +1,10 @@
+# extension-email-raw (`caffeinelabs/skills/extension-email-raw`)
+
+## comments
+
+- user: 后端老兵, category: 妙用, comment: 别照抄示例里的 trap——发送失败会把整个调用回滚。我改成 switch 结果、失败记日志,会议数据照常落库。
+- user: 第一次用的新手, category: 坑, comment: 没先声明基础邮件扩展依赖就编译,直接报找不到模块。先在配置里加 caffeineai-email,再跑一次过。
+- user: 社群运营, category: 坑, comment: 我拿它给会员群发通知,收件人互相看见对方邮箱,被投诉了。群发请走邮件服务商,这个只适合互认识的团队。
+- user: 项目组长, category: 妙用, comment: 确认出席放 to、待定放 cc,大家看自己位置就懂状态,不用挨个解释。30 人的评审会一次就发完了。
+- user: 独立开发者, category: 注意, comment: 50 上限是 to+cc+bcc 加起来算的,超了会返回 #err;且所有人收到同一份正文,没法写个性化称呼。
+- user: 免费版用户, category: 注意, comment: 这扩展要 plus 或 pro 订阅才能用,免费版直接不行。我先升级再跑通的,上手前先确认自己的套餐档位。

@@ -1,0 +1,5 @@
+# convex-advisor (`get-convex/agent-skills/convex-advisor`)
+
+## cover
+
+A tired hoodie-clad developer leaning toward dual monitors, tracing one steeply dipping chart line with a pen, cold coffee cups on the desk, dim glowing server racks behind him, quiet night office

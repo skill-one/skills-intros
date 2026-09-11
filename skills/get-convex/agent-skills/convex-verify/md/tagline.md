@@ -1,0 +1,7 @@
+# convex-verify (`get-convex/agent-skills/convex-verify`)
+
+## tagline
+
+- 绿灯不算证明,越权被拒才算
+- 三种身份实测,漏洞当场现形
+- 无需部署,功能当场自证清白

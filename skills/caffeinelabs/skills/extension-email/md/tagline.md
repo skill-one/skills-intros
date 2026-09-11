@@ -1,0 +1,7 @@
+# extension-email (`caffeinelabs/skills/extension-email`)
+
+## tagline
+
+- 订单确认,自动送达,一封不落
+- 后端发信一步到位,通知直达用户
+- 让每笔交易,都有邮件回音

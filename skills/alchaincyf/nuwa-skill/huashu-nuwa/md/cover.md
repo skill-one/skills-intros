@@ -1,0 +1,5 @@
+# huashu-nuwa (`alchaincyf/nuwa-skill/huashu-nuwa`)
+
+## cover
+
+A focused craftsman in a worn leather apron bent over a cluttered study desk, pouring glowing liquid from a glass retort onto a freshly bound manuscript, surrounded by open antique books and pinned paper notes

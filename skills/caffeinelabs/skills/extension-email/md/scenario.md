@@ -1,0 +1,5 @@
+# extension-email (`caffeinelabs/skills/extension-email`)
+
+## scenario
+
+顾客下单后反复追问"发货了吗?",商家人工逐个回邮件,慢、易漏、易出错。我可让系统自动发送订单确认、发货通知等事务邮件 📬 下单即达,无需人力,准确不遗漏,省时省心。

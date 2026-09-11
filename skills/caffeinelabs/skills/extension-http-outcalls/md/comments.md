@@ -1,0 +1,10 @@
+# extension-http-outcalls (`caffeinelabs/skills/extension-http-outcalls`)
+
+## comments
+
+- user: 全栈独立开发, category: 坑, comment: 按航班号查一架飞机, 我却拉全量列表在代码里筛. 单跑 curl 返回 200, 部署后报 IC0522 指令超限. 调小页码没用, 换成按编号查询的参数才好.
+- user: 后端老兵, category: 妙用, comment: 文档里最值钱的一条: 用户输个编号查一个东西, 必须用标识符参数. 分页是给人翻列表用的, 拿分页当搜索, 每页再小也是遍历全库.
+- user: 第一次接外部API的新手, category: 注意, comment: 照官方文档 curl 通了就直接上线, 结果用户输入的编号和接口要的格式差一步转换, 线上全 404. 现在必须拿真实输入端到端走一遍再部署.
+- user: 运维老哥, category: 注意, comment: 合规检查比 1MB 上限严: URL 不带服务端限制时, 响应超四分之一大小或 1000 条就拦. 别赌现在数据量小, 单次 curl 通了不代表能上线.
+- user: 前端转全栈, category: 坑, comment: 我只确认返回是合法 JSON 就交差, 结果代码读的字段名大小写对不上, 页面空白. 后来固定 --fail-with-body 把每个要消费的字段核一遍.
+- user: 技术负责人, category: 启发, comment: 带团队做选型后我改了流程: 需求评审先问一句「接口能在服务端按条件裁剪吗」, 不能就砍需求. 拉全量再过滤的兜底, 上线就是定时炸弹.

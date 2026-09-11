@@ -1,0 +1,5 @@
+# convex-env (`get-convex/agent-skills/convex-env`)
+
+## cover
+
+A focused developer in a dark hoodie hunched over his laptop at midnight, typing into a glowing terminal window, blurred deployment dashboard on a second screen, empty coffee cups, tangle of cables, tense pre-launch office around him

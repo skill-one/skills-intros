@@ -1,0 +1,5 @@
+# ai-image-generation (`qu-skills/superpowers/ai-image-generation`)
+
+## scenario
+
+开网店、做自媒体,请摄影师拍产品图太贵,自己学 P 图又太慢?我能用 AI 一句话出图:产品图、海报、插画,改背景、加文字、变清晰都行,几十秒一张。不请设计师,也能有专业视觉效果 🎨
