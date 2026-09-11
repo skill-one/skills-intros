@@ -1,0 +1,5 @@
+# firebase-app-hosting-basics (`firebase/agent-skills/firebase-app-hosting-basics`)
+
+## cover
+
+A focused young developer in a hoodie and headphones, typing into a terminal window on his laptop, second monitor beside him showing his running web app preview, glowing cloud outline rising above the screen, desk lamp on in a dim home office at night

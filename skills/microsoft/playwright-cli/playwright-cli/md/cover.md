@@ -1,0 +1,5 @@
+# playwright-cli (`microsoft/playwright-cli/playwright-cli`)
+
+## cover
+
+Focused tester in dark hoodie at a dual-monitor desk, typing a command into a terminal while the browser beside it clicks through a webpage, code editor glowing on second screen, headphones around neck, mechanical keyboard, late-night desk lamp

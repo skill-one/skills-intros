@@ -1,0 +1,5 @@
+# talking-head-recut (`heygen-com/hyperframes/talking-head-recut`)
+
+## cover
+
+A hoodie-clad video packager with headphones around his neck sits in a small home studio after recording, hands on keyboard as translucent graphic overlay cards float over his talking-head footage on the monitor, microphone and softbox light beside him

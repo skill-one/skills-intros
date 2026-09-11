@@ -1,0 +1,5 @@
+# product-launch-video (`heygen-com/hyperframes/product-launch-video`)
+
+## cover
+
+A video director in a hoodie with headphones around his neck, pinning storyboard frame cards across his desk, two monitors behind showing a scrolling product page and a grid of video frames, alone in a dim night studio

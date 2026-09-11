@@ -1,0 +1,5 @@
+# neon-postgres (`neondatabase/agent-skills/neon-postgres`)
+
+## cover
+
+A focused database doctor in a white lab coat over a hoodie, pressing a neon-green glowing stethoscope to a humming server rack, holographic latency charts with a sharp dip floating nearby, dim data center, blinking lights and cables
