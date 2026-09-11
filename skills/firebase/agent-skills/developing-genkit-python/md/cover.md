@@ -1,0 +1,5 @@
+# developing-genkit-python (`firebase/agent-skills/developing-genkit-python`)
+
+## cover
+
+A young software engineer in a dark hoodie at a cluttered desk late at night, typing on a laptop with a glowing screen, second monitor beside, headphones around neck, coffee mug, cables and small hardware devices scattered around

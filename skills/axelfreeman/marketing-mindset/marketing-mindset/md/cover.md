@@ -1,0 +1,5 @@
+# marketing-mindset (`axelfreeman/marketing-mindset/marketing-mindset`)
+
+## cover
+
+Focused marketer in a dark blazer typing cold outreach emails on a laptop, finished product prototype beside him, empty customer pipeline board behind, alone in a small startup office at night

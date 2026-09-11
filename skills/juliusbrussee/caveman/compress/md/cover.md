@@ -1,0 +1,5 @@
+# compress (`juliusbrussee/caveman/compress`)
+
+## cover
+
+A lean programmer in a plain hoodie sits at a desk, typing on a laptop with one hand, pressing a swollen stack of papers into a thin sheet with the other, a long receipt bill and shredded scraps nearby

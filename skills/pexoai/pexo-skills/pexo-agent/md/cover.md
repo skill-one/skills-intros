@@ -1,0 +1,5 @@
+# pexo-agent (`pexoai/pexo-skills/pexo-agent`)
+
+## cover
+
+A delivery courier in a cap and satchel at a video studio desk, typing on a laptop with green terminal glow, holding a product photo in one hand, camera tripod and softbox lights behind, single desk lamp

@@ -1,0 +1,5 @@
+# baoyu-post-to-wechat (`jimliu/baoyu-skills/baoyu-post-to-wechat`)
+
+## cover
+
+Young editor in round glasses and a knitted cardigan, leaning back with a relieved smile, fingertip tapping the publish button on the official account dashboard, finished printed pages stacked nearby, coffee mug on a tidy desk

@@ -1,0 +1,5 @@
+# seo-geo (`resciencelab/opc-skills/seo-geo`)
+
+## cover
+
+A lone SEO specialist in a hoodie, hunched over a laptop in a dim home office at night, typing a curl command into a glowing terminal window, empty blank search results page on a second monitor, freshly launched website waiting in silence

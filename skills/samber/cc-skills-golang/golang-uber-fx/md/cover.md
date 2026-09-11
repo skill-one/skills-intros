@@ -1,0 +1,5 @@
+# golang-uber-fx (`samber/cc-skills-golang/golang-uber-fx`)
+
+## cover
+
+An engineer in a hoodie crouches between humming server racks, untangling a knot of colored cables, plugging connectors into glowing ports, laptop open on his knees, red and green status lights blinking, a large power switch within reach

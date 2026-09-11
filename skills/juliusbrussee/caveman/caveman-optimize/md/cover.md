@@ -1,0 +1,5 @@
+# caveman-optimize (`juliusbrussee/caveman/caveman-optimize`)
+
+## cover
+
+A rugged bearded engineer in a flannel shirt sits in a dim office at a cluttered desk, holding a thick printed report, eyes darting between the paper and a monitor of glowing graphs, finger hovering above the keyboard

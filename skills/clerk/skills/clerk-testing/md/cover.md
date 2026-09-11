@@ -1,0 +1,5 @@
+# clerk-testing (`clerk/skills/clerk-testing`)
+
+## cover
+
+A weary software tester in a hoodie and glasses, hunched at a cluttered desk late at night, typing on a laptop glowing with code, a browser login form under a red error banner, empty coffee cups scattered around
