@@ -15,8 +15,12 @@ name: generate
 # ever profiled, so repeated runs walk down that window and never past it.
 #
 # Repository configuration (Settings -> Secrets and variables -> Actions):
-#   Secret:   SKILLS_PROFILES_API_KEY
-#   Variable: SKILLS_PROFILES_BASE_URL, SKILLS_PROFILES_MODEL
+#   Secret:   SKILLS_PROFILES_API_KEY, SKILLS_PROFILES_IMAGE_API_KEY (and
+#             optionally SKILLS_PROFILES_IMAGE_API_KEYS: N keys, N times the
+#             per-minute image quota)
+#   Variable: SKILLS_PROFILES_BASE_URL, SKILLS_PROFILES_MODEL,
+#             SKILLS_PROFILES_IMAGE_BASE_URL, SKILLS_PROFILES_IMAGE_MODEL,
+#             SKILLS_PROFILES_IMAGE_SIZE (all optional)
 
 on:
   workflow_dispatch:
@@ -27,6 +31,9 @@ on:
       concurrency:
         description: Max concurrent LLM calls
         default: "8"
+      image_limit:
+        description: How many covers to render this run (0 = every pending one)
+        default: "10"
 
 permissions:
   contents: write
@@ -40,10 +47,20 @@ env:
   SKILLS_PROFILES_API_KEY: ${{ secrets.SKILLS_PROFILES_API_KEY }}
   SKILLS_PROFILES_BASE_URL: ${{ vars.SKILLS_PROFILES_BASE_URL }}
   SKILLS_PROFILES_MODEL: ${{ vars.SKILLS_PROFILES_MODEL }}
+  SKILLS_PROFILES_IMAGE_API_KEY: ${{ secrets.SKILLS_PROFILES_IMAGE_API_KEY }}
+  SKILLS_PROFILES_IMAGE_API_KEYS: ${{ secrets.SKILLS_PROFILES_IMAGE_API_KEYS }}
+  SKILLS_PROFILES_IMAGE_BASE_URL: ${{ vars.SKILLS_PROFILES_IMAGE_BASE_URL }}
+  SKILLS_PROFILES_IMAGE_MODEL: ${{ vars.SKILLS_PROFILES_IMAGE_MODEL }}
+  SKILLS_PROFILES_IMAGE_SIZE: ${{ vars.SKILLS_PROFILES_IMAGE_SIZE }}
+  SKILLS_PROFILES_IMAGE_LIMIT: ${{ inputs.image_limit }}
 
 jobs:
   generate:
     runs-on: ubuntu-latest
+    # renders are paced at the endpoint's per-minute quota per key: a 100-cover
+    # batch takes ~50 min on one key, so the timeout must cover the wait, not
+    # just the work (every network call itself is bounded, see config/images)
+    timeout-minutes: 180
     steps:
       - uses: actions/checkout@v5
 

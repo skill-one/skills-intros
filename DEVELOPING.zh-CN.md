@@ -16,26 +16,28 @@ English: [DEVELOPING.md](DEVELOPING.md)
 ```bash
 uv sync
 skills-profiles sync            # 下载上游快照（tag 未变则跳过）
-skills-profiles run --limit 10  # 生成档案，按安装量从高到低；已缓存的不花钱
-skills-profiles covers --limit 10       # 渲染它们的封面配图，按安装量从高到低
+skills-profiles run --limit 10  # 生成档案 + 渲染就绪的配图，按安装量从高到低；
+                                # 已缓存的不花钱，配图按每 key 每分钟 2 张限速
 ```
 
-想离线走通全流程、不调任何 API：`skills-profiles run --limit 5 --dry-run` 以及
-`skills-profiles covers --limit 5 --dry-run`（后者会写出一张占位 png）。
+想离线走通全流程、不调任何 API：`skills-profiles run --limit 5 --dry-run`（文本 + 占位配图）。
 
 ## 命令行
 
 | 命令 | 作用 |
 |---|---|
 | `sync [--refresh]` | 把镜像的 `dist` 分支作为一个 tarball 拉到 `cache/skills-sh`，只解压 `skills.jsonl` 和每个 `SKILL.md`。tag 记在 `SNAPSHOT.json`，未变则跳过下载（`--refresh` 强制）。从不碰产物。 |
-| `run [--limit N] [--prompts a,b] [--concurrency C] [--dry-run] [--debug] [--verbose]` | 只补缺口：按安装量排序取 N 个仍有缺失的 skill（`0` = 全部）。已缓存以及快照里没有 `SKILL.md` 的 skill 会被跳过且不占名额。 |
-| `covers [--limit N] [--concurrency C] [--dry-run] [--verbose]` | 为已经写好 `cover` prompt 的 skill 渲染 `cover.png`，取 N 个（`0` = 所有待渲染的）。不画任何文字，已有配图的绝不再渲染；需要 `SKILLS_PROFILES_IMAGE_API_KEY`。 |
+| `run [--limit N] [--prompts a,b] [--concurrency C] [--dry-run] [--debug] [--verbose]` | 只补缺口：按安装量排序取 N 个仍有缺失的 skill（`0` = 全部）。已缓存以及快照里没有 `SKILL.md` 的 skill 会被跳过且不占名额。文本阶段结束后，为窗口内所有「已有配方但还没有图」的 skill 渲染配图——本轮刚写好配方的优先，其次是更早的积压，单次上限 `SKILLS_PROFILES_IMAGE_LIMIT`——并按 `SKILLS_PROFILES_IMAGE_RATE_LIMIT` 张/分钟/key 限速。没有 `SKILLS_PROFILES_IMAGE_API_KEY` 时渲染阶段会告警并跳过，而非报错。 |
 | `invalidate [--skill ID]... [--prompts a,b] [--stale] [--all]` | 删除缓存输出，让下一次 `run` 重算。`--stale` 选上游 hash 变化或已从快照消失的 skill（先 `sync`）。无任何筛选条件时必须显式 `--all`。失效 `cover` 会连同它的 `cover.png` 一起删掉，这正是重画一张配图的唯一途径。 |
 
 重算从来不是 `run` 的参数：`invalidate` 删，`run` 补。每次 run 打印计时汇总并覆盖
 `output/stats.json`（描述产物现状，而非单次执行）。单个 skill 的失败（余额、连接等）会被隔离：
 run 继续，已完成的 prompt 保留并随本轮发布，只有全军覆没（所有选中 skill 都失败）才以非零码退出。
-`covers` 出于同样的原因，遵循同样的规则。
+配图渲染的后置阶段遵循同样的规则：渲染失败只记日志、run 继续，缺的图由下一次 run 补上。图像请求额外
+按 key 限速——每个已配置的 key 在任意一分钟内最多发出 `SKILLS_PROFILES_IMAGE_RATE_LIMIT` 张
+（接口文档的配额，siliconflow 为 2 张/分钟；`SKILLS_PROFILES_IMAGE_API_KEYS` 可追加多个 key，
+N 个 key 即 N 倍速率；`0` 表示不限）——大批量时会排队等待，而不是攒一堆 429；`images.py` 里的
+单请求重试规则仍是兜底。
 
 两条命令都工作在同一道数据集封顶之内，即 `SKILLS_PROFILES_TOTAL_LIMIT`（默认 1000）：无论单次 run 的
 `--limit` 多大，只有安装量最高的前 N 个 skill 会被生成档案或绘制配图。它是一个排名窗口，而非「已完成了多少个」
@@ -53,7 +55,7 @@ CI 则从默认值继承这道封顶。
                                         ──► output/skills/<id>/<prompt>.json
                                         ──► output/skills/<id>/md/<prompt>.md
                                         ──► output/skills.jsonl (id + hash + domain + persona)
-                        cover.json + domain.json ──► `covers` 调用图像端点
+                        cover.json + domain.json ──► `run` 的后置阶段
                                                 ──► output/skills/<id>/cover.png
 ```
 
@@ -79,7 +81,8 @@ persona ──► cover                                                 （配�
   副本），一生成即落盘——一个文件同时是产物和缓存：存在且通过 schema 校验就不调 LLM。先写 markdown
   再写 json，所以崩溃只会留下多余的 markdown，不会出现没有副本的 json。续跑粒度是 prompt 级。
 - **配图 = 配方 + 渲染两半。** `cover` 是一个普通 prompt，因此继承了 DAG、缓存、markdown 副本和
-  `invalidate`；`images.py` 再把画面由三部分拼出来，而其中只有第一部分是模型的活：**主体**
+  `invalidate`；文本阶段一结束，`run` 的后置阶段就会渲染窗口内所有就绪的配方（按 key 受每分钟
+  限流器约束，见「命令行」一节）；`images.py` 再把画面由三部分拼出来，而其中只有第一部分是模型的活：**主体**
   （`cover.json`——把职业画像画成一个正在干活的人；`ImagePrompt` 会**校验**它确实像样：纯英文、逗号短语、
   限字数，所以模型交回中文营销文案时 instructor 会重试，而不是让渲染器照着画）、**取景**（`CHARACTER`：一个全身人物居于画面中央，
   它是常量，所以任何配方都不可能把人丢掉）、**画风**（每个分类的 `Domain.cover_style`，刻意只写
@@ -151,8 +154,8 @@ src/skills_profiles/
 ├── generate.py        # 异步 DAG 执行 + 文件断点续跑 + 覆盖率统计
 ├── outputs.py         # 每 prompt 的 json 输出 + md/ 渲染 + 附带文件 + 索引 + 失效
 ├── logging.py         # --verbose 日志配置
-└── cli.py             # typer 命令（sync / invalidate / run / covers）
-.github/actions/publish-dist/   # 三条工作流共用的发布步骤
+└── cli.py             # typer 命令（sync / invalidate / run）
+.github/actions/publish-dist/   # 两条工作流共用的发布步骤
 tests/                 # 离线 fixture + 端到端 CLI 测试
 ```
 
@@ -166,13 +169,15 @@ tests/                 # 离线 fixture + 端到端 CLI 测试
 | `SKILLS_PROFILES_BASE_URL` | 无 | OpenAI 兼容端点 |
 | `SKILLS_PROFILES_API_KEY` | 无 | 端点 API key |
 | `SKILLS_PROFILES_LIMIT` | `10` | 每次 run 生成的 skill 数（`0` = 全部；已缓存的跳过不计数） |
-| `SKILLS_PROFILES_TOTAL_LIMIT` | `1000` | 整条管道服务的 skill 数，按安装量从高到低——是对数据集的封顶、不是单次 run：`run` 和 `covers` 都止步于此（`0` = 全部） |
+| `SKILLS_PROFILES_TOTAL_LIMIT` | `1000` | 整条管道服务的 skill 数，按安装量从高到低——是对数据集的封顶、不是单次 run：`run` 止步于此，档案与配图皆然（`0` = 全部） |
 | `SKILLS_PROFILES_CONCURRENCY` | `2` | LLM 调用 / 图像请求的最大并发数，跨 skill 及 skill 内 prompt 共享 |
 | `SKILLS_PROFILES_OUTPUT_DIR` | `output` | 产物目录 |
 | `SKILLS_PROFILES_DATA_DIR` | `cache/skills-sh` | 上游数据目录 |
 | `SKILLS_PROFILES_PROMPTS_DIR` | `prompts` | prompt markdown 目录（含 `_system.md`） |
 | `SKILLS_PROFILES_IMAGE_BASE_URL` | `https://api.siliconflow.cn/v1` | 文生图端点；配图由一个自成一套的服务绘制 |
-| `SKILLS_PROFILES_IMAGE_API_KEY` | 无 | 它的 key（缺了它 `covers` 拒绝运行；`--dry-run` 则不需要） |
+| `SKILLS_PROFILES_IMAGE_API_KEY` | 无 | 它的 key（没有时 `run` 会告警并跳过渲染阶段；`--dry-run` 则不需要） |
+| `SKILLS_PROFILES_IMAGE_API_KEYS` | 无 | 追加的 key，逗号分隔：每个 key 独享自己的每分钟配额，N 个 key 即 N 倍速率 |
+| `SKILLS_PROFILES_IMAGE_RATE_LIMIT` | `2` | 每分钟每 key 允许的最多图像张数（端点文档配额；`0` = 不限速） |
 | `SKILLS_PROFILES_IMAGE_MODEL` | `Kwai-Kolors/Kolors` | 端点提供的任意模型 |
 | `SKILLS_PROFILES_IMAGE_SIZE` | `1024x1024` | 会对照端点按模型文档化的尺寸来校验 |
 | `SKILLS_PROFILES_IMAGE_STEPS` | `20` | `num_inference_steps`（1–100）；填 `0` 表示不发送该字段 |
@@ -181,31 +186,35 @@ tests/                 # 离线 fixture + 端到端 CLI 测试
 
 ## 发布（GitHub Actions）
 
-三条手动触发的工作流共用同一个发布锁（`concurrency: publish-dist`），按职责拆分：
+两条手动触发的工作流共用同一个发布锁（`concurrency: publish-dist`），按职责拆分：
 
 | 工作流 | 流水线 | Tag |
 |---|---|---|
 | [`sync`](.github/workflows/sync.yml) | 恢复 dist → 同步上游 → `invalidate --stale` → 发布 | `dist-YYYY-MM-DD`（同日内 force 覆盖） |
 | [`generate`](.github/workflows/generate.yml) | 恢复 dist → `run --limit <输入，默认 10>` → 发布 | `dist-<base>-N`（base = 最近一次 sync 的 tag，N 递增） |
-| [`covers`](.github/workflows/covers.yml) | 恢复 dist → `covers --limit <输入，默认 20>` → 发布 | `dist-<base>-N`（与 `generate` 共用同一个计数器） |
 
-三条工作流共用两个 composite action：[`restore-dist`](.github/actions/restore-dist/action.yml)
+配置了 `SKILLS_PROFILES_IMAGE_API_KEY` 时，`generate` 的 `run` 也会顺带渲染配图
+（按每 key 每分钟限速排队，单 key 下 50 个 skill 的批次渲染约需 25 分钟）；没配 key 则仍是纯文本，
+积压等有 key 之后的 run 补上。`SKILLS_PROFILES_IMAGE_LIMIT`（默认 10）封顶单次 run 往快照里新增的配图数。
+
+两条工作流共用两个 composite action：[`restore-dist`](.github/actions/restore-dist/action.yml)
 （一个 codeload 请求把分支拉回到 `output/` 和 `cache/`）与
 [`publish-dist`](.github/actions/publish-dist/action.yml)（把工作目录镜像回 `dist`、打 tag、按时间窗
 剪枝）。`dist` 是唯一的原子快照：根目录是档案，外加 `cache/skills-sh/` 数据集镜像。正因为数据集随
-快照一起走，**只有 `sync` 会碰上游**——恢复来的 marker 落后于最新 tag 时才重新下载；`generate` 和
-`covers` 只读上一次 `sync` 发布的数据集，绝不回源。历史按滚动时间窗剪枝（默认 `1 month`；无论多久没更新，最新 1 条
+快照一起走，**只有 `sync` 会碰上游**——恢复来的 marker 落后于最新 tag 时才重新下载；`generate`
+只读上一次 `sync` 发布的数据集，绝不回源。历史按滚动时间窗剪枝（默认 `1 month`；无论多久没更新，最新 1 条
 commit 和每种 pattern 最新 1 个 tag 始终保底）。
 
-`covers` 是唯一会往快照里增加二进制体积的工作流，而它被双重封顶：`limit` 输入封顶单批数量，
-`SKILLS_PROFILES_TOTAL_LIMIT` 封顶数据集（`covers` 只为安装量最高的前 N 个 skill 绘图）。每张配图实测约
+`generate` 是唯一会往快照里增加二进制体积的工作流，而它被双重封顶：
+`SKILLS_PROFILES_IMAGE_LIMIT` 封顶单批新增数量，`SKILLS_PROFILES_TOTAL_LIMIT` 封顶数据集
+（`run` 只为安装量最高的前 N 个 skill 绘图）。每张配图实测约
 1.7 MB（1024x1024），且之后每一轮都会把整棵分支再拉回来——所以是这道封顶（而非任何单次 run）决定了
 `dist` 最多能装多少张配图：已存在的 `cover.png` 会被恢复并保留，绝不重新渲染。
 
 ```bash
-gh workflow run generate.yml -f limit=50 -f concurrency=8   # 跑一批档案
-gh workflow run covers.yml -f limit=20                       # 跑一批配图
-gh workflow run sync.yml                                    # 刷新上游，丢弃过期档案
+gh workflow run generate.yml -f limit=50 -f concurrency=8    # 跑一批档案 + 配图
+gh workflow run generate.yml -f limit=10 -f image_limit=100  # 以配图为主的批次
+gh workflow run sync.yml                                     # 刷新上游，丢弃过期档案
 ```
 
 需在 Settings → Secrets and variables → Actions 配置：
@@ -213,7 +222,7 @@ gh workflow run sync.yml                                    # 刷新上游，丢
 | 位置 | 名称 | 示例 |
 |---|---|---|
 | Secret | `SKILLS_PROFILES_API_KEY` | 端点对应的 API key |
-| Secret | `SKILLS_PROFILES_IMAGE_API_KEY` | 文生图端点的 key（只有 `covers` 需要它） |
+| Secret | `SKILLS_PROFILES_IMAGE_API_KEY` | 文生图端点的 key（可选：没有时 `generate` 仍是纯文本） |
 | Variable | `SKILLS_PROFILES_BASE_URL` | `https://api.b.ai/v1` |
 | Variable | `SKILLS_PROFILES_MODEL` | `GLM-5.3-Flash` |
 | Variable | `SKILLS_PROFILES_IMAGE_BASE_URL`、`SKILLS_PROFILES_IMAGE_MODEL`、`SKILLS_PROFILES_IMAGE_SIZE` | 可选；默认用文档里那个 Kolors 端点、`1024x1024` |
@@ -222,7 +231,7 @@ gh workflow run sync.yml                                    # 刷新上游，丢
 ## 测试
 
 整条管道均离线验证：数据解析、DAG 排序、模板渲染、续跑跳过、失效、依赖传递、markdown 渲染、配图配方的
-prompt/种子/请求体构造、端点的重试规则，以及 `run` 和 `covers` 两条完整的 CLI dry-run——都不需要网络
+prompt/种子/请求体构造、端点的重试规则、按 key 的限流器，以及 `run` 的完整 CLI dry-run——都不需要网络
 （`llm.py` 和 `images.py` 提供 `FakeLLM` / `FakeImages`；`conftest.py` 把 `data.download_file` 换成由
 fixture 构造快照 tarball 的假服务，图像端点则只通过一个打了桩的 `urlopen` 触达）。
 

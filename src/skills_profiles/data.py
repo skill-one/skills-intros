@@ -295,7 +295,7 @@ def portfolio(settings: Settings, skills: list[SkillRecord]) -> list[SkillRecord
 
     `load_skills` returns the whole snapshot in install order; this is the single
     place the dataset ceiling (`SKILLS_PROFILES_TOTAL_LIMIT`) is applied, so
-    `run` and `covers` both stop at the top N and can never drift apart. It is a
+    `run` stops at the top N, for profiles and pictures alike. It is a
     rank window, not a "count what got done" quota: a top skill with no recipe
     yet, or a failed render, holds its slot rather than letting a lower skill
     take its place, so `invalidate`-driven redraws reuse the same N skills.

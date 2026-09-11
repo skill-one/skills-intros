@@ -17,27 +17,31 @@ endpoint, and the image endpoint when you render covers).
 ```bash
 uv sync
 skills-profiles sync            # download the upstream snapshot (skipped when the tag is unchanged)
-skills-profiles run --limit 10  # generate profiles, most installed first; cached skills are free
-skills-profiles covers --limit 10       # render their covers, most installed first
+skills-profiles run --limit 10  # generate profiles + render ready covers, most installed first;
+                                # cached skills are free, covers are paced at 2/minute per key
 ```
 
-Or offline, end to end, no API calls: `skills-profiles run --limit 5 --dry-run` and
-`skills-profiles covers --limit 5 --dry-run` (which writes a placeholder png).
+Or offline, end to end, no API calls: `skills-profiles run --limit 5 --dry-run` (text plus
+placeholder covers).
 
 ## CLI
 
 | Command | What it does |
 |---|---|
 | `sync [--refresh]` | Pull the mirror's `dist` branch as one tarball into `cache/skills-sh`, unpacking only `skills.jsonl` and every `SKILL.md`. Records the tag in `SNAPSHOT.json` and skips the download when it is already current (`--refresh` forces it). Never touches the artifacts. |
-| `run [--limit N] [--prompts a,b] [--concurrency C] [--dry-run] [--debug] [--verbose]` | Generate what is missing: skills ordered by installs, `N` of them (`0` = every skill with gaps). Cached and `SKILL.md`-less skills are skipped and do not consume the budget. |
-| `covers [--limit N] [--concurrency C] [--dry-run] [--verbose]` | Render `cover.png` for the skills whose `cover` prompt is already filled in, `N` of them (`0` = every pending one). Draws no text and re-renders nothing that already has a picture; needs `SKILLS_PROFILES_IMAGE_API_KEY`. |
+| `run [--limit N] [--prompts a,b] [--concurrency C] [--dry-run] [--debug] [--verbose]` | Generate what is missing: skills ordered by installs, `N` of them (`0` = every skill with gaps). Cached and `SKILL.md`-less skills are skipped and do not consume the budget. Afterwards it renders covers for every skill in the window holding a recipe but no picture — this run's first, then older backlog, capped by `SKILLS_PROFILES_IMAGE_LIMIT` — paced at `SKILLS_PROFILES_IMAGE_RATE_LIMIT` images/minute per key. Without `SKILLS_PROFILES_IMAGE_API_KEY` the render pass is skipped with a warning, not an error. |
 | `invalidate [--skill ID]... [--prompts a,b] [--stale] [--all]` | Drop cached outputs so the next `run` refills them. `--stale` selects the skills whose upstream hash changed or that vanished (run `sync` first). Refuses a filter-less full wipe without `--all`. Invalidating `cover` takes its `cover.png` along, which is how a picture is redrawn. |
 
 Redoing work is never a `run` flag: `invalidate` deletes, `run` refills. A run prints a timed
 summary and overwrites `output/stats.json` (the artifact's state, not the run's). Skill-level
 failures — quota, connection — are isolated: the run continues, finished prompts stay on disk and
-get published, and only a total washout (every selected skill failed) exits non-zero. `covers`
-follows the same rules for the same reasons.
+get published, and only a total washout (every selected skill failed) exits non-zero. The cover
+rendering post-pass follows the same rules: a failed render is logged, the run continues, and the
+missing picture is drawn by a later run. Image requests are additionally paced per key — at
+most `SKILLS_PROFILES_IMAGE_RATE_LIMIT` images in any minute for each configured key (the endpoint's
+documented quota, 2/min on siliconflow; `SKILLS_PROFILES_IMAGE_API_KEYS` adds more keys, and N keys
+render N times as fast), `0` to disable — so a big batch waits its turn instead of collecting 429s;
+the per-request retry rules in `images.py` remain the backstop.
 
 Both commands work inside one dataset ceiling, `SKILLS_PROFILES_TOTAL_LIMIT` (default 1000): only
 the most installed N skills are ever profiled or drawn, however large a run's `--limit` is. It is a
@@ -57,7 +61,7 @@ mirror dist branch tarball ──► cache/skills-sh (skills.jsonl + skills/<id>
                                                 ──► output/skills/<id>/<prompt>.json
                                                 ──► output/skills/<id>/md/<prompt>.md
                                                 ──► output/skills.jsonl (id + hash + domain + persona)
-                        cover.json + domain.json ──► `covers` hits the image endpoint
+                        cover.json + domain.json ──► `run`'s post-pass
                                                 ──► output/skills/<id>/cover.png
 ```
 
@@ -85,7 +89,9 @@ Key design decisions:
   schema-valid means no LLM call. Markdown is written first, json last, so a crash can leave a stray
   markdown but never a json without its copy. Resume granularity is per prompt.
 - **A cover is a recipe plus a render.** `cover` is an ordinary prompt, so it inherits the DAG, the
-  cache, the markdown copy and `invalidate`; `images.py` then assembles the picture from three
+  cache, the markdown copy and `invalidate`; the moment the text pass is done, `run`'s post-pass
+  renders every ready recipe in the window (paced per key by a per-minute limiter, see the CLI
+  section); `images.py` then assembles the picture from three
   parts, and only the first is the model's: the **subject** (`cover.json` — the skill's persona as a
   person doing their work, and `ImagePrompt` *validates* that it reads as one: English only, comma
   phrases, a word cap, so instructor retries a recipe that came back as Chinese marketing prose
@@ -171,8 +177,8 @@ src/skills_profiles/
 ├── generate.py        # async DAG execution + file-based resume + coverage stats
 ├── outputs.py         # per-prompt json output + md/ rendering + assets + index + invalidation
 ├── logging.py         # --verbose logging setup
-└── cli.py             # typer commands (sync / invalidate / run / covers)
-.github/actions/publish-dist/   # the shared publish step used by all three workflows
+└── cli.py             # typer commands (sync / invalidate / run)
+.github/actions/publish-dist/   # the shared publish step used by both workflows
 tests/                 # offline fixtures + end-to-end CLI tests
 ```
 
@@ -186,13 +192,15 @@ Resolution order (highest first): `SKILLS_PROFILES_*` env vars → local `.env` 
 | `SKILLS_PROFILES_BASE_URL` | – | OpenAI-compatible endpoint |
 | `SKILLS_PROFILES_API_KEY` | – | API key for the endpoint |
 | `SKILLS_PROFILES_LIMIT` | `10` | Skills per run (`0` = all; cached ones are skipped, not counted) |
-| `SKILLS_PROFILES_TOTAL_LIMIT` | `1000` | Skills the whole pipeline serves, most installed first — a ceiling on the dataset, not on one run: `run` and `covers` both stop at it (`0` = all) |
+| `SKILLS_PROFILES_TOTAL_LIMIT` | `1000` | Skills the whole pipeline serves, most installed first — a ceiling on the dataset, not on one run: `run` stops at it, for profiles and pictures alike (`0` = all) |
 | `SKILLS_PROFILES_CONCURRENCY` | `2` | Max concurrent LLM calls / image requests, shared across skills and prompts |
 | `SKILLS_PROFILES_OUTPUT_DIR` | `output` | Artifacts directory |
 | `SKILLS_PROFILES_DATA_DIR` | `cache/skills-sh` | Upstream data directory |
 | `SKILLS_PROFILES_PROMPTS_DIR` | `prompts` | Prompt markdown directory (plus `_system.md`) |
 | `SKILLS_PROFILES_IMAGE_BASE_URL` | `https://api.siliconflow.cn/v1` | Text-to-image endpoint; covers are drawn from a service of their own |
-| `SKILLS_PROFILES_IMAGE_API_KEY` | – | Its key (`covers` refuses to run without it; `--dry-run` needs none) |
+| `SKILLS_PROFILES_IMAGE_API_KEY` | – | Its key (without one, `run` skips the render pass with a warning; `--dry-run` needs none) |
+| `SKILLS_PROFILES_IMAGE_API_KEYS` | – | Extra keys, comma-separated: each key holds its own per-minute quota, so N keys render N times as fast |
+| `SKILLS_PROFILES_IMAGE_RATE_LIMIT` | `2` | Max images per minute **per key** (the endpoint's documented quota; `0` = unbounded) |
 | `SKILLS_PROFILES_IMAGE_MODEL` | `Kwai-Kolors/Kolors` | Any model the endpoint serves |
 | `SKILLS_PROFILES_IMAGE_SIZE` | `1024x1024` | Checked against the sizes the endpoint documents per model |
 | `SKILLS_PROFILES_IMAGE_STEPS` | `20` | `num_inference_steps` (1–100); `0` omits the field |
@@ -201,34 +209,39 @@ Resolution order (highest first): `SKILLS_PROFILES_*` env vars → local `.env` 
 
 ## Publishing (GitHub Actions)
 
-Three manually-triggered workflows share one publish lock (`concurrency: publish-dist`) and are split
+Two manually-triggered workflows share one publish lock (`concurrency: publish-dist`) and are split
 by concern:
 
 | Workflow | Pipeline | Tag |
 |---|---|---|
 | [`sync`](.github/workflows/sync.yml) | restore dist → sync upstream → `invalidate --stale` → publish | `dist-YYYY-MM-DD`, force-updated within a day |
 | [`generate`](.github/workflows/generate.yml) | restore dist → `run --limit <input, default 10>` → publish | `dist-<base>-N`, base = newest sync tag, N increments |
-| [`covers`](.github/workflows/covers.yml) | restore dist → `covers --limit <input, default 20>` → publish | `dist-<base>-N`, same counter as `generate` |
 
-All three share two composite actions: [`restore-dist`](.github/actions/restore-dist/action.yml)
+`generate`'s `run` renders covers too when `SKILLS_PROFILES_IMAGE_API_KEY` is configured (paced per
+key at the per-minute rate limit, so a 50-skill batch takes ~25 minutes of rendering at one key);
+without the key it stays text-only, and the backlog is drawn by later runs once the key exists.
+`SKILLS_PROFILES_IMAGE_LIMIT` (default 10) caps how many pictures one run adds to the snapshot.
+
+Both workflows share two composite actions: [`restore-dist`](.github/actions/restore-dist/action.yml)
 (one codeload request pulls the branch back into `output/` and `cache/`) and
 [`publish-dist`](.github/actions/publish-dist/action.yml) (mirror the working dirs back to `dist`,
 tag, prune to the retention window). `dist` is the single atomic snapshot: the profiles at its root
 plus a `cache/skills-sh/` dataset mirror. Because the dataset rides in the snapshot, **only `sync`
 ever touches upstream** — it re-downloads when the restored marker lags the newest tag; `generate`
-and `covers` just read the dataset the last `sync` published and never fetch. History is pruned to a
+just reads the dataset the last `sync` published and never fetches. History is pruned to a
 rolling window (default `1 month`; the newest commit and the newest tag of each pattern are always
 kept as a floor).
 
-`covers` is the only workflow that adds binary weight, and it is bounded twice: the `limit` input
-caps one batch, while `SKILLS_PROFILES_TOTAL_LIMIT` caps the dataset (`covers` only ever renders the
-most installed N skills). Each picture is ~1.7 MB as measured at 1024x1024 and every later run fetches
-the whole branch back, so it is that ceiling — not any single run — that bounds how many covers `dist`
-can ever hold: an existing `cover.png` is restored and kept, never re-rendered.
+`generate` is the only workflow that adds binary weight, and it is bounded twice:
+`SKILLS_PROFILES_IMAGE_LIMIT` caps the pictures one batch adds, while `SKILLS_PROFILES_TOTAL_LIMIT`
+caps the dataset (`run` only ever renders the most installed N skills). Each picture is ~1.7 MB as
+measured at 1024x1024 and every later run fetches the whole branch back, so it is that ceiling —
+not any single run — that bounds how many covers `dist` can ever hold: an existing `cover.png` is
+restored and kept, never re-rendered.
 
 ```bash
-gh workflow run generate.yml -f limit=50 -f concurrency=8   # one batch of profiles
-gh workflow run covers.yml -f limit=20                       # one batch of covers
+gh workflow run generate.yml -f limit=50 -f concurrency=8              # one batch of profiles + covers
+gh workflow run generate.yml -f limit=10 -f image_limit=100            # mostly a covers batch
 gh workflow run sync.yml                                    # refresh upstream, drop stale profiles
 ```
 
@@ -237,7 +250,7 @@ Required configuration (Settings → Secrets and variables → Actions):
 | Where | Name | Example |
 |---|---|---|
 | Secret | `SKILLS_PROFILES_API_KEY` | the endpoint's API key |
-| Secret | `SKILLS_PROFILES_IMAGE_API_KEY` | the text-to-image endpoint's key (only `covers` needs it) |
+| Secret | `SKILLS_PROFILES_IMAGE_API_KEY` | the text-to-image endpoint's key (optional: without it `generate` stays text-only) |
 | Variable | `SKILLS_PROFILES_BASE_URL` | `https://api.b.ai/v1` |
 | Variable | `SKILLS_PROFILES_MODEL` | `GLM-5.3-Flash` |
 | Variable | `SKILLS_PROFILES_IMAGE_BASE_URL`, `SKILLS_PROFILES_IMAGE_MODEL`, `SKILLS_PROFILES_IMAGE_SIZE` | optional; default to the documented Kolors endpoint at `1024x1024` |
@@ -247,7 +260,8 @@ Required configuration (Settings → Secrets and variables → Actions):
 
 The whole pipeline is verified offline: dataset parsing, DAG ordering, template rendering, resume
 skip, invalidation, dependency passing, markdown rendering, the cover recipe's prompt/seed/payload
-construction, the endpoint's retry rules, and a full CLI dry-run of both `run` and `covers` — no
+construction, the endpoint's retry rules, the per-key rate limiter, and a full CLI dry-run of `run`
+— no
 network access (`llm.py` and `images.py` provide `FakeLLM` / `FakeImages`, `conftest.py` replaces
 `data.download_file` with a fake that serves a snapshot tarball built from the fixtures, and the
 image endpoint is reached only through a stubbed `urlopen`).

@@ -97,7 +97,8 @@ def _no_upstream_tags(monkeypatch):
 @pytest.fixture
 def settings(tmp_path) -> Settings:
     s = Settings(output_dir=tmp_path / "output",
-                 data_dir=tmp_path / "cache" / "skills-sh")
+                 data_dir=tmp_path / "cache" / "skills-sh",
+                 image_api_key=None, image_api_keys=[])  # tests stay offline even when a local .env has keys
     make_fake_dataset(s)
     return s
 

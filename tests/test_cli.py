@@ -109,7 +109,7 @@ def test_run_writes_a_stats_summary(settings, monkeypatch):
     assert stats["skills"] == {"total": 4, "complete": 2, "remaining": 2, "stale": 0}
     assert all(v == 2 for v in stats["prompts"].values())
     assert set(stats) == {"snapshot", "skills", "prompts", "covers"}  # state only, no run info
-    assert stats["covers"] == {"rendered": 0}  # a run writes recipes, never pictures
+    assert stats["covers"] == {"rendered": 2}, "run renders the recipes it just filled in"
 
 
 def test_run_stats_snapshot_is_overwritten(settings, monkeypatch):

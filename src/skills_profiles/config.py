@@ -1,9 +1,10 @@
 """Runtime configuration: env vars over .env over built-in defaults."""
 
 from pathlib import Path
+from typing import Annotated
 
-from pydantic import model_validator
-from pydantic_settings import BaseSettings, SettingsConfigDict
+from pydantic import field_validator, model_validator
+from pydantic_settings import BaseSettings, NoDecode, SettingsConfigDict
 
 REPO = "skill-one/skills-sh-mirror"
 DIST_BRANCH = "dist"
@@ -39,8 +40,8 @@ class Settings(BaseSettings):
     base_url: str | None = None  # override for OpenAI-compatible endpoints
     api_key: str | None = None
     limit: int = 10  # skills to generate per run; cached/sourceless ones are skipped, not counted
-    # a ceiling on the dataset, not a per-run budget: `run` and `covers` only ever
-    # serve this many of the most installed skills. Unlike `limit` it is set once
+    # a ceiling on the dataset, not a per-run budget: `run` only ever serves the
+    # top N, for profiles and pictures alike. Unlike `limit` it is set once
     # (here, or SKILLS_PROFILES_TOTAL_LIMIT) so local and CI cannot drift apart;
     # 0 means "no ceiling, every skill". See data.portfolio for where it applies.
     total_limit: int = 1000
@@ -56,6 +57,9 @@ class Settings(BaseSettings):
     # chat provider and the image provider are freely different services.
     image_base_url: str = "https://api.siliconflow.cn/v1"
     image_api_key: str | None = None
+    # extra endpoint keys (comma-separated in the env): each key is paced at
+    # image_rate_limit/min in its own bucket, so N keys render N times as fast
+    image_api_keys: Annotated[list[str], NoDecode] = []
     image_model: str = "Kwai-Kolors/Kolors"
     image_size: str = "1024x1024"
     # 0 means "do not send the field": the endpoint documents num_inference_steps
@@ -64,6 +68,26 @@ class Settings(BaseSettings):
     image_steps: int = 20           # num_inference_steps: more steps, better and slower
     image_guidance: float = 7.5     # guidance_scale: how strictly the prompt is followed
     image_limit: int = 10  # covers rendered per run; already-rendered ones are skipped
+    # max images per minute per key the endpoint allows (e.g. siliconflow's 2/min);
+    # one aiolimiter per key paces that key's renders. 0 = do not pace at all
+    image_rate_limit: int = 2
+
+    @field_validator("image_api_keys", mode="before")
+    @classmethod
+    def _split_keys(cls, value):
+        """`SKILLS_PROFILES_IMAGE_API_KEYS=k1,k2` arrives as one raw string."""
+        if isinstance(value, str):
+            return [key.strip() for key in value.split(",") if key.strip()]
+        if isinstance(value, (list, tuple)):
+            return [key.strip() for key in value if isinstance(key, str) and key.strip()]
+        return value
+
+    @property
+    def image_keys(self) -> list[str]:
+        """Every configured image key, primary first, deduplicated."""
+        keys = [self.image_api_key] if self.image_api_key else []
+        keys += [key for key in self.image_api_keys if key not in keys]
+        return keys
 
     @property
     def images_url(self) -> str:
@@ -93,6 +117,8 @@ class Settings(BaseSettings):
             raise ValueError("total_limit must be >= 0")
         if self.image_limit < 0:
             raise ValueError("image_limit must be >= 0")
+        if self.image_rate_limit < 0:
+            raise ValueError("image_rate_limit must be >= 0")
         width, sep, height = self.image_size.partition("x")
         if not sep or not width.isdigit() or not height.isdigit():
             raise ValueError(f"image_size must be [width]x[height], got {self.image_size!r}")

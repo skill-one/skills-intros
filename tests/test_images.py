@@ -1,7 +1,7 @@
 """Tests for cover rendering: the recipe projection, the endpoint contract,
-the file-is-the-cache rule, and the `covers` command. All offline: the image
-endpoint is reached only through a stubbed urlopen, and dry-runs through
-FakeImages."""
+the file-is-the-cache rule, the per-key rate limiter, and `run`'s render
+post-pass. All offline: the image endpoint is reached only through a stubbed
+urlopen, and dry-runs through FakeImages."""
 
 import asyncio
 import io
@@ -222,6 +222,7 @@ def test_settings_accept_a_documented_kolors_size(size):
     ({"image_steps": 101}, r"image_steps must be 0 \(omit the field\) or within 1\.\.100"),
     ({"image_guidance": 25}, r"image_guidance must be 0 \(omit the field\) or within 0\.\.20"),
     ({"image_limit": -1}, r"image_limit must be >= 0"),
+    ({"image_rate_limit": -1}, r"image_rate_limit must be >= 0"),
 ])
 def test_settings_reject_values_the_docs_do_not_allow(kwargs, message):
     with pytest.raises(ValueError, match=message):
@@ -244,7 +245,7 @@ def test_request_returns_the_image_url_and_trace(settings, monkeypatch):
     monkeypatch.setattr(images_mod.urllib.request, "urlopen", stub)
     settings.image_api_key = "sk-image"
 
-    url, trace = images_mod._request_image(settings, "p", 1)
+    url, trace = images_mod._request_image(settings, "p", 1, key="sk-image")
 
     assert (url, trace) == ("https://cdn/x.png", "trace-1")
     body, headers = stub.requests[0]
@@ -264,7 +265,7 @@ def test_request_retries_a_rate_limit_then_gives_up(settings, monkeypatch):
     settings.max_retries = 3
 
     with pytest.raises(RuntimeError, match="TPM limit reached"):
-        images_mod._request_image(settings, "p", 1)
+        images_mod._request_image(settings, "p", 1, key="sk")
     assert len(stub.requests) == 4, "the initial try plus three retries, no more"
 
 
@@ -276,7 +277,7 @@ def test_request_does_not_retry_a_rejected_payload(settings, monkeypatch):
     settings.max_retries = 3
 
     with pytest.raises(RuntimeError, match="bad image_size"):
-        images_mod._request_image(settings, "p", 1)
+        images_mod._request_image(settings, "p", 1, key="sk")
     assert len(stub.requests) == 1
 
 
@@ -284,11 +285,12 @@ def test_request_needs_a_url_in_the_answer(settings, monkeypatch):
     monkeypatch.setattr(images_mod.urllib.request, "urlopen",
                         StubUrlopen(StubResponse({"images": []})))
     with pytest.raises(RuntimeError, match="no image url"):
-        images_mod._request_image(settings, "p", 1)
+        images_mod._request_image(settings, "p", 1, key="sk")
 
 
 async def test_client_stores_the_bytes_behind_the_expiring_url(settings, with_profiles,
                                                                monkeypatch):
+    settings.image_api_key = "sk-image"  # the client builds its key pool from it
     dest = cover_of(settings, with_profiles[0].id)
     dest.parent.mkdir(parents=True, exist_ok=True)
     monkeypatch.setattr(images_mod.urllib.request, "urlopen",
@@ -310,6 +312,7 @@ async def test_client_stores_the_bytes_behind_the_expiring_url(settings, with_pr
 
 
 async def test_client_reports_an_already_expired_url(settings, with_profiles, monkeypatch):
+    settings.image_api_key = "sk-image"
     dest = cover_of(settings, with_profiles[0].id)
     monkeypatch.setattr(images_mod.urllib.request, "urlopen",
                         StubUrlopen(StubResponse({"images": [{"url": "https://cdn/x.png"}]})))
@@ -402,6 +405,68 @@ async def test_run_covers_isolates_a_failing_skill(settings, with_profiles):
     assert not cover_of(settings, skills[1].id).exists()
 
 
+def test_image_keys_merge_the_primary_and_the_extra_ones(settings):
+    settings.image_api_key = "k1"
+    settings.image_api_keys = ["k2", "k1", " k3 "]
+    assert settings.image_keys == ["k1", "k2", "k3"], "deduplicated, stripped, primary first"
+    settings.image_api_key = None
+    assert settings.image_keys == ["k2", "k1", "k3"]
+
+
+def test_image_api_keys_parse_from_a_comma_separated_env(monkeypatch):
+    monkeypatch.setenv("SKILLS_PROFILES_IMAGE_API_KEYS", "k1, k2,,k3")
+    s = Settings(_env_file=None)
+    assert s.image_api_keys == ["k1", "k2", "k3"]
+
+
+async def test_key_pool_spreads_load_across_keys():
+    """Concurrent renders take the most-rested key, so N keys serve N at once."""
+    pool = images_mod.KeyPool(["a", "b"], rate=0)
+    used: list[str] = []
+
+    async def grab():
+        async with pool.slot() as key:
+            used.append(key)
+
+    await asyncio.gather(*(grab() for _ in range(4)))
+    assert used.count("a") == 2 and used.count("b") == 2
+
+
+async def test_key_pool_paces_each_key_at_the_rate():
+    """Each key holds its own bucket: 2 keys x 2/min admit 4 at once, the 5th waits."""
+    pool = images_mod.KeyPool(["a", "b"], rate=2, window=0.05)
+    times: list[float] = []
+
+    async def grab():
+        async with pool.slot():
+            times.append(asyncio.get_running_loop().time())
+
+    await asyncio.gather(*(grab() for _ in range(6)))
+    assert len(times) == 6
+    # the bucket leaks continuously: 4 renders fit the two keys' immediate
+    # capacity, the 5th must wait roughly half a window for leaked capacity
+    assert times[3] - times[0] < 0.04, "the first four go out at once"
+    assert times[4] - times[0] >= 0.02, "the 5th render had to wait for capacity"
+
+
+def test_key_pool_refuses_to_be_built_without_keys():
+    with pytest.raises(RuntimeError, match="no image endpoint key"):
+        images_mod.KeyPool([], rate=2)
+
+
+async def test_an_unlimited_rate_limit_never_paces(settings, with_profiles):
+    settings.image_rate_limit = 0
+    times: list[float] = []
+
+    class Timed(FakeImages):
+        async def generate(self, prompt, seed, dest):
+            times.append(asyncio.get_running_loop().time())
+            await super().generate(prompt, seed, dest)
+
+    await run_covers(Timed(), settings, with_profiles)
+    assert times[1] - times[0] < 0.05
+
+
 async def test_render_refuses_a_skill_with_no_recipe(settings):
     skill = load_skills(settings)[0]
 
@@ -442,7 +507,7 @@ def test_a_transient_failure_then_success_renders(settings, monkeypatch):
     monkeypatch.setattr(images_mod.urllib.request, "urlopen", stub)
     settings.max_retries = 3
 
-    url, _trace = images_mod._request_image(settings, "p", 1)
+    url, _trace = images_mod._request_image(settings, "p", 1, key="sk")
     assert url == "https://cdn/x.png" and len(stub.requests) == 2
 
 
@@ -453,7 +518,7 @@ def test_no_retries_means_exactly_one_attempt(settings, monkeypatch):
     settings.max_retries = 0
 
     with pytest.raises(RuntimeError, match="overloaded"):
-        images_mod._request_image(settings, "p", 1)
+        images_mod._request_image(settings, "p", 1, key="sk")
     assert len(stub.requests) == 1
 
 
@@ -464,7 +529,7 @@ def test_a_reply_that_is_not_json_is_named_as_the_endpoints_fault(settings, monk
 
     monkeypatch.setattr(images_mod.urllib.request, "urlopen", StubUrlopen(HtmlReply({})))
     with pytest.raises(RuntimeError, match="not json"):
-        images_mod._request_image(settings, "p", 1)
+        images_mod._request_image(settings, "p", 1, key="sk")
 
 
 def test_an_empty_ci_variable_leaves_the_documented_default():
@@ -492,53 +557,6 @@ def test_the_shipped_cover_template_uses_the_persona_it_declares(settings):
 
 # --- the CLI ----------------------------------------------------------------
 
-def test_covers_dry_run_writes_pictures_and_stats(settings, with_profiles, monkeypatch):
-    monkeypatch.setattr("skills_profiles.cli.Settings", lambda: settings)
-    result = runner.invoke(app, ["covers", "--limit", "2", "--dry-run"])
-
-    assert result.exit_code == 0, result.output
-    assert "Rendering 2 of 4 skill(s) with model=Kwai-Kolors/Kolors size=1024x1024" \
-        in result.output
-    assert "2 cover(s) rendered" in result.output
-    stats = json.loads((settings.output_dir / "stats.json").read_text(encoding="utf-8"))
-    assert stats["covers"] == {"rendered": 2}
-    assert stats["prompts"]["cover"] == 2, "the recipe count rides in with the rest"
-
-
-def test_covers_second_run_has_nothing_to_do(settings, with_profiles, monkeypatch):
-    monkeypatch.setattr("skills_profiles.cli.Settings", lambda: settings)
-    runner.invoke(app, ["covers", "--limit", "2", "--dry-run"])
-    result = runner.invoke(app, ["covers", "--limit", "2", "--dry-run"])
-
-    assert result.exit_code == 0, result.output
-    assert "Rendering 0 of 4 skill(s)" in result.output
-    assert "0 cover(s) rendered" in result.output
-
-
-def test_covers_needs_an_image_key_before_reading_the_dataset(settings, monkeypatch):
-    """A missing key is a config mistake, not a per-skill failure."""
-    settings.image_api_key = None
-    monkeypatch.setattr("skills_profiles.cli.Settings", lambda: settings)
-    result = runner.invoke(app, ["covers"])
-
-    assert result.exit_code != 0
-    assert "no image endpoint key" in result.output
-    assert "images/generations" in result.output
-
-
-@pytest.mark.parametrize("flag", ["--concurrency", "--limit"])
-def test_covers_rejects_an_out_of_range_flag_before_any_work(settings, monkeypatch, flag):
-    """The CLI overrides settings by assignment, which now validates too: a 0 or a
-    negative would otherwise mean a semaphore that never frees or an unbounded run."""
-    monkeypatch.setattr("skills_profiles.cli.Settings", lambda: settings)
-    value = "0" if flag == "--concurrency" else "-1"
-    result = runner.invoke(app, ["covers", flag, value, "--dry-run"])
-
-    assert result.exit_code != 0
-    assert ("concurrency must be >= 1" if flag == "--concurrency"
-            else "image_limit must be >= 0") in str(result.exception)
-
-
 def test_run_rejects_a_zero_concurrency(settings, monkeypatch):
     monkeypatch.setattr("skills_profiles.cli.Settings", lambda: settings)
     result = runner.invoke(app, ["run", "--limit", "1", "--concurrency", "0", "--dry-run"])
@@ -547,15 +565,57 @@ def test_run_rejects_a_zero_concurrency(settings, monkeypatch):
     assert "concurrency must be >= 1" in str(result.exception)
 
 
-def test_run_and_covers_are_two_independent_halves(settings, monkeypatch):
-    """`run` writes recipes but never pictures; `covers` renders what is ready."""
+def test_run_renders_the_covers_its_recipes_are_ready_for(settings, monkeypatch):
+    """One command serves both halves: `run` fills the recipe and draws the
+    picture in the same invocation, and stats.json records both counters."""
+    monkeypatch.setattr("skills_profiles.cli.Settings", lambda: settings)
+    result = runner.invoke(app, ["run", "--limit", "1", "--dry-run"])
+
+    assert result.exit_code == 0, result.output
+    assert "Rendering 1 pending cover(s)" in result.output
+    assert "1 cover(s) rendered, 0 failed" in result.output
+    assert covers_on_disk(settings) == 1
+    stats = json.loads((settings.output_dir / "stats.json").read_text(encoding="utf-8"))
+    assert stats["covers"] == {"rendered": 1}
+    assert stats["prompts"]["cover"] == 1, "the recipe count rides in with the rest"
+
+
+def test_run_caps_the_post_pass_at_the_image_limit(settings, monkeypatch):
+    """`SKILLS_PROFILES_IMAGE_LIMIT` bounds how many backlog covers one run draws."""
+    settings.image_limit = 1
+    monkeypatch.setattr("skills_profiles.cli.Settings", lambda: settings)
+    result = runner.invoke(app, ["run", "--limit", "0", "--dry-run"])
+
+    assert result.exit_code == 0, result.output
+    assert "Rendering 1 pending cover(s)" in result.output
+    assert covers_on_disk(settings) == 1
+
+
+def test_run_without_an_image_key_skips_covers(settings, monkeypatch):
+    """A key-less run degrades to text-only with a warning instead of failing;
+    a later run picks the backlog up once the key is set."""
+    from skills_profiles.llm import FakeLLM
+
+    monkeypatch.setattr("skills_profiles.cli.Settings", lambda: settings)
+    monkeypatch.setattr("skills_profiles.cli.make_llm", lambda s: FakeLLM())
+    result = runner.invoke(app, ["run", "--limit", "0"])
+
+    assert result.exit_code == 0, result.output
+    assert "no image endpoint key" in result.output
+    assert "covers not rendered" in result.output
+    assert covers_on_disk(settings) == 0
+
+
+def test_run_renders_backlog_covers_even_when_text_is_cached(settings, monkeypatch):
+    """The post-pass walks `select_cover_skills`, not just this run's skills: a
+    picture deleted or left behind by a key-less run is drawn on the next run."""
     monkeypatch.setattr("skills_profiles.cli.Settings", lambda: settings)
     runner.invoke(app, ["run", "--limit", "1", "--dry-run"])
+    cover_of(settings, load_skills(settings)[0].id).unlink()
 
-    assert covers_on_disk(settings) == 0
-    assert len([s for s in load_skills(settings)
-                if cover_needed(settings, s.id)]) == 1, "one recipe waiting to be drawn"
+    result = runner.invoke(app, ["run", "--limit", "1", "--dry-run"])
 
-    result = runner.invoke(app, ["covers", "--dry-run"])
     assert result.exit_code == 0, result.output
-    assert covers_on_disk(settings) == 1
+    assert "Rendering 2 pending cover(s)" in result.output, \
+        "alpha's redone picture and beta's first"
+    assert covers_on_disk(settings) == 2

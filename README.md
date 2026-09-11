@@ -142,7 +142,9 @@ fixed style for each of the 13, so covers of one category read as a family and t
 with the wording. Every cover is **one person at work**: that framing is a constant in the renderer,
 not a request to the model, so even a thin recipe yields a portrait rather than a still life of props.
 Recipe and picture are stored apart (`md/cover.md` shows the recipe, `cover.png` is the picture), and
-re-drawing a picture costs no LLM call.
+re-drawing a picture costs no LLM call. Every `run` renders ready recipes after its text pass —
+paced at the endpoint's per-minute quota — so a skill gets its picture the first time it is
+profiled, and older backlog is drawn by later runs.
 
 ## How to get the data
 

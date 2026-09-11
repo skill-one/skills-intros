@@ -169,8 +169,8 @@ def invalidate(settings: Settings, skill_ids: Iterable[str] | None = None,
     `skill_ids` None means every skill on record; `prompt_ids` None
     means every prompt of each selected skill. Dropping a prompt also drops the
     rendered assets it owns (PROMPT_ASSETS), which is how a cover gets
-    re-rendered: one invalidation, then `run` refills the json and `covers` the
-    picture. A skill left without any output is dropped from the index, i.e. it
+    re-rendered: one invalidation, then `run` refills the json and the picture.
+    A skill left without any output is dropped from the index, i.e. it
     counts as new again; the index is then rewritten so its aggregated copies
     match what is left on disk. This is the only invalidation path:
     `invalidate --stale` uses it for skills whose upstream hash changed. Returns

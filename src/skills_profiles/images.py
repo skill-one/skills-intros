@@ -9,11 +9,11 @@ module only renders, which keeps the two costs apart: a picture you do not like
 is re-rendered without spending any text call, and re-running the DAG never
 re-renders a picture.
 
-Rendering is its own command rather than a `run` flag for three reasons: the
-image endpoint is a different service with its own key (see config's `image_*`),
-its calls are far slower and costlier than a chat call, and its answer is a url
-the provider expires within the hour - so the bytes must be fetched at once and
-stored, never referenced.
+Rendering is a post-pass of `run` rather than a prompt in the DAG for three
+reasons: the image endpoint is a different service with its own key (see
+config's `image_*`), its calls are far slower and costlier than a chat call, and
+its answer is a url the provider expires within the hour - so the bytes must be
+fetched at once and stored, never referenced.
 
 The file is the cache, as everywhere else in the artifact layout: a skill that
 has a `cover.png` is never re-rendered, and dropping one is
@@ -30,9 +30,12 @@ import time
 import urllib.error
 import urllib.request
 import zlib
+from contextlib import asynccontextmanager
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Callable
+from typing import AsyncIterator, Callable
+
+from aiolimiter import AsyncLimiter
 
 from .config import Settings
 from .data import download_file
@@ -57,6 +60,42 @@ REQUEST_TIMEOUT_SECONDS = 300
 # transient per the docs (429 rate limit "TPM limit reached", 503 model service
 # overloaded, 504 gateway timeout) plus the proxy-side 502 that fronts them
 RETRYABLE_STATUS = frozenset({429, 502, 503, 504})
+# the window the endpoint's per-minute quota is counted in: each key's limiter
+# lets at most settings.image_rate_limit requests into any 60-second stretch
+RATE_WINDOW_SECONDS = 60
+
+
+class KeyPool:
+    """The endpoint's keys, each paced by its own per-minute bucket.
+
+    A quota belongs to a key, not to the process: `image_rate_limit` images per
+    minute per key, so N keys render N times as fast. A render takes the key
+    that has been idle longest (the claim timestamp is set before waiting, so
+    concurrent renders spread across the pool), then queues in that key's
+    bucket; with rate 0 the pool only rotates.
+    """
+
+    def __init__(self, keys: list[str], rate: int,
+                 window: int = RATE_WINDOW_SECONDS) -> None:
+        if not keys:
+            raise RuntimeError(
+                "no image endpoint key configured (SKILLS_PROFILES_IMAGE_API_KEY)")
+        self._entries = [
+            {"key": key, "limiter": AsyncLimiter(rate, window) if rate else None,
+             "claimed": 0.0}
+            for key in keys
+        ]
+
+    @asynccontextmanager
+    async def slot(self) -> AsyncIterator[str]:
+        """Hold one key until the render leaves the context, quota-permitting."""
+        entry = min(self._entries, key=lambda e: e["claimed"])
+        entry["claimed"] = time.monotonic()
+        if entry["limiter"] is not None:
+            async with entry["limiter"]:
+                yield entry["key"]
+        else:
+            yield entry["key"]
 
 # a real 1x1 png, so a dry-run exercises the same layout as a real render
 FAKE_PNG = base64.b64decode(
@@ -66,7 +105,7 @@ FAKE_PNG = base64.b64decode(
 
 @dataclass
 class CoverStats:
-    """Aggregated counters for one `covers` run, tallied by `run_covers`."""
+    """Aggregated counters for one rendering post-pass, tallied by `run_covers`."""
 
     rendered: int = 0
     skills_failed: int = 0
@@ -83,8 +122,7 @@ def covers_on_disk(settings: Settings) -> int:
     """How many skills hold a rendered cover.
 
     Counted from the artifact tree, like every other number in stats.json: it is
-    the dataset's current state, not a run's tally, so `run` and `covers` report
-    the same figure whichever of them wrote the file last.
+    the dataset's current state, not a run's tally.
     """
     root = settings.output_dir / SKILLS_SUBDIR
     return sum(1 for _ in root.rglob(f"{PROMPT_ID}{ASSET_SUFFIX}"))
@@ -160,8 +198,8 @@ def _error_detail(error: urllib.error.HTTPError) -> str:
     return str(body)
 
 
-def _request_image(settings: Settings, prompt: str, seed: int) -> tuple[str, str]:
-    """One generations request; returns (image url, provider trace id).
+def _request_image(settings: Settings, prompt: str, seed: int, key: str) -> tuple[str, str]:
+    """One generations request on `key`; returns (image url, provider trace id).
 
     Retries transient failures with exponential backoff. A 400/401/403 is raised
     at once: the same request would be rejected the same way, and the message
@@ -171,7 +209,7 @@ def _request_image(settings: Settings, prompt: str, seed: int) -> tuple[str, str
         settings.images_url,
         data=json.dumps(request_payload(settings, prompt, seed)).encode("utf-8"),
         headers={
-            "Authorization": f"Bearer {settings.image_api_key}",
+            "Authorization": f"Bearer {key}",
             "Content-Type": "application/json",
         },
         method="POST",
@@ -214,17 +252,23 @@ def _request_image(settings: Settings, prompt: str, seed: int) -> tuple[str, str
 
 
 class ImageClient:
-    """The provider's text-to-image endpoint (see Settings.images_url)."""
+    """The provider's text-to-image endpoint (see Settings.images_url).
+
+    Pacing lives here because a quota belongs to a key: the client's KeyPool
+    hands each render a key and holds it inside that key's per-minute bucket.
+    """
 
     def __init__(self, settings: Settings) -> None:
         self.settings = settings
+        self.keys = KeyPool(settings.image_keys, settings.image_rate_limit)
 
     async def generate(self, prompt: str, seed: int, dest: Path) -> None:
         """Write one cover to dest; the blocking HTTP runs in a worker thread."""
-        await asyncio.to_thread(self._generate, prompt, seed, dest)
+        async with self.keys.slot() as key:
+            await asyncio.to_thread(self._generate, prompt, seed, dest, key)
 
-    def _generate(self, prompt: str, seed: int, dest: Path) -> None:
-        url, trace = _request_image(self.settings, prompt, seed)
+    def _generate(self, prompt: str, seed: int, dest: Path, key: str) -> None:
+        url, trace = _request_image(self.settings, prompt, seed, key)
         # the url is good for an hour: download it now, store the bytes
         if not download_file(url, dest, timeout=REQUEST_TIMEOUT_SECONDS):
             raise RuntimeError(f"the generated image was already gone (404, trace {trace})")
@@ -245,7 +289,11 @@ def make_images(settings: Settings) -> ImageClient:
 async def render_cover(
     images, settings: Settings, skill: SkillRecord, sem: asyncio.Semaphore,
 ) -> tuple[float, int]:
-    """Render one skill's cover; returns (seconds, bytes written)."""
+    """Render one skill's cover; returns (seconds, bytes written).
+
+    The semaphore bounds how many renders are in flight; per-key pacing happens
+    inside the images client (see KeyPool).
+    """
     prompt = image_prompt(settings, skill.id)
     if prompt is None:  # select_cover_skills filters these out; a caller may not
         raise RuntimeError(f"{skill.id} has no {PROMPT_ID} output to render")
@@ -271,6 +319,7 @@ async def run_covers(
     `settings.concurrency` requests in flight, a skill whose render raises is
     isolated (the error is logged, the run continues, the missing picture is
     picked up by the next run), and nothing outside the selection is touched.
+    Per-key pacing happens inside the images client (see KeyPool).
     """
     sem = asyncio.Semaphore(settings.concurrency)
     done = 0
@@ -308,7 +357,7 @@ def select_cover_skills(
     `skills` is the pipeline's window (see `data.portfolio`), so covers never reach
     past `settings.total_limit` however many runs happen. The budget rule of
     `generate.select_skills` carries over: skills with nothing to do are passed over
-    without consuming any of it, so repeated `covers` runs keep walking down the list
+    without consuming any of it, so repeated runs keep walking down the list
     instead of re-scanning the same head. limit=None uses settings.image_limit;
     limit <= 0 renders every pending skill in the window.
     """
