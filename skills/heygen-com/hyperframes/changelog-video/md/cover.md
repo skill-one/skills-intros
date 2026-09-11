@@ -1,0 +1,5 @@
+# changelog-video (`heygen-com/hyperframes/changelog-video`)
+
+## cover
+
+A focused video editor with headphones around his neck, typing between dual monitors, one showing a glowing terminal, the other a video timeline with a filling progress bar, weekly notes and a coffee mug beside the keyboard

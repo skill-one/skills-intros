@@ -1,0 +1,5 @@
+# popups (`coreyhaines31/marketingskills/popups`)
+
+## cover
+
+A focused designer in round glasses and a hoodie hunched at a cluttered desk, enlarging the close button on a popup mockup on his laptop screen, surrounded by wireframe sketches, sticky notes, and a printout of a declining line

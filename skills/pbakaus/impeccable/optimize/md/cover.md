@@ -1,0 +1,5 @@
+# optimize (`pbakaus/impeccable/optimize`)
+
+## cover
+
+A web performance engineer in a hoodie, leaning toward a monitor showing a spinning loading circle and frozen choppy frames, holding a small lighthouse desk lamp up to the glowing screen, dim cluttered office at night

@@ -1,0 +1,5 @@
+# remotion-multimedia (`remotion-dev/skills/remotion-multimedia`)
+
+## cover
+
+A meticulous media technician in a work vest, leaning over a laptop displaying audio waveforms and video frames, holding a measuring ruler against the screen, surrounded by headphones and film reels in a small editing studio

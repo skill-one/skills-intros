@@ -1,0 +1,5 @@
+# investigate-without-getting-made (`useosint/skills/investigate-without-getting-made`)
+
+## cover
+
+A lone investigator in a dark hoodie and glasses sits in a curtained dim room, plugging an ethernet cable into a small privacy router beside a glowing laptop, coffee mug and cable clutter on the desk, face half in shadow

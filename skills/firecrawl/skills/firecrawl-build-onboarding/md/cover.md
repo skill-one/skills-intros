@@ -1,0 +1,5 @@
+# firecrawl-build-onboarding (`firecrawl/skills/firecrawl-build-onboarding`)
+
+## cover
+
+A developer in a gray hoodie, headphones around the neck, typing on a laptop in a dim workspace, holding a small brass key toward a glowing editor window, browser window beside, sticky notes and coffee mug on desk

@@ -1,0 +1,5 @@
+# harden (`pbakaus/impeccable/harden`)
+
+## cover
+
+A focused software engineer in a hoodie hunched over a laptop, browser developer tools panel open, typing chaotic long test inputs into a form, empty coffee cups, sticky notes on cluttered desk, wide-eyed worried expression, late-night launch eve

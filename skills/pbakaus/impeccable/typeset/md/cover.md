@@ -1,0 +1,5 @@
+# typeset (`pbakaus/impeccable/typeset`)
+
+## cover
+
+A bespectacled typographer in a linen cardigan sits before a monitor showing rows of placeholder bars all identical in size, one hand on the keyboard, the other enlarging a single bar so it clearly stands apart, a brass ruler resting beside the keyboard

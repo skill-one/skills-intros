@@ -1,0 +1,5 @@
+# remotion-captions (`remotion-dev/skills/remotion-captions`)
+
+## cover
+
+A focused captioner wearing large studio headphones, sitting at an editing desk, one hand dragging timing markers along a video timeline on dual monitors, audio waveforms glowing on screen, camcorder and microphone resting beside the keyboard

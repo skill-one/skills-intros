@@ -1,0 +1,5 @@
+# extract (`pbakaus/impeccable/extract`)
+
+## cover
+
+Design system engineer in a hoodie and glasses, dragging a button shape from a screen of stacked identical buttons into a component library panel, second monitor showing a grid of interface previews, headphones around neck, coffee mug on desk

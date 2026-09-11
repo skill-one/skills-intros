@@ -1,0 +1,5 @@
+# design-md (`google-labs-code/stitch-skills/design-md`)
+
+## cover
+
+A bespectacled designer with rolled shirt sleeves, arranging matching mobile app screens side by side on a large monitor, holding a color swatch card beside a notebook, desk scattered with UI wireframe printouts, in a warm design studio

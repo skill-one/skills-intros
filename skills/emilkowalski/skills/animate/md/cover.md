@@ -1,0 +1,5 @@
+# animate (`emilkowalski/skills/animate`)
+
+## cover
+
+A design engineer in a hoodie and round glasses leaning toward a monitor, one hand on the mouse, watching a dropdown menu animate open beside an easing curve graph, headphones around the neck, sticky notes scattered on the desk

@@ -1,0 +1,5 @@
+# product-marketing-context (`coreyhaines31/marketingskills/product-marketing-context`)
+
+## cover
+
+A bespectacled product positioning consultant in a casual blazer, typing a structured document on a laptop at a startup workspace desk, surrounded by pinned sketches, colorful sticky notes, and a whiteboard of product diagrams behind

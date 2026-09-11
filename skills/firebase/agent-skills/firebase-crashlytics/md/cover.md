@@ -1,0 +1,5 @@
+# firebase-crashlytics (`firebase/agent-skills/firebase-crashlytics`)
+
+## cover
+
+A weary crash investigator in a dark hoodie, hunched at a cluttered desk late at night, typing commands into a laptop terminal, staring at a smartphone with a black dead screen, surrounded by coffee cups and a magnifying glass
