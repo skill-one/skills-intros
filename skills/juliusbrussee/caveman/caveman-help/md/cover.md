@@ -1,0 +1,5 @@
+# caveman-help (`juliusbrussee/caveman/caveman-help`)
+
+## cover
+
+A weary text editor in rolled sleeves and reading glasses, red pencil hovering over a dense manuscript page, crumpled drafts scattered across a cluttered desk, hesitating mid-strike under a warm desk lamp

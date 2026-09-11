@@ -1,0 +1,5 @@
+# writing-shape (`mattpocock/skills/writing-shape`)
+
+## cover
+
+Bespectacled writer in rolled-up sleeves at a cluttered desk, sorting tall stacks of loose notes into one neat pile, other hand on laptop keyboard, index cards and pinned pages spread around, warm desk lamp

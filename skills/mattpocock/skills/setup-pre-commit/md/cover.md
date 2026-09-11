@@ -1,0 +1,5 @@
+# setup-pre-commit (`mattpocock/skills/setup-pre-commit`)
+
+## cover
+
+A tired developer in a hoodie and round glasses holds a leashed husky dog at a checkpoint gate beside his desk, monitors glowing with code behind him, his other hand hovering over the keyboard, the dog sniffing a stack of files at the gate
