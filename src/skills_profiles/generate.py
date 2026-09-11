@@ -11,7 +11,7 @@ from pydantic import ValidationError
 
 from .config import Settings
 from .data import read_marker, read_skill_md, skill_md_path, stale_result_ids
-from .images import covers_on_disk
+from .images import cover_needed, covers_on_disk
 from .models import SkillRecord
 from .outputs import (
     load_index,
@@ -110,10 +110,13 @@ def select_skills(
 ) -> list[SkillRecord]:
     """The skills of this run: the first `limit` ones that still need work.
 
-    Skills are considered in install order (the list handed in is already the
-    `settings.total_limit` window, see `data.portfolio`); one whose every selected
-    prompt is already cached is skipped without spending any of the budget, so repeated
-    runs keep moving down the list instead of re-scanning the same head.
+    "Work" is anything the run can complete for the skill: a missing prompt, or
+    a cover recipe without its picture — `limit N` therefore means "make N
+    skills complete", text and picture alike. Skills are considered in install
+    order (the list handed in is already the `settings.total_limit` window, see
+    `data.portfolio`); one that needs nothing is skipped without spending any
+    of the budget, so repeated runs keep moving down the list instead of
+    re-scanning the same head.
     Skills without a SKILL.md in the snapshot can never generate anything, so
     they are passed over the same way — otherwise they would sit at the head
     of the list and burn the budget on every run (the run_one-level skip stays
@@ -123,11 +126,13 @@ def select_skills(
     limit = settings.limit if limit is None else limit
 
     def _needs_work(skill: SkillRecord) -> bool:
-        return (skill_md_path(settings, skill).is_file()
-                and bool(_load_cached(settings, prompts, skill, only)[1]))
+        if not skill_md_path(settings, skill).is_file():
+            return False
+        return bool(_load_cached(settings, prompts, skill, only)[1]) \
+            or cover_needed(settings, skill.id)
 
     if limit <= 0:
-        return [s for s in skills if skill_md_path(settings, s).is_file()]
+        return [s for s in skills if _needs_work(s)]
     picked: list[SkillRecord] = []
     for skill in skills:
         if len(picked) == limit:

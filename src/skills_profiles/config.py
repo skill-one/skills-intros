@@ -67,7 +67,6 @@ class Settings(BaseSettings):
     # range allows, so switching model needs no code change and works from env too
     image_steps: int = 20           # num_inference_steps: more steps, better and slower
     image_guidance: float = 7.5     # guidance_scale: how strictly the prompt is followed
-    image_limit: int = 10  # covers rendered per run; already-rendered ones are skipped
     # max images per minute per key the endpoint allows (e.g. siliconflow's 2/min);
     # one aiolimiter per key paces that key's renders. 0 = do not pace at all
     image_rate_limit: int = 2
@@ -115,8 +114,6 @@ class Settings(BaseSettings):
             raise ValueError("max_retries must be >= 0")
         if self.total_limit < 0:
             raise ValueError("total_limit must be >= 0")
-        if self.image_limit < 0:
-            raise ValueError("image_limit must be >= 0")
         if self.image_rate_limit < 0:
             raise ValueError("image_rate_limit must be >= 0")
         width, sep, height = self.image_size.partition("x")

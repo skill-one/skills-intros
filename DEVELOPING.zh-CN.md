@@ -27,7 +27,7 @@ skills-profiles run --limit 10  # 生成档案 + 渲染就绪的配图，按安�
 | 命令 | 作用 |
 |---|---|
 | `sync [--refresh]` | 把镜像的 `dist` 分支作为一个 tarball 拉到 `cache/skills-sh`，只解压 `skills.jsonl` 和每个 `SKILL.md`。tag 记在 `SNAPSHOT.json`，未变则跳过下载（`--refresh` 强制）。从不碰产物。 |
-| `run [--limit N] [--prompts a,b] [--concurrency C] [--dry-run] [--debug] [--verbose]` | 只补缺口：按安装量排序取 N 个仍有缺失的 skill（`0` = 全部）。已缓存以及快照里没有 `SKILL.md` 的 skill 会被跳过且不占名额。文本阶段结束后，为窗口内所有「已有配方但还没有图」的 skill 渲染配图——本轮刚写好配方的优先，其次是更早的积压，单次上限 `SKILLS_PROFILES_IMAGE_LIMIT`——并按 `SKILLS_PROFILES_IMAGE_RATE_LIMIT` 张/分钟/key 限速。没有 `SKILLS_PROFILES_IMAGE_API_KEY` 时渲染阶段会告警并跳过，而非报错。 |
+| `run [--limit N] [--prompts a,b] [--concurrency C] [--dry-run] [--debug] [--verbose]` | 把 skill 补到完整，按安装量排序取 N 个（`0` = 所有有缺口的）。一个 skill「完整」= 所有 prompt 已缓存且 `cover.png` 已画出——选择同时计入两半，run 先补缺失文本，再渲染本轮选中 skill 缺失的配图，按 `SKILLS_PROFILES_IMAGE_RATE_LIMIT` 张/分钟/key 限速。什么都不缺的、以及快照里没有 `SKILL.md` 的 skill 会被跳过且不占名额；没有 `SKILLS_PROFILES_IMAGE_API_KEY` 时渲染阶段会告警并跳过，而非报错。 |
 | `invalidate [--skill ID]... [--prompts a,b] [--stale] [--all]` | 删除缓存输出，让下一次 `run` 重算。`--stale` 选上游 hash 变化或已从快照消失的 skill（先 `sync`）。无任何筛选条件时必须显式 `--all`。失效 `cover` 会连同它的 `cover.png` 一起删掉，这正是重画一张配图的唯一途径。 |
 
 重算从来不是 `run` 的参数：`invalidate` 删，`run` 补。每次 run 打印计时汇总并覆盖
@@ -43,7 +43,7 @@ N 个 key 即 N 倍速率；`0` 表示不限）——大批量时会排队等待
 `--limit` 多大，只有安装量最高的前 N 个 skill 会被生成档案或绘制配图。它是一个排名窗口，而非「已完成了多少个」
 的计数——排在前面但配方还没写好、或渲染失败的 skill 会占着名额而不让位给后面的，所以重跑和 `invalidate`
 重画都复用同一批 N 个。由于它只是一个设置，它就同时封顶了档案与配图（也封顶了 `dist` 能装下的配图总重量，
-因为每张约 1.7 MB）；而 `--limit` 与 `SKILLS_PROFILES_IMAGE_LIMIT` 仍是这道封顶*之内*的单次预算，
+因为每张约 1.7 MB）；而 `--limit` 仍是这道封顶*之内*的单次预算，
 CI 则从默认值继承这道封顶。
 
 ## 工作原理
@@ -182,7 +182,6 @@ tests/                 # 离线 fixture + 端到端 CLI 测试
 | `SKILLS_PROFILES_IMAGE_SIZE` | `1024x1024` | 会对照端点按模型文档化的尺寸来校验 |
 | `SKILLS_PROFILES_IMAGE_STEPS` | `20` | `num_inference_steps`（1–100）；填 `0` 表示不发送该字段 |
 | `SKILLS_PROFILES_IMAGE_GUIDANCE` | `7.5` | `guidance_scale`（≤ 20，接口文档标注仅 Kolors 支持）；换其他模型时填 `0` 省略该字段 |
-| `SKILLS_PROFILES_IMAGE_LIMIT` | `10` | 每次 run 渲染的配图数（`0` = 所有待渲染的）；对数据集的封顶由 `SKILLS_PROFILES_TOTAL_LIMIT` 决定 |
 
 ## 发布（GitHub Actions）
 
@@ -195,7 +194,8 @@ tests/                 # 离线 fixture + 端到端 CLI 测试
 
 配置了 `SKILLS_PROFILES_IMAGE_API_KEY` 时，`generate` 的 `run` 也会顺带渲染配图
 （按每 key 每分钟限速排队，单 key 下 50 个 skill 的批次渲染约需 25 分钟）；没配 key 则仍是纯文本，
-积压等有 key 之后的 run 补上。`SKILLS_PROFILES_IMAGE_LIMIT`（默认 10）封顶单次 run 往快照里新增的配图数。
+积压等有 key 之后的 run 补上。`limit` 统计的是「补完整的 skill 数」——文本与配图一样计入——
+因此 `limit=100` 且存在待渲染配图时，意味着最多 100 次渲染（双 key 4 张/分钟下约 25 分钟）。
 
 两条工作流共用两个 composite action：[`restore-dist`](.github/actions/restore-dist/action.yml)
 （一个 codeload 请求把分支拉回到 `output/` 和 `cache/`）与
@@ -206,14 +206,13 @@ tests/                 # 离线 fixture + 端到端 CLI 测试
 commit 和每种 pattern 最新 1 个 tag 始终保底）。
 
 `generate` 是唯一会往快照里增加二进制体积的工作流，而它被双重封顶：
-`SKILLS_PROFILES_IMAGE_LIMIT` 封顶单批新增数量，`SKILLS_PROFILES_TOTAL_LIMIT` 封顶数据集
+`limit` 输入封顶单批补完整的 skill 数（文本与配图皆然），`SKILLS_PROFILES_TOTAL_LIMIT` 封顶数据集
 （`run` 只为安装量最高的前 N 个 skill 绘图）。每张配图实测约
 1.7 MB（1024x1024），且之后每一轮都会把整棵分支再拉回来——所以是这道封顶（而非任何单次 run）决定了
 `dist` 最多能装多少张配图：已存在的 `cover.png` 会被恢复并保留，绝不重新渲染。
 
 ```bash
-gh workflow run generate.yml -f limit=50 -f concurrency=8    # 跑一批档案 + 配图
-gh workflow run generate.yml -f limit=10 -f image_limit=100  # 以配图为主的批次
+gh workflow run generate.yml -f limit=50 -f concurrency=8   # 补完整 50 个 skill（文本 + 配图）
 gh workflow run sync.yml                                     # 刷新上游，丢弃过期档案
 ```
 

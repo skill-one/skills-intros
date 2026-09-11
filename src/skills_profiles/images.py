@@ -295,7 +295,7 @@ async def render_cover(
     inside the images client (see KeyPool).
     """
     prompt = image_prompt(settings, skill.id)
-    if prompt is None:  # select_cover_skills filters these out; a caller may not
+    if prompt is None:  # callers pre-filter with cover_needed; a caller may not
         raise RuntimeError(f"{skill.id} has no {PROMPT_ID} output to render")
     dest = cover_path(settings, skill.id)
     dest.parent.mkdir(parents=True, exist_ok=True)
@@ -347,20 +347,3 @@ async def run_covers(
 
     results = await asyncio.gather(*(_one(s) for s in skills))
     return [r for r in results if r]
-
-
-def select_cover_skills(
-    settings: Settings, skills: list[SkillRecord], limit: int | None = None,
-) -> list[SkillRecord]:
-    """The first `limit` skills (install order) that have a recipe but no picture.
-
-    `skills` is the pipeline's window (see `data.portfolio`), so covers never reach
-    past `settings.total_limit` however many runs happen. The budget rule of
-    `generate.select_skills` carries over: skills with nothing to do are passed over
-    without consuming any of it, so repeated runs keep walking down the list
-    instead of re-scanning the same head. limit=None uses settings.image_limit;
-    limit <= 0 renders every pending skill in the window.
-    """
-    limit = settings.image_limit if limit is None else limit
-    ready = [s for s in skills if cover_needed(settings, s.id)]
-    return ready if limit <= 0 else ready[:limit]

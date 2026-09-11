@@ -13,6 +13,7 @@ from skills_profiles.generate import (
     run_one,
     select_skills,
 )
+from skills_profiles.images import FakeImages, cover_needed, run_covers
 from skills_profiles.llm import FakeLLM
 from skills_profiles.outputs import (
     index_path,
@@ -22,6 +23,14 @@ from skills_profiles.outputs import (
     skill_result_dir,
 )
 from skills_profiles.prompts import load_prompt_set
+
+
+async def complete(settings, prompt_set, skills) -> None:
+    """Take the skills all the way: text pass, then their missing covers."""
+    await run_all(FakeLLM(), settings, skills, prompt_set)
+    pending = [s for s in skills if cover_needed(settings, s.id)]
+    if pending:
+        await run_covers(FakeImages(), settings, pending)
 
 
 class CountingLLM:
@@ -112,15 +121,31 @@ async def test_limit_skips_cached_skills_without_spending_the_budget(settings, p
     """`--limit` bounds the skills that generate: cached ones are skipped for free,
     so repeated runs keep moving down the install-ordered list."""
     skills = load_skills(settings)
-    await run_all(FakeLLM(), settings, skills[:2], prompt_set)
+    await complete(settings, prompt_set, skills[:2])
 
     # Alpha and Beta are complete: the budget of 2 goes to Gamma and Hotel
     picked = select_skills(settings, prompt_set, skills, limit=2)
     assert [s.id for s in picked] == [skills[2].id, skills[3].id]
 
     # nothing left to do
-    await run_all(FakeLLM(), settings, skills[2:], prompt_set)
+    await complete(settings, prompt_set, skills[2:])
     assert select_skills(settings, prompt_set, skills, limit=2) == []
+
+
+async def test_limit_counts_a_missing_cover_as_work(settings, prompt_set):
+    """`limit N` means N complete skills: a skill whose text is all cached but
+    whose cover.png has not been drawn yet spends the budget too."""
+    skills = load_skills(settings)
+    await run_all(FakeLLM(), settings, skills[:2], prompt_set)  # text + recipes, no covers
+
+    picked = select_skills(settings, prompt_set, skills, limit=2)
+    assert [s.id for s in picked] == [skills[0].id, skills[1].id], \
+        "alpha and beta owe their pictures: they spend the budget before gamma"
+
+    await complete(settings, prompt_set, skills[:1])
+    picked = select_skills(settings, prompt_set, skills, limit=2)
+    assert [s.id for s in picked] == [skills[1].id, skills[2].id], \
+        "alpha is complete now, beta still owes its picture"
 
 
 async def test_limit_zero_selects_every_skill(settings, prompt_set):

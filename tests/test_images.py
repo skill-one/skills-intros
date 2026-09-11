@@ -29,7 +29,6 @@ from skills_profiles.images import (
     request_payload,
     run_covers,
     seed_for,
-    select_cover_skills,
 )
 from skills_profiles.models import Domain
 from skills_profiles.outputs import invalidate, write_prompt_output
@@ -221,7 +220,6 @@ def test_settings_accept_a_documented_kolors_size(size):
     ({"image_size": "512x512"}, r"documents image_size"),
     ({"image_steps": 101}, r"image_steps must be 0 \(omit the field\) or within 1\.\.100"),
     ({"image_guidance": 25}, r"image_guidance must be 0 \(omit the field\) or within 0\.\.20"),
-    ({"image_limit": -1}, r"image_limit must be >= 0"),
     ({"image_rate_limit": -1}, r"image_rate_limit must be >= 0"),
 ])
 def test_settings_reject_values_the_docs_do_not_allow(kwargs, message):
@@ -325,25 +323,16 @@ async def test_client_reports_an_already_expired_url(settings, with_profiles, mo
 
 # --- selection and the run --------------------------------------------------
 
-def test_selection_skips_rendered_and_unready_skills_without_spending_budget(settings,
-                                                                             with_profiles):
+def test_cover_needed_follows_the_file_is_the_cache_rule(settings, with_profiles):
+    """A recipe without a picture is pending; a drawn one never renders again."""
     skills = load_skills(settings)
-    assert [s.id for s in select_cover_skills(settings, skills, limit=0)] == [
-        skills[0].id, skills[1].id]  # install order; the two others have no recipe
-
-    assert select_cover_skills(settings, skills, limit=1) == [skills[0]]
-    assert select_cover_skills(settings, skills, limit=99) == [skills[0], skills[1]]
+    assert [s.id for s in skills if cover_needed(settings, s.id)] == [
+        skills[0].id, skills[1].id]  # the two others have no recipe at all
 
     cover_of(settings, skills[0].id).parent.mkdir(parents=True, exist_ok=True)
     cover_of(settings, skills[0].id).write_bytes(FAKE_PNG)
     assert cover_needed(settings, skills[0].id) is False
-    assert select_cover_skills(settings, skills, limit=99) == [skills[1]]
-
-
-def test_selection_default_limit_comes_from_settings(settings, with_profiles):
-    skills = load_skills(settings)
-    settings.image_limit = 1
-    assert select_cover_skills(settings, skills) == [skills[0]]
+    assert [s.id for s in skills if cover_needed(settings, s.id)] == [skills[1].id]
 
 
 def test_portfolio_is_a_rank_window_not_a_count_of_done_work(settings):
@@ -365,7 +354,7 @@ def test_covers_never_reach_past_the_window_even_with_a_recipe(settings, with_pr
     settings.total_limit = 1
     window = portfolio(settings, skills)
     assert with_profiles[1].id not in [s.id for s in window], "beta has a recipe but is outside"
-    assert select_cover_skills(settings, window, limit=0) == [skills[0]]
+    assert [s.id for s in window if cover_needed(settings, s.id)] == [skills[0].id]
 
 
 async def test_run_covers_renders_each_pending_skill_once(settings, with_profiles):
@@ -383,7 +372,8 @@ async def test_run_covers_renders_each_pending_skill_once(settings, with_profile
     assert covers_on_disk(settings) == 2
 
     again = await run_covers(FakeImages(), settings,
-                             select_cover_skills(settings, load_skills(settings), limit=0),
+                             [s for s in load_skills(settings)
+                              if cover_needed(settings, s.id)],
                              stats=stats)
     assert again == [], "a rendered cover is never re-rendered"
 
@@ -580,17 +570,6 @@ def test_run_renders_the_covers_its_recipes_are_ready_for(settings, monkeypatch)
     assert stats["prompts"]["cover"] == 1, "the recipe count rides in with the rest"
 
 
-def test_run_caps_the_post_pass_at_the_image_limit(settings, monkeypatch):
-    """`SKILLS_PROFILES_IMAGE_LIMIT` bounds how many backlog covers one run draws."""
-    settings.image_limit = 1
-    monkeypatch.setattr("skills_profiles.cli.Settings", lambda: settings)
-    result = runner.invoke(app, ["run", "--limit", "0", "--dry-run"])
-
-    assert result.exit_code == 0, result.output
-    assert "Rendering 1 pending cover(s)" in result.output
-    assert covers_on_disk(settings) == 1
-
-
 def test_run_without_an_image_key_skips_covers(settings, monkeypatch):
     """A key-less run degrades to text-only with a warning instead of failing;
     a later run picks the backlog up once the key is set."""
@@ -606,9 +585,9 @@ def test_run_without_an_image_key_skips_covers(settings, monkeypatch):
     assert covers_on_disk(settings) == 0
 
 
-def test_run_renders_backlog_covers_even_when_text_is_cached(settings, monkeypatch):
-    """The post-pass walks `select_cover_skills`, not just this run's skills: a
-    picture deleted or left behind by a key-less run is drawn on the next run."""
+def test_run_completes_the_skills_it_spends_the_budget_on(settings, monkeypatch):
+    """A skill whose text is cached but whose picture is missing counts against
+    `--limit` and leaves the run complete: one budget, both halves."""
     monkeypatch.setattr("skills_profiles.cli.Settings", lambda: settings)
     runner.invoke(app, ["run", "--limit", "1", "--dry-run"])
     cover_of(settings, load_skills(settings)[0].id).unlink()
@@ -616,6 +595,7 @@ def test_run_renders_backlog_covers_even_when_text_is_cached(settings, monkeypat
     result = runner.invoke(app, ["run", "--limit", "1", "--dry-run"])
 
     assert result.exit_code == 0, result.output
-    assert "Rendering 2 pending cover(s)" in result.output, \
-        "alpha's redone picture and beta's first"
-    assert covers_on_disk(settings) == 2
+    assert "Processing 1 of 4 skills" in result.output, \
+        "alpha owes only its picture: the budget goes back to it, not to beta"
+    assert "Rendering 1 pending cover(s)" in result.output
+    assert covers_on_disk(settings) == 1

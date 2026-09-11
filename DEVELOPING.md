@@ -29,7 +29,7 @@ placeholder covers).
 | Command | What it does |
 |---|---|
 | `sync [--refresh]` | Pull the mirror's `dist` branch as one tarball into `cache/skills-sh`, unpacking only `skills.jsonl` and every `SKILL.md`. Records the tag in `SNAPSHOT.json` and skips the download when it is already current (`--refresh` forces it). Never touches the artifacts. |
-| `run [--limit N] [--prompts a,b] [--concurrency C] [--dry-run] [--debug] [--verbose]` | Generate what is missing: skills ordered by installs, `N` of them (`0` = every skill with gaps). Cached and `SKILL.md`-less skills are skipped and do not consume the budget. Afterwards it renders covers for every skill in the window holding a recipe but no picture — this run's first, then older backlog, capped by `SKILLS_PROFILES_IMAGE_LIMIT` — paced at `SKILLS_PROFILES_IMAGE_RATE_LIMIT` images/minute per key. Without `SKILLS_PROFILES_IMAGE_API_KEY` the render pass is skipped with a warning, not an error. |
+| `run [--limit N] [--prompts a,b] [--concurrency C] [--dry-run] [--debug] [--verbose]` | Complete skills, most installed first: `N` of them (`0` = every skill with gaps). A skill is complete when every prompt is cached and its cover.png is drawn — the selection counts both halves, so the run fills missing text and then renders the selected skills' missing pictures, paced at `SKILLS_PROFILES_IMAGE_RATE_LIMIT` images/minute per key. Skills that need nothing, or have no `SKILL.md` in the snapshot, are skipped and do not consume the budget; without `SKILLS_PROFILES_IMAGE_API_KEY` the render pass is skipped with a warning, not an error. |
 | `invalidate [--skill ID]... [--prompts a,b] [--stale] [--all]` | Drop cached outputs so the next `run` refills them. `--stale` selects the skills whose upstream hash changed or that vanished (run `sync` first). Refuses a filter-less full wipe without `--all`. Invalidating `cover` takes its `cover.png` along, which is how a picture is redrawn. |
 
 Redoing work is never a `run` flag: `invalidate` deletes, `run` refills. A run prints a timed
@@ -48,7 +48,7 @@ the most installed N skills are ever profiled or drawn, however large a run's `-
 rank window, not a count of finished work — a top skill whose recipe is not filled in yet, or whose
 render failed, keeps its slot rather than promoting a lower one, so re-runs and `invalidate` redraws
 reuse the same N. Being one setting, it bounds profiles and pictures at once (and, since each cover
-is ~1.7 MB, the total cover weight `dist` can hold); `--limit` and `SKILLS_PROFILES_IMAGE_LIMIT`
+is ~1.7 MB, the total cover weight `dist` can hold); `--limit`
 stay per-run budgets *within* it, and CI inherits the ceiling from the default.
 
 ## How it works
@@ -205,7 +205,6 @@ Resolution order (highest first): `SKILLS_PROFILES_*` env vars → local `.env` 
 | `SKILLS_PROFILES_IMAGE_SIZE` | `1024x1024` | Checked against the sizes the endpoint documents per model |
 | `SKILLS_PROFILES_IMAGE_STEPS` | `20` | `num_inference_steps` (1–100); `0` omits the field |
 | `SKILLS_PROFILES_IMAGE_GUIDANCE` | `7.5` | `guidance_scale` (≤ 20, documented as Kolors-only); `0` omits it for other models |
-| `SKILLS_PROFILES_IMAGE_LIMIT` | `10` | Covers rendered per run (`0` = every pending one); the dataset ceiling is `SKILLS_PROFILES_TOTAL_LIMIT` |
 
 ## Publishing (GitHub Actions)
 
@@ -218,9 +217,9 @@ by concern:
 | [`generate`](.github/workflows/generate.yml) | restore dist → `run --limit <input, default 10>` → publish | `dist-<base>-N`, base = newest sync tag, N increments |
 
 `generate`'s `run` renders covers too when `SKILLS_PROFILES_IMAGE_API_KEY` is configured (paced per
-key at the per-minute rate limit, so a 50-skill batch takes ~25 minutes of rendering at one key);
-without the key it stays text-only, and the backlog is drawn by later runs once the key exists.
-`SKILLS_PROFILES_IMAGE_LIMIT` (default 10) caps how many pictures one run adds to the snapshot.
+key at the per-minute rate limit); without the key it stays text-only, and the backlog is drawn by
+later runs once the key exists. `limit` counts skills to complete — text and picture alike — so
+`limit=100` with covers pending means up to 100 renders (~25 min on two keys at 4/min).
 
 Both workflows share two composite actions: [`restore-dist`](.github/actions/restore-dist/action.yml)
 (one codeload request pulls the branch back into `output/` and `cache/`) and
@@ -232,16 +231,15 @@ just reads the dataset the last `sync` published and never fetches. History is p
 rolling window (default `1 month`; the newest commit and the newest tag of each pattern are always
 kept as a floor).
 
-`generate` is the only workflow that adds binary weight, and it is bounded twice:
-`SKILLS_PROFILES_IMAGE_LIMIT` caps the pictures one batch adds, while `SKILLS_PROFILES_TOTAL_LIMIT`
-caps the dataset (`run` only ever renders the most installed N skills). Each picture is ~1.7 MB as
+`generate` is the only workflow that adds binary weight, and it is bounded twice: the `limit` input
+caps how many skills one batch completes (text and covers alike), while `SKILLS_PROFILES_TOTAL_LIMIT`
+caps the dataset (`run` only ever serves the most installed N skills). Each picture is ~1.7 MB as
 measured at 1024x1024 and every later run fetches the whole branch back, so it is that ceiling —
 not any single run — that bounds how many covers `dist` can ever hold: an existing `cover.png` is
 restored and kept, never re-rendered.
 
 ```bash
-gh workflow run generate.yml -f limit=50 -f concurrency=8              # one batch of profiles + covers
-gh workflow run generate.yml -f limit=10 -f image_limit=100            # mostly a covers batch
+gh workflow run generate.yml -f limit=50 -f concurrency=8   # complete 50 skills (text + covers)
 gh workflow run sync.yml                                    # refresh upstream, drop stale profiles
 ```
 

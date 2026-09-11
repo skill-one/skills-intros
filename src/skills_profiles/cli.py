@@ -10,7 +10,7 @@ import typer
 from .config import Settings
 from .data import load_skills, portfolio, stale_result_ids, sync_data
 from .generate import RunStats, coverage, run_all, select_skills, write_artifact_stats
-from .images import CoverStats, FakeImages, make_images, run_covers, select_cover_skills
+from .images import CoverStats, FakeImages, cover_needed, make_images, run_covers
 from .llm import FakeLLM, make_llm
 from .logging import setup_logging
 from .models import SkillRecord
@@ -136,10 +136,10 @@ def invalidate(
 def run(
     limit: int | None = typer.Option(
         None, "--limit",
-        help="How many skills to generate this run, most installed first "
-             "(0 = every skill with missing prompts). Skills whose selected prompts "
-             "are all cached, or that have no SKILL.md in the snapshot, are skipped "
-             "and do not count",
+        help="How many skills to complete this run, most installed first "
+             "(0 = every skill with gaps). A skill is complete when every prompt "
+             "is cached and its cover.png is drawn; skills that need nothing, or "
+             "have no SKILL.md in the snapshot, are skipped and do not count",
     ),
     concurrency: int | None = typer.Option(
         None, "--concurrency",
@@ -160,15 +160,14 @@ def run(
         False, "--verbose", "-v", help="Enable debug logging"
     ),
 ) -> None:
-    """Generate missing profiles, then render the covers whose recipes are ready.
+    """Complete skills: fill missing profiles, then render their missing covers.
 
-    One command serves both halves: the text pass fills every missing prompt
-    (cover's recipe included), and a post-pass renders a cover.png for every
-    skill in the window that has a recipe but no picture yet — the ones the text
-    pass just filled in first, then older backlog. Rendering is paced at
-    `SKILLS_PROFILES_IMAGE_RATE_LIMIT` images/minute per key (default 2); without
-    an image key the post-pass is skipped with a warning and picked up by a
-    later run once the key is set.
+    `--limit N` means "make N skills complete": the selection counts a skill
+    that is missing any prompt or whose cover.png has not been drawn yet, and
+    the run fills both halves for exactly the skills it selected. Rendering is
+    paced at `SKILLS_PROFILES_IMAGE_RATE_LIMIT` images/minute per key (default
+    2); without an image key the post-pass is skipped with a warning and picked
+    up by a later run once the key is set.
     """
     setup_logging(verbose)
     settings = Settings()
@@ -227,7 +226,9 @@ def run(
         logger.warning("no image endpoint key (SKILLS_PROFILES_IMAGE_API_KEY) - "
                        "covers not rendered; the next run picks them up once the key is set")
     else:
-        pending = select_cover_skills(settings, skills)
+        # `limit` already counted cover-less skills (see select_skills): render
+        # exactly the pictures this run's skills are missing, nothing past it
+        pending = [s for s in selected if cover_needed(settings, s.id)]
         if pending:
             logger.info("Rendering %d pending cover(s) with model=%s size=%s%s",
                         len(pending), settings.image_model, settings.image_size,

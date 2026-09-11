@@ -26,14 +26,11 @@ on:
   workflow_dispatch:
     inputs:
       limit:
-        description: How many skills to generate this run
+        description: How many skills to complete this run (text + cover)
         default: "10"
       concurrency:
-        description: Max concurrent LLM calls
+        description: Max concurrent LLM calls / image requests
         default: "8"
-      image_limit:
-        description: How many covers to render this run (0 = every pending one)
-        default: "10"
 
 permissions:
   contents: write
@@ -52,7 +49,6 @@ env:
   SKILLS_PROFILES_IMAGE_BASE_URL: ${{ vars.SKILLS_PROFILES_IMAGE_BASE_URL }}
   SKILLS_PROFILES_IMAGE_MODEL: ${{ vars.SKILLS_PROFILES_IMAGE_MODEL }}
   SKILLS_PROFILES_IMAGE_SIZE: ${{ vars.SKILLS_PROFILES_IMAGE_SIZE }}
-  SKILLS_PROFILES_IMAGE_LIMIT: ${{ inputs.image_limit }}
 
 jobs:
   generate:
