@@ -1,0 +1,7 @@
+# expo-data-fetching (`expo/skills/expo-data-fetching`)
+
+## tagline
+
+- 让每一次数据加载,又快又稳
+- 断网不慌,缓存有粮
+- 出错自动重试,体验不中断

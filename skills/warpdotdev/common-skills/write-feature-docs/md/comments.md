@@ -1,0 +1,10 @@
+# write-feature-docs (`warpdotdev/common-skills/write-feature-docs`)
+
+## comments
+
+- user: 第一次接文档活的后端, category: 坑, comment: 我把受众计划和大纲一口气看完才回话，结果受众定错了整份大纲重写。一定先单独确认计划，等它问了再谈大纲。
+- user: docs 团队评审员, category: 妙用, comment: 代码里查证过的事实全标 ✅，我只盯 ⚠️ 未验证那几条，评审从通读全篇变成看几行，时间省一半。
+- user: 搭发布流水线的运维老哥, category: 注意, comment: 它必须有人在场确认两次才往下走，塞进 CI 无人值守会卡死等人。发布自动出文档请换 missing_docs 技能。
+- user: 差点泄密的工程师, category: 坑, comment: 我跳过那步确认，把 TECH.md 里的表结构和私有接口直接写进草稿，评审被打回。疑似机密内容让它先列出来问你。
+- user: spec 作者本人, category: 启发, comment: 填受众和 JTBD 时才发现我的 spec 根本没想清楚给谁用。这流程逼我把需求重过了一遍，比文档本身更值。
+- user: 替同事跑文档的工程师, category: 妙用, comment: 替同事跑也不用愁署名，它会顺着 commit 和 PR 记录把 spec 作者挖出来打标，实在找不到才留 TODO，记得手补。

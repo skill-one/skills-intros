@@ -1,0 +1,10 @@
+# flutter-animations (`madteacher/mad-agents-skills/flutter-animations`)
+
+## comments
+
+- user: Flutter 新手, 第一个动画项目, category: 坑, comment: 我把它给的独立 demo 直接粘进项目, 多出来的 main() 和我的入口冲突, analyzer 一片红。模板只是演示骨架, 先让它合并进现有页面再用。
+- user: Android 转型来的客户端开发, category: 妙用, comment: 列表渐入我本想每个 item 写一个 controller, 它改成单 controller 加 Interval 错开时机, 只管一份生命周期, 不怕泄漏, 调参也省事。
+- user: 外包项目赶工期的开发, category: 注意, comment: 它不会真跑你的 app, 改完会明说哪些部分没法视觉验证。别因此省掉真机测试, Hero 转场这种不跑起来根本看不出毛病。
+- user: 独立开发者, category: 启发, comment: 我以前只管动画好不好看, 它会主动问要不要尊重系统「减弱动态效果」设置。原来动画也是无障碍问题, 我设置页从此多了一个开关。
+- user: 维护祖传代码的老哥, category: 妙用, comment: 动画不对劲但代码没报错, 我本来想推倒重写 controller, 它先读代码, 说只调 curve 和 duration 就行, 改两行顺了, 免了一场大改。
+- user: 带团队做 code review 的 Tech Lead, category: 注意, comment: 调试时我想加 timeDilation 慢放动画, 它只肯当本地调试手段, 拒绝进生产代码。第一次觉得被拒绝还挺踏实。

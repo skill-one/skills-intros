@@ -1,0 +1,7 @@
+# data-storytelling (`wshobson/agents/data-storytelling`)
+
+## domain
+
+**domain**: 📊 数据分析
+
+**reason**: 核心是把数据转成可视化报表与故事, 让洞察驱动决策。

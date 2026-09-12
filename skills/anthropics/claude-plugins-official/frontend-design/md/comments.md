@@ -1,0 +1,10 @@
+# frontend-design (`anthropics/claude-plugins-official/frontend-design`)
+
+## comments
+
+- user: 独立开发者, category: 妙用, comment: 需求里把"产品是什么、给谁用、第一眼传达什么"写清楚再开工，首屏直接对味，省了三轮返工。
+- user: 第一次用的新手, category: 坑, comment: 我没讲清产品是什么，它自己定了主题就开做，方向全错返工半天。动手前一定先跟它确认主题理解一致。
+- user: 前端组长, category: 注意, comment: 它会忠实执行你的需求——需求本身俗套，产出就俗套，别怪它。发需求前先自查描述里有没有套话。
+- user: 全栈工程师, category: 妙用, comment: 我让它先只出设计方案：配色、字体、布局各一段，我点头后才写代码。方向不对改几分钟方案就行，不用推倒页面。
+- user: 电商运营, category: 注意, comment: 它默认整页只突出一个重点，很克制。做大促要热闹，就在需求里写明"信息多、要氛围"，不然出来会偏冷淡。
+- user: 做了八年 UI 的设计师, category: 启发, comment: 照它的标准自查自家官网：全大写小标签、清一色圆角卡片、箭头按钮，全中。现在验收设计有了负面清单。

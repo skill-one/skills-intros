@@ -1,0 +1,9 @@
+# microsoft-code-reference (`github/awesome-copilot/microsoft-code-reference`)
+
+## persona
+
+**tool**: microsoft_docs_search
+
+**role**: API 事实核查员
+
+**scene**: 代码写完、不确定那个微软 SDK 方法真不存在时

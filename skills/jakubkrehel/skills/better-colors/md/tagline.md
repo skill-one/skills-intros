@@ -1,0 +1,7 @@
+# better-colors (`jakubkrehel/skills/better-colors`)
+
+## tagline
+
+- 不靠眼缘选色, 每个颜色都有岗位
+- 每个色值被测量, 不被猜出
+- 一色一义, 换肤自如, 对比达标

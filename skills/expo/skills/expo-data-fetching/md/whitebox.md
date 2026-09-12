@@ -1,0 +1,13 @@
+# expo-data-fetching (`expo/skills/expo-data-fetching`)
+
+## whitebox
+
+- 触发: 任何网络任务进来 (API 请求、数据获取、缓存、网络调试) 即激活, 按 'When to Use' 判定受理。
+- 分类: 走 Decision Tree, 把请求映射到指定方案 (路由级 loader / 基础 fetch / React Query / 鉴权 / 离线 / 环境变量)。
+- 查阅: 命中专门主题时按需加载 references/ 下的文档 (expo-router-loaders.md; offline-and-cancellation.md)。
+- 生成: 套用内置代码模板产出代码 (fetch+错误检查、QueryClient 配置、ApiError、SecureStore 存 token、EXPO_PUBLIC_ 环境变量)。
+- 校验: 对照 Common Mistakes 清单与'四态'原则 (loading/error/empty/content) 收尾检查输出。
+
+- 意图路由 + 硬性偏好: 决策树把任务归类后直接给出预置方案, 不自由发挥; 偏好写死为 'avoid axios, prefer expo/fetch'。知识全部来自 SKILL.md 及其 references 文档, 不依赖任何外部模型 API。
+- 模板即正确性保障: 生成代码来自固定模式, 已内嵌校验规则——必查 response.ok 再解析 JSON、React Query v5 的 isLoading (首次请求) 与 isFetching (后台刷新) 语义区分、刷新失败仍渲染缓存数据、敏感 token 必须用 expo-secure-store 而非 AsyncStorage、EXPO_PUBLIC_ 变量在构建期内联 (不可放密钥)。
+- 生成代码所依赖的外部库 (由机制引入, 非我执行): TanStack Query (React Query)、SWR、expo-secure-store、NetInfo、Expo Router (SDK 55+ web loaders)、AbortController, 以及 React Query 持久化做离线缓存。

@@ -1,0 +1,12 @@
+# dotnet-best-practices (`github/awesome-copilot/dotnet-best-practices`)
+
+## whitebox
+
+- 接收触发时的 ${selection} (选中的代码/项目) 作为审计目标
+- 逐项对照 skill.md 内置的 11 类规范清单扫描代码: XML 文档、命名空间结构、设计模式、依赖注入、资源本地化、异步模式、测试、配置、AI 集成、错误日志、性能安全、代码质量
+- 对不符处, 按清单给出的具体写法确定修法 (如主构造函数注入、CommandHandler<TOptions> 基类、AAA 测试模式、ConfigureAwait(false))
+- 输出/落地符合本解决方案既有约定的代码
+
+- 纯清单驱动: skill.md 本身就是规则库, 解析与校验完全基于这 11 类静态规范, 未指定额外静态分析工具
+- 规则内嵌指定技术栈, 审查时要求代码采用: Microsoft.Extensions.DependencyInjection / Logging、MSTest + FluentAssertions + Moq、Microsoft.SemanticKernel、.NET 8 / C# 12
+- 作用域与基准由上下文决定: 范围取 ${selection}, 结构约定以项目既有模式为准 (如 {Core|Console|App|Service}.{Feature} 命名空间)

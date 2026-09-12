@@ -1,0 +1,13 @@
+# nuget-manager (`github/awesome-copilot/nuget-manager`)
+
+## whitebox
+
+- 1. 接到加/删包任务时, 直接执行 `dotnet add package` / `dotnet remove package`, 全程不改项目文件。
+- 2. 接到升级版本任务时, 先用 `dotnet package search --exact-match --format json` 验证目标版本在 NuGet 上真实存在。
+- 3. 在解决方案根目录找 `Directory.Packages.props`: 有则在中央版本清单里定位该包, 没有则去各 `.csproj` 的 `<PackageReference>` 节点找。
+- 4. 直接编辑定位到的文件, 只替换版本字符串 (唯一允许直接改文件的场景)。
+- 5. 立即运行 `dotnet restore` 验证兼容性; 若报错则回滚变更并排查。
+
+- CLI 强制约束: 添加/移除包只走 `dotnet` CLI 命令, 严禁手改 `.csproj` / `.props` 增删包; 直接编辑文件仅限改版本号这一种情况。
+- 版本存在性校验: `dotnet package search --exact-match --format json` 输出 JSON, 用 `jq` (或 PowerShell `ConvertFrom-Json`) 精确比对版本号, 防止写入不存在的版本。
+- 恢复验证闭环: 版本改动后立即 `dotnet restore`, 以依赖解析是否报错作为兼容性判据, 失败即回滚。

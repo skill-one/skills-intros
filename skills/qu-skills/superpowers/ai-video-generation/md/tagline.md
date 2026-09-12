@@ -1,0 +1,7 @@
+# ai-video-generation (`qu-skills/superpowers/ai-video-generation`)
+
+## tagline
+
+- 一句话、一张图,即刻成片
+- 40+顶级模型,视频创作一站搞定
+- 让照片开口说话,让创意动起来

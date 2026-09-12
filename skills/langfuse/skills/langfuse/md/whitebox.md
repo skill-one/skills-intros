@@ -1,0 +1,13 @@
+# langfuse (`langfuse/skills/langfuse`)
+
+## whitebox
+
+- 接收任务，判断是否落在技能范围内：查询/修改 Langfuse 数据、查 Langfuse 文档/SDK 用法、或 AI 工程任务（可观测性、评测、数据集等）
+- 按 use case 读取对应 references/*.md（插桩、建数据集、prompt 迁移、评测搭建、CLI 用法等），不凭记忆实现
+- 查最新文档：先拉 llms.txt 全量索引定位页面 → 直接抓取具体页面（加 .md 得 markdown）→ 不够时用 search-docs API 兜底
+- 数据操作走 langfuse-cli（npx 免安装）调 REST API：先 __schema 发现资源和参数，再执行 list/get 等动作
+- 按 use case 指南给出方案或执行，并明确使用最新版 Langfuse SDK/API
+
+- 文档三层获取法：llms.txt 索引定位 → 页面 URL 追加 .md 拿干净 markdown（或 Accept: text/markdown 头）→ /api/search-docs 搜索兜底（同时索引 GitHub Issues/Discussions）；changelog 只用于确认功能存在，绝不照其实现
+- CLI 数据通道：langfuse-cli 封装完整 Langfuse REST API；凭证经环境变量注入（LANGFUSE_PUBLIC_KEY / LANGFUSE_SECRET_KEY / LANGFUSE_BASE_URL），未配置时引导用户自行设置，不从聊天中索取密钥
+- 防错规则：SDK/API 优先于记忆实现、锁最新版本；引导用户操作 UI 时不确定标签就索要截图，不假设 UI 文案与 API 字段同名

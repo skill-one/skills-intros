@@ -1,0 +1,7 @@
+# sanity-migration (`sanity-io/agent-toolkit/sanity-migration`)
+
+## tagline
+
+- 任何 CMS 到 Sanity, 内容搬家零丢失
+- 脚本化迁移, 可重跑、可验证、可回溯
+- 旧链接不断, 新站无缝切换上线

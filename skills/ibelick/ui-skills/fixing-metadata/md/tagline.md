@@ -1,0 +1,7 @@
+# fixing-metadata (`ibelick/ui-skills/fixing-metadata`)
+
+## tagline
+
+- 网页名片的医生: 修标题, 稳分享
+- 让搜索找得到, 分享看得美
+- 分享卡片不跑偏, 一键审计到位

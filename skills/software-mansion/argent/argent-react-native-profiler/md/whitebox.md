@@ -1,0 +1,13 @@
+# argent-react-native-profiler (`software-mansion/argent/argent-react-native-profiler`)
+
+## whitebox
+
+- react-profiler-start 启动 CPU 采样并注入 React commit 捕获钩子, 记录返回的 startedAtEpochMs (可与 native-profiler-start 并行开双通道)
+- 在模拟器上执行交互 (gesture-tap/swipe), 每次交互立即用返回的 timestampMs 换算 offsetMs 存为标注
+- react-profiler-stop 停止采集, 会话里存入 cpuProfile + commitTree (fiber_renders_captured 为 0 则警告 commit 数据可能缺失)
+- react-profiler-analyze 跑分析管线并携带交互标注, 产出按 totalRenderMs 降序的慢 commit 报告 (每个 commit 附 CPU 热点); 若双通道则再跑 profiler-combined-report 交叉关联
+- 用查询工具 (cpu/commit/stack-query) 下钻定位根因; 若应用修复, 重放同一交互序列重测, 前后对比指标并如实报告改善/持平/回退
+
+- 双数据源交叉富集: 一路是 CPU 采样 (默认 100µs 间隔), 一路是注入钩子捕获的 React commit 树; analyze 把 CPU 热点函数富集到各 commit 上, 报告能直接显示慢 commit 期间哪些 JS 函数在跑
+- 时间轴校准机制: 交互标注统一用工具返回的服务端时间戳计算 offsetMs = timestampMs - startedAtEpochMs, 明确禁用 Date.now(), 保证标注与分析数据时间窗对齐
+- 外部依赖与会话落盘: React Native + Hermes 引擎, 仅支持 iOS 模拟器 (真机被拒绝), 依赖 Metro 与 dev 服务; 可选并行 iOS Instruments 原生剖析 (hang/leak 栈); 原始数据自动存盘, 查询工具按 port:device_id 缓存槽定位, profiler-load 可重载历史会话做前后对比

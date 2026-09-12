@@ -1,0 +1,10 @@
+# auth-implementation-patterns (`wshobson/agents/auth-implementation-patterns`)
+
+## comments
+
+- user: 后端老兵, category: 妙用, comment: 项目权限判断散落各处没人说得清，按「你是谁/你能干嘛」拆成两块重构后，资源归属校验统一收口，评审再没漏判过。
+- user: 第一次做登录的前端, category: 坑, comment: 照教程把 JWT 存进 localStorage，结果一个 XSS 漏洞就能把用户凭证全偷走。改用 httpOnly cookie 才算安心，别学我。
+- user: 安全审计工程师, category: 注意, comment: 别嫌访问凭证 15-30 分钟就过期太短，用刷新凭证续期而不是拉长有效期，真泄露时损失才可控。
+- user: 独立接活的全栈, category: 妙用, comment: 给登录接口加了失败次数限制，上线没几天日志里真扫出撞库攻击，十几行代码挡掉大麻烦。
+- user: 转岗自测的测试工程师, category: 启发, comment: 以前测权限只看按钮藏没藏，现在明白前端藏按钮不算数，服务端必须再验一遍，整组测试用例都推翻重写了。
+- user: 创业公司技术负责人, category: 注意, comment: 找回密码别提示「该邮箱未注册」，统一回复已发送；重置链接必须带短时效凭证，否则等于给攻击者留后门。

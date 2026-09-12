@@ -1,0 +1,7 @@
+# write-feature-docs (`warpdotdev/common-skills/write-feature-docs`)
+
+## domain
+
+**domain**: ✍️ 内容创作
+
+**reason**: 核心工作是按规格说明书撰写技术文档并走审稿流程, 属于典型的技术文档创作。

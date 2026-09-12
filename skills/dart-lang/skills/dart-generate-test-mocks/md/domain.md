@@ -1,0 +1,7 @@
+# dart-generate-test-mocks (`dart-lang/skills/dart-generate-test-mocks`)
+
+## domain
+
+**domain**: 🧪 测试与质量
+
+**reason**: 专为 Dart 单元测试生成 mock, 隔离 API/数据库等外部依赖

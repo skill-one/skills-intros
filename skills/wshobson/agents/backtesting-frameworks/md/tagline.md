@@ -1,0 +1,7 @@
+# backtesting-frameworks (`wshobson/agents/backtesting-frameworks`)
+
+## tagline
+
+- 别让回测骗了你
+- 剔除偏差, 还原策略真实收益
+- 回测可信, 实盘才有底气

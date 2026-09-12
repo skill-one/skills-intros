@@ -1,0 +1,10 @@
+# better-interface (`jakubkrehel/skills/better-interface`)
+
+## comments
+
+- user: 前端组长, category: 坑, comment: 把 PR 链接直接丢给它没用, 它不审 diff, 只让我改跑 interface-review. 审改动和审页面是两个技能, 别搞混.
+- user: 赶工期的全栈, category: 坑, comment: 默认只读不改, 我等了半天发现它不会替我改代码. 想落地修复, 得在报告后明确说一句「按这些发现来实现」.
+- user: 独立开发者, category: 妙用, comment: 6 个页面同一种对比度不达标, 它合并成一条指向共享 token, 我改一个色值全站解决. 报告几行, 修完一晚.
+- user: 设计系统维护者, category: 妙用, comment: 它先翻我们的 CONTRIBUTING 和设计 token 再下结论, 修复建议全用现有变量, 不会让我引入新框架或新样式.
+- user: 第一次做无障碍的新手, category: 启发, comment: 它的高危清单让我重新理解严重度: 按钮没焦点框、报错不给恢复办法才算 HIGH; 「间距不合我口味」根本不算发现.
+- user: SaaS 一人公司, category: 注意, comment: 两件事先知道: 依赖的 better-* 技能缺了会标「未审」不硬装; 它跑不了的浏览器验证标「未验证」, 先把预览命令备好.

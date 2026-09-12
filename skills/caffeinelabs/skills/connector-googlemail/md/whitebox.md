@@ -1,0 +1,13 @@
+# connector-googlemail (`caffeinelabs/skills/connector-googlemail`)
+
+## whitebox
+
+- 触发识别: 任务一旦提到发邮件/Gmail (如 "邮件通知"), 强制加载本技能, 锁定 googlemail-client + google-oauth 组合, 明令禁止手写 ic.http_request 直连 Google 端点
+- 装依赖: mops add googlemail-client / google-oauth / caffeineai-authorization 三件套
+- 逐用户授权: canister 生成 PKCE code_verifier → buildAuthorizeUrl 让用户跳转 Google 同意 → 链上 (非复制调用) exchangeAuthorizationCode 换取 token → 按 caller Principal 存入 Map
+- 发信: sendEmail 以 bearer token 调 googlemail-client 的 gmail_users_messages_send, is_replicated 必须为 ?false
+- 自愈: 收到 HTTP 401 时静默 refreshAccessToken 一次并重试, 新 access_token 写回存储; Google 的 refresh_token 不轮换, 沿用旧值
+
+- 双库分工: google-oauth 承包 OAuth 2.0 全部机制 (token 交换/刷新、PKCE 验证器生成与 S256 challenge、RFC 3986 百分号编码、Google JSON 响应解析); googlemail-client 是 Gmail REST API v1 的生成式绑定, 只需 bearer 鉴权 + 套用同一发送/刷新重试模式即可扩展其他接口
+- 强制 is_replicated = ?false (非复制 HTTP 外呼): 每次请求只从单节点发出, 兼顾安全 (bearer token 不被子网每个节点重复外发)、计费 (避免 ~13x cycles 和配额 N 倍消耗) 与确定性 (Gmail 响应含唯一 message id / Date 头, 无法达成复制共识)
+- 令牌不出链 + 权限收口: access_token/refresh_token 按 caller Principal 存 Map, 前端只拿到 Bool 或邮箱; Client ID/Secret 由管理员经 caffeineai-authorization 的 #admin 门控写入 canister; 待处理 OAuth 流 (code_verifier/redirectUri/state nonce) 每用户一份, 回调时校验 state 后即消费

@@ -1,0 +1,13 @@
+# twitter-automation (`magentosh/superpowers/twitter-automation`)
+
+## whitebox
+
+- 用户请求命中触发词 (发推/twitter bot/tweet scheduler 等) 后, 经 Bash 调用 `belt` CLI (inference.sh 命令行工具, 需先 `belt login` 认证)
+- 把任务映射到对应 App ID: 发推=x/post-tweet, 带媒体=x/post-create, 点赞/转发/删帖/DM/关注/查资料各有一个专属 ID
+- 参数组装成 JSON, 执行 `belt app run <app-id> --input '<json>'`; 复杂输入可先 `belt app sample <app> --save input.json` 拿模板再改
+- 若要带图/视频发帖, 先跑生成类 App (falai/flux-dev-lora 出图, google/veo-3-1-fast 出视频), 把返回的媒体 URL 填进 media_url 再发
+- 把 CLI 返回结果 (如推文 ID) 汇报给用户
+
+- 唯一执行通道: allowed-tools 限定为 `Bash(belt *)`, 所有操作都是 shell 里跑 belt 命令, 不直接碰 Twitter SDK
+- 参数以 JSON 经 --input 传入各 App, 字段合法性交给 inference.sh 服务端校验; 样例可用 `belt app sample` 获取; 安装方式 `npx skills add belt-sh/cli`
+- 外部依赖: inference.sh 平台的 X.com 集成 (实际对接 Twitter/X API); 媒体生成依赖 fal.ai (flux-dev-lora) 和 Google (veo-3-1-fast) 的模型 App

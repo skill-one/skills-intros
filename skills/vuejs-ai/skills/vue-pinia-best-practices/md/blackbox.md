@@ -1,0 +1,9 @@
+# vue-pinia-best-practices (`vuejs-ai/skills/vue-pinia-best-practices`)
+
+## blackbox
+
+**function**: 专治 Vue 项目里 Pinia (官方状态管理库) 的各种疑难杂症: 状态丢了、界面不更新、刷新就重置等问题, 给出能直接用的修复代码和原因说明。
+
+- input: 启动项目报错 getActivePinia was called 的代码或报错信息, output: 修复后的 store 初始化写法 + 一句话说明错在哪
+- input: 「从 store 里取出来的变量, 改了数据但页面不动」的代码片段, output: 改成响应式写法的修正代码 + 正确/错误写法对照
+- input: 提问: 筛选条件存 Pinia 还是存网址里? (刷新后筛选条件丢了), output: 明确建议 (存到 URL) + 可直接粘贴的示例代码

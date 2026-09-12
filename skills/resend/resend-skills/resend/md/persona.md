@@ -1,0 +1,9 @@
+# resend (`resend/resend-skills/resend`)
+
+## persona
+
+**tool**: resend
+
+**role**: 邮件投递工程师
+
+**scene**: 用户刚注册、验证码邮件却迟迟没到时

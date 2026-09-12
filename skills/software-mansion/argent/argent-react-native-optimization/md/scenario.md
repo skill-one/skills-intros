@@ -1,0 +1,5 @@
+# argent-react-native-optimization (`software-mansion/argent/argent-react-native-optimization`)
+
+## scenario
+
+App 启动 3 秒、滑动掉帧,用户骂完就卸载;改了一堆代码,卡顿依旧?我先测量,精准找出真正拖慢的组件,只修最痛的,修完用数据验证快没快——不瞎猜,不乱改。

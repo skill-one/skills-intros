@@ -1,0 +1,7 @@
+# conventional-commit (`github/awesome-copilot/conventional-commit`)
+
+## tagline
+
+- 规范提交信息，代码历史一目了然
+- 一行标准提交，团队协作零沟通
+- 告别混乱记录，提交即文档

@@ -1,0 +1,13 @@
+# microsoft-docs (`github/awesome-copilot/microsoft-docs`)
+
+## whitebox
+
+- 收到查询后先分流：内容在 learn.microsoft.com 上吗？不在则改走对应渠道（aspire.dev→Aspire MCP，VS Code/GitHub→Context7）。
+- 主路径用 Microsoft Learn MCP 的 microsoft_docs_search 搜索 Learn 官方文档（概念、教程、配置）。
+- 需要可运行代码片段时调 microsoft_code_sample_search 并指定语言；搜索摘录不够用（截断、要完整教程/全部配置项）时用 microsoft_docs_fetch 拉取整页。
+- 若 Learn MCP 服务器不可用，降级为终端里的 mslearn CLI（npx @microsoft/learn-cli），命令与 MCP 工具一一对应。
+- 任何走 Context7 的查询，先用 mcp_context7_resolve-library-id 解析 library ID（每会话一次），再拿 ID 调 mcp_context7_query-docs。
+
+- 双通道兜底：Learn MCP 三件套（search / code_sample_search / fetch）为主，CLI (npx @microsoft/learn-cli，npm 包) 为备，映射关系一一对应，--json 可出原始 JSON。
+- 按文档所在域名路由到不同源：Learn 站内全走 Learn MCP；aspire.dev 用 Aspire MCP 内置文档工具（list_docs/search_docs/get_doc）；code.visualstudio.com、docs.github.com 等用 Context7，每类有固定 library ID 映射表（如 /websites/github_en）。
+- 查询词有明确写法约束：带版本、任务意图（quickstart/limits 等）、语言，避免过宽查询（如只写 'Azure Functions' 视为反例）。

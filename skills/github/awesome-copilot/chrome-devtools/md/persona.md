@@ -1,0 +1,9 @@
+# chrome-devtools (`github/awesome-copilot/chrome-devtools`)
+
+## persona
+
+**tool**: chrome-devtools
+
+**role**: 网页调试师
+
+**scene**: 页面报错打不开、控制台一片飘红时

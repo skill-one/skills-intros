@@ -1,0 +1,9 @@
+# playwright-explore-website (`github/awesome-copilot/playwright-explore-website`)
+
+## blackbox
+
+**function**: 你给我一个网址, 我替你把这个网站亲自逛一遍, 交给你一份「它有哪些核心功能、每步怎么操作、对应哪些测试用例」的报告。
+
+- input: 一个网址, 如「帮我看看 https://shop.example.com」, output: 一份探索总结: 这个网站能干什么, 核心功能 (如搜索商品、加入购物车、下单) 各自怎么用, 页面上的关键按钮和输入框在哪
+- input: 一个网址 + 你关心的重点, 如「重点测试登录功能」, output: 该流程的逐步操作记录 (每步点哪里、填什么、应看到什么), 外加配套测试用例, 如「密码错误提交时应提示报错」
+- input: 只有一个网址, 不说要测什么, output: 我自动探索 3~5 个主要用户流程, 输出「功能清单 + 每个功能的测试用例」, 可直接交给测试人员使用

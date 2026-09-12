@@ -1,0 +1,10 @@
+# langgraph-fundamentals (`langchain-ai/langchain-skills/langgraph-fundamentals`)
+
+## comments
+
+- user: 第一次用的新手, category: 坑, comment: 我在节点里直接改 state 又返回整个对象, 结果数据全乱。改成只 return 变化的字段立刻正常——节点只回增量, 别改完把全量 state 返回回去。
+- user: 后端老兵, category: 坑, comment: 节点改用 Command(goto=...) 控流转后, 忘删原来的 add_edge, 结果两个分支都执行了。动态边和静态边会叠加, 用了 goto 就删掉对应静态边。
+- user: 数据工程师, category: 妙用, comment: 批量抓 30 个页面时, 我用 Send 把每个任务扇出成并行 worker, results 字段配 operator.add 自动累加, 一次收齐再汇总, 比串行快太多了。
+- user: 前端转 AI 的开发, category: 注意, comment: 图搭完直接 invoke 报错, 原来忘了 compile()。另外聊天界面想逐字出字, 用 stream_mode='messages'; 用 'values' 每步收全量状态, 会刷屏。
+- user: AI 应用工程师, category: 妙用, comment: 我在节点里用 get_stream_writer 发自定义进度, 配 stream_mode='custom', 前端能实时看到'正在检索第 3 步'这类提示, 不用干等整图跑完。
+- user: 技术主管, category: 启发, comment: 5 步法让我先画流程再动手: 每步一个节点, 标清是 LLM、取数还是用户输入, 状态只存原始数据、提示词在节点里现拼。代码评审时结构一眼能看清。

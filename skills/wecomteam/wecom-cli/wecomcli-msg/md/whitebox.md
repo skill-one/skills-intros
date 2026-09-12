@@ -1,0 +1,13 @@
+# wecomcli-msg (`wecomteam/wecom-cli/wecomcli-msg`)
+
+## whitebox
+
+- 确定时间范围：用户未指定则取最近7天，格式 YYYY-MM-DD HH:mm:ss，且不得早于当前时间7天前
+- 解析会话：调 get_msg_chat_list 拿会话列表，按用户给的人名/群名匹配 chat_name 得到 chatid；群聊 chat_type=2，否则默认 1
+- 调 get_message 按 chatid+时间范围拉取消息，支持分页（has_more/next_cursor）
+- 渲染消息：通过 wecomcli-contact 的 get_userlist 建 userid→姓名 映射替换 userid；非文本消息统计数量并主动询问是否下载
+- 下载媒体：用户确认后逐个调 get_msg_media，按返回的 content_type 校正文件后缀，汇总展示本地路径并询问是否清理
+
+- 外部 CLI 调用：所有能力经 `wecom-cli msg <接口名> '<json入参>'` 子进程完成，四个接口（get_msg_chat_list / get_message / get_msg_media / send_message）均为 JSON 字符串入参
+- ID↔名称双向解析：chatid 通过 chat_name 匹配策略（精确唯一→直接用，模糊多个→列候选让用户选，无→告知未找）+ 上下文推断 chat_type；userid 通过依赖技能 wecomcli-contact 的 get_userlist 建映射，无匹配则回退显示原 userid
+- 媒体文件后缀校验：以 get_msg_media 返回的 content_type (MIME) 为准，检测文件名缺后缀或与 MIME 不一致时重命名修正；并校验文件大小>0，空/损坏文件如实告知；强制交互约束（告知路径→询问删除）不可跳过

@@ -1,0 +1,7 @@
+# pinia (`antfu/skills/pinia`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: Pinia 是 Vue 官方状态管理库, 典型的框架集成与代码开发场景

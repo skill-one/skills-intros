@@ -1,0 +1,7 @@
+# dart-collect-coverage (`dart-lang/skills/dart-collect-coverage`)
+
+## tagline
+
+- 一键跑测,精准生成 LCOV 覆盖报告
+- 照亮代码盲区,质量心中有数
+- 从依赖到报告,三步搞定测试覆盖

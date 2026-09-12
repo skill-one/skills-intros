@@ -1,0 +1,5 @@
+# apify-ultimate-scraper (`apify/agent-skills/apify-ultimate-scraper`)
+
+## scenario
+
+想找客户、盯竞品、选达人,却要手动翻 Instagram、TikTok、Google 地图,一页页抄,费时还漏?我能一键抓取 15+ 平台数据,几分钟整理成表格,你只管做决策。📊

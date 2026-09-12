@@ -1,0 +1,7 @@
+# python-code-style (`wshobson/agents/python-code-style`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 技能聚焦 Python 代码风格、格式化工具与文档规范, 属于写代码范畴。

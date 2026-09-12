@@ -1,0 +1,5 @@
+# agent-development (`anthropics/claude-code/agent-development`)
+
+## scenario
+
+想给 Claude Code 加个自动干活的 AI 助手,却总踩坑:写完不触发、命名不合规、提示词太空泛?我能按规范帮你写好触发条件、示例和系统提示词,一次跑通 🤖

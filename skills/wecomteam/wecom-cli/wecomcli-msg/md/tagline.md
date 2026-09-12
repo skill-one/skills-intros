@@ -1,0 +1,7 @@
+# wecomcli-msg (`wecomteam/wecom-cli/wecomcli-msg`)
+
+## tagline
+
+- 一句话, 找回所有聊天记录
+- 看消息发消息, 动口不动手
+- 图片文件语音, 一键存到本地

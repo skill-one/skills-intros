@@ -1,0 +1,7 @@
+# tavily-research (`tavily-ai/skills/tavily-research`)
+
+## tagline
+
+- 深度调研, 句句有出处
+- 多源信息, 汇成一份报告
+- 比快搜更深, 比人工更快

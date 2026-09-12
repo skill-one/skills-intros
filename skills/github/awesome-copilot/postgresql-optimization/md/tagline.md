@@ -1,0 +1,7 @@
+# postgresql-optimization (`github/awesome-copilot/postgresql-optimization`)
+
+## tagline
+
+- 慢查询终结者, 毫秒级响应
+- 索引调优, 数据库快人一步
+- 你的 PostgreSQL 性能军师

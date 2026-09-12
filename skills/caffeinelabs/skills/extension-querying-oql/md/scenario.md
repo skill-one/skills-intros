@@ -1,0 +1,5 @@
+# extension-querying-oql (`caffeinelabs/skills/extension-querying-oql`)
+
+## scenario
+
+想问"哪些客户贡献最大",却要先摸清数据结构、手写查询、逐行翻表,错一个词就报错。我直接读懂数据结构,把你的问题变成一条查询,筛选、统计、关联一次搞定,答案秒回。

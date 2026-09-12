@@ -1,0 +1,7 @@
+# microsoft-code-reference (`github/awesome-copilot/microsoft-code-reference`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 核心是查 Microsoft API 文档、找可运行代码示例、校验 SDK 代码正确性, 直接服务写代码与调试场景.

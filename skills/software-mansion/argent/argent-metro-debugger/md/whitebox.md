@@ -1,0 +1,13 @@
+# argent-metro-debugger (`software-mansion/argent/argent-metro-debugger`)
+
+## whitebox
+
+- 前置检查: 只接受模拟器/Chromium (真机直接被拒); RN 需 Metro dev server (默认 localhost:8081) 且 app 已连上, Android 还需先 adb reverse tcp:8081 把端口转发回宿主机
+- debugger-connect 通过 CDP (Chrome DevTools 协议, 远程调试浏览器 JS 的标准协议) 连上 JS 运行时, 拿回 logicalDeviceId, 之后所有调用都用它作 device_id 钉住会话
+- 排查连接: debugger-status 返回 connected 或 not_connected + 原因码 + guidance, 按 guidance 走恢复 (restart-app 重启 app / debugger-reload-metro 重载 JS), 不盲目重试
+- 检查界面: debugger-component-tree 看整棵 React 组件树和可点击坐标; debugger-inspect-element 按逻辑像素坐标 (x,y) 定位元素, 经 source map 溯源到 源文件:行号 + 代码片段
+- 读日志与执行代码: debugger-log-registry 返回日志摘要 (计数/聚类) + 落盘日志文件路径, 再用 grep 查细节 (不整读); debugger-evaluate 可直接在运行时跑任意 JS 表达式
+
+- 统一 CDP 通道: RN (iOS/Android/Vega) 经 Metro 暴露 CDP target, Chromium (Electron/浏览器) 则复用页面已有的 CDP 会话 (port 被忽略, device_id 用 chromium-cdp-<port>); 组件树、求值、日志、网络日志全部走这一条协议通道, 所以各平台工具表现一致
+- device_id (logicalDeviceId) 会话隔离: 一个 Metro 端口可同时挂多台设备 (如 iOS 模拟器 + Android 模拟器), 每个调用用 device_id 指向特定设备防止会话串扰; 多设备时 connect 会拒绝裸 udid 并回吐 logicalDeviceId 要求重定向
+- source map 归因 + 日志落盘 grep: inspect-element 的 file:line、代码片段和日志条目的 source 列都由 source map 解析而来; 日志写成扁平文件 (一行一条: [L:id] 时间戳 级别 源文件 消息), 先看 registry 摘要再 grep 定位, 超 1 万条则把检索委托给 Explore 子代理

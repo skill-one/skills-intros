@@ -1,0 +1,7 @@
+# tailwind-css-patterns (`giuseppe-trisciuoglio/developer-kit/tailwind-css-patterns`)
+
+## tagline
+
+- 类名即样式,界面秒成型
+- 小屏到大屏,一套类名全搞定
+- 不纠结 CSS,专注做好产品

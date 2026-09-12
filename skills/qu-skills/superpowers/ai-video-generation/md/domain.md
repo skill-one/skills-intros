@@ -1,0 +1,7 @@
+# ai-video-generation (`qu-skills/superpowers/ai-video-generation`)
+
+## domain
+
+**domain**: 🎨 设计多媒体
+
+**reason**: 核心能力是用 40+ AI 模型生成/编辑/合成视频, 属于音视频制作

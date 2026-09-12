@@ -1,0 +1,9 @@
+# rust-async-patterns (`wshobson/agents/rust-async-patterns`)
+
+## persona
+
+**tool**: tokio
+
+**role**: 异步并发调度师
+
+**scene**: 服务并发一高就卡死、盯着异步代码找阻塞点时

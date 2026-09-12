@@ -1,0 +1,7 @@
+# smart-search (`jackwener/opencli/smart-search`)
+
+## tagline
+
+- 一问直达全网，搜得更准更快。
+- 懂你要搜什么，更懂去哪搜。
+- 选对搜索源，答案一步到位。

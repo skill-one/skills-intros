@@ -1,0 +1,7 @@
+# argent-device-interact (`software-mansion/argent/argent-device-interact`)
+
+## domain
+
+**domain**: 🧪 测试与质量
+
+**reason**: 模拟真人操作模拟器/模拟器/浏览器的点击滑动输入截图, 是 E2E/UI 自动化测试的基础能力

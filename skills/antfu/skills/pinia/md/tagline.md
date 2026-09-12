@@ -1,0 +1,7 @@
+# pinia (`antfu/skills/pinia`)
+
+## tagline
+
+- Vue 状态管理, 问我就对了
+- 精通 Pinia, 写出优雅 Store
+- 类型安全, 最佳实践, 一步到位

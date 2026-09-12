@@ -1,0 +1,7 @@
+# solidity-security (`wshobson/agents/solidity-security`)
+
+## tagline
+
+- 让每一行合约, 固若金汤
+- 漏洞拦截在上链之前
+- 守住链上每一分资产

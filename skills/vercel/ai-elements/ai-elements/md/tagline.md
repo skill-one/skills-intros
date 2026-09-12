@@ -1,0 +1,7 @@
+# ai-elements (`vercel/ai-elements/ai-elements`)
+
+## tagline
+
+- 一行命令,AI 聊天界面即刻就位
+- 组件即代码,你的界面你做主
+- 气泡、输入框、工具展示,开箱即用

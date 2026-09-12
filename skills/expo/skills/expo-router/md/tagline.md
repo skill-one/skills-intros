@@ -1,0 +1,7 @@
+# expo-router (`expo/skills/expo-router`)
+
+## tagline
+
+- 文件即路由，导航一步到位
+- 原生级跳转，代码少一半
+- 栈、标签、弹窗，布局全掌控

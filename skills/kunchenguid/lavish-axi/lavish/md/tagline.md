@@ -1,0 +1,7 @@
+# lavish (`kunchenguid/lavish-axi/lavish`)
+
+## tagline
+
+- 让回答看得见, 让反馈改得动
+- 复杂结果一页成画, 一笔标注直达
+- 告别文字墙, 答案长成页面

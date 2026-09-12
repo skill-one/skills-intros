@@ -1,0 +1,7 @@
+# rust-async-patterns (`wshobson/agents/rust-async-patterns`)
+
+## tagline
+
+- Rust 异步难题,一问即解
+- 写出生产级高并发代码
+- Tokio 调优,稳如磐石

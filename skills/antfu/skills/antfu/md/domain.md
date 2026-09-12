@@ -1,0 +1,7 @@
+# antfu (`antfu/skills/antfu`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 专注 JS/TS 项目搭建、代码规范与工具链 (ESLint/pnpm/monorepo)

@@ -1,0 +1,7 @@
+# auth-implementation-patterns (`wshobson/agents/auth-implementation-patterns`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 实现登录认证、权限控制、API 安全是典型的后端开发任务

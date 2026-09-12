@@ -1,0 +1,5 @@
+# data-storytelling (`wshobson/agents/data-storytelling`)
+
+## scenario
+
+汇报时图表堆满页, 领导却问"所以呢?"——辛苦整理的数据, 没人看懂、没人记住, 决策石沉大海。我帮你把数据变成故事: 先给结论, 再讲因果, 最后给三步行动。让数字开口说话, 撬动决策。

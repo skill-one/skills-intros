@@ -1,0 +1,10 @@
+# better-accessibility (`jakubkrehel/skills/better-accessibility`)
+
+## comments
+
+- user: 前端实习生, category: 坑, comment: 为了好看我全局 outline:none，键盘用户完全找不到焦点在哪。改成只写 :focus-visible：鼠标点击不出现圈，Tab 一按就有，美观和可用两全。
+- user: React 三年前端, category: 坑, comment: 弹窗背景没加 inert，键盘用户 Tab 会跑到弹窗后面的内容里；关闭后焦点又掉回页首。改成开时移入、关时还给触发按钮，再加 overscroll-behavior:contain 防背景滚动。
+- user: 独立开发者, category: 妙用, comment: 以前表单没填对就禁用提交按钮，用户只会问「按钮怎么点不动」。改成按钮常开、提交时校验并聚焦第一个错误字段，这类反馈基本消失了。
+- user: 活动页外包, category: 妙用, comment: 客户投诉「按钮点了没反应」，排查半天是装饰光晕层盖在按钮上。装饰层加 pointer-events:none，再用伪元素把热区撑到 44px，视觉一点没改。
+- user: 无障碍验收工程师, category: 注意, comment: 常规 toast 别用 role="alert"，读屏会被打断；日常提示用稳定的空 role="status" 区域，先渲染再改文本——动态插入的提示有时读屏根本不播。
+- user: 带团队的技术负责人, category: 启发, comment: 以前把无障碍当上线前补 alt 的杂活，现在流程改成两遍走查：断鼠标纯键盘走一遍，再开读屏走一遍，每个控件的名字、角色、状态都对得上才算完。

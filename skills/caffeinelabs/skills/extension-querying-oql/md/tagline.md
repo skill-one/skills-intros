@@ -1,0 +1,7 @@
+# extension-querying-oql (`caffeinelabs/skills/extension-querying-oql`)
+
+## tagline
+
+- 你问,我查,数据秒回
+- 复杂查询,干脆利落
+- 结构烂熟于心,千万行里一眼命中

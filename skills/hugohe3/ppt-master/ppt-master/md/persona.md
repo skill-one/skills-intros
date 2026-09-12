@@ -1,0 +1,9 @@
+# ppt-master (`hugohe3/ppt-master/ppt-master`)
+
+## persona
+
+**tool**: python-pptx
+
+**role**: 幻灯片设计师
+
+**scene**: 明天就要上台汇报，内容都齐了、可幻灯片还挤成一屏密字时

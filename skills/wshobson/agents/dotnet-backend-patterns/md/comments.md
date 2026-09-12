@@ -1,0 +1,10 @@
+# dotnet-backend-patterns (`wshobson/agents/dotnet-backend-patterns`)
+
+## comments
+
+- user: 从 Node 转 .NET 的新手, category: 坑, comment: 我在接口里写 GetDataAsync().Result 等结果, 一压测线程全卡死。照指南反模式清单改成全链路 await + 传 CancellationToken 才正常。
+- user: Spring 转 .NET 三年的后端, category: 坑, comment: 照 Spring 习惯随手注册, 把带用户上下文的服务写成 Singleton, 结果 A 用户的单号串进 B 的响应。动手前先想清 Scoped/Singleton/Transient。
+- user: 电商支付方向后端, category: 妙用, comment: 接 Stripe+PayPal 双渠道, 用 .NET 8 keyed services 各注册一份, 构造器上 [FromKeyedServices] 直接拿实现, 一长串 if-else 工厂删掉了。
+- user: 高并发接口负责人, category: 妙用, comment: 上游第三方接口又慢又抖, 我套指南里的 stale-while-revalidate: 缓存过期未失效就先吐旧值、后台异步刷新。P99 从 3 秒降到 200 毫秒。
+- user: 接手祖传项目的维护者, category: 启发, comment: 老代码拿异常当业务流程, try-catch 套三层。改用 Result 模式返回错误码, Controller 统一转 400, 日志噪音少一半, 单测也好写了。
+- user: 带团队的技术负责人, category: 注意, comment: 测试示例到 xUnit+Moq 单测为止, 集成测试 (WebApplicationFactory 起真实管道) 没给模板, 得自己补。排期时把这部分工时算进去。

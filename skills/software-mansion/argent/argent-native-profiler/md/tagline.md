@@ -1,0 +1,7 @@
+# argent-native-profiler (`software-mansion/argent/argent-native-profiler`)
+
+## tagline
+
+- 卡在哪、慢在哪、漏在哪,一眼看清
+- 不猜原因,直击代码根源
+- 修复前后对比,效果用数据说话

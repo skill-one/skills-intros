@@ -1,0 +1,7 @@
+# astro (`astrolicious/agent-skills/astro`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: Astro 是 Web 开发框架, 核心工作是建站、写组件、配置部署, 属于编程开发。

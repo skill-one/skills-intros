@@ -1,0 +1,5 @@
+# vue-pinia-best-practices (`vuejs-ai/skills/vue-pinia-best-practices`)
+
+## scenario
+
+仓库数据明明改了,页面却纹丝不动?筛选条件一刷新就丢,启动时满屏报错?我专治 Vue Pinia(状态仓库)常见顽疾:响应式失效、状态不持久、初始化报错,一针见血定位根因。🎯

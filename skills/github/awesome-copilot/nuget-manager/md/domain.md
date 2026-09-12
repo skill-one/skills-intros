@@ -1,0 +1,7 @@
+# nuget-manager (`github/awesome-copilot/nuget-manager`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 管理 .NET 项目的 NuGet 包依赖, 属于框架集成与代码工程范畴

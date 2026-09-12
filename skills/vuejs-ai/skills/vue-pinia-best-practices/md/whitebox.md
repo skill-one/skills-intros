@@ -1,0 +1,12 @@
+# vue-pinia-best-practices (`vuejs-ai/skills/vue-pinia-best-practices`)
+
+## whitebox
+
+- 接收用户描述的 Pinia 相关问题或报错现象 (如 "getActivePinia was called"、解构 store 后界面不更新)
+- 在 skill.md 的索引中, 按症状匹配最接近的条目 (症状 → 参考文件的映射)
+- 定位该条目指向的 reference/*.md 详细文档
+- 依据参考文档内容, 输出针对性的 Pinia 实践建议
+
+- 症状索引制: skill.md 本身不存放解决方案, 只维护 "症状 → 参考文件" 映射表, 覆盖 Store Setup / Reactivity / State Patterns 三个分类
+- 索引与内容分离: 具体解决方法在外置的 reference/*.md 文件中 (如 pinia-store-destructuring-breaks-reactivity.md), 按需读取, 保证索引极简、详情按需加载
+- 知识域严格限定: 全部能力限于 Pinia (Vue 的状态管理库) 的 store 搭建、响应式与状态设计, 关联技术仅限文档提及的 DevTools、SSR; 无外部工具、库调用或模型 API 依赖

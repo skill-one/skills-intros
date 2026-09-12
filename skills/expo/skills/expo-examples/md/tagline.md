@@ -1,0 +1,7 @@
+# expo-examples (`expo/skills/expo-examples`)
+
+## tagline
+
+- 70 个官方示例，第三方集成一步到位
+- 不手搓不踩坑，照搬官方最优解
+- 新项目一键起步，老项目无痛接入

@@ -1,0 +1,10 @@
+# ai-elements (`vercel/ai-elements/ai-elements`)
+
+## comments
+
+- user: 第一次用的新手, category: 坑, comment: 装完 import 就报 module not found，卡了我半天。其实是 tsconfig.json 没配 @/ 路径别名，加上 baseUrl 和 paths 就好了。
+- user: 独立开发者, category: 妙用, comment: 组件代码直接落在我项目里，不在 node_modules。想改 Message 的圆角，直接打开文件删掉 rounded-lg 就行，不用写样式覆盖。
+- user: 后端老兵, category: 坑, comment: 在 components 子目录里跑 npx ai-elements@latest，文件一直没加进来。要在 package.json 所在的根目录跑，别问我是怎么知道的。
+- user: 前端第一次碰 Tailwind 4, category: 注意, comment: 装完组件一片白没样式，查了半天是 globals.css 没引 Tailwind 和 shadcn 基础样式。Tailwind 4 项目这步不能省。
+- user: 接手半成品项目的, category: 注意, comment: 这库要求项目本身是 Next.js + AI SDK + shadcn/ui，我的纯 React 工程装不了。没 shadcn 会自动帮你装，但项目类型没法绕。
+- user: 用 Cursor 干活的前端, category: 注意, comment: 让 AI 助手直接用这些组件时它说找不到。后来检查配置文件 JSON 语法和路径，改完重启助手才认到，不是库的问题。

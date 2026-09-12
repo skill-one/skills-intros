@@ -1,0 +1,10 @@
+# ai-image-generation (`magentosh/superpowers/ai-image-generation`)
+
+## comments
+
+- user: 第一次用的新手, category: 坑, comment: 装完 CLI 直接跑生成命令，报鉴权失败。原来要先 belt login，这步千万别漏。
+- user: 电商美工, category: 妙用, comment: 白底商品图先用 FLUX 生成，再丢给 GPT-Image-2 换成节日、沙滩背景，一张底图出多版，不用重拍。
+- user: 接海报私活的设计师, category: 妙用, comment: 别的模型画海报文字全是乱码，Reve 能把标语原样画出来。把要显示的字直接写进 prompt，英文最稳。
+- user: 独立开发者, category: 妙用, comment: 用 0.0001 美元一张的 FLUX Klein 4B 批量试 prompt，选中那句再跑 Seedream 4.5 出 4K 成品，试错几乎零成本。
+- user: 自媒体博主, category: 注意, comment: 要 16:9 封面记得像 Grok 示例那样传 aspect_ratio 参数。图里带字选 Seedream 3.0，要 4K 画质才用 4.5，别选错。
+- user: 插画接单党, category: 启发, comment: 不再整张重生成：客户不满意就用 GPT-Image-2 只改背景或局部，一张底图出十版，改稿快了一个量级。

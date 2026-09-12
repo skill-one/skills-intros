@@ -1,0 +1,13 @@
+# async-python-patterns (`wshobson/agents/async-python-patterns`)
+
+## whitebox
+
+- 识别任务为 async 场景 (高并发 API / I/O 密集 / 爬虫 / WebSocket 等), 先查 sync vs async 决策表确认方案 (CPU 密集则改用 multiprocessing 或 to_thread)
+- 以 asyncio.run(main()) 为入口, 用 async def 定义协程拆解各步操作
+- 把要并发的操作包装成任务: asyncio.gather() 并发等待, 需要时用 create_task 起后台任务、wait_for 加超时、asyncio.to_thread 卸载 CPU/同步阻塞代码
+- 基础模式不够用时, 再读 references/details.md 里的 Advanced Patterns 补充
+- 对照常见陷阱清单自查 (漏 await、time.sleep 阻塞事件循环、取消时未 re-raise、async/sync 混用), 最后用 pytest-asyncio 写测试
+
+- 运行时靠 asyncio 事件循环: 单线程协作式多任务, I/O 等待时让出控制权实现非阻塞并发, asyncio.run() 启动整个流程
+- 并发与容错原语全在标准库 asyncio 内: gather(*tasks) 并发执行多协程, return_exceptions=True 让单个失败不拖垮整批; wait_for 实现超时; to_thread 处理混合 I/O+CPU 场景
+- 校验与测试依赖 pytest + pytest-asyncio 插件 (@pytest.mark.asyncio 装饰异步测试); 全程不依赖任何外部模型或在线服务

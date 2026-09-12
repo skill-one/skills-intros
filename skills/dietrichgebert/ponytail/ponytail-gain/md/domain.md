@@ -1,0 +1,7 @@
+# ponytail-gain (`dietrichgebert/ponytail/ponytail-gain`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 度量与展示编程产出的代码量、成本、速度收益, 服务于写代码场景。

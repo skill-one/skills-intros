@@ -1,0 +1,13 @@
+# wecomcli-schedule (`wecomteam/wecom-cli/wecomcli-schedule`)
+
+## whitebox
+
+- 解析用户意图: 提取时间/标题/地点/参与人/提醒, 把"今天""这周"等相对时间换算为 YYYY-MM-DD HH:mm:ss (仅支持当日前后 30 天)
+- 涉及参与人时, 经 wecomcli-contact 技能把姓名解析为 userid; 同名则列候选让用户选 (不向用户暴露 userid)
+- 通过 shell 执行 wecom-cli schedule <接口名> '<json入参>' 调用对应接口; 查询先 get_schedule_list_by_range 拿 ID, 再 get_schedule_detail 批量取详情; 创建/修改/取消/参与人变更前先向用户确认信息
+- 后处理: 返回的 Unix 时间戳 (秒) 转为可读时间; errcode != 0 时向用户展示错误信息
+- 汇总展示结果 (标题/时间/地点/参与者); 闲忙查询则分析各用户忙碌时段, 算出共同空闲时段推荐, 确认后创建会议
+
+- 唯一执行通道是外部 CLI wecom-cli (企业微信官方命令行程序): 所有操作 = 拼接 JSON 入参后执行 weecom-cli schedule <接口名> '<json>', 无 SDK / API 直连; 各接口入参出参以 skill.md 中的调用模板为准
+- 时间格式双向转换: 入参用字符串 YYYY-MM-DD HH:mm:ss, 返回值多为 Unix 时间戳 (秒) 需转可读格式; 日程列表查询窗口硬性限制为当日前后 30 天
+- 人审兜底 + 技能间协作: 参与人 userid 依赖 wecomcli-contact 技能获取; 同名展示候选、变更类操作 (创建/修改/取消) 执行前必须经用户确认

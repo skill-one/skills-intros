@@ -1,0 +1,5 @@
+# openapi-spec-generation (`wshobson/agents/openapi-spec-generation`)
+
+## scenario
+
+深夜上线,前后端为"这个参数到底传什么"吵翻了——接口文档早过期没人看 😩。我能从代码自动生成标准 API 文档,文档随代码同步更新,还能自动校验实现是否与文档一致,让对接不再靠猜、靠吵。

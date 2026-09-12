@@ -1,0 +1,13 @@
+# better-ui (`jakubkrehel/skills/better-ui`)
+
+## whitebox
+
+- 读项目现有组件库、设计 token 与动效语言，所有改动贴合现有约定而非重写
+- 查 package.json 有无 motion / framer-motion，据此选定图标动画的实现路径
+- 逐条对照内置精确规格审查代码：同心圆角、光学对齐、阴影层级、按压 scale 0.96、图标描边 1.5px/2px 等
+- 验证：无浏览器时从代码枚举组件定义的全部状态（hover/focus/active/loading/empty 及动效时长与曲线）；有浏览器则逐状态走查，并在 DevTools Animations 面板以 10% 速度慢放动效
+- 按严重度（HIGH/MEDIUM/LOW）排序输出审查表格：有 HIGH 判 Block，否则 Approve，未检查的部分一律标注 Not verified 不计入批准范围
+
+- 规则-值匹配：全部判定基于 skill.md 写死的精确值——cubic-bezier(0.2, 0, 0, 1) 不等于其他曲线，0.96 不等于 0.95，图标动画固定 scale 0.25→1 / opacity 0→1 / blur 4px→0px，图片描边用纯黑/白 oklch 低透明度而非带色中性色；近似值即判错
+- 环境探测选择实现：通过 package.json 检测 motion / framer-motion——有则用其 API（spring，duration 0.3，bounce 恒为 0）；无则零依赖回退：两个图标同时留在 DOM，一个绝对定位，用 cubic-bezier(0.2, 0, 0, 1) 做 cross-fade
+- 双通道验证与反馈约束：无浏览器按代码推演各状态，查不全就如实报 Not verified；有浏览器用 Animations 面板 10% 慢放定位'全速下看不出的错'；另有一条硬规则——任何动效状态变化必须同时有静态反馈线索（颜色/图标/文案），动效不能是唯一反馈渠道

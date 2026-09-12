@@ -1,0 +1,7 @@
+# better-ui (`jakubkrehel/skills/better-ui`)
+
+## tagline
+
+- 细节是复利, 界面越磨越顺眼
+- 从能用到好用, 只差一层打磨
+- 让每次点击, 都有恰到好处的回应

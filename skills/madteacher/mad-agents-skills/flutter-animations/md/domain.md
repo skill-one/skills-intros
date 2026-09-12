@@ -1,0 +1,7 @@
+# flutter-animations (`madteacher/mad-agents-skills/flutter-animations`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 专精 Flutter 动画与动效的编写、调试与重构, 属于移动端 UI 代码开发。

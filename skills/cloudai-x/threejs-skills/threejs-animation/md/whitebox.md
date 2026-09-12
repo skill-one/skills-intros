@@ -1,0 +1,13 @@
+# threejs-animation (`cloudai-x/threejs-skills/threejs-animation`)
+
+## whitebox
+
+- 确认动画类型 (程序化 / GLTF 骨骼动画 / 形变 / 混合), 用 GLTFLoader 加载模型或直接取场景对象
+- 为目标对象建 AnimationMixer; GLTF 场景从 gltf.animations 拿现成 AnimationClip, 按名查找用 AnimationClip.findByName
+- 程序化动画则手工构建 KeyframeTrack (属性路径 + 时间数组 + 值数组), 组装成 AnimationClip
+- mixer.clipAction(clip) 生成 AnimationAction, play() 后按需配置 loop 模式 / timeScale / weight / fade
+- 每帧 clock.getDelta() 取时间差, 调 mixer.update(delta) 驱动姿态更新, 再 renderer.render() 输出画面
+
+- 数据层: AnimationClip 是关键帧容器, 内部由多条 KeyframeTrack 组成, 每条 track 绑定属性路径 (.position / .quaternion / .material.opacity / .morphTargetInfluences[name] 等) + 时间数组和值数组, 插值可选 Linear (默认) / Smooth / Discrete
+- 播放层: AnimationAction 控制时间轴 (time / timeScale / paused) 和权重; 多动画用 setEffectiveWeight 按速度混合, crossFadeTo / fadeIn / fadeOut 做平滑切换, AdditiveAnimationBlendMode 配合 makeClipAdditive 叠加附加层 (如呼吸); 骨骼动画可直接改 skeleton.bones 的旋转, 形变动画直接写 mesh.morphTargetInfluences
+- 依赖: 纯 Three.js 库 (three + examples/jsm/loaders/GLTFLoader.js), 不依赖外部模型 API; mixer.update(delta) 必须在 requestAnimationFrame 循环内每帧调用, 否则动画不动

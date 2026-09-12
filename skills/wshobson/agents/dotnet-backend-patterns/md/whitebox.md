@@ -1,0 +1,12 @@
+# dotnet-backend-patterns (`wshobson/agents/dotnet-backend-patterns`)
+
+## whitebox
+
+- 1. 接收 .NET 后端任务: 新建 Web API / MCP server、审查 C# 代码、设计服务架构、写测试等
+- 2. 将任务匹配到 skill.md 中对应的模式章节 (项目结构 / 依赖注入 / async / 配置 / Result / 数据访问 / 缓存 / 测试)
+- 3. 严格按该章节的模板生成代码或审查意见, 如 async 全链路、Result 模式返回、IOptions 配置注入
+- 4. 直接交付含配置示例 (appsettings.json)、注册代码和 ❌/✅ 对照的完整 C# 代码块
+
+- 纯知识型技能, 无运行时工具: 不调用外部命令或模型 API, 全部能力来自对 skill.md 模式库的检索与套用
+- 生成代码绑定明确的外部库: EF Core (ORM, 含 AsNoTracking/查询过滤) 与 Dapper (手写 SQL 高性能查询), Redis 分布式缓存 (L1 内存 → L2 Redis → L3 数据库三级缓存), xUnit + Moq (单元测试)
+- 内置硬性质量约束: 禁止 .Result/GetAwaiter().GetResult() 阻塞和 async void; 用 Result<T> 模式替代异常做业务流程控制; 配置一律走 IOptions/IOptionsSnapshot/IOptionsMonitor; .NET 8+ 可用 keyed services 按名注入多实现

@@ -1,0 +1,13 @@
+# dart-generate-test-mocks (`dart-lang/skills/dart-generate-test-mocks`)
+
+## whitebox
+
+- 识别被测类的外部依赖 (如 http.Client), 通过构造函数注入, 使其在测试中可被替换。
+- 在测试文件里加 @GenerateNiceMocks([MockSpec<Dependency>()]) 注解, 并引入同名 .mocks.dart 生成文件。
+- 运行 `dart run build_runner build`, 自动生成 mock 类。
+- 编写测试: setUp 中用 when() 给 mock 打桩 (Future/Stream 返回必须用 thenAnswer), 再执行被测方法。
+- 用 verify() 断言交互次数 (可配 any/captureAny 匹配器), 用 expect() 断言结果, 最后 `dart test` 跑通; 失败则按反馈循环修正后重跑。
+
+- 代码生成机制: 依赖 package:mockito 的注解 + package:build_runner, 把 MockSpec<T>() 编译期生成为 `*_test.mocks.dart` 中的 Mock 类, 免手写; 用 @GenerateNiceMocks (而非 @GenerateMocks) 使未打桩调用不抛 missing-stub 异常。
+- 可测试性结构: 被测类只依赖注入的抽象/客户端 (如构造函数注入 http.Client), URL 一律用 Uri.parse() 转 Uri 对象, 便于在 verify 时精确匹配参数。
+- 打桩与校验机制: 同步返回用 when(...).thenReturn, Future/Stream 返回强制用 thenAnswer((_) async => value) (用 thenReturn 会抛 ArgumentError); 校验靠 verify(mock.method()).called(1) 配合 any/anyNamed/captureAny 匹配器; 失败反馈循环以 `dart test` 和 build_runner 报错为准, 逐项修正后重跑。

@@ -1,0 +1,10 @@
+# dotnet-best-practices (`github/awesome-copilot/dotnet-best-practices`)
+
+## comments
+
+- user: 十年 .NET 后端, category: 妙用, comment: 发 PR 前先把 diff 当 selection 丢给它过一遍,它连漏掉的 await 和字符串拼接的 SQL 都能揪出来,人工 review 只剩看业务逻辑。
+- user: 第一次用的新手, category: 坑, comment: 第一次没先 commit 就让它整仓重构,命名空间、DI 全动了,几百行 diff 没法逐条看。先提交、按单个文件跑,一条条核对。
+- user: 测试工程师, category: 注意, comment: 它默认按 MSTest + FluentAssertions 写测试,我们团队用 xUnit。开工前先声明测试框架,否则生成的用例对不上现有工程。
+- user: 接手祖传代码的新人, category: 坑, comment: 没说明目标框架就让它优化,祖传老项目被改成新语法直接编译报错。先声明 .NET 版本和 C# 版本,再按模块跑,别全仓库一把梭。
+- user: 独立开发者, category: 妙用, comment: 小工具想支持多语言,把散落各处的中文字符串交给它,它按日志/报错分成两个资源文件,换语言只改一个 resx,省了一整天。
+- user: 团队 Tech Lead, category: 启发, comment: 对照它的清单才发现我们 PR 模板漏了空参数校验测试和结构化日志。现在评审先过这四类硬标准,再聊业务逻辑,扯皮少多了。

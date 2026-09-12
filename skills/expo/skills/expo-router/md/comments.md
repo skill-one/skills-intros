@@ -1,0 +1,10 @@
+# expo-router (`expo/skills/expo-router`)
+
+## comments
+
+- user: 半路转 RN 的前端, category: 坑, comment: 我把组件、工具函数全塞在 app/ 目录，结果每个文件都被注册成页面，线上多出一堆能访问的空路由。app/ 只放页面，组件放外面用路径别名引入。
+- user: 从 react-navigation 迁来的老兵, category: 坑, comment: SDK 56 后我照旧从 @react-navigation/native 引，和内置版本冲突直接编译报错。全部换成 expo-router/react-navigation，旧包一行别留。
+- user: 独立维护老 App 的开发, category: 妙用, comment: 重构加 tab 时把首页挪进 (tabs) 组里，对外路径仍然是 /，老用户收藏和深链全没断。原来 / 允许藏在 group 内，大胆动目录结构。
+- user: iOS 出身的客户端工程师, category: 妙用, comment: 列表卡片外面包 Link 加 Link.Preview，长按直接出原生 peek 预览，再叠 Link.Menu 挂菜单。一行手势没写，就是 App Store 那种长按手感。
+- user: 负责双端适配的, category: 注意, comment: 工具栏、菜单、搜索栏这几个能力参考文档里标着 iOS only，我在 Android 上白调了半天。跨端的搜索栏只能自己拿组件拼。
+- user: 抢先升 iOS 26 的尝鲜党, category: 注意, comment: formSheet 想透出液态玻璃，必须配 contentStyle: { backgroundColor: "transparent" }，不然底下是实色。另外这效果仅 iOS 26+，老系统记得兜底。

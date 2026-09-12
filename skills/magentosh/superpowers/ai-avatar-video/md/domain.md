@@ -1,0 +1,7 @@
+# ai-avatar-video (`magentosh/superpowers/ai-avatar-video`)
+
+## domain
+
+**domain**: 🎨 设计多媒体
+
+**reason**: AI 数字人口播视频生成: 一张照片 + 台词 → 口型同步的会说话视频, 属于音视频制作。

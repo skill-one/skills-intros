@@ -1,0 +1,5 @@
+# microsoft-docs (`github/awesome-copilot/microsoft-docs`)
+
+## scenario
+
+写 Azure/.NET 时查微软文档像大海捞针:官网散、博客旧、试错半天仍跑不通 😵 我能直连微软官方文档库,快速找到准确概念、教程和可运行的代码示例——不猜不编,答案有出处 🎯

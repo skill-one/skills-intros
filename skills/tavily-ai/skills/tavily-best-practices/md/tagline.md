@@ -1,0 +1,7 @@
+# tavily-best-practices (`tavily-ai/skills/tavily-best-practices`)
+
+## tagline
+
+- 让 AI 实时看见整个互联网
+- 搜索抓取研究, 一个接口全搞定
+- 为智能体而生的联网引擎

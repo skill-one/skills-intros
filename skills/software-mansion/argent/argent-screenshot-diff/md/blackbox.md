@@ -1,0 +1,9 @@
+# argent-screenshot-diff (`software-mansion/argent/argent-screenshot-diff`)
+
+## blackbox
+
+**function**: 把两张 iPhone 界面截图逐像素对比, 找出肉眼可见的差异——哪里挪位了、变色了、文字渲染变了——并给出结论和标注好的对比图。
+
+- input: 改版前、改版后的两张 iPhone 截图 (两张 PNG 文件), output: 一份差异结论 + 高亮标出差别的对比图: 哪个按钮挪了、哪块颜色变了, 一眼可见
+- input: 一张保存好的「标准版」截图 + 一台正显示新版界面的 iPhone, output: 自动拍下手机当前画面, 与标准版对比, 输出差异报告和标注图
+- input: 「改完后首页按钮间距是不是跑偏了?」这类视觉回归检查请求, output: 明确结论: 无差异 / 有差异, 差在位置、大小、间距、颜色还是文字渲染, 附对比图作证据

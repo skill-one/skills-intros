@@ -1,0 +1,7 @@
+# smart-search (`jackwener/opencli/smart-search`)
+
+## domain
+
+**domain**: 🧠 知识管理
+
+**reason**: 核心是信息检索与调研: 按话题路由到最佳搜索源, 帮你查资料、做研究

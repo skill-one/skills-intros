@@ -1,0 +1,7 @@
+# connector-googlemail (`caffeinelabs/skills/connector-googlemail`)
+
+## tagline
+
+- 一键授权,应用即刻替你发 Gmail
+- 以你名义发信,凭据永不外泄
+- 📬 从应用到收件箱,一步直达

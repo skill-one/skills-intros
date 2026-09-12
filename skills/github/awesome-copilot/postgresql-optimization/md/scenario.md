@@ -1,0 +1,5 @@
+# postgresql-optimization (`github/awesome-copilot/postgresql-optimization`)
+
+## scenario
+
+数据库越用越慢,高峰期一查卡半天,用户流失、老板催命,却不知问题在哪。我专治 PostgreSQL(一种主流数据库)卡顿:定位慢查询、优化索引,让秒级等待回到毫秒响应。⚡

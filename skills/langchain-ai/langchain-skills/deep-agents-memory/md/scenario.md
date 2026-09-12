@@ -1,0 +1,5 @@
+# deep-agents-memory (`langchain-ai/langchain-skills/deep-agents-memory`)
+
+## scenario
+
+AI 助手一关对话就"失忆":偏好要反复交代、进度说丢就丢。我给你的智能体装上记忆——草稿临时放,笔记长期存,重启也不忘。💾 该留的留,该忘的忘。

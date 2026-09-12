@@ -1,0 +1,9 @@
+# deep-agents-memory (`langchain-ai/langchain-skills/deep-agents-memory`)
+
+## blackbox
+
+**function**: 给 AI 智能体装上「文件与记忆」：它干活时能存取文件，你可以选这些文件是聊完即焚的草稿，还是下次对话还记得的长期记忆。
+
+- input: 「把刚才整理的要点存成草稿，一会儿再改」, output: 同一对话里随时能读回、修改这份草稿；对话结束后草稿自动清空
+- input: 「记住：我喜欢简洁的中文回复，不要 emoji」, output: 之后哪怕新开一个对话，智能体依然记得并按你的偏好回复（跨会话记忆）
+- input: 本地文件夹路径 + 「读一下 ./report.md，把结论改成英文」, output: 磁盘上的 report.md 被实际读取和更新（写入前会先请你确认）

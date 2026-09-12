@@ -1,0 +1,7 @@
+# argent-native-profiler (`software-mansion/argent/argent-native-profiler`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 原生性能剖析工具, 用于诊断 App 的 CPU 热点、UI 卡顿与内存泄漏, 属于开发者调试范畴

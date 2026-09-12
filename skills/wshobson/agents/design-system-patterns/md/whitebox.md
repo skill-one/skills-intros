@@ -1,0 +1,12 @@
+# design-system-patterns (`wshobson/agents/design-system-patterns`)
+
+## whitebox
+
+- 定位任务归属：判断需求落在四大能力区之一 —— design tokens / 主题切换 / 组件架构 / token 流水线。
+- 分层查阅：先读 skill.md 导航层与 Quick Start；若信息不够，再读 references/details.md 拿详细模式和完整示例。
+- 按三层 token 层级产出：原始 token（裸值）→ 语义 token（如 text-primary）→ 组件 token，用 CSS custom properties（var(--...)）逐层引用。
+- 按最佳实践自检：语义化命名、无硬编码值、明暗主题组合可用、token 变更保留迁移路径。
+
+- 渐进式披露（progressive disclosure）：skill.md 只驻留导航 + 快速上手，深度内容延迟从 references/details.md 加载，按需注入而非一次性全量。
+- 三层引用体系是核心转换机制：换主题（light/dark）只需翻转 semantic 层的映射，原始值和组件代码不动；语义 token 还能对接 prefers-color-scheme 实现跟随系统。
+- 外部依赖：CSS custom properties（原生 CSS 变量）、React Theme Context Provider（主题切换与持久化）、Style Dictionary（token 转换/多平台生成）、Figma（设计稿到代码的 token 同步，经 CI/CD 自动化）。

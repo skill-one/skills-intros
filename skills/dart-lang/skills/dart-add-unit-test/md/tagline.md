@@ -1,0 +1,7 @@
+# dart-add-unit-test (`dart-lang/skills/dart-add-unit-test`)
+
+## tagline
+
+- 一行测试, 十分安心
+- Bug 进不来, 质量出不去
+- 改代码不心慌, 测试全程兜底

@@ -1,0 +1,7 @@
+# vue-pinia-best-practices (`vuejs-ai/skills/vue-pinia-best-practices`)
+
+## tagline
+
+- Pinia 状态难题,一问即破
+- 避开暗坑,状态稳、上线快
+- 最佳实践在手,Vue 开发不迷路

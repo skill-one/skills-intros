@@ -1,0 +1,5 @@
+# tavily-extract (`tavily-ai/skills/tavily-extract`)
+
+## scenario
+
+看到好网页想留存内容,复制粘贴却满是广告乱码,动态加载的页面甚至复制不出来?把链接丢给我:一次最多 20 条,提取干净正文,还能只挑你要的相关段落。📄✨

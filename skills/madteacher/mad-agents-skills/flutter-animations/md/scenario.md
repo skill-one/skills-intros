@@ -1,0 +1,5 @@
+# flutter-animations (`madteacher/mad-agents-skills/flutter-animations`)
+
+## scenario
+
+动画卡成 PPT、页面切换生硬闪跳、越改越乱还悄悄内存泄漏?我专治 Flutter 动画:最小改动修复卡顿与报错,清理隐患,交付前跑分析验证。🛠️

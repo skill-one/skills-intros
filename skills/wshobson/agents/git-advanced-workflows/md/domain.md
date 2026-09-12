@@ -1,0 +1,7 @@
+# git-advanced-workflows (`wshobson/agents/git-advanced-workflows`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: Git 高级工作流(变基、挑拣、二分排查、恢复)是代码版本管理的核心开发工具。

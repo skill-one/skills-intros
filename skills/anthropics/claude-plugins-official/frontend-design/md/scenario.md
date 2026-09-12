@@ -1,0 +1,5 @@
+# frontend-design (`anthropics/claude-plugins-official/frontend-design`)
+
+## scenario
+
+产品做出来了,页面却像套模板——奶油底、圆角卡片,一眼 AI 味,用户记不住你。我从你的行业与内容出发,定制配色、字体、版式,做出只属于你的视觉记忆点 🎨

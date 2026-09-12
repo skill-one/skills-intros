@@ -1,0 +1,5 @@
+# dart-use-pattern-matching (`dart-lang/skills/dart-use-pattern-matching`)
+
+## scenario
+
+写 Flutter/Dart 代码时，常被层层 if-else 和类型判断淹没；JSON 解析出错难查，漏处理一种数据情况就崩溃。我精通 Dart 模式匹配（按数据形状直接拆解取值的语法），能把这类代码改得更短更安全：漏写分支，编译期就报错。🧩

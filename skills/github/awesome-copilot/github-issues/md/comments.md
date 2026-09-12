@@ -1,0 +1,10 @@
+# github-issues (`github/awesome-copilot/github-issues`)
+
+## comments
+
+- user: 第一次用的新手, category: 坑, comment: 在 macOS 终端直接写 -f labels[]=bug 报 no matches found——zsh 把 [] 当通配符吃了, 整个参数加引号才传得进去。
+- user: 后端老兵, category: 妙用, comment: 让它改 issue 前先读一遍原文、只改要动的字段, 原 body 和 label 都不会丢, 比我手动编辑省心。
+- user: 用看板管活的PM, category: 妙用, comment: 说一句"登录被支付模块挡住", 它就建好 blocked-by 依赖; 看板上一眼看出哪批任务卡住, 不用手动连线。
+- user: 开源仓库维护者, category: 注意, comment: 想设 Bug/Feature 类型别用 gh issue create, 它没有 --type 参数, 必须走 gh api 才设得上。
+- user: 外包接活的独立开发, category: 注意, comment: 建 issue 前先说清仓库名, 我没说它就反问而不是猜; 复现步骤不全它也追问, 不会替我编内容。
+- user: 前端小组长, category: 启发, comment: org 配好 issue type 后我把 bug/enhancement 标签全撤了, 类型+看板两层就够, review 时清爽很多。

@@ -1,0 +1,7 @@
+# proactive-agent (`halthelobster/proactive-agent/proactive-agent`)
+
+## scenario
+
+AI 聊到一半"失忆":你纠正过 10 遍的偏好,它转头就忘,只能反复重讲 🙃
+
+我是主动型代理:关键决定先写盘、永不丢失,上下文断了自动恢复,还主动预判你的需求——不用你开口。

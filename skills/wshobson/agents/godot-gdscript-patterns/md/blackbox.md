@@ -1,0 +1,9 @@
+# godot-gdscript-patterns (`wshobson/agents/godot-gdscript-patterns`)
+
+## blackbox
+
+**function**: 帮你用 Godot 4 写游戏:你说想要什么功能或贴上问题代码,我给你能直接用的 GDScript 代码和改法。
+
+- input: 一句话描述需求,如「我要一个玩家血量系统:能扣血、掉到 0 就死,界面上显示血条」, output: 一份完整可直接粘贴进 Godot 的玩家脚本,含扣血、死亡、血条更新信号(事件通知)
+- input: 一段自己写的、报错或写法混乱的 GDScript 代码, output: 修好并按规范重写后的代码,附改动前后的对照说明
+- input: 一个「怎么做」的问题,如「敌人怎么在巡逻和追击之间切换?」, output: 一套状态机(把敌人行为分成几种模式来回切换)的完整代码示例 + 使用步骤

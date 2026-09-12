@@ -1,0 +1,5 @@
+# wecomcli-schedule (`wecomteam/wecom-cli/wecomcli-schedule`)
+
+## scenario
+
+排会总在群里来回问"你几点有空"？改期怕有人不知道，还常错过提醒⏰ 我能查大家闲忙、找出共同空档，一键建会/改期/取消并自动邀人，排会不再扯皮。

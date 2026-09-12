@@ -1,0 +1,9 @@
+# tailwind-css-patterns (`giuseppe-trisciuoglio/developer-kit/tailwind-css-patterns`)
+
+## blackbox
+
+**function**: 给网页前端代码「穿衣服」——你给我组件或页面代码, 我帮你加上 Tailwind CSS 样式 (一种现在很流行的写样式方式), 让它有好看的布局、配色和响应式效果。
+
+- input: 一段没有任何样式的 React/Vue 组件代码 + 一句话需求, 如「做成带阴影的白色卡片」, output: 写好样式的同一段代码, 可直接粘贴回项目使用, 卡片有圆角、阴影、内边距等效果
+- input: 一句布局描述, 如「手机上一列, 平板两列, 电脑四列的商品网格」, output: 对应的响应式代码片段, 用户拖动浏览器窗口大小时会自动切换列数
+- input: 一个已有的网页代码文件, output: 修改后的文件: 页面自动适配深色模式 (夜里打开不刺眼), 或修好样式不生效、间距不对等问题

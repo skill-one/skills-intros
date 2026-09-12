@@ -1,0 +1,1 @@
+{"function": "帮你把 JavaScript/TypeScript 项目从零搭好、规范统一、顺利发布,全程遵循 Anthony Fu 的那套工程偏好。", "input_output": [{"input": "「帮我从零搭一个 TypeScript 新项目」", "output": "一套拿来即用的项目文件夹:代码风格规则、测试环境、Git 提交前自动检查都配好,打开就能写代码"}, {"input": "一个代码风格混乱的项目文件夹路径", "output": "按统一风格修好的代码文件 + 一份 lint (代码规范检查) 配置,以后保存即自动整理"}, {"input": "「我写了个库,想发布到 npm (JavaScript 公共包仓库)」", "output": "打包与发布配置齐全的工程文件,构建一次就能得到可发布的包"}]}

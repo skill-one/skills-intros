@@ -1,0 +1,7 @@
+# agent-development (`anthropics/claude-code/agent-development`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 为 Claude Code 插件编写 agent 配置文件: 前置元数据、触发条件与系统提示词设计, 属于插件开发范畴。

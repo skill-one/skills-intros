@@ -1,0 +1,13 @@
+# astro (`astrolicious/agent-skills/astro`)
+
+## whitebox
+
+- 接到任务后按 skill.md 的触发条件判断范畴：建站、.astro 文件、静态站点生成 (SSG)、内容集合或 Astro 项目部署，命中才开工
+- 先查 docs.astro.build 官方文档，确认最新 API 和代码示例 (skill.md 要求 "Always consult docs.astro.build")
+- 按 Astro 目录约定写/改文件：src/pages/ 放页面 (文件名即路由)，src/components/ 放组件，src/public/ 放免处理资源，astro.config.{js,mjs,cjs,ts} 做配置
+- 用 CLI 驱动开发循环：npx astro dev 起开发服务器；改动插件后跑 npx astro sync 重新生成 TypeScript 类型
+- 部署主路径：npx astro add <adapter> 装适配器 → npx astro check 查类型和配置错误 → npx astro build 产出构建物 → 确认输出目录 (如 dist/) 存在且非空 → 按适配器文档发布
+
+- 文件即路由：src/pages/ 下的文件名直接映射为 URL 路由；组件用 .astro 单文件格式——顶部 --- 包围的 frontmatter 区写 JS 逻辑，下方写 HTML 模板，props 经 Astro.props 接收
+- CLI 是唯一执行入口：一切动作走 npx astro 子命令 (dev / build / check / add / sync)；npx astro add 会自动安装集成或适配器，且每次新增/改动插件后必须重跑 astro sync
+- 外部依赖：Astro 框架本体及其 CLI；部署靠各平台适配器 (node / cloudflare / netlify / vercel，均可由 astro add 安装)；事实标准以 docs.astro.build 文档 (含 llms.txt) 为准

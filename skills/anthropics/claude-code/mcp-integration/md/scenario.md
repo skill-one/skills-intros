@@ -1,0 +1,5 @@
+# mcp-integration (`anthropics/claude-code/mcp-integration`)
+
+## scenario
+
+用 AI 干活时, 查一次数据库、拉一次 GitHub 数据, 都得手动复制粘贴、反复登录——工具互不相通, 效率腰斩. 我帮你把数据库、GitHub 等外部服务一次性接入 AI: 配好一次, 直接对话读写数据, 登录认证全自动. 🔌

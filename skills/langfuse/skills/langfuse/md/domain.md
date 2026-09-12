@@ -1,0 +1,7 @@
+# langfuse (`langfuse/skills/langfuse`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 核心是 AI 应用工程: SDK/API 集成、代码插桩、调试追踪、prompt 管理与实验评估, 本质是开发场景

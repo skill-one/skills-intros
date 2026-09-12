@@ -1,0 +1,7 @@
+# async-python-patterns (`wshobson/agents/async-python-patterns`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 专注 Python 异步编程与并发模式, 服务于高性能 API、爬虫、并发 I/O 场景的代码开发

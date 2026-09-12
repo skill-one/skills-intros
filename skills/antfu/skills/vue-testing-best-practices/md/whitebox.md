@@ -1,0 +1,12 @@
+# vue-testing-best-practices (`antfu/skills/vue-testing-best-practices`)
+
+## whitebox
+
+- 接收用户的 Vue 测试问题 (症状描述或报错, 如 '组件重构后测试总坏' / 'injection Symbol(pinia) not found')
+- 将问题与 skill.md 中的症状索引逐条匹配 (11 条 bullet, 每条对应一个具体痛点)
+- 命中后加载对应的 reference/*.md 指南文件 (skill.md 本身只存指针)
+- 依照该指南的方案输出针对性解答
+
+- 症状路由机制: skill.md 是一张「问题症状 → 解决方案文档」的索引表, 按 '遇到什么情况 → 看哪篇文档' 组织, 而非通用教程; 精确匹配症状才能命中对应方案
+- 按需加载: 主文件极简, 具体细节全部下沉到 reference/ 目录下的独立文档, 命中才展开, 未命中不引入无关内容
+- 外部依赖: 测试栈为 Vitest (推荐单测框架) + Vue Test Utils (组件测试) + Playwright (推荐 E2E); 参考来源为官方文档 (vuejs.org 测试指南, test-utils.vuejs.org, vitest.dev, playwright.dev)

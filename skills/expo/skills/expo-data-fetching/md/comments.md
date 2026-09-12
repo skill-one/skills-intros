@@ -1,0 +1,10 @@
+# expo-data-fetching (`expo/skills/expo-data-fetching`)
+
+## comments
+
+- user: 第一次写 RN 的新手, category: 坑, comment: 没检查 response.ok，接口 500 时我拿到的是错误页还当数据渲染。加一句 if (!response.ok) throw 就正常了。
+- user: 从 Web 转来的前端, category: 注意, comment: 改 .env 不生效卡了半天：EXPO_PUBLIC_ 是打包时写死的，必须重启 dev server。密钥别放这前缀，会被打进包里。
+- user: 独立开发者, category: 妙用, comment: 刷新失败我不再清数据，保留缓存加非阻塞错误条重试。isLoading 只管首次加载，后台刷新看 isFetching，弱网体验明显变好。
+- user: 后端老兵, category: 启发, comment: 我以前只返回状态码。原来每个屏幕有 loading、错误、空、内容四态，接口把 error.message 和 code 带全，前端少写很多 if。
+- user: 首次独立上架 App 的前端, category: 坑, comment: token 存 AsyncStorage 被同事指出明文可读，换 expo-secure-store 一行的事。上线前务必查一遍，我差点带病发版。
+- user: 踩过闪屏坑的 RN 老鸟, category: 注意, comment: 启动读登录态再跳转，没等持久化状态读完，冷启动每次先闪登录页，深链接也路由错。按指南在根布局等读完再渲染就好了。

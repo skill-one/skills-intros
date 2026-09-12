@@ -1,0 +1,7 @@
+# argent-android-emulator-setup (`software-mansion/argent/argent-android-emulator-setup`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 负责启动 Android 模拟器并打通开发环境, 是编码调试的前置基础设施。

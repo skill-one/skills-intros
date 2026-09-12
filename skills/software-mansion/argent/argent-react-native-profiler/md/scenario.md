@@ -1,0 +1,5 @@
+# argent-react-native-profiler (`software-mansion/argent/argent-react-native-profiler`)
+
+## scenario
+
+App 滑动卡顿、点按转圈，改了三天代码还是卡——因为不知道到底哪个组件在拖慢。我能实测每次渲染耗时，用数据揪出元凶，再验证修复前后效果。📊

@@ -1,0 +1,7 @@
+# python-code-style (`wshobson/agents/python-code-style`)
+
+## tagline
+
+- 让整个团队的代码, 像一个人写的
+- 格式交给工具, 争论止于规范
+- 命名清晰, 文档完整, 类型护航

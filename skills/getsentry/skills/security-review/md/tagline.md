@@ -1,0 +1,7 @@
+# security-review (`getsentry/skills/security-review`)
+
+## tagline
+
+- 只报真漏洞, 不发虚警
+- 深挖数据流向, 漏洞无处遁形
+- 上线前的安检门, 风险止步于此

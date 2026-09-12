@@ -1,0 +1,10 @@
+# nuget-manager (`github/awesome-copilot/nuget-manager`)
+
+## comments
+
+- user: .NET 后端老兵, category: 妙用, comment: 它先查根目录有没有 Directory.Packages.props 再动文件。我们全解决方案 20 个项目, 升级 Newtonsoft.Json 只改一处, 版本全体同步, 不用挨个 csproj 搜。
+- user: 前端转 .NET 的新手, category: 坑, comment: 我以前手改 csproj 加 PackageReference, 标签或版本写漏, 到构建才炸还找不到原因。按流程走 dotnet add / remove 之后, 这类低级错误归零。
+- user: CI/CD 运维老哥, category: 注意, comment: 版本改完必须立刻 dotnet restore。我跳过这步直接提交, 到流水线才发现该版本号根本不存在, 白等一轮构建还被同事追问。
+- user: 团队 Tech Lead, category: 妙用, comment: 先 dotnet package search --exact-match 确认版本号真实存在再改文件, 等于升版本前加了道防呆, 我再没把 13.0.3 手滑写成 13.0.13。
+- user: 接手老服务器的人, category: 注意, comment: 上手前确认三样: .NET SDK 已装、dotnet 在 PATH、jq 或 PowerShell 二选一 (校验版本用)。老服务器缺哪个都先补齐, 不然第一步验证就跑不动。
+- user: 祖传代码维护者, category: 启发, comment: 以前升版本全凭感觉改字符串, 现在固定走 验证→改→restore 三步, 出错当场发现, 不用等三天后构建红了再回头排查是哪次改动惹的祸。

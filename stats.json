@@ -1,20 +1,20 @@
 {
   "covers": {
-    "rendered": 794
+    "rendered": 993
   },
   "prompts": {
-    "blackbox": 840,
-    "comments": 840,
-    "cover": 840,
-    "domain": 840,
-    "persona": 840,
-    "scenario": 840,
-    "tagline": 840,
-    "whitebox": 840
+    "blackbox": 994,
+    "comments": 994,
+    "cover": 994,
+    "domain": 994,
+    "persona": 994,
+    "scenario": 994,
+    "tagline": 994,
+    "whitebox": 994
   },
   "skills": {
-    "complete": 840,
-    "remaining": 160,
+    "complete": 994,
+    "remaining": 6,
     "stale": 0,
     "total": 1000
   },

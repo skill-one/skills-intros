@@ -1,0 +1,5 @@
+# swift-concurrency (`avdlee/swift-concurrency-agent-skill/swift-concurrency`)
+
+## scenario
+
+升完 Swift 6,满屏 Sendable 报错、数据竞争闪退,改一处崩一处?我先查工程设置再定位隔离边界,一次只修一类错,小步验证不瞎改,安全迁移不踩坑。iOS 并发问题,交给我。

@@ -1,0 +1,5 @@
+# better-writing (`jakubkrehel/skills/better-writing`)
+
+## scenario
+
+产品上线在即,报错却只写"出错了",按钮一会儿"确定"一会儿"好的"——用户看不懂,悄悄流失。我专改界面文案:措辞统一、报错给解法、按钮直说后果,让每个字都留得住人。

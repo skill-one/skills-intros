@@ -1,0 +1,5 @@
+# conventional-commit (`github/awesome-copilot/conventional-commit`)
+
+## scenario
+
+改完代码要提交,却对着 git 发呆:是 feat 还是 fix?写"改了点东西"还是详细描述?📌 半夜赶工最怕纠结这个。我帮你:自动检查改动、按规范生成标准提交信息、一条命令直接提交。规范的历史记录,回溯问题再也不用猜。

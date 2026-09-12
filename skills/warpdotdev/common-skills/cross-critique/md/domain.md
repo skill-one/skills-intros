@@ -1,0 +1,7 @@
+# cross-critique (`warpdotdev/common-skills/cross-critique`)
+
+## domain
+
+**domain**: 🧠 知识管理
+
+**reason**: 核心是多方案交叉评审与综合分析, 属于调研与深度研究类的决策分析技能, 而非具体写代码/测试/运维。

@@ -1,0 +1,9 @@
+# nuget-manager (`github/awesome-copilot/nuget-manager`)
+
+## blackbox
+
+**function**: 帮 .NET 项目安装、卸载、升级第三方组件包 (NuGet 包), 并保证改完项目仍能正常编译还原。
+
+- input: 「给 WebApi 项目装上 Serilog」, output: WebApi 项目新增 Serilog 依赖, 打开项目即可直接写日志代码, 无需手动改配置
+- input: 「把整个解决方案的 Newtonsoft.Json 升级到 13.0.3」, output: 所有相关项目里的版本号统一改为 13.0.3, 并已验证还原无报错 (还原 = 拉取依赖并检查项目是否还能正常构建)
+- input: 「把测试项目里的 Moq 移除掉」, output: Moq 从该项目依赖中干净移除, 项目文件不再残留无用引用

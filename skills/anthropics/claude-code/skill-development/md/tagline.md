@@ -1,0 +1,7 @@
+# skill-development (`anthropics/claude-code/skill-development`)
+
+## tagline
+
+- 让 Claude 从通才变专家
+- 一次沉淀,永久复用
+- 化繁为简,按需加载

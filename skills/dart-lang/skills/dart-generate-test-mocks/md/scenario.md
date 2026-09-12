@@ -1,0 +1,5 @@
+# dart-generate-test-mocks (`dart-lang/skills/dart-generate-test-mocks`)
+
+## scenario
+
+写 Dart 测试一碰 API (接口) 或数据库就头疼: 真请求慢、不稳定、断网就跑不了。我能用 mock (替身对象) 隔离外部依赖并自动生成代码, 让测试不联网、秒级通过、可反复运行 🧪

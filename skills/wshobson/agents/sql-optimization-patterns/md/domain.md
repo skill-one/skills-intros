@@ -1,0 +1,7 @@
+# sql-optimization-patterns (`wshobson/agents/sql-optimization-patterns`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 核心是数据库性能优化: 慢查询诊断、索引设计与 EXPLAIN 分析, 属数据库开发而非数据分析。

@@ -1,0 +1,10 @@
+# skill-development (`anthropics/claude-code/skill-development`)
+
+## comments
+
+- user: 第一次写 skill 的后端, category: 坑, comment: description 写泛话如「处理文档」几乎不触发。把用户原话加引号写进去, 比如「合并 PDF」「转 Word」, 触发立刻变准。
+- user: 产品出身的新手, category: 坑, comment: 我把 8000 字全塞 SKILL.md, 每次触发都全量加载, 响应又慢又贵。拆成 1800 字正文 + references/ 放细节后才正常。
+- user: 运维老哥, category: 妙用, comment: scripts/ 里的脚本是让 Claude 直接执行的, 不用读进上下文。我把重复写的日志清理脚本放进去, 半小时的活一句话搞定。
+- user: 独立开发者, category: 妙用, comment: 先按第一步问真实用户「你会说什么来触发」, 拿到的原话直接当 description 里的触发短语, 比自己憋关键词准得多。
+- user: 踩过重复坑的全栈, category: 注意, comment: 同一份 schema 别既写 SKILL.md 又写 references。我改了正文忘改引用文件, Claude 拿旧版跑出错误结果。信息只放一处, 正文留指针。
+- user: 技术团队负责人, category: 启发, comment: 为了写 skill, 我被迫把「只有老师傅知道」的流程一条条显式写出来, 结果这份 SKILL.md 顺手成了新人的上岗手册。

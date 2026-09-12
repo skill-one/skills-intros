@@ -1,0 +1,14 @@
+# extension-oql (`caffeinelabs/skills/extension-oql`)
+
+## whitebox
+
+- 建模: 遍历 actor 的集合字段 (Map/List/数组中的记录), 每张值得查询的表声明为一个 entity
+- 装依赖: 在首个 `mo:caffeineai-oql/...` import 的同一写入批次执行 `mops add caffeineai-oql@0.6.1`, 并加构建参数 `--default-persistent-actors`
+- 声明实体: 在 `include Expose({ entities = [...] })` 内对每个集合链式调用 `.toEntity(名字, 类型名, 主键).sample({...})`, 按需补权限级别, 最后 `.build()`
+- 处理非基础字段: 要么为该类型写 `<TypeName>Value.mo` 的 `_toRow` 保持自动派生, 要么改用手动模式 `.payload` / `.flatten` 逐列提取
+- 部署后, Expose 混入的两个端点 `schema()` (发现字段) 和 `execute()` (JSON 查询) 使 Data Intelligence agent 可用自然语言应答数据问题
+
+- 编译期自动派生 + 采样定 schema: `.toEntity` 把全基础字段的记录自动派生成行列; `.sample()` 用一条哑数据播种 schema (空集合且无 sample → 空 schema)。类型解析靠顶层 import (Entity / MapEntity / RecordValue / <Type>Value 等) — receiver notation 只解析文件顶层 import, 缺了报 "field ... does not exist", 补 import 而非换包版本
+- 逐实体鉴权 (运行时): 四档 `.public_()` / `.controllerOnly()`(默认) / `.scopedPerUser()` / `.controllerOrScoped()`; `schema()` 与 `execute()` 都对实时 caller 做检查。scoped 档需 owner 列 (`.ownedBy` / `.ownedByWith`), 缺失则 `.build()` 时 trap 防数据泄露; `.viewWith` 重塑行后整个查询管道 (含过滤) 都基于重塑后的行求值, 隐藏值无法被探测
+- 手动模式与非基础字段转换: 查询值统一为 `OQL.Value = { #null_; #bool; #nat; #int; #float; #text }`; `.payload(name, extract)` 单字段提取, `.flatten` 把嵌套记录拍平成列, option/variant 用哨兵值 (如 null → #text("")) 转 Text; `.edge` 给已有字段标外键, 支持点路径跨表遍历 (如 "product.name"), 目标实体必须注册在同一 canister 内
+- 依赖: mops 包 `caffeineai-oql` (~0.6.1); Motoko 编译器 `moc >= 1.11` (自动派生所需); 构建参数 `--default-persistent-actors` (必需), 若用 `OQL.Table` 且需超 4 GiB Region 再加 `--max-stable-pages 1638400`

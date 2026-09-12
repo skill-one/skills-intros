@@ -1,0 +1,5 @@
+# better-interface (`jakubkrehel/skills/better-interface`)
+
+## scenario
+
+产品上线后用户流失,却说不出界面哪里不对?按钮点不到、文字看不清、报错没法解……我做一次界面体检:无障碍、排版、文案、配色逐项排查,只报有证据的问题,按用户影响排序,附具体改法。🔍

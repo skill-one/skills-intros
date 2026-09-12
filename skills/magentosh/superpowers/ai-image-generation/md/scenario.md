@@ -1,0 +1,5 @@
+# ai-image-generation (`magentosh/superpowers/ai-image-generation`)
+
+## scenario
+
+新品要拍照, 请摄影师动辄上千还等一周? 告诉我想法即可, 我用 AI 几分钟生成产品图、海报、营销配图, 文字排版清晰, 想改随时改。📸

@@ -1,0 +1,7 @@
+# agent-reach (`panniantong/agent-reach/agent-reach`)
+
+## domain
+
+**domain**: 🧠 知识管理
+
+**reason**: 核心能力是跨平台信息检索与全网调研，为研究/资料沉淀提供素材。

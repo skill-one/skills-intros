@@ -1,0 +1,9 @@
+# sanity-migration (`sanity-io/agent-toolkit/sanity-migration`)
+
+## blackbox
+
+**function**: 把你旧网站里的文章、图片等内容完整搬进 Sanity (一个现代内容管理平台), 搬完内容不丢、图片不挂、旧链接不断。
+
+- input: WordPress 导出的 XML 备份文件, output: 可导入 Sanity 的整套内容, 外加一份「旧网址 → 新网址」跳转对照表, 老访客不会打开 404
+- input: 一个装满 .md 文章的文件夹 (含配图), output: 迁移完成的 Sanity 站点内容: 正文从 Markdown 变成可编辑的结构化富文本, 图片全部正确归位
+- input: 旧 CMS 的导出数据 + 你新站点的信息, output: 一份迁移前计划 (哪些内容要搬、怎么对应) + 搬完后的校验报告 (逐项核对文章数量、图片、链接是否完好)

@@ -1,0 +1,7 @@
+# golang-pro (`jeffallan/claude-skills/golang-pro`)
+
+## tagline
+
+- 并发不泄漏,性能经得起剖析
+- 地道 Go 代码,生产级交付
+- 小接口,大并发,稳上线

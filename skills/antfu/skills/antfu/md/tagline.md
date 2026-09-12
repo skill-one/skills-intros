@@ -1,0 +1,7 @@
+# antfu (`antfu/skills/antfu`)
+
+## tagline
+
+- Anthony Fu 式前端工程实践
+- 规范先行,代码简洁可追溯
+- 从搭建到发布,一步到位

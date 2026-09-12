@@ -1,0 +1,7 @@
+# golang-pro (`jeffallan/claude-skills/golang-pro`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: Go 语言专家: 并发、微服务、性能优化与测试编码实现

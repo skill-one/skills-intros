@@ -1,0 +1,7 @@
+# gpt-image-2 (`gargantuax/openskills/gpt-image-2`)
+
+## domain
+
+**domain**: 🎨 设计多媒体
+
+**reason**: 核心能力是图像生成与编辑 (文生图、图编辑、蒙版/多图合成), 属于视觉制作。

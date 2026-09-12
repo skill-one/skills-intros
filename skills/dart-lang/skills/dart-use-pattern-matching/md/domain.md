@@ -1,0 +1,7 @@
+# dart-use-pattern-matching (`dart-lang/skills/dart-use-pattern-matching`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 技能核心是 Dart 模式匹配编码——用 switch 表达式与解构模式写代码、重构, 纯开发场景

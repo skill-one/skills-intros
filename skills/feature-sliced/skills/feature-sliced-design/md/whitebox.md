@@ -1,0 +1,13 @@
+# feature-sliced-design (`feature-sliced/skills/feature-sliced-design`)
+
+## whitebox
+
+- 任务进来，先与 SKILL.md 描述的场景匹配（放代码、放静态资源、审查结构、解决交叉导入、迁移、框架集成等），定位到对应章节
+- 放代码类决策走 Section 2 五步决策树：只在一处用→留在 pages；无业务逻辑的基础设施→shared；完整用户动作且确认多处复用→features；业务领域模型→entities；全局配置→app，配合 Section 3 放置表快速对照
+- 审查结构时用 Section 4 的五条硬规则校验：只能向下层导入、必须经 index.ts 公共 API、同层禁止交叉导入、领域命名（禁止 types.ts/utils.ts）、shared 不放业务逻辑
+- 交叉导入时按 Section 7 分层处理：entities 层优先合并边界（@x 仅最后手段），features/widgets 用 A~D 四策略（合并切片/下沉 entities/上层组合/经公共 API）
+- 输出放置结论并附理由；特定情形（迁移、框架、资产、@x 等）只按 Section 10 按需加载对应 reference 文件，不预载全部
+
+- 抽取规则作核心判断：同一代码现在被多处使用 + 有独立的变更理由 + 边界职责聚焦，三条全满足才允许从 pages 抽取；存疑一律留在 pages（golden rule）。多数项目只需 app/ + pages/ + shared/，widgets 层被官方劝退
+- 规则分层校验：MUST（Section 4 五条）违反即阻断，SHOULD（pages 优先、entities 保守）/AVOID 反模式清单用于建议；可建议用官方 linter Steiger（@feature-sliced/steiger，npx steiger src）验证，重点规则 insignificant-slice（单消费切片应上移合并）、excessive-slicing（切片过多应合并）
+- 外部依赖仅两项：FSD v2.1 方法论本身（来源 fsd.how，本文即其规则集）和 Steiger linter；不依赖任何模型 API，纯规则匹配输出

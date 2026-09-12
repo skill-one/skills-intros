@@ -1,0 +1,13 @@
+# gpt-image-2 (`gargantuax/openskills/gpt-image-2`)
+
+## whitebox
+
+- 读 references/config.md 确定环境变量与默认值 (OPENAI_BASE_URL 默认 https://api.openai.com/v1)
+- 读 references/api-surface.md, 在 generations / edits / responses 三条路由中选一条
+- 运行 scripts/gpt_image.py 对应子命令构建请求; payload 形状是主要风险时先加 --dry-run 只校验不发送
+- 请求发往 OpenAI 兼容端点: generations/edits 用 gpt-image-2, responses 用文本模型 (默认 gpt-5.4) 驱动图像工具
+- 解码返回的 base64 图像, 按单路径或 {index} 模式写入 --output; 需要留证时 --save-response 存原始 JSON/SSE
+
+- 单入口 Python 脚本 + 三子命令映射三条 API 路由: generations (公开文生图), edits (multipart 图片编辑 + mask 上传), responses (流式、混合文本+图像输入、previous_response_id、tool_choice、action、tool_model 等高级流; 顶层文本模型与图像模型分离)
+- 发送前强校验、快速失败: 拦截不支持的 gpt-image-2 组合——透明背景、非法尺寸、partial_images 超出 0..3、公共 Images 路由上 stream=true 且 n>1; 对 OpenAI GPT 图像模型省略 response_format (返回本身即 base64)
+- 配置优先级链 + 通用网关: 进程环境变量覆盖 .env, CLI 参数覆盖两者; 兼容任何 OpenAI 兼容网关; 秘钥永不打印

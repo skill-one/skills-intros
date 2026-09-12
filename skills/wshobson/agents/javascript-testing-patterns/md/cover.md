@@ -1,0 +1,5 @@
+# javascript-testing-patterns (`wshobson/agents/javascript-testing-patterns`)
+
+## cover
+
+A code quality inspector in a khaki utility vest, biting his lip and squinting through a magnifying glass at a laptop screen of green check marks, at a late-night desk with a second monitor and empty coffee mugs

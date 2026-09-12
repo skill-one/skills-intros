@@ -1,0 +1,13 @@
+# argent-test-ui-flow (`software-mansion/argent/argent-test-ui-flow`)
+
+## whitebox
+
+- 先 list-devices 选定并启动一台模拟器/真机，launch-app 打开被测应用（iOS 上应用在后台时 describe 会失败）
+- screenshot 拍基线截图，记录返回的 path 供后续视觉对比
+- 用发现工具定位目标控件坐标：React Native 应用用 debugger-component-tree，普通页面和弹窗用 describe，拿到 (tap: x,y) 坐标
+- 执行动作（gesture-tap / keyboard / gesture-swipe 等），工具会自动返回一张截图
+- 按断言类型选证据验证：视觉用 screenshot-diff 对比基线，结构性用 describe 看控件树，运行时用网络日志/debugger；确认后进入下一步，循环直到流程走完
+
+- 跨平台自动分发：iOS 和 Android 的交互工具名完全相同，tool-server 根据传入的 udid 形状自动路由（UUID 形状 → iOS，adb serial → Android）；describe 在 iOS 返回 AX 无障碍树（为空时回退 native-devtools），在 Android 返回 uiautomator 树，统一输出 DescribeNode 结构
+- 证据分级验证：视觉类断言（布局/颜色/渲染）用 screenshot-diff 与 scale 1.0 的基线图逐像素比对；结构类断言（导航/元素存在/选中态）用 describe 或 debugger-component-tree；运行时类（console 错误/网络请求）用 view-network-logs、debugger 系列工具
+- 同步等待与凭据安全：用 await-ui-element 阻塞等待元素出现/消失（要求选择器来自 describe 或先前观察到，避免瞎猜超时），替代固定 sleep；密码等敏感输入用 {{secret:NAME}} 占位符，由服务端从环境变量/secrets 文件解析，明文不进入对话上下文

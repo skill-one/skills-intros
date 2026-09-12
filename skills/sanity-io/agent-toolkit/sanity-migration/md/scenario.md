@@ -1,0 +1,5 @@
+# sanity-migration (`sanity-io/agent-toolkit/sanity-migration`)
+
+## scenario
+
+上千篇文章困在旧 CMS:手动搬运加班到深夜、图片断链、SEO 排名下滑,迁错只能重来。我用脚本把 WordPress 等旧站整体搬进 Sanity:正文自动转换、图片迁移、旧链接保留,可重复运行、逐项校验,不返工。📝

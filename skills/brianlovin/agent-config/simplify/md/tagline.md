@@ -1,0 +1,7 @@
+# simplify (`brianlovin/agent-config/simplify`)
+
+## tagline
+
+- 代码更干净,功能零改动
+- 刚写完,就简到最好读
+- 去掉复杂,留下清晰

@@ -1,0 +1,12 @@
+# excel-automation (`claude-office-skills/skills/excel-automation`)
+
+## whitebox
+
+- 接收任务描述, 先确认场景: 要实时控制运行中的 Excel, 还是仅做文件处理
+- 生成 xlwings Python 代码: 建立连接 (books.active 或打开指定文件) → 定位 Range → 批量读写数据
+- 执行代码, 由 xlwings 驱动本机 Excel 实例完成写入、计算、格式化/图表, 需要时调 VBA 宏 (wb.macro) 拿返回值
+- 收尾: 恢复 app 设置 (calculation/screen_updating), save → close → quit, 输出结果
+
+- 核心依赖 xlwings (要求本机装有 Excel, 故不适合服务器端): 与 openpyxl (纯文件读写) 的本质区别是能实时控制 Excel、执行 VBA、注册 UDF (@xw.func 让 Python 函数变成 =函数名() 公式); 数据处理配 pandas/numpy, 嵌图用 matplotlib 生成的 figure 直接贴进表
+- 批量数组 I/O + 性能开关: 不逐单元格操作, 整块 Range 一次性赋值/读取 (返回 list of lists); 批处理期间 app.screen_updating=False、calculation='manual'、display_alerts=False, 结束后恢复; 用 try/finally 保证连接一定被关闭
+- 动态边界探测 + 底层逃生口: 用 current_region / A1.expand() / end('down') 自动探测数据范围, 不写死行列; xlwings 未封装的能力走 .api 层直接调 (刷新图表 chart.api.Refresh、导 PDF ExportAsFixedFormat、读 VBA 工程 wb.api.VBProject); 元数据另声明了 office-mcp 服务器工具 (read_xlsx / create_xlsx / apply_formula / pivot_table)

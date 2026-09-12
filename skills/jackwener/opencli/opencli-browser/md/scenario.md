@@ -1,0 +1,5 @@
+# opencli-browser (`jackwener/opencli/opencli-browser`)
+
+## scenario
+
+每天重复登录、填表、翻页复制网页数据,费时又易错?我能在真实浏览器里替你操作:自动填单、点击流程、抓取数据,全程无需编程,你看结果就行 💻

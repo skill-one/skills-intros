@@ -1,0 +1,5 @@
+# dart-add-unit-test (`dart-lang/skills/dart-add-unit-test`)
+
+## scenario
+
+改一行代码,旧功能悄悄坏了,等用户投诉才发现?手动点来点去验证,又慢又漏。我为你的 Dart/Flutter 代码编写单元测试(自动检查代码对错的小程序),每次改动一键验证,让 bug 在上线前现形。🧪

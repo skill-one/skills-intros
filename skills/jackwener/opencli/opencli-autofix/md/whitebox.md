@@ -1,0 +1,13 @@
+# opencli-autofix (`jackwener/opencli/opencli-autofix`)
+
+## whitebox
+
+- 带着 --trace retain-on-failure 重跑失败命令, 从 stderr 的 trace 块读取 summary.md, 其 front matter 给出 adapterSourcePath 和错误码
+- 对照 adapter 源码与 trace 证据 (页面最终快照/网络事件), 分类根因 (SELECTOR / EMPTY_RESULT / API_ERROR / TIMEOUT 等)
+- 用 opencli browser 探查线上站点: DOM 变了就看 state 快照, API 变了就用 network --filter/--detail 抓新端点和响应结构
+- 对 adapterSourcePath 这一个文件做最小修补 (换选择器/端点/取数路径), 重跑原命令验证
+- 重试通过后, 起草上游 issue, 经用户确认用 gh issue create 提交回 jackwener/OpenCLI
+
+- 证据链驱动: 失败运行落盘一套 trace 工件 (summary.md / trace.jsonl / network.jsonl / state/ / screenshots/), summary.md front matter 是机器可读入口, 修补范围被硬性约束在其中的 adapterSourcePath 这一个文件, 不碰 src/、tests/、package.json
+- 先排除'空≠坏': EMPTY_RESULT 必须先用替代查询重试 + 浏览器人工 spot-check 证明可复现, 才进入修补轮次, 避免给正常 adapter 打噪声补丁
+- 安全闸门与预算: AUTH_REQUIRED(77) / BROWSER_CONNECT(69) / CAPTCHA 直接停手不改码; 最多 3 轮 trace→修→重试; 禁止放宽 verify fixture 来掩盖失败; 依赖外部工具仅 opencli CLI (含 browser 子命令) 和 gh CLI, 不引入第三方 npm 包, 只允许 @jackwener/opencli/* 导入

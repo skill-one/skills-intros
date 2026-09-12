@@ -1,0 +1,7 @@
+# responsive-design (`wshobson/agents/responsive-design`)
+
+## tagline
+
+- 一套布局,适配所有屏幕
+- 从手机到桌面,体验不打折
+- 让界面随屏而变,恰到好处

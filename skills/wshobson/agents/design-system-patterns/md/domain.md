@@ -1,0 +1,7 @@
+# design-system-patterns (`wshobson/agents/design-system-patterns`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 核心是把设计规则工程化为代码: design tokens (统一管理颜色/间距的变量)、主题切换、组件库架构, 属前端架构编码而非视觉创作。

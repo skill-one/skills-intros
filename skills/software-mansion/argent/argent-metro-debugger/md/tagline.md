@@ -1,0 +1,7 @@
+# argent-metro-debugger (`software-mansion/argent/argent-metro-debugger`)
+
+## tagline
+
+- 直连运行时, 让 Bug 无处藏身
+- 组件、日志、源码, 一屏尽览
+- 别猜了, 让应用自己开口说话

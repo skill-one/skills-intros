@@ -1,0 +1,9 @@
+# argent-react-native-profiler (`software-mansion/argent/argent-react-native-profiler`)
+
+## blackbox
+
+**function**: 给你的 React Native 手机应用做性能体检:找出哪些界面组件刷新太慢、CPU 时间浪费在哪,并给你一份按严重程度排序的诊断报告。
+
+- input: 在 iOS 模拟器上运行 App,说一句「帮我测一下滑动商品列表时有多卡、卡在哪」, output: 一份性能诊断报告:按耗时排序列出最慢的界面组件、每个组件刷新了几次、每次花多少毫秒、CPU 时间集中花在哪些函数上
+- input: 改完代码后说一句「用同样的操作再测一次」, output: 修复前后的对比结果,明确告诉你目标指标是变好、持平还是变差,不会假装一定有提升
+- input: 一个疑问:「这个页面为什么一直卡?」, output: 定位到具体的组件文件和代码行,并说明是哪个组件在被反复触发刷新拖慢了页面

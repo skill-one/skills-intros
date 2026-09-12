@@ -1,0 +1,5 @@
+# twitter-automation (`magentosh/superpowers/twitter-automation`)
+
+## scenario
+
+运营 X(推特)账号太累?每天手动发帖、错过黄金时段、互动回不过来…🤯 我能帮你:一键发推、带图带视频发布、点赞转发、发私信、自动关注,一条指令全搞定。你只管想内容,发布交给我。

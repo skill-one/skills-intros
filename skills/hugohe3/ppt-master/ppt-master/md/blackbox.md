@@ -1,0 +1,11 @@
+# ppt-master (`hugohe3/ppt-master/ppt-master`)
+
+## blackbox
+
+**function**: 把你的文字、文档或旧 PPT 变成一份设计好的、可编辑的 PowerPoint 演示文稿（.pptx），还能给成品配上旁白导出成自动播放的演示视频。
+
+- input: 一句话需求，如「帮我做一份 10 页的新能源汽车市场趋势汇报 PPT」, output: 一份可直接打开编辑的 .pptx 文件：封面、目录、图表页、结尾页都排好版，配色字体统一
+- input: 一份做得很粗糙的旧 .pptx 文件, output: 同内容重新设计美化后的 .pptx：版式整齐、风格统一、重点突出
+- input: 几张别人 PPT 的截图/照片, output: 照着原图样式重新做出来的一份可编辑 .pptx，你可以继续改文字和配色
+- input: 公司的品牌模板 .pptx + 一份主题文稿, output: 严格套用该模板样式填充内容的新演示文稿，和公司其他 PPT 风格一致
+- input: 一份做好的 .pptx + 每页要讲的词, output: 带旁白、能自动翻页播放的演示视频，可以直接发给别人观看

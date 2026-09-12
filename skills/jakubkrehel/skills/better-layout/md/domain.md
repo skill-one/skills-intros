@@ -1,0 +1,7 @@
+# better-layout (`jakubkrehel/skills/better-layout`)
+
+## domain
+
+**domain**: 🎨 设计多媒体
+
+**reason**: 专注 UI 布局: 分组、对齐、阅读顺序与留白, 属界面设计

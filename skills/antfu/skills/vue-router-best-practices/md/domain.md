@@ -1,0 +1,7 @@
+# vue-router-best-practices (`antfu/skills/vue-router-best-practices`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 专注 Vue Router 4 前端路由框架的导航守卫、路由参数与生命周期最佳实践， 纯写代码场景。

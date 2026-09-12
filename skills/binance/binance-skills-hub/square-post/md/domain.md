@@ -1,0 +1,7 @@
+# square-post (`binance/binance-skills-hub/square-post`)
+
+## domain
+
+**domain**: ✍️ 内容创作
+
+**reason**: 专司把文字、图片、文章、视频发布到币安广场 (Binance Square) 这一社媒平台, 属社媒内容发布。

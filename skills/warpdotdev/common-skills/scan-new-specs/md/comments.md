@@ -1,0 +1,10 @@
+# scan-new-specs (`warpdotdev/common-skills/scan-new-specs`)
+
+## comments
+
+- user: 平台工程老兵, category: 坑, comment: 我还在老配置里挂着它的定时任务，结果一直静默没跑——它的调度 agent 已被暂停。别排查了，直接换 missing_docs。
+- user: 新来的文档工程师, category: 注意, comment: 它 2026-08-20 已废弃：spec 一合并就写文档，产出全是没上线功能的稿子。查文档缺口请改用 missing_docs 的 drift-watch 模式。
+- user: 想给自己功能补文档的后端, category: 妙用, comment: 想给自己功能补文档，别指望它，直接调 write-feature-docs：交互式过一遍 spec 调研和大纲确认，现在依然可用。
+- user: 技术负责人, category: 启发, comment: 退役原因值得记住：spec 合并不等于功能上线。触发点选在「发布」而非「计划」——我的自动流程也踩过同款坑。
+- user: 文档仓维护者, category: 注意, comment: 旧 PR 里翻到它生成的草稿？那是对着未发布功能写的，别直接合，先按 docs-worthiness 标准重新评估一遍。
+- user: 刚接手调度配置的新手, category: 坑, comment: 我差点把它重新排进日程，那正是当年草稿 PR 刷屏的根源。要搭建调度的文档自动化，一律用 missing_docs。

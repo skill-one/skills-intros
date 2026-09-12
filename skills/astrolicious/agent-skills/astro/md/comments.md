@@ -1,0 +1,10 @@
+# astro (`astrolicious/agent-skills/astro`)
+
+## comments
+
+- user: 后端老兵, category: 妙用, comment: 在 src/pages 下建个 about.astro 文件,访问 /about 直接生效,不用配任何路由。对我们后端出身的人来说太省心了。
+- user: 第一次用的新手, category: 坑, comment: 装完插件没跑 npx astro sync,编辑器满屏类型报错,还以为装坏了。重跑一次 sync 就恢复。记住:动了插件就 sync。
+- user: 独立开发者, category: 注意, comment: 上线前在 astro.config 里把 site 填成正式域名,否则生成的 sitemap 和 canonical 链接是错的,SEO 等于白做。
+- user: 前端萌新, category: 坑, comment: 把要压缩的图片丢进 public/,构建后原样复制、毫无优化。后来才懂:要处理的资源放 src/,原样输出的才放 public/。
+- user: 运维老哥, category: 注意, comment: 我在 CI 里 build 前必跑 npx astro check,类型和配置错误提前暴露;部署前再确认 dist/ 非空,避开过空包上线。
+- user: 博客站长, category: 妙用, comment: 一条 npx astro add vercel --yes 装好适配器,配置自动写好。之前手动装依赖改配置折腾半天,现在一步到位。

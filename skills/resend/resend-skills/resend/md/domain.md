@@ -1,0 +1,7 @@
+# resend (`resend/resend-skills/resend`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 核心是邮件 API/SDK 集成: 写代码发送/接收邮件、Webhook 验证、幂等重试, 属于 API 框架集成开发

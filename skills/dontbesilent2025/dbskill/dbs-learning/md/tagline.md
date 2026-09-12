@@ -1,0 +1,7 @@
+# dbs-learning (`dontbesilent2025/dbskill/dbs-learning`)
+
+## tagline
+
+- 你的反馈, 决定下一篇讲什么
+- 像私教带练, 一个课题学到底
+- 课题拆成台阶, 按你的节奏上

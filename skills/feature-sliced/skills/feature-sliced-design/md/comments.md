@@ -1,0 +1,10 @@
+# feature-sliced-design (`feature-sliced/skills/feature-sliced-design`)
+
+## comments
+
+- user: 第一次用的新手, category: 坑, comment: 一上来把 6 层空文件夹全建了,之后每写个文件都纠结放哪。其实从 shared/ + pages/ + app/ 起步就够,真用到再加层。
+- user: 前端架构 10 年, category: 妙用, comment: 我把「多处真实在用+有独立变更理由+职责聚焦」三条件写进 review 模板,盲目抽 feature 的 PR 直接打回,相似却各自漂移的代码就留在各自页面。
+- user: v2.0 老项目维护者, category: 注意, comment: 接手 v2.0 项目先弄清:processes/ 层已弃用;widgets 是不推荐而非废弃,已有的层不用急着拆,迁移前先读 migration-guide。
+- user: 被 @x 坑过的中厂搬砖人, category: 坑, comment: 曾在 entities 间滥放 @x 解跨导入,边界互相锁死,重构成本暴涨。先试合并边界,不行再走策略 A-D,@x 是最后手段。
+- user: solo 全栈, category: 启发, comment: 以前信奉 DRY,用两处就急着抽公共层,现在明白错误抽象比重复更可怕。先放 pages,真痛了再抽,代码反而好改了。
+- user: 20 人团队 tech lead, category: 妙用, comment: 把 Steiger 挂进 CI(npx steiger src),insignificant-slice 会标出只有一个使用方的 slice,过早抽取在合并前就被拦住。

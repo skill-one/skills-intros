@@ -1,0 +1,10 @@
+# twitter-automation (`qu-skills/superpowers/twitter-automation`)
+
+## comments
+
+- user: 第一次用的新手, category: 坑, comment: 我把 username 直接填进 x/dm-send 的 recipient_id, 一直报错。后来先跑 x/user-get 拿到对方的数字 ID 才发出去。
+- user: 独立开发者, category: 妙用, comment: flux 生图返回的 URL 直接填 media_url, 一步出图发推, 全程不碰图床。我现在每天一张 AI 图推全自动跑。
+- user: 后端老兵, category: 注意, comment: media_url 只认公网 URL, 我传本地图片路径直接失败。本地图先传图床, 或改用生成类 app 拿现成链接。
+- user: 自媒体运营, category: 启发, comment: 把一周推文写进脚本循环调 post-tweet, 挂个定时任务一晚排完, 不用再每天开网页手发了。
+- user: 搞自动化的运维老哥, category: 坑, comment: 没先 belt login 就跑 post-tweet, 一直报认证错误, 还以为平台挂了。登录后重跑一次就通。
+- user: 做客服机器人的运营, category: 注意, comment: 推文文本里带双引号没转义, 命令直接报错。学乖了: 先用 sample --save 生成 input.json 再编辑, 稳。

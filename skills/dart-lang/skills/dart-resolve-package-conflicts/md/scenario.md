@@ -1,0 +1,5 @@
+# dart-resolve-package-conflicts (`dart-lang/skills/dart-resolve-package-conflicts`)
+
+## scenario
+
+深夜赶上线，dart pub get 报版本冲突💥。网上让你删 lock 文件重装？千万别——所有依赖会失控乱升级。我能外科手术式修复：只动冲突的那一个包，精准解锁，项目几分钟恢复构建。

@@ -1,0 +1,7 @@
+# expo-router (`expo/skills/expo-router`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: Expo Router 导航路由框架, 覆盖文件路由、Tab/Stack、Link、Modal 等移动端开发集成。

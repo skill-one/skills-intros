@@ -1,0 +1,5 @@
+# rust-async-patterns (`wshobson/agents/rust-async-patterns`)
+
+## scenario
+
+深夜,你的 Rust 异步服务莫名卡死:锁死、任务崩溃、问题无从下手 🔍。我专攻 Tokio 并发:快速定位死锁与阻塞,写对并发模式,告别玄学调试,让服务又快又稳。

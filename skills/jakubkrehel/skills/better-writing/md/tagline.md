@@ -1,0 +1,7 @@
+# better-writing (`jakubkrehel/skills/better-writing`)
+
+## tagline
+
+- 让产品说人话, 用户一次看懂
+- 报错即指路, 空白即起点
+- 删掉每个不做功的字

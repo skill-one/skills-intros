@@ -1,0 +1,7 @@
+# better-interface (`jakubkrehel/skills/better-interface`)
+
+## domain
+
+**domain**: 🧪 测试与质量
+
+**reason**: 界面审查本质是代码审查与质量检查: 跨可访问性/布局/文案/排版/配色挑问题、出报告, 只读不改码

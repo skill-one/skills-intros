@@ -1,0 +1,5 @@
+# github-actions-templates (`wshobson/agents/github-actions-templates`)
+
+## scenario
+
+每次改完代码,都要手动测试、打包、上线——又慢又容易漏步骤,半夜发布更是心惊肉跳 😰 我帮你搭好自动化流水线:代码一提交,机器自动测试、构建、发布,出错立刻报警。你只管睡觉 ☁️

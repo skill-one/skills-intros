@@ -1,0 +1,10 @@
+# dart-generate-test-mocks (`dart-lang/skills/dart-generate-test-mocks`)
+
+## comments
+
+- user: 刚上手 Dart 的新手, category: 坑, comment: 对返回 Future 的方法用了 thenReturn, 一跑就报 ArgumentError. 异步方法必须写 thenAnswer((_) async => ...), 全改完才通过, 上手先记住这条.
+- user: Java Mockito 转来的后端, category: 妙用, comment: @GenerateNiceMocks 真省事: 没打桩的方法自动返回默认值不报错, 不用像 Java 里给每个方法补 stub, 只写关心的 when, 样板代码少一半.
+- user: Flutter 独立开发者, category: 注意, comment: 改了被测类的方法签名后忘跑 build_runner, mock 还是旧签名, 报错一脸懵. 每次改完接口记得 dart run build_runner build 重新生成.
+- user: 做接口测试的 QA, category: 妙用, comment: captureAny 意外好用: 不只 verify 被调了几次, 还能抓出实际传给 mock 的参数再断言, 排查"到底发出了什么请求"时救过我.
+- user: 前端转写 Dart 的, category: 坑, comment: 一开始在类里直接 new http.Client(), mock 塞不进去, 测试真发了网络请求. 先把依赖改成构造函数注入, 替身才能生效.
+- user: 带小组的技术负责人, category: 启发, comment: 为了能 mock 而把外部依赖改成构造注入后, 业务代码反而更清爽了. 测试逼出来的解耦, 是这项技能给我的额外收益.

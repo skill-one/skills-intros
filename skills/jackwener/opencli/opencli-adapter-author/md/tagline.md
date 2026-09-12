@@ -1,0 +1,7 @@
+# opencli-adapter-author (`jackwener/opencli/opencli-adapter-author`)
+
+## tagline
+
+- 三十分钟，让任何网站听懂命令行
+- 不猜接口，数据眼见为实才交付
+- 站点有记忆，下次五分钟搞定

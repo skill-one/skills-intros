@@ -1,0 +1,13 @@
+# expo-router (`expo/skills/expo-router`)
+
+## whitebox
+
+- 接到 Expo Router 导航/路由任务后, 按需查阅 references/ 中对应主题的参考文档 (路由结构、tabs、头栏/工具栏、form sheet、搜索、缩放转场)
+- 分析用户 app/ 目录的路由现状 (_layout.tsx 与页面文件), 规划导航结构
+- 按约定落盘: 路由放 app/ 目录、kebab-case 文件名、迁移时删除旧路由文件、保证始终存在匹配 / 的路由
+- 按模板写代码: <Link> (含 Preview/长按菜单)、_layout.tsx 内定义 <Stack>/<NativeTabs>、modal/formSheet 用 Stack.Screen 配置
+- 若执行中发现文档错误或过时信息, 通过 npx submit-expo-feedback@latest 提交反馈
+
+- 文件即路由: app/ 目录结构直接映射路由, 支持动态路由 [id] 与分组路由 (index,search) 共享子页面; 组件/类型/工具禁止与路由文件混放 app/ 目录 (反模式), 组件独立存放
+- 声明式导航: 跨页面跳转统一用 expo-router 的 <Link>, 配合 asChild 包裹自定义组件、Link.Preview 实现 iOS 预览、Link.Menu 实现长按菜单; 原生栈只能通过 _layout.tsx 里的 <Stack> (from 'expo-router/stack') 定义, 页面标题用 <Stack.Title>
+- 依赖约束: 核心依赖 Expo SDK 的 expo-router 库; SDK 56+ 起禁止直接 import @react-navigation/*, 一律改用 expo-router/react-navigation 再导出; 原生语义色用 expo-router 的 Color (自动适配深浅色); 反馈依赖外部 CLI: npx submit-expo-feedback@latest

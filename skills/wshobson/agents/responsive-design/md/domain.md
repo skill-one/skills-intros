@@ -1,0 +1,7 @@
+# responsive-design (`wshobson/agents/responsive-design`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 响应式布局是前端代码实现: 移动优先、CSS Grid、容器查询等写码与重构工作

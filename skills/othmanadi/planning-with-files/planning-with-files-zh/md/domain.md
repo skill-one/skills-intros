@@ -1,0 +1,7 @@
+# planning-with-files-zh (`othmanadi/planning-with-files/planning-with-files-zh`)
+
+## domain
+
+**domain**: 🗂️ 办公效率
+
+**reason**: 核心是任务规划、项目拆解与进度跟踪，属项目管理类工具。

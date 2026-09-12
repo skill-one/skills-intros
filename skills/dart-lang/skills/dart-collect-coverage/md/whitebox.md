@@ -1,0 +1,12 @@
+# dart-collect-coverage (`dart-lang/skills/dart-collect-coverage`)
+
+## whitebox
+
+- 检查项目依赖, 把 coverage 包加入 dev_dependencies (Dart: dart pub add dev:coverage, Flutter 同理)
+- 运行 dart run coverage:test_with_coverage —— 脚本自动执行全部测试 (package:test / flutter_test)
+- 脚本从 Dart VM 收集 JSON 格式的覆盖率原始数据, 并直接格式化为 LCOV 报告 (标准覆盖率报告格式)
+- 校验产物: 确认 coverage/lcov.info 存在; 若个别文件缺覆盖率, 补写测试覆盖它, 或用 // coverage:ignore-file 明确豁免
+
+- 单命令封装: test_with_coverage 脚本一键完成「跑测试 → 采集 VM 数据 → 转 LCOV」; monorepo 场景需显式传入各包的 test 目录
+- 手动采集走 Dart VM service (运行时调试接口): 用 --pause-isolates-on-exit --enable-vm-service 挂起 isolate (Dart 的执行单元), 由 collect_coverage --wait-paused 抽取数据后 --resume-isolates 恢复执行
+- 格式化与豁免机制: format_coverage 将原始 JSON 转为 LCOV, --check-ignore 强制执行代码内指令 (// coverage:ignore-line / ignore-start/end / ignore-file); 可选 --function-coverage 和 --branch-coverage 收集函数/分支级指标 (需 Dart VM 2.17.0+)

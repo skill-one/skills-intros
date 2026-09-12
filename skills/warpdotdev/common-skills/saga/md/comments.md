@@ -1,0 +1,10 @@
+# saga (`warpdotdev/common-skills/saga`)
+
+## comments
+
+- user: 创业公司全栈, category: 坑, comment: 我急着批准 spec，worker 按自己理解做，验收全偏。后来把边界、异常都定死再批准，一次过——质量开关就在你按批准那一刻。
+- user: 第一次用的新手, category: 注意, comment: 以为进度存在项目仓库里，换电脑后 ~/.sagas 没拷，saga 没法恢复只能重开。它整个状态在仓库外，开工前记下路径，换机记得带走。
+- user: 后端老兵, category: 妙用, comment: 分支统一叫 saga/<名>/m1t2-slug，git branch --list '*saga/名/*' 一行列全，review 时对着任务文件看 diff，归属一目了然。
+- user: 运维老哥, category: 注意, comment: 每个并行 worker 一份独立 worktree，8 个任务=8 份 checkout，磁盘内存都吃紧。大活放远程跑，本机别硬扛 10 个并发。
+- user: 技术团队 lead, category: 启发, comment: 把"写不出无歧义验收标准的任务就别派"搬去管人了：以前 ticket 写"优化性能"，现在写"p99<200ms 且脚本随 MR"，人执行也变可靠。
+- user: 被中断过的长跑用户, category: 妙用, comment: 会话崩在第二个里程碑，新会话读 PROGRESS.md 接着跑，没重做。前提是过程日志一直在更新——它频繁写盘不是废话，是你的保险。

@@ -1,0 +1,10 @@
+# security-review (`getsentry/skills/security-review`)
+
+## comments
+
+- user: Django 后端老兵, category: 妙用, comment: 把整个仓库给它，别只贴一个文件。它真会去追 settings 来源——别家工具把配置文件里的 URL 误报成 SSRF，它查完直接放行，省了大量人工甄别。
+- user: 第一次用的新手, category: 坑, comment: 只贴单个文件给它，报告一半是「Needs Verification」存疑项。把整个项目给它、让它自己追输入来源，才会给出带证据的确认漏洞。单文件=半成品报告。
+- user: 全栈开发, category: 妙用, comment: 合 PR 前把 diff 丢给它成了我的习惯。真抓到过我从示例代码拷来的硬编码 AWS key，比同事 code review 眼尖，密钥泄漏类问题基本绝迹。
+- user: 创业公司 CTO, category: 注意, comment: 它只报高置信度、真可利用的洞。缺安全响应头、日志泄 PII 这类最佳实践问题不报——想当合规清单用会失望，但反过来它报出的基本不用怀疑。
+- user: 测试工程师, category: 注意, comment: 测试文件默认跳过，测试里写死的假密码它不会报，除非明确说「审测试代码安全」。别把「没报问题」当成测试代码干净的证明。
+- user: 开源项目维护者, category: 启发, comment: 报告每条都先论证「输入是否攻击者可控」，我才发现自己根本说不清很多参数的来源。现在写接口前先问「这值用户能不能改」，代码自然就稳了。

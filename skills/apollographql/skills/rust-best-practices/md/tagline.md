@@ -1,0 +1,7 @@
+# rust-best-practices (`apollographql/skills/rust-best-practices`)
+
+## tagline
+
+- 写地道 Rust, 一次就写对
+- 错误、性能、测试, 最佳实践全覆盖
+- 让每行代码, 都经得起 Clippy 考验

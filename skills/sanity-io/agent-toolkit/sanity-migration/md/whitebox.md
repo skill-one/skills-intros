@@ -1,0 +1,13 @@
+# sanity-migration (`sanity-io/agent-toolkit/sanity-migration`)
+
+## whitebox
+
+- 先读 references/general.md,再按源平台读对应指南(WordPress/Contentful/Strapi/Webflow/AEM/Payload/Drupal/Markdown),拿到抽取路线、建模陷阱和校验清单。
+- 写代码前先产出迁移计划:源访问方式、内容范围、schema 决策、抽取/转换/导入/校验、重定向与切换。
+- 编写确定性、可重跑的迁移脚本:做源→Sanity 映射文档,用源 ID/slug/路径/哈希派生稳定文档 ID,先建被引用的文档。
+- 先把源数据快照到磁盘再转换:富文本(HTML/Markdown)转成 Portable Text,资产上传进 Sanity/Media Library,不留旧 CDN 链接。
+- 用 createOrReplace/createIfNotExists 或 sanity datasets import --replace 导入,做数量/抽样/引用/重定向四项检查后才宣布完成,并产出校验摘要和切换(delta sync、跳转、SEO)计划。
+
+- 参考文档驱动:每个源平台有专属 reference(general.md 兜底),决定抽取命令、源平台陷阱(如旧站渲染结构不照搬,只按内容本质建模)与校验点;未覆盖的平台套用最接近的既有模式。
+- 收敛式 ETL:靠确定性 ID + createOrReplace / createIfNotExists / NDJSON 导入保证脚本重跑结果一致(明确禁止随机 ID 和先查再建引用);批量迁移走脚本/NDJSON 而非逐条工具调用。依赖 Sanity CLI 与 Sanity mutations API,类型层面用 defineType/defineField/defineArrayMember,schema/GROQ 变更后跑 schema 提取与 TypeGen。
+- 内容重塑 + 门禁校验:原始 HTML/Markdown 不作正典存储,一律转 Portable Text;资产必须落到 Sanity;存在不明点(源访问凭据、目标 dataset、草稿/多语言范围、schema 是否现成)会先停下来问,不带 TODO 完工;可选用 sanity-best-practices 技能补深水区实现细节(npx skills add sanity-io/agent-toolkit --skill sanity-best-practices)。

@@ -1,0 +1,7 @@
+# fixing-metadata (`ibelick/ui-skills/fixing-metadata`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 工作是审查和修复 HTML 元数据代码（title/canonical/OG 标签等），本质是前端代码实现与调试

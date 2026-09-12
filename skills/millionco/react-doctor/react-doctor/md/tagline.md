@@ -1,0 +1,7 @@
+# react-doctor (`millionco/react-doctor/react-doctor`)
+
+## tagline
+
+- React 代码体检,一键扫描,健康分直达满分
+- 提交前扫一遍,隐患无处藏身
+- 安全·性能·架构,一扫见分晓

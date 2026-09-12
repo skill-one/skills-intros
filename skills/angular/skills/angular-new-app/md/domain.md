@@ -1,0 +1,7 @@
+# angular-new-app (`angular/skills/angular-new-app`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 使用 Angular CLI 创建并搭建前端 Web 应用, 属于框架开发场景

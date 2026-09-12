@@ -1,0 +1,10 @@
+# opencli-autofix (`jackwener/opencli/opencli-autofix`)
+
+## comments
+
+- user: 数据分析新手, category: 坑, comment: 小红书搜索返回0条,我当适配器坏了硬修了一轮。换加「攻略」的词一搜就有20条——是平台限流不是bug,先换入口重试再谈修。
+- user: 前端工程师, category: 妙用, comment: 让它用 browser network --filter 按字段过滤请求,找出新版 JSON 接口后从抓 DOM 换成调 API,比追选择器稳多了。
+- user: 运维老哥, category: 注意, comment: 报错码 77 别让它动代码,那是登录过期。Chrome 里重新登一下账号重跑就好,硬改适配器只会越改越坏。
+- user: 爬虫接单党, category: 坑, comment: 图省事让它放宽 verify 测试规则让命令变绿,结果输出悄悄错了两周才发现。规则挂了要修适配器,不是改规则。
+- user: 第一次用命令行的产品经理, category: 启发, comment: 以前报错只会重装重试,现在先看 trace 的 summary.md 分清「工具坏了」还是「平台没数据」,先诊断再动手的习惯我搬到别处了。
+- user: 开源爱好者, category: 妙用, comment: 本地修好它会拟好 GitHub issue 草稿给我确认再提交。修复进了官方仓库,以后升级不怕被覆盖,这步别嫌麻烦跳过。

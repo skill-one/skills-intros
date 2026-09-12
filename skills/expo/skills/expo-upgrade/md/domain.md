@@ -1,0 +1,7 @@
+# expo-upgrade (`expo/skills/expo-upgrade`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 专注 Expo SDK 升级、依赖修复与框架迁移, 属于移动端开发工程工作

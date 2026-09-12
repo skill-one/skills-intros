@@ -1,0 +1,10 @@
+# argent-ios-simulator-setup (`software-mansion/argent/argent-ios-simulator-setup`)
+
+## comments
+
+- user: iOS 自动化测试新人, category: 坑, comment: 我没细看 kind 字段, 挑了条 platform:ios 的设备就开操作, 结果那是台连着的真 iPhone, 指令全落空。要跳过 kind 为 device 的条目再选。
+- user: 多机型并测的老手, category: 注意, comment: list-devices 会把已启动的模拟器排在最前, 我同时开了三台, 默认拿第一个就点错目标了, 动手前先核对 UDID 是不是要测的那台。
+- user: 前端切行的小白, category: 注意, comment: UDID 是带连字符的整串 UUID, 没有 booted 设备时把它原样传给 boot-device, 我自己截短过一次直接失败。
+- user: 玩转子代理的效率党, category: 坑, comment: 我把模拟器操作派给子代理, 却忘了给它 MCP 权限, 子代理一路找不到工具。派活前先确认权限里放行了这些工具。
+- user: 自动化脚本老哥, category: 妙用, comment: 本以为要先手动启动服务, 后来发现 gesture-tap、gesture-swipe 这些交互工具会自动拉起 server, 起服务那一步直接省了。
+- user: 从 Xcode 转来的开发, category: 启发, comment: 以前每次先开 Xcode 再手动起模拟器, 现在给 boot-device 一个 UDID 就拉起来了, 环境准备这种活也该交给 AI 干。

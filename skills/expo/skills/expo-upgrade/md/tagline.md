@@ -1,0 +1,7 @@
+# expo-upgrade (`expo/skills/expo-upgrade`)
+
+## tagline
+
+- Expo 升级专家,告别依赖地狱
+- 破坏性变更逐项兜底,升级不踩坑
+- 旧版到最新,一步到位,全程可验证

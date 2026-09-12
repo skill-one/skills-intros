@@ -1,0 +1,7 @@
+# github-issues (`github/awesome-copilot/github-issues`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 管理 GitHub issue(报 bug、提需求、任务跟踪)是软件开发工作流的核心环节

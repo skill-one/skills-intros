@@ -1,0 +1,9 @@
+# auth-implementation-patterns (`wshobson/agents/auth-implementation-patterns`)
+
+## blackbox
+
+**function**: 帮你的应用或网站做「登录与权限」这套门禁系统:谁能进来、用什么方式进来、进来后能碰什么,并确保过程安全。
+
+- input: 一句话需求:「我有个 API,想加上用户登录功能」, output: 可直接运行的登录/注册代码,含密码加密存储、登录凭证发放等
+- input: 一段已有的登录相关代码,或报错描述(如「用户莫名被踢下线」「接口被刷」), output: 问题诊断报告 + 修好的代码,指出漏洞在哪、怎么补
+- input: 需求描述:「普通用户和管理员要看到不同内容,还想支持用微信/Google 账号一键登录」, output: 完整的权限方案与可用的登录集成代码,标明每种角色能访问什么

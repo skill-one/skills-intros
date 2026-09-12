@@ -1,0 +1,7 @@
+# javascript-testing-patterns (`wshobson/agents/javascript-testing-patterns`)
+
+## domain
+
+**domain**: 🧪 测试与质量
+
+**reason**: 专注于 JavaScript/TypeScript 单元测试、集成测试、E2E 测试及 TDD 工作流

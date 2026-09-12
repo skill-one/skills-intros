@@ -1,0 +1,7 @@
+# dbs-content-system (`dontbesilent2025/dbskill/dbs-content-system`)
+
+## tagline
+
+- 旧内容不是库存，是可复用的资产
+- 散落文稿，长成可生长的内容系统
+- 拆成单元，织成地图，随时装配新选题

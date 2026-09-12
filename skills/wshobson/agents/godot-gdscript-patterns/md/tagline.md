@@ -1,0 +1,7 @@
+# godot-gdscript-patterns (`wshobson/agents/godot-gdscript-patterns`)
+
+## tagline
+
+- 你的游戏创意, 我的代码落地
+- 信号传万物, 场景建世界
+- Godot 架构难题, 一问即通

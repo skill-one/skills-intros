@@ -1,0 +1,7 @@
+# gpt-image-2 (`gargantuax/openskills/gpt-image-2`)
+
+## tagline
+
+- 一句话成图,专业级画面即刻拥有
+- 生成、改图、批量,一个脚本全搞定
+- 从灵感到成品,图像创作零门槛

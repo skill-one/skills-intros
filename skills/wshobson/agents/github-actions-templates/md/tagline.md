@@ -1,0 +1,7 @@
+# github-actions-templates (`wshobson/agents/github-actions-templates`)
+
+## tagline
+
+- 一条流水线，测试构建部署全自动
+- 代码一提交，上线自动跑完
+- 生产级工作流模板，即拿即用

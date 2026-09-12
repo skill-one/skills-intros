@@ -1,0 +1,13 @@
+# terraform-module-library (`wshobson/agents/terraform-module-library`)
+
+## whitebox
+
+- 接收任务: 为 AWS/Azure/GCP/OCI 构建可复用的基础设施模块或标准化资源供给
+- 按标准目录结构生成模块: main.tf + variables.tf + outputs.tf + versions.tf + README.md, 外加 examples/ 和 tests/
+- 编写 HCL 资源定义: 变量带描述与 validation 校验块, 用 count/for_each 做条件资源, merge(tags) 统一打标签
+- 在 examples/complete/ 写用法示例, 并演示模块组合 (上游 module 的 outputs 接到下游 module 的 inputs)
+- 在 tests/ 写 Terratest Go 测试, 对模块做真实部署验证后交付
+
+- 输出物为 HCL (Terraform 声明式配置语言), 依赖各云 provider (AWS/Azure/GCP/OCI), provider 版本固定在 versions.tf; 变量校验用 HCL validation 块 (如正则校验 CIDR 格式)
+- 模块组合机制: 通过 source 路径引用模块, 用 outputs 传递关键属性 (如 module.vpc.vpc_id → module.rds.vpc_id) 实现可插拔拼装; 条件资源用 count/for_each
+- 测试依赖 Terratest (gruntwork-io/terratest) + testify: 真实执行 InitAndApply → Output 取值断言 → defer Destroy 清理, 保证模块可验证

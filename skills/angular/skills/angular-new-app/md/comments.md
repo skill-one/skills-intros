@@ -1,0 +1,10 @@
+# angular-new-app (`angular/skills/angular-new-app`)
+
+## comments
+
+- user: 第一次用的新手, category: 坑, comment: 电脑里连 Node 都没装就开跑,CLI 装一半报错。先确认 node、npm 命令能执行、能联网,再动手建项目。
+- user: 小公司唯一的前端, category: 注意, comment: 命令里一定带上 --interactive=false,不然建项目卡在一连串提问等你选,挂着不动像死机。
+- user: 独立开发者, category: 妙用, comment: 建完别急着启动,先写几个功能再跑 npx ng build,几秒暴露编译错误,比开浏览器白屏排查快得多。
+- user: 从 Vue 转过来的, category: 坑, comment: 样式用 scss 还是 css、要不要路由,建项目时用标志一次定好,我建完手动补,改配置文件折腾了一晚上。
+- user: 拿 AI 工具接单的自由职业者, category: 妙用, comment: 我用 Cursor 干活,建项目时 --ai-config=cursor,生成的项目自带给 AI 看的约定说明,后续代码风格统一多了。
+- user: 转行自学半年的, category: 启发, comment: 以前手写组件总漏文件漏配置,现在骨架交给 ng generate,记下它返回的路径,我只填业务逻辑,返工明显少了。

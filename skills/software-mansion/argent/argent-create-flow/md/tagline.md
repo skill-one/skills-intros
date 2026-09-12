@@ -1,0 +1,7 @@
+# argent-create-flow (`software-mansion/argent/argent-create-flow`)
+
+## tagline
+
+- 一次真实录制，千次精准重放
+- 把重复操作，交给可复用流程
+- 流程即测试，重放即证据

@@ -1,0 +1,5 @@
+# dart-fix-runtime-errors (`dart-lang/skills/dart-fix-runtime-errors`)
+
+## scenario
+
+赶发版时,Dart 项目飘红一片:类型不匹配、空指针 (null) 报错,改一处崩三处,应用反复闪退。我按流程跑分析器、自动修复、手动攻克疑难,再用热重载 (改完立即生效) 验证,直到全绿交付。

@@ -1,0 +1,5 @@
+# clerk-react-patterns (`clerk/skills/clerk-react-patterns`)
+
+## scenario
+
+Vite + React 接 Clerk:页面闪烁、isSignedIn 报 undefined、登录后又被踢回登录页……别再逐行试错了。我熟 @clerk/react:hooks、受保护路由、自定义登录、API 鉴权,直接给你能跑的代码。

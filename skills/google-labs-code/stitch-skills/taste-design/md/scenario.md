@@ -1,0 +1,5 @@
+# taste-design (`google-labs-code/stitch-skills/taste-design`)
+
+## scenario
+
+让 AI 画界面,出来的不是紫色渐变就是三栏呆板卡片,一眼"AI 味",改也改不动。我为你定制 DESIGN.md 设计规范:配色、字体、布局、动效逐条钉死,并封禁所有俗套套路,让 Stitch 每次出稿都像资深设计师手作。

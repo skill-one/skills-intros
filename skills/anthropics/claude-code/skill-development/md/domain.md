@@ -1,0 +1,7 @@
+# skill-development (`anthropics/claude-code/skill-development`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 技能开发本质是插件开发: 写 SKILL.md、脚本与结构化资源, 属于代码工程范畴

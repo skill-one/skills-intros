@@ -1,0 +1,7 @@
+# opencli-autofix (`jackwener/opencli/opencli-autofix`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 本质是调试与修补浏览器自动化/爬虫适配器代码, 契合"写代码、调试、爬虫与浏览器自动化"

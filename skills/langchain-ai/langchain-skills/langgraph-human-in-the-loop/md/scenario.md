@@ -1,0 +1,5 @@
+# langgraph-human-in-the-loop (`langchain-ai/langchain-skills/langgraph-human-in-the-loop`)
+
+## scenario
+
+AI 自动干活,一步出错就发错邮件、下错单,你想拦却拦不住 🛑 我能在关键节点让 AI 停下来问你:"这样执行可以吗?"你点头或改完,它再继续——不重复执行、不卡死。

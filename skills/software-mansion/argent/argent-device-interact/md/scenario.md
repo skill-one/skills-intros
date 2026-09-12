@@ -1,0 +1,5 @@
+# argent-device-interact (`software-mansion/argent/argent-device-interact`)
+
+## scenario
+
+深夜回归测试:同一流程手动点几百遍,手酸眼花,还容易漏测。我能替你操控模拟器上的 app——自动打开、点击、输入、滑动、截图核对,批量跑完流程,你只看结果 📱

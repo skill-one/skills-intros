@@ -1,0 +1,13 @@
+# antfu (`antfu/skills/antfu`)
+
+## whitebox
+
+- 触发判定: 任务命中「新项目搭建 / ESLint 配置 / monorepo / 库发布」或用户点名 Anthony Fu 偏好时启用本技能
+- 对照 skill.md 约定生成代码: 单一职责拆文件、类型进 types.ts、常量进 constants.ts、显式 import + 相对路径、套用固定的 TS strict 配置
+- 按约定选工具链: 用 @antfu/eslint-config 一份配置同时做 lint + 格式化 (替代 Prettier), 依赖操作全部走 @antfu/ni 命令 (ni / nr / nlx 等)
+- 需要查包版本时用 nlx fast-npm-meta 查轻量元数据端点, 不下载完整 registry
+- 任务完成前跑 pnpm run lint --fix 统一格式与风格, 再交付
+
+- 约定驱动, 无隐式魔法: skill.md 内置规则直接映射为产出——注释只写 why 不写 how、跨环境代码标 @env 注释、Vitest 测试同名同目录 (foo.ts → foo.test.ts)、describe/it API + snapshot; 复杂主题再下钻 references 子文档 (ESLint 配置 / 项目脚手架 / monorepo / 库发布)
+- 外部工具链: @antfu/eslint-config (lint + 格式化二合一)、@antfu/ni (包管理命令别名)、simple-git-hooks + lint-staged (pre-commit 时 frozen-lockfile 安装并自动 eslint --fix)、pn-workspace.yaml 中的命名 catalogs (prod/dev/frontend/inlined) 集中管版本
+- 版本解析走 fast-npm-meta: nlx 调用小型元数据端点查最新版本, 支持范围查询 (如 "nuxt@^3.5"), 规避 npm view / registry 全量 payload 每包数 MB 的开销

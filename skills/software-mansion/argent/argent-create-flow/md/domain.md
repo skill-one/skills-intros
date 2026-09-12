@@ -1,0 +1,7 @@
+# argent-create-flow (`software-mansion/argent/argent-create-flow`)
+
+## domain
+
+**domain**: 🧪 测试与质量
+
+**reason**:  Argent 流程 = iPhone UI 自动化的录制与回放，核心用于 E2E/UI 自动化测试、回归与质量验证

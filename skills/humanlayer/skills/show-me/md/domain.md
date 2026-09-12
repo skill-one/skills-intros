@@ -1,0 +1,7 @@
+# show-me (`humanlayer/skills/show-me`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 专画代码逻辑、架构与变更图 (调用树/diff/Mermaid), 核心服务对象是开发者

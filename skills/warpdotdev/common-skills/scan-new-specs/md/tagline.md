@@ -1,0 +1,7 @@
+# scan-new-specs (`warpdotdev/common-skills/scan-new-specs`)
+
+## tagline
+
+- 我的技能已退役， 但接班人我熟
+- 绝不为未上线的功能写文档
+- 要文档？我带你走对的路

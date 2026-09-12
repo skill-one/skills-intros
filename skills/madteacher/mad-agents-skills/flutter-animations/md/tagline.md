@@ -1,0 +1,7 @@
+# flutter-animations (`madteacher/mad-agents-skills/flutter-animations`)
+
+## tagline
+
+- 让界面动起来, 让体验活起来
+- 精准动效, 丝滑手感, 告别卡顿
+- 会呼吸的界面, 从一个动画开始

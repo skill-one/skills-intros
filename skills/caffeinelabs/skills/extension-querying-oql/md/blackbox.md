@@ -1,0 +1,9 @@
+# extension-querying-oql (`caffeinelabs/skills/extension-querying-oql`)
+
+## blackbox
+
+**function**: 你用大白话问一句关于项目数据的问题, 我直接给你查出来的答案——数字、名单或统计表, 来自项目后端里的真实数据, 实时、不靠猜。
+
+- input: 「有多少个 enterprise 套餐的客户?」, output: 一个确切的数字, 例如: 「3 个」
+- input: 「找出公司名里带 north 的客户, 按月收入从高到低排」, output: 一份名单, 如: Northstar Public — $35,000/月; Northwind Labs — $21,000/月 (已排序)
+- input: 「哪个客户经理管的客户最多? 总月收入多少?」, output: 一张统计表: 每位客户经理 → 客户数 + 总月收入, 按客户数从多到少排, 第一名直接告诉你

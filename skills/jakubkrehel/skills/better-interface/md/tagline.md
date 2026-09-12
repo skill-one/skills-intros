@@ -1,0 +1,7 @@
+# better-interface (`jakubkrehel/skills/better-interface`)
+
+## tagline
+
+- 六大维度审界面, 一份报告定结论
+- 凭证据找问题, 不凭品味挑刺
+- 先抓真阻塞, 再谈打磨与美感

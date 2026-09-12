@@ -1,0 +1,13 @@
+# playwright-explore-website (`github/awesome-copilot/playwright-explore-website`)
+
+## whitebox
+
+- 接收 URL, 通过 Playwright MCP Server 打开目标网站
+- 逐一操作 3~5 个核心功能或用户流程
+- 记录每次交互、相关 UI 元素及其 locator (元素定位器) 和预期结果
+- 关闭浏览器上下文
+- 输出探索摘要, 并据此提出测试用例
+
+- 浏览器控制: 依赖 Playwright MCP Server (MCP: 标准化的工具连接协议) 执行导航与交互, 自己不直接驱动浏览器
+- 元素定位: 交互时以 Playwright locator 形式记录 UI 元素, 保证记录可复现、可用于测试
+- 产出物: 探索结果固化为三件套 — 交互记录 + locator + 预期结果, 再由此推导测试用例; 未提供 URL 时不臆测, 先向用户索取

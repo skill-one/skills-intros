@@ -1,0 +1,5 @@
+# git-advanced-workflows (`wshobson/agents/git-advanced-workflows`)
+
+## cover
+
+A programmer in a rolled-sleeve hoodie and canvas work apron crouches at a large monitor, snipping tangled glowing branch lines with small scissors, coaxing them into one clean stream merging into a thick trunk, messy crossover knots surrounding the desk

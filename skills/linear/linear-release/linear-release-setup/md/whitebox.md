@@ -1,0 +1,13 @@
+# linear-release-setup (`linear/linear-release/linear-release-setup`)
+
+## whitebox
+
+- 预检: 确认用户已在 Linear 建好 release pipeline (拿到各自的 access key), 并检测 CI 平台 (.github/workflows、.gitlab-ci.yml、.circleci/config.yml) 和默认分支 (git symbolic-ref, 不假设 main)。
+- 结构问询: 逐项确认 CI 平台、发布物拆分、continuous vs scheduled、(scheduled 再问) 分支模型/版本来源/stages/自动化、monorepo 路径, 不明确处停下追问。
+- 拉取事实来源: fetch linear-release README 获取当前命令、flags、安装片段和 command targeting 规则, 不凭记忆生成。
+- 生成配置: 选匹配的平台+类型示例模板, 改写分支模式、stage 名、路径过滤、版本格式, 加入现有 workflow 或新建; 多 pipeline = 多 workflow/job, 各用自己的 access key。
+- 收尾提醒: 告知在 CI 平台 secrets 中配置 LINEAR_ACCESS_KEY (每 pipeline 一把), 并过一遍 checklist (完整克隆、二进制平台、触发分支等)。
+
+- Pipeline-vs-stage 判定测试 (核心转换决策): 用 '两样东西能否同时 in-flight 且持有不同 commit?' 区分——能 → 各自成独立 Linear pipeline (TestFlight 跑 HEAD 而生产跑 release 分支、monorepo 独立服务); 不能 (同一构建过门禁) → 单 pipeline + stages (code freeze/QA/RC soak); 三个模糊场景 (TestFlight、staging、per-service) 均按此测试消歧。
+- 外部依赖: 每次生成都 fetch github.com/linear/linear-release 的 README (命令/flags/安装/env/路径过滤/troubleshooting 的唯一事实来源) 和 linear/linear-release-action 的 README; GitHub Actions 优先官方 action linear/linear-release-action@v0, 其他平台用 CLI 二进制 (linux-x64 / darwin-arm64 / darwin-x64)。
+- 生成时的运行时约束校验: Docker CI 必须 glibc 基础镜像 (禁 alpine/musl, 否则动态链接二进制报 'not found') 且显式装 git + curl; 检测到已有 .gitlab-ci.yml 时检查默认 variables 并在 job 级覆盖 GIT_STRATEGY: clone 和 GIT_DEPTH: 0 保证完整克隆; scheduled 模板含 monorepo 拆分说明 (路径过滤走 Linear 设置或 --include-paths)。

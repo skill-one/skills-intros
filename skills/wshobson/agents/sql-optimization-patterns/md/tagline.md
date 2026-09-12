@@ -1,0 +1,7 @@
+# sql-optimization-patterns (`wshobson/agents/sql-optimization-patterns`)
+
+## tagline
+
+- 从秒级到毫秒, 只差一个对的索引
+- 读懂查询计划, 慢库秒变神速
+- 精准索引, 让每条 SQL 都飞起来

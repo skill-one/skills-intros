@@ -1,0 +1,14 @@
+# ponytail-gain (`dietrichgebert/ponytail/ponytail-gain`)
+
+## whitebox
+
+- 接收触发词: /ponytail-gain 或其 4 种自然语言变体 (如 "ponytail gain"、"what does ponytail save")
+- 取数: 读 benchmarks/ 与 README 中已发布的基准中位数 (5 个日常任务 × Haiku/Sonnet/Opus 三模型), 不对当前仓库做任何计算
+- 渲染: 按硬编码模板输出纯 ASCII 记分板——bar 长度表测量区间, 标签承载精确数字
+- 附指引: 板底固定指向 /ponytail-debt (真实 per-repo 账本) 与 /ponytail-audit
+- 即止: 一次性输出, 不改模式、不写 flag 文件、不持久化任何状态
+
+- 静态数据源: 全部数字是预发布的基准测量中位数 (email validator / debounce / CSV sum / countdown timer / rate limiter × 三模型), 无实时计算、无动态推导
+- 双通道渲染 (转换): 纯 ASCII bar 编码区间长度 + 文字标签编码精确值 (如 ▼ 80–94%、▸ 3–6× faster), 模板固定, 输出即文本
+- 硬性校验 (诚实边界): 禁止输出任何 per-repo 节省数字——未构建的版本从未被写下, 没有真实基线可减; per-repo 数据只能来自 /ponytail-debt 的计数账本
+- 零副作用依赖面: 无外部工具调用、无文件写入、无模型 API 调用, 唯一依赖是 benchmarks/ 与 README 两处只读数据源; "stop ponytail"/"normal mode" 即回退

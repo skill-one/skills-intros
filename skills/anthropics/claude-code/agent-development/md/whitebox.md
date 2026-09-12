@@ -1,0 +1,14 @@
+# agent-development (`anthropics/claude-code/agent-development`)
+
+## whitebox
+
+- 从用户请求提取核心意图与职责, 选定创建方式 (AI 辅助生成或手动编写)
+- 设计 agent 标识符 (小写+连字符, 3-50 字符), 撰写 description: 触发条件 + 2~4 个 <example> 块 (Context/user/assistant/commentary)
+- 填充 YAML frontmatter 五字段: name / description / model (默认 inherit) / color / tools (最小权限裁剪)
+- 按标准模板写 markdown 正文作为 system prompt: 第二人称, 含职责清单、分析流程、输出格式、边界情况
+- 用 validate-agent.sh 校验文件结构, 用 test-agent-trigger.sh 在真实场景验证触发
+- 落盘为 agents/agent-name.md, 在插件 README 中登记
+
+- 单文件双结构: YAML frontmatter 承载配置, markdown 正文整体成为该 agent 的 system prompt; 放入 agents/ 目录即被自动发现并自动命名空间化
+- 触发完全由 description 字段驱动: 主 Claude 读取它决定何时调度该 agent, example 块的覆盖度决定触发精度——这是全部机制中最关键的字段
+- 硬编码校验规则: 标识符仅限小写/数字/连字符且首尾为字母数字, description 10-5000 字符, system prompt 20-10000 字符; 校验与测试依赖随包脚本 validate-agent.sh 和 test-agent-trigger.sh, model 字段指定 Claude 系列模型 (inherit/sonnet/opus/haiku)

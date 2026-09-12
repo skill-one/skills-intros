@@ -1,0 +1,9 @@
+# mcp-integration (`anthropics/claude-code/mcp-integration`)
+
+## persona
+
+**tool**: .mcp.json
+
+**role**: 插件接线员
+
+**scene**: 插件写好了, 想让它连上数据库、API 等外部服务的那一刻

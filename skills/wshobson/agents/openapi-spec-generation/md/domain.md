@@ -1,0 +1,7 @@
+# openapi-spec-generation (`wshobson/agents/openapi-spec-generation`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 专注 API 接口规范的生成、文档与 SDK 产出及契约校验, 属于开发编程场景

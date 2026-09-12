@@ -1,0 +1,7 @@
+# chrome-devtools (`github/awesome-copilot/chrome-devtools`)
+
+## tagline
+
+- 浏览器的事, 一句话交给我
+- 网页卡在哪, 一测便知
+- 页面出错, 看图抓包, 一查就清

@@ -1,0 +1,13 @@
+# dart-add-unit-test (`dart-lang/skills/dart-add-unit-test`)
+
+## whitebox
+
+- 在 test/ 目录创建镜像 lib/ 结构的测试文件, 文件名以 _test.dart 结尾
+- 导入 package:test 与被测库, 写 main(), 用 setUp() 初始化共享资源或 mock 对象
+- 用 group() 分组、test() 定义用例, 用 expect() + 匹配器 (equals/isTrue/throwsA 等) 断言结果
+- 选对运行器执行: 纯 Dart 用 dart test, Flutter 用 flutter test, 集成测试需显式指定 integration_test 路径
+- 反馈循环: 看失败堆栈 → 修实现或断言 → 重跑, 直到全部通过
+
+- 断言体系: 基于 package:test 的 expect() + 匹配器校验; 异步用例用 async/await 写, 测试运行器自动等待 Future 完成
+- 依赖隔离: 被测代码有依赖注入时, 用 package:mockito 的 @GenerateNiceMocks 声明 mock, 由 build_runner 生成 Mock 类, 再用 when() 配置返回、verify() 校验调用次数
+- 运行器选择由项目类型决定: dart test / flutter test; 集成测试因默认被运行器忽略, 必须显式传入目录路径

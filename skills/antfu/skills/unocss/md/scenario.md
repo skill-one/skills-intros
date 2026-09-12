@@ -1,0 +1,5 @@
+# unocss (`antfu/skills/unocss`)
+
+## scenario
+
+改一行样式要翻几百行 CSS,一处改动全站崩?交给我:样式按需生成、即写即生效、零冗余,Tailwind 写法照用不误。从配置到图标、主题,一条龙搞定。🎨

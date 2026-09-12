@@ -1,0 +1,9 @@
+# shopify-admin (`shopify/shopify-ai-toolkit/shopify-admin`)
+
+## persona
+
+**tool**: graphql
+
+**role**: GraphQL 查询写手
+
+**scene**: 想批量操作 Shopify 店铺后台、却对着查询语句的字段和参数发愁时

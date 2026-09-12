@@ -1,0 +1,7 @@
+# momentic-explore-prompt (`momentic-ai/skills/momentic-explore-prompt`)
+
+## tagline
+
+- 一份提示词，让 AI 探索测试直击仓库真相
+- 路径、登录、存放，精准到行不跑偏
+- 不写空话，只写仓库专属事实

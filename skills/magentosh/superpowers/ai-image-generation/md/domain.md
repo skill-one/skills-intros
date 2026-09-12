@@ -1,0 +1,7 @@
+# ai-image-generation (`magentosh/superpowers/ai-image-generation`)
+
+## domain
+
+**domain**: 🎨 设计多媒体
+
+**reason**: 核心能力是图像生成与编辑, 属视觉多媒体制作

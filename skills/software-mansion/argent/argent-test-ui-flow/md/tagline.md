@@ -1,0 +1,7 @@
+# argent-test-ui-flow (`software-mansion/argent/argent-test-ui-flow`)
+
+## tagline
+
+- 像真人一样点按, 每一步截图验证
+- 从登录到支付, 全流程自动测一遍
+- 让界面 bug 死在上线前

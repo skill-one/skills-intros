@@ -1,0 +1,5 @@
+# twitter-automation (`qu-skills/superpowers/twitter-automation`)
+
+## cover
+
+A woman in a hoodie with headphones around her neck, fingers hovering over the keyboard, about to hit the post button on a glowing social feed, wall clock and coffee mug nearby, dim home office before dawn

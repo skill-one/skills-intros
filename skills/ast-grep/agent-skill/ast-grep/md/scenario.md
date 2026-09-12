@@ -1,0 +1,5 @@
+# ast-grep (`ast-grep/agent-skill/ast-grep`)
+
+## scenario
+
+在几十万行代码里找"没写错误处理的 async 函数"?文本搜索满屏误报,翻到手软。我用 ast-grep 按代码结构搜索:你说需求,我写规则精准命中。文本搜索做不到的复杂查找,一网打尽 🎯

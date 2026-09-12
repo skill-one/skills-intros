@@ -1,0 +1,7 @@
+# twitter-automation (`qu-skills/superpowers/twitter-automation`)
+
+## domain
+
+**domain**: 📈 商业运营
+
+**reason**: 核心是 Twitter/X 的自动发布、互动、私信、涨粉等社媒运营动作, 服务营销与增长场景, 而非内容本身创作。

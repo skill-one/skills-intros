@@ -1,0 +1,10 @@
+# better-writing (`jakubkrehel/skills/better-writing`)
+
+## comments
+
+- user: 电商前端, category: 坑, comment: 我让它修按钮文字被截断的问题,它说怎么渲染归 better-typography 管;报错框的 aria 提示归无障碍技能。它只改文案本身,别投错需求。
+- user: 第一次做上线自查的新手, category: 注意, comment: 审查只看源码、不用起服务,但没逐个打开的文件不能算进结论——指南明说没检查过的范围不许 Approve;只要还有 HIGH 就判 Block。
+- user: 独立开发全栈, category: 妙用, comment: 我把报错对照表直接当规范抄:确认按钮重复后果,"删除项目?"就配"删除项目/取消",不读正文也能选对,误删投诉基本没了。
+- user: 出海产品本地化, category: 妙用, comment: 之前用变量拼句 "You have "+n+" new messages",德语一换语序全崩;改成完整模板加复数规则,翻译再没退过稿。
+- user: 什么都自己写的创业者, category: 启发, comment: 最好的报错是把交互改到错误根本不会发生。我不再反复改措辞,改成提交前就地校验、提前亮提示,同一个报错再没出现过。
+- user: QA 老哥, category: 注意, comment: 别把分级标错:误导用户或藏住恢复方式才算 HIGH,术语、大小写不一致只是 MEDIUM;同一问题出现在多处要合并成一行报。

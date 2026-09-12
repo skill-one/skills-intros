@@ -1,0 +1,7 @@
+# better-accessibility (`jakubkrehel/skills/better-accessibility`)
+
+## tagline
+
+- 无障碍, 是好产品的出厂设置
+- 键盘走通全流程, 屏幕读出每个字
+- 每一个按钮, 都该被每个人触达

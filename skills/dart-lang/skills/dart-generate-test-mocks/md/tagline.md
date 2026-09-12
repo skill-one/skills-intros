@@ -1,0 +1,7 @@
+# dart-generate-test-mocks (`dart-lang/skills/dart-generate-test-mocks`)
+
+## tagline
+
+- 接口不在场, 测试照常跑
+- mock 一键生成, 单测稳又快
+- 不依赖真服务, 只验证真逻辑

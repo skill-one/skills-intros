@@ -1,0 +1,5 @@
+# argent-ios-simulator-setup (`software-mansion/argent/argent-ios-simulator-setup`)
+
+## scenario
+
+调试 App 时,模拟器半天起不来、设备列表一堆分不清哪个在跑,环境折腾半小时,正事还没开始?📱 我一句话帮你找到并启动模拟器、连上设备,让你直接开测。

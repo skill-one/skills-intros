@@ -1,0 +1,7 @@
+# microsoft-docs (`github/awesome-copilot/microsoft-docs`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 为开发者检索官方技术文档与可运行代码示例, 服务于写代码和 API/框架集成。

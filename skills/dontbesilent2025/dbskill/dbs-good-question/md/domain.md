@@ -1,0 +1,7 @@
+# dbs-good-question (`dontbesilent2025/dbskill/dbs-good-question`)
+
+## domain
+
+**domain**: 🧠 知识管理
+
+**reason**: 核心是把模糊困惑梳理成可推理、可验证的问题说明书，属于调研与深度研究的思维工具，而非具体业务执行。

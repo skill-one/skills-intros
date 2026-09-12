@@ -1,0 +1,13 @@
+# clerk-react-patterns (`clerk/skills/clerk-react-patterns`)
+
+## whitebox
+
+- 按触发词 (Vite Clerk setup / React Router auth / useAuth / protected route / custom sign-in) 识别用户属于哪类 React SPA 认证问题
+- 查 "What Do You Need?" 表, 把任务路由到对应 reference 文件: hooks / protected-routes / custom-flows / router-integration
+- 先给基础设施三件套: npm install @clerk/react → .env 配 VITE_CLERK_PUBLISHABLE_KEY → main.tsx 用 ClerkProvider 包住 <App>
+- 输出对应代码模式, 内置心智模型守卫: 先查 isLoaded 再信 isSignedIn, API 调用用 getToken() 取会话 JWT 放进 Authorization 头
+- 用 Common Pitfalls 表 (症状→原因→修复) 校验方案; 超出本 skill 范围时指向关联 skill (clerk-setup / clerk-custom-ui / clerk-orgs) 或 Next.js/TanStack 专用 skill
+
+- 表驱动分发: 任务类型 → reference 文件一一映射, 回答基于 SKILL.md 内置的现成代码片段与心智模型, 不现场发挥
+- 纯客户端 hooks 模型: @clerk/react 无服务端 auth(), 所有认证状态来自 hooks —— isLoaded 守卫防 undefined、useClerk() 暴露 signOut/openSignIn/openUserProfile、getToken() 拿 JWT (null 需判空)
+- 外部依赖: @clerk/react 库、react-router-dom v6/v7 (ProtectedRoute + Outlet/Navigate 模式)、VITE_ 前缀环境变量 (经 import.meta.env 读取); 允许用 WebFetch 拉 clerk.com 官方文档

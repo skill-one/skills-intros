@@ -1,0 +1,7 @@
+# saga (`warpdotdev/common-skills/saga`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 以规格驱动的编排方式, 端到端自主开发中型以上功能: 拆解任务、派发子代理写码、逐步验证直至交付

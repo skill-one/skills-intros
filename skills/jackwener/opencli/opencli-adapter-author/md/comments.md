@@ -1,0 +1,10 @@
+# opencli-adapter-author (`jackwener/opencli/opencli-adapter-author`)
+
+## comments
+
+- user: 量化研究员, category: 妙用, comment: 给行情站写首个 adapter 花了半天，回写了 endpoints 和 field-map。一个月后站点改版，按记忆里的 endpoint 直接重验证，10 分钟修完。记忆回写真不是仪式感。
+- user: 第一次写 adapter 的前端, category: 坑, comment: 图省事跳过 strategy note，直接选了站内私有接口，站点一改版就挂，修了三次。换成页面选择器后半年没动过。私有接口别当默认选项。
+- user: 后端老兵, category: 注意, comment: verify 打勾不代表数据对。我踩过百分比小 100 倍：响应已是 0.025，我又乘了 100。输出务必和网页上的数字逐个肉眼对。
+- user: 数据组实习生, category: 坑, comment: browser 字段写反导致签名错，传的日期参数全静默落默认值，verify 还能过，直到发现输出永远是同一天。动手前先核对这个字段。
+- user: 自动化运维老哥, category: 坑, comment: fixture 的 pattern 写太严，第二天跑就 mismatch，差点以为 adapter 坏了。先肉眼比对：值对就放宽 pattern，值不对才是映射错。
+- user: 兼职写爬虫的野生分析师, category: 启发, comment: 以前抓包即用即丢全靠猜。现在动手前先问：这数据源有没有稳定契约？私有无文档接口要预留改版维护成本。猜对一次≠能当合同重放。

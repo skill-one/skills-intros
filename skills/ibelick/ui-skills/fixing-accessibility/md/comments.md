@@ -1,0 +1,10 @@
+# fixing-accessibility (`ibelick/ui-skills/fixing-accessibility`)
+
+## comments
+
+- user: 转行前端的实习生, category: 坑, comment: 我把整页贴进去指望它重写，结果只回逐条问题+最小改法。它是审出清单让你自己动手，别当一键重构用。
+- user: 十年前端组长, category: 妙用, comment: 发版前把改动文件跑一遍，输出带原文引用和具体修法，直接贴进 code review，不用专人做无障碍检查。
+- user: 后端老兵, category: 启发, comment: 我本来给 div 加 role 和 tabindex 模拟按钮，它一句换原生 button，键盘操作全免费，少写一堆键盘事件。
+- user: React 全栈, category: 注意, comment: 它给的是 HTML 层改法（如加 aria-label），用组件库要自己翻成对应 props；也不会帮你迁移 UI 库，预期别错位。
+- user: 键盘党 QA, category: 妙用, comment: 我拿它的 critical 清单做键盘盲测：Tab 全可达、焦点可见、Esc 关弹窗且焦点回触发钮，一轮抓出 5 个弹窗问题。
+- user: 设计师转码, category: 注意, comment: 我们为好看删了焦点框被点名，要求给替代可见样式。先设计好键盘焦点态长什么样，再谈去 outline。

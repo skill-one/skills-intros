@@ -1,0 +1,7 @@
+# terraform-module-library (`wshobson/agents/terraform-module-library`)
+
+## tagline
+
+- 像搭积木一样搭建云基础设施
+- 一套模块, 四大云即插即用
+- 代码定标准, 部署零重复

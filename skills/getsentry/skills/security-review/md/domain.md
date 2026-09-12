@@ -1,0 +1,7 @@
+# security-review (`getsentry/skills/security-review`)
+
+## domain
+
+**domain**: 🛡️ 运维与安全
+
+**reason**: 专注代码安全审查, 找漏洞、防攻击, 属于安全防护

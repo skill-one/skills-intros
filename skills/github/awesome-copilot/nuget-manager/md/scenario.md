@@ -1,0 +1,5 @@
+# nuget-manager (`github/awesome-copilot/nuget-manager`)
+
+## scenario
+
+手动改项目文件加依赖包，版本写错、冲突频发，一编译就报错，排查半天？🔧 我用 dotnet 命令规范地加、删、升级 NuGet 包：升级前先核实版本存在，改完立即还原验证，稳定不翻车。

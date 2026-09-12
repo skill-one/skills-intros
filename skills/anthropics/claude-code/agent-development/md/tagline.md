@@ -1,0 +1,7 @@
+# agent-development (`anthropics/claude-code/agent-development`)
+
+## tagline
+
+- 一个文件,造出能独当一面的AI
+- 复杂任务?交给会思考的智能体
+- 精准触发,自主执行,可靠交付

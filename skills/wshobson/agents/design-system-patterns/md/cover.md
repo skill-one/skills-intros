@@ -1,0 +1,5 @@
+# design-system-patterns (`wshobson/agents/design-system-patterns`)
+
+## cover
+
+A bearded design-systems engineer in a hoodie at a dim office desk, dual monitors glowing side by side with a light app screen and a dark app screen, typing token files in a terminal, scattered paint swatches taped around

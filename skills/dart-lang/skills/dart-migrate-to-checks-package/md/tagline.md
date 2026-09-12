@@ -1,0 +1,7 @@
+# dart-migrate-to-checks-package (`dart-lang/skills/dart-migrate-to-checks-package`)
+
+## tagline
+
+- 老测试焕新，断言迁移零踩坑
+- 编译器护航，漏网 expect 无处遁形
+- 类型安全断言，报错一目了然

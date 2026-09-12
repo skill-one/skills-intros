@@ -1,0 +1,9 @@
+# github-actions-templates (`wshobson/agents/github-actions-templates`)
+
+## blackbox
+
+**function**: 帮你的代码仓库写好 GitHub Actions 自动化流水线配置——代码一提交就自动跑测试、打包、发布、部署, 直接交付能用的配置文件。
+
+- input: 一句话需求: 「每次有人提交 PR, 就自动跑测试和代码检查」, output: 一份可直接放进仓库 .github/workflows/ 目录的 test.yml 文件 (含多版本并行测试、覆盖率上报)
+- input: 项目的 Dockerfile + 需求: 「构建镜像并推送到镜像仓库」, output: 完整的构建推送工作流 YAML——自动生成镜像版本标签、配置缓存加速
+- input: 需求: 「代码合入 main 后自动部署到生产环境, 部署前需要人工确认, 完成后通知 Slack」, output: 带审批门禁、部署状态验证、Slack 通知的部署工作流文件

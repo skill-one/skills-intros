@@ -1,0 +1,9 @@
+# javascript-testing-patterns (`wshobson/agents/javascript-testing-patterns`)
+
+## blackbox
+
+**function**: 给你的 JavaScript/TypeScript 代码写一整套自动化测试，让你每次改代码后都能自动检查有没有改坏东西，坏了会立刻指出坏在哪。
+
+- input: 一个函数或类的源码文件（如 calculator.ts）, output: 配套的测试文件：正常情况、边界情况（如除以零）、报错场景全部覆盖，运行即知对错
+- input: 一段调用了外部接口（如发邮件、调 API）的代码, output: 测试代码：把外部依赖模拟掉，不用真实发邮件/发请求也能验证逻辑，且跑得飞快
+- input: 一个 React 组件代码, output: 组件测试：模拟用户点击按钮、填表单等操作，并断言页面显示结果是否符合预期

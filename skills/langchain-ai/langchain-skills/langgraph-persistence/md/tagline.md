@@ -1,0 +1,7 @@
+# langgraph-persistence (`langchain-ai/langchain-skills/langgraph-persistence`)
+
+## tagline
+
+- 断点续聊, AI 的记忆永不丢失
+- 时光机回放, 回到任意历史状态
+- 跨会话记忆, 让 AI 真正懂用户

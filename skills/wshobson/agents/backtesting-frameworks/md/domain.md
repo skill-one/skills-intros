@@ -1,0 +1,7 @@
+# backtesting-frameworks (`wshobson/agents/backtesting-frameworks`)
+
+## domain
+
+**domain**: 💰 支付金融
+
+**reason**: 核心是交易策略回测系统, 属于交易类金融技能

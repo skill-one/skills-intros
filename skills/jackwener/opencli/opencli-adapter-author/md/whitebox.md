@@ -1,0 +1,13 @@
+# opencli-adapter-author (`jackwener/opencli/opencli-adapter-author`)
+
+## whitebox
+
+- 自检 + 查缓存：opencli doctor 确认桥接通，先读 ~/.opencli/sites/<site>/ 站点记忆（endpoints/notes），命中且未过期则跳过侦察、直接进入 endpoint 验证
+- 冷启动侦察：opencli browser analyze <url> 定站点 pattern（A~E），按 pattern 走 api-discovery（network 抓包 → state 抽取 → bundle 搜索 → token 排查 → intercept 兜底）找候选 endpoint
+- 合同验证 + 字段解码：safe replay 两个输入确认响应非空且真含目标数据（非 HTML/广告），对照网页肉眼值解码字段，产出强制 strategy note
+- 写 adapter：opencli browser init 生成骨架，复制最像的邻居 adapter，只改 name / URL / 字段映射三处
+- verify 收口：opencli browser verify 通过后 --write-fixture 并收紧 constraints（patterns/notEmpty/rowCount），肉眼比对数值无误后回写站点记忆
+
+- Strategy 契约分级：按'数据源有无外部契约'六选一——PUBLIC_API/COOKIE_API（stable）→ UI_SELECTOR/DOM_STATE（visible-ui）→ PAGE_FETCH/INTERCEPT（internal-unstable），级别越低维护成本越高（实测 fix 频率 7-8 倍），所以选低级时必须书面解释为何高级不适用
+- 静默失败防线：已知失败必须抛 5 类 typed error（ArgumentError/EmptyResultError/AuthRequiredError/CommandExecutionError/TimeoutError），禁止 return [] 或 sentinel 行；columns 数组与 func 返回 keys 严格对齐，中间解析对象 key 不得与 columns 重叠，防 silent-column-drop 丢列
+- 工具链：全程只用 opencli CLI（doctor/analyze/init/verify）+ jsluice（JS bundle 静态搜索扩候选）+ JSDOM（DOM 抽取类 adapter 的 fixture 单测）；adapter 代码只允许 import @jackwener/opencli/registry 和 @jackwener/opencli/errors 两个包，无第三方依赖、不调用任何模型 API
