@@ -179,9 +179,11 @@ gh workflow run sync.yml                                    # refresh upstream, 
 Both share [restore-dist](.github/actions/restore-dist/action.yml) (one codeload request pulls the
 branch back into `output/` and `cache/`) and
 [publish-dist](.github/actions/publish-dist/action.yml) (mirror the working dirs back to `dist`, write
-the root-level `latest` pointer naming the tag it pushes, tag, prune). The pointer is written before the
-commit, so a snapshot and its name ship as one, and the step fails unless pointer, tag and `HEAD`
-agree. `dist` is the single atomic snapshot — the profiles at its root plus the `cache/skills-sh/`
+the root-level `latest` pointer naming the tag it pushes plus an `upstream` pointer naming the mirror
+tag the bundled dataset was synced from, tag, prune). Both pointers are written before the commit, so a
+snapshot ships with its names, and the step fails unless `latest`, the tag and `HEAD` agree — `upstream`
+is derived from the dataset's own marker, so whichever workflow publishes, it cannot lag the data.
+`dist` is the single atomic snapshot — the profiles at its root plus the `cache/skills-sh/`
 dataset mirror — so **only `sync` ever touches upstream**, while `generate` reads what the last `sync`
 published and adds the binary weight: `limit` caps one batch and `SKILLS_PROFILES_TOTAL_LIMIT` caps the
 dataset, so that ceiling — not any single run — decides how many covers `dist` holds. History is pruned

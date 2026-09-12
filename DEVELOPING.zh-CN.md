@@ -169,8 +169,10 @@ gh workflow run sync.yml                                     # 刷新上游，�
 
 两条工作流共用 [restore-dist](.github/actions/restore-dist/action.yml)（一个 codeload 请求把分支拉回
 到 `output/` 和 `cache/`）与 [publish-dist](.github/actions/publish-dist/action.yml)（把工作目录镜像回
-`dist`、写入根目录指向本次 tag 的 `latest` 指针、打 tag、按时间窗剪枝）。指针在 commit 之前写入，所以
-快照与它的名字一起发布；只有指针、tag、`HEAD` 三者一致时该步骤才算成功。`dist` 是唯一的原子快照
+`dist`、写入根目录的两行指针——`latest` 是本次 tag、`upstream` 是数据集来自镜像的哪个 tag——打 tag、按
+时间窗剪枝）。两行指针都在 commit 之前写入，所以快照与它的名字一起发布；只有 `latest`、tag、`HEAD`
+三者一致时该步骤才算成功——`upstream` 由数据集自己的 marker 派生，所以不论哪条工作流发布，它都不会滞后
+于数据。`dist` 是唯一的原子快照
 ——根目录是档案，外加 `cache/skills-sh/` 数据集镜像——所以**只有 `sync` 会碰上游**，而 `generate` 只读
 上一次 `sync` 发布的数据集并增加二进制体积：`limit` 封顶单批，`SKILLS_PROFILES_TOTAL_LIMIT` 封顶数据集，
 所以是这道封顶（而非任何单次 run）决定了 `dist` 最多能装多少张配图。历史按滚动时间窗剪枝

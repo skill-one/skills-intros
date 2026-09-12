@@ -10,7 +10,7 @@ from typing import Any, Callable
 from pydantic import ValidationError
 
 from .config import Settings
-from .data import read_marker, read_skill_md, skill_md_path, stale_result_ids
+from .data import read_skill_md, skill_md_path
 from .images import cover_needed, covers_on_disk
 from .models import SkillRecord
 from .outputs import (
@@ -174,20 +174,15 @@ def coverage(
 def write_artifact_stats(settings: Settings, cov: dict) -> dict:
     """Overwrite output/stats.json with the artifact's current state.
 
-    The file describes what is on disk right now — complete/remaining skill
-    counts, how many are stale against the snapshot (upstream content changed
-    or skill gone), a cached count per prompt and the snapshot tag the
-    artifacts were built from — never a run's counters or timings (those stay
-    in the log). `cov` is the coverage dict computed by the caller; the full
-    stats written are returned.
+    How complete the artifacts are right now: skills profiled, a cached count
+    per prompt, covers rendered. Nothing a run did (counters, timings) and no
+    provenance — the upstream tag these were built from is published beside the
+    data as its own one-line `upstream` pointer (see the publish-dist action),
+    where either workflow can keep it current. `cov` is the coverage dict
+    computed by the caller; the full stats written are returned.
     """
-    stale = len(stale_result_ids(settings))
-    snapshot = read_marker(settings.data_dir)
     stats = {
-        "snapshot": {"ref": snapshot.get("ref", ""),
-                     "fetched_at": snapshot.get("fetched_at", "")},
-        "skills": {"total": cov["skills"], "complete": cov["complete"],
-                   "remaining": cov["remaining"], "stale": stale},
+        "skills": {"total": cov["skills"], "complete": cov["complete"]},
         "prompts": cov["prompts"],
         # rendered covers are counted from disk too: prompts.cover says how many
         # recipes exist, this says how many of them have become a picture

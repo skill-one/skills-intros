@@ -10,6 +10,7 @@ English: [README.md](README.md) · 开发指南：[DEVELOPING.zh-CN.md](DEVELOPI
 
 ```
 ├── latest         最新一次发布的 tag，一行——读它即可钉住版本
+├── upstream       这份快照基于镜像的哪个 tag——按它做关联
 ├── skills.jsonl   每个已生成档案的 skill 一行，按 id 排序——筛选 / 关联 / 排行都从这里开始
 ├── stats.json     生成进度：每个 prompt 的覆盖数、已完成/剩余/过期
 └── skills/        每个 skill 一个目录，目录名就是它的 id
@@ -57,23 +58,23 @@ English: [README.md](README.md) · 开发指南：[DEVELOPING.zh-CN.md](DEVELOPI
 `{...[n–m]}` 表示长度为 n~m 的数组；`input_output` 的元素是 `{input, output}`，`comments` 的元素是
 `{user, category, comment}`。除 id、路径和字段名外，全部是中文。
 
-`stats.json` 说明生成到了哪一步、以及这些档案基于哪一版数据：
+`stats.json` 说明产物有多完整：
 
 ```json
 {
-  "covers": { "rendered": 0 },
-  "prompts": { "blackbox": 334, "comments": 334, "cover": 334, "domain": 334, "persona": 334, "scenario": 334, "tagline": 334, "whitebox": 334 },
-  "skills": { "complete": 334, "remaining": 666, "stale": 0, "total": 1000 },
-  "snapshot": { "ref": "dist-2026-09-09", "fetched_at": "2026-09-09T02:01:24Z" }
+  "covers": { "rendered": 999 },
+  "prompts": { "blackbox": 1000, "comments": 1000, "cover": 1000, "domain": 1000, "persona": 1000, "scenario": 1000, "tagline": 1000, "whitebox": 1000 },
+  "skills": { "complete": 1000, "total": 1000 }
 }
 ```
 
 - `prompts` 数的是每个角度已缓存的输出数；`covers.rendered` 数的是据配方真正画出来的配图数。把
   `cover.png`（约 1.7 MB）当作每个 skill 上「有则有、无则无」的东西。
 - `skills.total` 是整条管道刻意设了封顶的窗口：安装量最高的至多 `SKILLS_PROFILES_TOTAL_LIMIT` 个
-  skill（默认 1000），而非上游全量。`complete` 是已生成档案的部分，窗口里剩下的在队列中。计数在每轮
-  `generate` 发布时重写，要精确数字就数 `skills.jsonl` 的行数。
-- `snapshot.ref` 指出这些 hash 属于镜像的哪个 tag（见[与镜像数据关联](#与镜像数据关联)）。
+  skill（默认 1000），而非上游全量；`complete` 是已生成档案的部分。计数在每轮 `generate` 发布时重写，
+  要精确数字就数 `skills.jsonl` 的行数。
+- 这些档案基于哪一版上游数据不在这里，而是根目录的 `upstream` 指针——任何一次发布都会把它写对，所以
+  它不会滞后于数据（见[与镜像数据关联](#与镜像数据关联)）。
 
 三条由结构本身保证的性质：索引是每个 skill 目录的投影、每次重写都从磁盘重新推导（行存在当且仅当目录
 存在，且行里的 `domain` / `persona` 必然与该目录的 json 一致）；`hash` 就是生成档案时依据的那份内容，
@@ -87,8 +88,9 @@ English: [README.md](README.md) · 开发指南：[DEVELOPING.zh-CN.md](DEVELOPI
 ## 如何获取数据
 
 [`dist` 分支](../../tree/dist)的根目录**就是**快照：滚动分支是最新状态，`sync` 打 `dist-YYYY-MM-DD`
-（同日内 force 覆盖），`generate` 每批追加一个不可变的 `dist-YYYY-MM-DD-N`；根目录一行 `latest` 指明
-那次发布推上的 tag——镜像也是这套形状。文字档案压缩后不到 1 MB；`dist` 还附带内部 `cache/skills-sh/`
+（同日内 force 覆盖），`generate` 每批追加一个不可变的 `dist-YYYY-MM-DD-N`；根目录两行指针各指一个版本
+——`latest` 是那次发布推上的 tag，`upstream` 是随快照一起发布的数据集来自镜像的哪个 tag。文字档案压缩
+后不到 1 MB；`dist` 还附带内部 `cache/skills-sh/`
 数据集镜像供 CI 恢复（约 120 MB 文本，整包克隆会带上，不属于档案 API）。
 
 ```bash
@@ -111,12 +113,11 @@ tag 时才重新拉取。索引很小（约 130 KB），筛选用 jq 就够：
 
 安装量、stars、简介和 `SKILL.md` 原文在
 [skills-sh-mirror](https://github.com/skill-one/skills-sh-mirror)；用 `id` 关联行，用 `hash` 确认内容
-一致。若也要按 hash 对齐，就把上游钉到 `snapshot.ref`：
+一致。若也要按 hash 对齐，就把上游钉到 `upstream` 指针：
 
 ```bash
 BASE=https://raw.githubusercontent.com/skill-one/skills-profiles
-curl -s $BASE/dist/stats.json -o stats.json
-up=$(jq -r .snapshot.ref stats.json)   # 例如 dist-2026-09-09
+up=$(curl -s $BASE/dist/upstream)   # 例如 dist-2026-09-12
 curl -s "https://raw.githubusercontent.com/skill-one/skills-sh-mirror/$up/skills.jsonl" -o up.jsonl
 curl -s $BASE/dist/skills.jsonl -o mine.jsonl
 

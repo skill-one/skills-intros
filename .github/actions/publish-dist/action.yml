@@ -103,6 +103,17 @@ runs:
         # costs one tiny request instead of the whole branch.
         printf '%s\n' "$tag" > latest
 
+        # The dataset's provenance, symmetric with `latest`: one line naming the
+        # upstream tag the bundled snapshot was synced from, derived from that
+        # snapshot's own marker — so whichever workflow publishes, the pointer
+        # cannot lag the data. Absent when no dataset rides in the snapshot.
+        marker=$(ls "${dist}/${DATA_DIR}"/*/SNAPSHOT.json 2>/dev/null | head -1 || true)
+        if [ -n "$marker" ] && [ -n "$(jq -r '.ref // empty' "$marker")" ]; then
+          jq -r .ref "$marker" > upstream
+        else
+          rm -f upstream
+        fi
+
         git add -A
         if git diff --cached --quiet; then
           echo "Nothing new to publish"

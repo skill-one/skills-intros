@@ -11,6 +11,7 @@ snapshots.
 
 ```
 ├── latest         the newest publish's tag, one line — read it to pin a version
+├── upstream       the mirror tag this snapshot was built from — join on it
 ├── skills.jsonl   one row per profiled skill, sorted by id — filter / join / rank here
 ├── stats.json     how far generation has got: per-prompt coverage, complete/remaining/stale
 └── skills/        one directory per skill, named after its id
@@ -59,24 +60,24 @@ schema:
 `{...[n–m]}` = an array of that many entries; `input_output` items are `{input, output}`, `comments`
 items `{user, category, comment}`. Everything but ids, paths and field names is Chinese.
 
-`stats.json` says how far generation has got and what it was built against:
+`stats.json` says how complete the artifacts are:
 
 ```json
 {
-  "covers": { "rendered": 0 },
-  "prompts": { "blackbox": 334, "comments": 334, "cover": 334, "domain": 334, "persona": 334, "scenario": 334, "tagline": 334, "whitebox": 334 },
-  "skills": { "complete": 334, "remaining": 666, "stale": 0, "total": 1000 },
-  "snapshot": { "ref": "dist-2026-09-09", "fetched_at": "2026-09-09T02:01:24Z" }
+  "covers": { "rendered": 999 },
+  "prompts": { "blackbox": 1000, "comments": 1000, "cover": 1000, "domain": 1000, "persona": 1000, "scenario": 1000, "tagline": 1000, "whitebox": 1000 },
+  "skills": { "complete": 1000, "total": 1000 }
 }
 ```
 
 - `prompts` counts the cached outputs of each angle; `covers.rendered` counts the pictures drawn from
   the cover recipes. Treat `cover.png` (~1.7 MB) as present-or-absent per skill.
 - `skills.total` is the pipeline's capped window — the most installed `SKILLS_PROFILES_TOTAL_LIMIT`
-  skills (default 1000), never every upstream one. `complete` is the part already profiled, the rest of
-  the window is queued. The counters are rewritten on every `generate` publish, so count `skills.jsonl`
-  lines when an exact number matters.
-- `snapshot.ref` names the mirror tag these hashes belong to (see
+  skills (default 1000), never every upstream one — and `complete` the part already profiled. The
+  counters are rewritten on every `generate` publish, so count `skills.jsonl` lines when an exact
+  number matters.
+- Which upstream snapshot these came from is not here: it is the root `upstream` pointer, which any
+  publish keeps current, so it cannot lag the data (see
   [Join with the mirror](#join-with-the-mirror)).
 
 Three guarantees the layout enforces: the index is a projection re-derived from disk (a row exists iff
@@ -93,8 +94,9 @@ apart, so re-drawing one costs no LLM call. Full detail: [DEVELOPING.md](DEVELOP
 
 The [`dist` branch](../../tree/dist) root _is_ the snapshot: the rolling branch is the newest state,
 `sync` tags `dist-YYYY-MM-DD` (force-updated within the day) and `generate` appends an immutable
-`dist-YYYY-MM-DD-N` per batch, and a one-line `latest` names the tag that publish pushed — the shape
-the mirror publishes too. Text profiles are under 1 MB compressed; `dist` also carries the internal
+`dist-YYYY-MM-DD-N` per batch, and one-line pointers name both versions: `latest` the tag that publish
+pushed, `upstream` the mirror tag the bundled dataset came from — the shape the mirror publishes too.
+Text profiles are under 1 MB compressed; `dist` also carries the internal
 `cache/skills-sh/` dataset mirror CI restores (~120 MB of text, included in a full clone, not part of
 this API).
 
@@ -118,12 +120,11 @@ https://github.com/skill-one/skills-profiles.git`, or the same tree as a tarball
 
 Installs, stars, descriptions and the `SKILL.md` sources are in
 [skills-sh-mirror](https://github.com/skill-one/skills-sh-mirror); `id` joins the rows, `hash` proves
-the content matches. Pin upstream to `snapshot.ref` for an exact hash join:
+the content matches. Pin upstream to the `upstream` pointer for an exact hash join:
 
 ```bash
 BASE=https://raw.githubusercontent.com/skill-one/skills-profiles
-curl -s $BASE/dist/stats.json -o stats.json
-up=$(jq -r .snapshot.ref stats.json)   # e.g. dist-2026-09-09
+up=$(curl -s $BASE/dist/upstream)   # e.g. dist-2026-09-12
 curl -s "https://raw.githubusercontent.com/skill-one/skills-sh-mirror/$up/skills.jsonl" -o up.jsonl
 curl -s $BASE/dist/skills.jsonl -o mine.jsonl
 

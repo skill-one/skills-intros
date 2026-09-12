@@ -255,13 +255,14 @@ def run(
     if stats.prompts_generated:
         logger.info("LLM: %d call(s), %.1fs total, %.2fs average per prompt",
                     stats.prompts_generated, stats.llm_seconds, avg)
-    # stats.json is the artifact's state, not the run's: what is on disk right
-    # now, against which snapshot. Run counters and timings stay in the log.
-    artifact = write_artifact_stats(settings, cov)
+    # stats.json is the artifact's state, not the run's: how complete it is right
+    # now (the snapshot it came from rides beside the data as `upstream`). Run
+    # counters and timings stay in the log.
+    write_artifact_stats(settings, cov)
     logger.info(
         "Coverage: %d/%d skill(s) complete, %d remaining, %d stale (upstream changed; "
         "see `invalidate --stale`) | cached prompts: %s",
-        cov["complete"], cov["skills"], cov["remaining"], artifact["skills"]["stale"],
+        cov["complete"], cov["skills"], cov["remaining"], len(stale_result_ids(settings)),
         ", ".join(f"{pid} {n}/{cov['skills']}" for pid, n in cov["prompts"].items()),
     )
     # partial failure is not an error: completed prompts are on disk and get

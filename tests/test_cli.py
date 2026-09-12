@@ -47,7 +47,7 @@ def test_run_serves_only_the_top_installed_skills(settings, monkeypatch):
     assert "Processing 2 of 2 skills" in result.output
 
     stats = json.loads((settings.output_dir / "stats.json").read_text(encoding="utf-8"))
-    assert stats["skills"] == {"total": 2, "complete": 2, "remaining": 0, "stale": 0}
+    assert stats["skills"] == {"total": 2, "complete": 2}
 
     from skills_profiles.outputs import prompt_result_path
 
@@ -93,7 +93,7 @@ def test_invalidate_needs_all_to_wipe_everything(settings, monkeypatch):
 
 def test_run_writes_a_stats_summary(settings, monkeypatch):
     """A run logs a timed summary and overwrites output/stats.json with the
-    artifact's current state: complete/remaining skills and per-prompt counts."""
+    artifact's current state: complete skills and per-prompt counts."""
     monkeypatch.setattr("skills_profiles.cli.Settings", lambda: settings)
     result = runner.invoke(app, ["run", "--limit", "2", "--dry-run"])
     assert result.exit_code == 0, result.output
@@ -106,9 +106,10 @@ def test_run_writes_a_stats_summary(settings, monkeypatch):
     assert re.search(r"owner-a/repo-a/alpha: \S+ \d+\.\d+s", result.output)
 
     stats = json.loads((settings.output_dir / "stats.json").read_text(encoding="utf-8"))
-    assert stats["skills"] == {"total": 4, "complete": 2, "remaining": 2, "stale": 0}
+    assert stats["skills"] == {"total": 4, "complete": 2}
     assert all(v == 2 for v in stats["prompts"].values())
-    assert set(stats) == {"snapshot", "skills", "prompts", "covers"}  # state only, no run info
+    # state only: no run counters, no provenance (that rides beside the data)
+    assert set(stats) == {"skills", "prompts", "covers"}
     assert stats["covers"] == {"rendered": 2}, "run renders the recipes it just filled in"
 
 
@@ -123,13 +124,13 @@ def test_run_stats_snapshot_is_overwritten(settings, monkeypatch):
     runner.invoke(app, ["run", "--limit", "2", "--dry-run"])
 
     stats = json.loads((settings.output_dir / "stats.json").read_text(encoding="utf-8"))
-    assert stats["skills"] == {"total": 4, "complete": 4, "remaining": 0, "stale": 0}
+    assert stats["skills"] == {"total": 4, "complete": 4}
     assert all(v == 4 for v in stats["prompts"].values())
 
 
 def test_run_reports_stale_skills(settings, monkeypatch):
     """A run's summary counts skills whose recorded hash no longer matches the
-    snapshot, and stats.json carries the same number."""
+    snapshot; stats.json stays about the artifact, so it carries no stale count."""
     monkeypatch.setattr("skills_profiles.cli.Settings", lambda: settings)
     runner.invoke(app, ["run", "--limit", "0", "--dry-run"])
 
@@ -148,8 +149,8 @@ def test_run_reports_stale_skills(settings, monkeypatch):
     assert "1 stale" in result.output
 
     stats = json.loads((settings.output_dir / "stats.json").read_text(encoding="utf-8"))
-    assert stats["skills"]["stale"] == 1
     assert stats["skills"]["complete"] == 4  # staleness does not change completeness
+    assert "stale" not in stats["skills"]  # a local diagnostic, not artifact state
 
 
 def test_sync_reports_tag_and_download(settings, monkeypatch):
