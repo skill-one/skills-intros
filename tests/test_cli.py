@@ -47,7 +47,7 @@ def test_run_serves_only_the_top_installed_skills(settings, monkeypatch):
     assert "Processing 2 of 2 skills" in result.output
 
     stats = json.loads((settings.output_dir / "stats.json").read_text(encoding="utf-8"))
-    assert stats["skills"] == {"total": 2, "complete": 2}
+    assert stats["skills"] == {"total": 2, "profiled": 2, "complete": 2}
 
     from skills_profiles.outputs import prompt_result_path
 
@@ -106,7 +106,7 @@ def test_run_writes_a_stats_summary(settings, monkeypatch):
     assert re.search(r"owner-a/repo-a/alpha: \S+ \d+\.\d+s", result.output)
 
     stats = json.loads((settings.output_dir / "stats.json").read_text(encoding="utf-8"))
-    assert stats["skills"] == {"total": 4, "complete": 2}
+    assert stats["skills"] == {"total": 4, "profiled": 2, "complete": 2}
     assert all(v == 2 for v in stats["prompts"].values())
     # state only: no run counters, no provenance (that rides beside the data)
     assert set(stats) == {"skills", "prompts", "covers"}
@@ -124,7 +124,7 @@ def test_run_stats_snapshot_is_overwritten(settings, monkeypatch):
     runner.invoke(app, ["run", "--limit", "2", "--dry-run"])
 
     stats = json.loads((settings.output_dir / "stats.json").read_text(encoding="utf-8"))
-    assert stats["skills"] == {"total": 4, "complete": 4}
+    assert stats["skills"] == {"total": 4, "profiled": 4, "complete": 4}
     assert all(v == 4 for v in stats["prompts"].values())
 
 
@@ -136,7 +136,7 @@ def test_run_reports_stale_skills(settings, monkeypatch):
 
     # upstream moves: alpha's content changes
     data_file = settings.data_dir / "skills.jsonl"
-    entries = [json.loads(l) for l in data_file.read_text(encoding="utf-8").splitlines()]
+    entries = [json.loads(line) for line in data_file.read_text(encoding="utf-8").splitlines()]
     for e in entries:
         if e["id"] == "owner-a/repo-a/alpha":
             e["hash"] = "new" + "a" * 61
@@ -178,7 +178,7 @@ def test_invalidate_stale_drops_hash_changed_skills(settings, monkeypatch):
 
     # simulate upstream: alpha's content changed, hotel vanished
     data_file = settings.data_dir / "skills.jsonl"
-    entries = [json.loads(l) for l in data_file.read_text(encoding="utf-8").splitlines()]
+    entries = [json.loads(line) for line in data_file.read_text(encoding="utf-8").splitlines()]
     for e in entries:
         if e["id"] == "owner-a/repo-a/alpha":
             e["hash"] = "new" + "a" * 61
@@ -204,7 +204,7 @@ def test_invalidate_stale_drops_hash_changed_skills(settings, monkeypatch):
     # refill the cache (alpha regenerates with its new hash), then make gamma
     # stale again: --stale --prompts touches only the stale skill's tagline
     runner.invoke(app, ["run", "--limit", "0", "--dry-run"])
-    entries = [json.loads(l) for l in data_file.read_text(encoding="utf-8").splitlines()]
+    entries = [json.loads(line) for line in data_file.read_text(encoding="utf-8").splitlines()]
     for e in entries:
         if e["id"] == "owner-c/repo-c/gamma":
             e["hash"] = "new" + "c" * 61

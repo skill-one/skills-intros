@@ -7,16 +7,13 @@ profiles were generated from, and the aggregated domain/persona outputs."""
 import json
 import logging
 import shutil
-from collections.abc import Iterable
+from collections.abc import Iterable, Mapping
 from pathlib import Path
-from typing import Mapping
 
 from .config import Settings
+from .layout import INDEX_NAME, MD_SUBDIR, SKILLS_SUBDIR
 from .models import Domain
 
-SKILLS_SUBDIR = "skills"  # the per-skill artifact tree under output_dir
-MD_SUBDIR = "md"  # markdown browsing copies, kept out of the json directory
-INDEX_NAME = "skills.jsonl"  # the skill index: id, hash, aggregated domain/persona
 AGGREGATED_PROMPTS = ("domain", "persona")  # prompts folded into the index lines, derived from disk
 # file suffixes a prompt owns next to its json: they are its rendered artifacts,
 # so invalidating the prompt drops them together with the json (see invalidate)

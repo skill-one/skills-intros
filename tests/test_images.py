@@ -1,14 +1,13 @@
 """Tests for cover rendering: the recipe projection, the endpoint contract,
 the file-is-the-cache rule, the per-key rate limiter, and `run`'s render
 post-pass. All offline: the image endpoint is reached only through a stubbed
-urlopen, and dry-runs through FakeImages."""
+`httpx.post`, and dry-runs through FakeImages."""
 
 import asyncio
-import io
 import json
-import urllib.error
 from pathlib import Path
 
+import httpx
 import pytest
 from typer.testing import CliRunner
 
@@ -47,38 +46,25 @@ def cover_of(settings, skill_id: str) -> Path:
     return images_mod.cover_path(settings, skill_id)
 
 
-class StubResponse:
-    """A urlopen answer: a json body plus the trace header the endpoint sets."""
-
-    def __init__(self, body: dict, trace: str = "trace-1"):
-        self._body = json.dumps(body).encode("utf-8")
-        self.headers = {"x-siliconcloud-trace-id": trace}
-
-    def read(self) -> bytes:
-        return self._body
-
-    def __enter__(self):
-        return self
-
-    def __exit__(self, *args):
-        return False
+def json_response(body: dict, status: int = 200, trace: str = "trace-1") -> httpx.Response:
+    """An endpoint answer: a json body plus the trace header it sets."""
+    return httpx.Response(status, json=body, headers={"x-siliconcloud-trace-id": trace})
 
 
-def http_error(code: int, body: dict | None = None) -> urllib.error.HTTPError:
-    payload = json.dumps(body).encode("utf-8") if body else b""
-    return urllib.error.HTTPError("https://x", code, f"reason {code}", {}, io.BytesIO(payload))
+def text_response(text: str, status: int = 200) -> httpx.Response:
+    """An endpoint answer that is not json (e.g. an html error page)."""
+    return httpx.Response(status, text=text)
 
 
-class StubUrlopen:
-    """Serves canned answers (or errors) in order and records what was posted."""
+class StubPost:
+    """Serves canned responses (or errors) in order and records what was posted."""
 
     def __init__(self, *outcomes):
         self.outcomes = list(outcomes)
         self.requests: list[tuple[dict, dict]] = []
 
-    def __call__(self, request, timeout=None):
-        self.requests.append((json.loads(request.data.decode("utf-8")),
-                              dict(request.headers)))
+    def __call__(self, url, *, json, headers, timeout=None, follow_redirects=False):
+        self.requests.append((json, headers))
         if len(self.requests) > len(self.outcomes):
             raise AssertionError("asked the endpoint more times than the test staged")
         outcome = self.outcomes[len(self.requests) - 1]
@@ -164,7 +150,7 @@ def test_the_recipe_must_be_an_english_phrase_line():
         "a scout riffling through shelves of skill cards")
     for bad in ("技能猎头, 你随口一句就有现成的本事", "",
                 "a worker " * 40, "a worker! (at a desk)"):
-        with pytest.raises(ValidationError, match="英文|不能为空|60|短语"):
+        with pytest.raises(ValidationError, match="英文|不能为空|40|短语"):
             ImagePrompt(text=bad)
 
 
@@ -239,8 +225,8 @@ def test_zero_is_the_documented_way_to_omit_a_knob():
 
 
 def test_request_returns_the_image_url_and_trace(settings, monkeypatch):
-    stub = StubUrlopen(StubResponse({"images": [{"url": "https://cdn/x.png"}], "seed": 7}))
-    monkeypatch.setattr(images_mod.urllib.request, "urlopen", stub)
+    stub = StubPost(json_response({"images": [{"url": "https://cdn/x.png"}], "seed": 7}))
+    monkeypatch.setattr(images_mod.httpx, "post", stub)
     settings.image_api_key = "sk-image"
 
     url, trace = images_mod._request_image(settings, "p", 1, key="sk-image")
@@ -254,12 +240,11 @@ def test_request_returns_the_image_url_and_trace(settings, monkeypatch):
 def test_request_retries_a_rate_limit_then_gives_up(settings, monkeypatch):
     monkeypatch.setattr(images_mod.time, "sleep", lambda _s: None)
 
-    def limited() -> urllib.error.HTTPError:
-        # a fresh error per attempt: its body stream can only be read once
-        return http_error(429, {"message": "TPM limit reached"})
+    def limited() -> httpx.Response:
+        return json_response({"message": "TPM limit reached"}, status=429, trace="")
 
-    stub = StubUrlopen(*[limited() for _ in range(4)])
-    monkeypatch.setattr(images_mod.urllib.request, "urlopen", stub)
+    stub = StubPost(*[limited() for _ in range(4)])
+    monkeypatch.setattr(images_mod.httpx, "post", stub)
     settings.max_retries = 3
 
     with pytest.raises(RuntimeError, match="TPM limit reached"):
@@ -270,8 +255,8 @@ def test_request_retries_a_rate_limit_then_gives_up(settings, monkeypatch):
 def test_request_does_not_retry_a_rejected_payload(settings, monkeypatch):
     """A 400 says the request itself is wrong; sending it again only burns time."""
     monkeypatch.setattr(images_mod.time, "sleep", lambda _s: None)
-    stub = StubUrlopen(http_error(400, {"code": 20012, "message": "bad image_size"}))
-    monkeypatch.setattr(images_mod.urllib.request, "urlopen", stub)
+    stub = StubPost(json_response({"code": 20012, "message": "bad image_size"}, status=400))
+    monkeypatch.setattr(images_mod.httpx, "post", stub)
     settings.max_retries = 3
 
     with pytest.raises(RuntimeError, match="bad image_size"):
@@ -280,8 +265,7 @@ def test_request_does_not_retry_a_rejected_payload(settings, monkeypatch):
 
 
 def test_request_needs_a_url_in_the_answer(settings, monkeypatch):
-    monkeypatch.setattr(images_mod.urllib.request, "urlopen",
-                        StubUrlopen(StubResponse({"images": []})))
+    monkeypatch.setattr(images_mod.httpx, "post", StubPost(json_response({"images": []})))
     with pytest.raises(RuntimeError, match="no image url"):
         images_mod._request_image(settings, "p", 1, key="sk")
 
@@ -291,8 +275,8 @@ async def test_client_stores_the_bytes_behind_the_expiring_url(settings, with_pr
     settings.image_api_key = "sk-image"  # the client builds its key pool from it
     dest = cover_of(settings, with_profiles[0].id)
     dest.parent.mkdir(parents=True, exist_ok=True)
-    monkeypatch.setattr(images_mod.urllib.request, "urlopen",
-                        StubUrlopen(StubResponse({"images": [{"url": "https://cdn/x.png"}]})))
+    monkeypatch.setattr(images_mod.httpx, "post",
+                        StubPost(json_response({"images": [{"url": "https://cdn/x.png"}]})))
     seen = {}
 
     def fake_download(url, target, timeout=None):
@@ -312,8 +296,8 @@ async def test_client_stores_the_bytes_behind_the_expiring_url(settings, with_pr
 async def test_client_reports_an_already_expired_url(settings, with_profiles, monkeypatch):
     settings.image_api_key = "sk-image"
     dest = cover_of(settings, with_profiles[0].id)
-    monkeypatch.setattr(images_mod.urllib.request, "urlopen",
-                        StubUrlopen(StubResponse({"images": [{"url": "https://cdn/x.png"}]})))
+    monkeypatch.setattr(images_mod.httpx, "post",
+                        StubPost(json_response({"images": [{"url": "https://cdn/x.png"}]})))
     monkeypatch.setattr(images_mod, "download_file", lambda url, target, timeout=None: False)
 
     with pytest.raises(RuntimeError, match="already gone"):
@@ -492,9 +476,9 @@ def test_invalidate_a_different_prompt_keeps_the_picture(settings, with_profiles
 def test_a_transient_failure_then_success_renders(settings, monkeypatch):
     """The point of retrying: a rate-limited first answer must not lose the cover."""
     monkeypatch.setattr(images_mod.time, "sleep", lambda _s: None)
-    stub = StubUrlopen(http_error(429, {"message": "TPM limit reached"}),
-                       StubResponse({"images": [{"url": "https://cdn/x.png"}]}))
-    monkeypatch.setattr(images_mod.urllib.request, "urlopen", stub)
+    stub = StubPost(json_response({"message": "TPM limit reached"}, status=429),
+                    json_response({"images": [{"url": "https://cdn/x.png"}]}))
+    monkeypatch.setattr(images_mod.httpx, "post", stub)
     settings.max_retries = 3
 
     url, _trace = images_mod._request_image(settings, "p", 1, key="sk")
@@ -503,8 +487,8 @@ def test_a_transient_failure_then_success_renders(settings, monkeypatch):
 
 def test_no_retries_means_exactly_one_attempt(settings, monkeypatch):
     monkeypatch.setattr(images_mod.time, "sleep", lambda _s: None)
-    stub = StubUrlopen(http_error(503, {"message": "overloaded"}))
-    monkeypatch.setattr(images_mod.urllib.request, "urlopen", stub)
+    stub = StubPost(json_response({"message": "overloaded"}, status=503))
+    monkeypatch.setattr(images_mod.httpx, "post", stub)
     settings.max_retries = 0
 
     with pytest.raises(RuntimeError, match="overloaded"):
@@ -513,11 +497,8 @@ def test_no_retries_means_exactly_one_attempt(settings, monkeypatch):
 
 
 def test_a_reply_that_is_not_json_is_named_as_the_endpoints_fault(settings, monkeypatch):
-    class HtmlReply(StubResponse):
-        def read(self) -> bytes:
-            return b"<html>502 bad gateway</html>"
-
-    monkeypatch.setattr(images_mod.urllib.request, "urlopen", StubUrlopen(HtmlReply({})))
+    monkeypatch.setattr(images_mod.httpx, "post",
+                        StubPost(text_response("<html>502 bad gateway</html>")))
     with pytest.raises(RuntimeError, match="not json"):
         images_mod._request_image(settings, "p", 1, key="sk")
 
@@ -533,8 +514,8 @@ def test_an_empty_ci_variable_leaves_the_documented_default():
 def test_the_shipped_cover_template_uses_the_persona_it_declares(settings):
     """A typo in cover.md would silently yield an empty subject: jinja defines nothing away."""
     from skills_profiles.images import PROMPT_ID
-    from skills_profiles.prompts import render_user_prompt
     from skills_profiles.models import Persona
+    from skills_profiles.prompts import render_user_prompt
 
     spec = PROMPTS.by_id[PROMPT_ID]
     rendered = render_user_prompt(spec, {"persona": Persona(tool="npx skills",

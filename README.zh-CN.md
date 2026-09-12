@@ -64,15 +64,18 @@ English: [README.md](README.md) · 开发指南：[DEVELOPING.zh-CN.md](DEVELOPI
 {
   "covers": { "rendered": 999 },
   "prompts": { "blackbox": 1000, "comments": 1000, "cover": 1000, "domain": 1000, "persona": 1000, "scenario": 1000, "tagline": 1000, "whitebox": 1000 },
-  "skills": { "complete": 1000, "total": 1000 }
+  "skills": { "profiled": 1000, "complete": 999, "total": 1000 }
 }
 ```
 
 - `prompts` 数的是每个角度已缓存的输出数；`covers.rendered` 数的是据配方真正画出来的配图数。把
   `cover.png`（约 1.7 MB）当作每个 skill 上「有则有、无则无」的东西。
+- `skills.profiled` 数的是每个角度都已缓存的 skill（文字那一半）；`skills.complete` 是其子集，要求
+  `cover.png` 也已画出——也就是 `run --limit` 会占用预算的那个口径，所以没有配图 key 的一轮可以让
+  `profiled == total` 而 `complete` 仍在追赶。
 - `skills.total` 是整条管道刻意设了封顶的窗口：安装量最高的至多 `SKILLS_PROFILES_TOTAL_LIMIT` 个
-  skill（默认 1000），而非上游全量；`complete` 是已生成档案的部分。计数在每轮 `generate` 发布时重写，
-  要精确数字就数 `skills.jsonl` 的行数。
+  skill（默认 1000），而非上游全量。计数在每轮 `generate` 发布时重写，要精确数字就数 `skills.jsonl`
+  的行数。
 - 这些档案基于哪一版上游数据不在这里，而是根目录的 `upstream` 指针——任何一次发布都会把它写对，所以
   它不会滞后于数据（见[与镜像数据关联](#与镜像数据关联)）。
 

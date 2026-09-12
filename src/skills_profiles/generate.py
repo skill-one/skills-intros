@@ -4,8 +4,9 @@ import asyncio
 import logging
 import sys
 import time
+from collections.abc import Callable
 from dataclasses import dataclass
-from typing import Any, Callable
+from typing import Any
 
 from pydantic import ValidationError
 
@@ -149,22 +150,28 @@ def coverage(
     """Cache coverage over all skills, for the run summary and stats.json.
 
     Applies the same cache rules as a run to every skill's stored outputs and
-    returns {"skills", "complete", "remaining", "prompts"}: how many skills are
-    complete (every selected prompt cached), how many still miss at least one,
-    and, per prompt id, how many skills have it cached. Only called once per
-    run: it re-reads every stored output.
+    returns {"skills", "profiled", "complete", "remaining", "prompts"}:
+    `profiled` = every selected prompt is cached; `complete` = profiled and its
+    cover is drawn too (the sense `--limit` spends budget on, see select_skills);
+    `remaining` = skills a run would still work on; and, per prompt id, how many
+    skills have it cached. Only called once per run: it re-reads every stored
+    output.
     """
     targets = prompts.closure_ids(only) if only is not None else set(prompts.by_id)
+    profiled = 0
     complete = 0
     per_prompt = dict.fromkeys(sorted(targets), 0)
     for skill in skills:
         outputs, pending, _ = _load_cached(settings, prompts, skill, only)
         if not pending:
-            complete += 1
+            profiled += 1
+            if not cover_needed(settings, skill.id):
+                complete += 1
         for pid in outputs:
             per_prompt[pid] += 1
     return {
         "skills": len(skills),
+        "profiled": profiled,
         "complete": complete,
         "remaining": len(skills) - complete,
         "prompts": per_prompt,
@@ -174,15 +181,16 @@ def coverage(
 def write_artifact_stats(settings: Settings, cov: dict) -> dict:
     """Overwrite output/stats.json with the artifact's current state.
 
-    How complete the artifacts are right now: skills profiled, a cached count
-    per prompt, covers rendered. Nothing a run did (counters, timings) and no
-    provenance — the upstream tag these were built from is published beside the
-    data as its own one-line `upstream` pointer (see the publish-dist action),
-    where either workflow can keep it current. `cov` is the coverage dict
-    computed by the caller; the full stats written are returned.
+    How complete the artifacts are right now: skills profiled (text) and complete
+    (text + cover), a cached count per prompt, covers rendered. Nothing a run did
+    (counters, timings) and no provenance — the upstream tag these were built from
+    is published beside the data as its own one-line `upstream` pointer (see the
+    publish-dist action), where either workflow can keep it current. `cov` is the
+    coverage dict computed by the caller; the full stats written are returned.
     """
     stats = {
-        "skills": {"total": cov["skills"], "complete": cov["complete"]},
+        "skills": {"total": cov["skills"], "profiled": cov["profiled"],
+                   "complete": cov["complete"]},
         "prompts": cov["prompts"],
         # rendered covers are counted from disk too: prompts.cover says how many
         # recipes exist, this says how many of them have become a picture
@@ -285,7 +293,7 @@ async def run_one(
         "generated": generated,
         "stale": stale,
         "seconds": time.monotonic() - start,
-        "prompt_seconds": dict(zip(generated, durations)),
+        "prompt_seconds": dict(zip(generated, durations, strict=True)),
     }, False
 
 

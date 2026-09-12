@@ -1,13 +1,13 @@
 """Tests for skills.jsonl parsing, snapshot sync and local SKILL.md reads."""
 
 import json
-import urllib.error
 from pathlib import Path
 
+import httpx
 import pytest
+from conftest import fake_download, make_tarball, skill_md_text
 
 import skills_profiles.data as data_mod
-from conftest import fake_download, make_tarball, skill_md_text
 from skills_profiles.config import DIST_BRANCH, LATEST_URL, TARBALL_URL, Settings, tarball_url
 from skills_profiles.data import (
     latest_dist_tag,
@@ -42,7 +42,7 @@ def test_description_loaded_from_skills_jsonl(settings):
 def test_description_collapsed_to_one_line(settings):
     """Multiline index descriptions must not break the one-line prompt format."""
     path = settings.data_dir / "skills.jsonl"
-    entries = [json.loads(l) for l in path.read_text(encoding="utf-8").splitlines()]
+    entries = [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines()]
     entries[0]["description"] = "第一行\n第二行"
     path.write_text(
         "\n".join(json.dumps(e) for e in entries) + "\n", encoding="utf-8"
@@ -153,7 +153,7 @@ def test_latest_pointer_rejects_anything_but_a_tag(latest_pointer):
 
 def test_unreadable_pointer_is_not_fatal(latest_pointer):
     """Only the shortcut is lost: the branch is always a valid fallback ref."""
-    latest_pointer(b"", urllib.error.URLError("no route"))
+    latest_pointer(b"", httpx.ConnectError("no route"))
     assert latest_dist_tag() is None
 
 
@@ -164,10 +164,10 @@ def _seed_dataset(settings) -> None:
 
 def test_download_logs_never_carry_a_presigned_query(tmp_path, caplog, monkeypatch):
     """A generated image's url holds a token and a signature in its query."""
-    def unreachable(url, timeout=None):
-        raise urllib.error.URLError("no route")
+    def unreachable(method, url, **kwargs):
+        raise httpx.ConnectError("no route")
 
-    monkeypatch.setattr(data_mod.urllib.request, "urlopen", unreachable)
+    monkeypatch.setattr(data_mod.httpx, "stream", unreachable)
     monkeypatch.setattr(data_mod.time, "sleep", lambda _s: None)
     caplog.set_level("INFO")
     with pytest.raises(RuntimeError) as excinfo:

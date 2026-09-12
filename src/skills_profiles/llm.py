@@ -7,7 +7,7 @@ from openai import AsyncOpenAI
 from .config import Settings
 
 
-def make_llm(settings: Settings) -> Instructor:  # type: ignore[type-arg]
+def make_llm(settings: Settings) -> Instructor:
     """instructor-patched async client; supports any OpenAI-compatible endpoint."""
     client = AsyncOpenAI(base_url=settings.base_url, api_key=settings.api_key)
     return instructor.from_openai(client)

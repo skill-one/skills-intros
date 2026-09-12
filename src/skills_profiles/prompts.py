@@ -16,6 +16,7 @@ from typing import Any
 
 import yaml
 from jinja2 import Environment, TemplateSyntaxError
+from pydantic import BaseModel
 
 from .models import (
     BlackBoxIntro,
@@ -30,7 +31,7 @@ from .models import (
 )
 
 # frontmatter `output` name -> pydantic schema in models.py
-OUTPUT_MODELS: dict[str, type] = {
+OUTPUT_MODELS: dict[str, type[BaseModel]] = {
     cls.__name__: cls
     for cls in (DomainClassification, IntroText, ImagePrompt, BlackBoxIntro, WhiteBoxIntro,
                 Taglines, Persona, SkillComments)
@@ -46,7 +47,7 @@ OUTPUT_MODELS: dict[str, type] = {
 class PromptSpec:
     id: str
     description: str
-    output_model: type
+    output_model: type[BaseModel]
     template: str
     depends_on: frozenset[str] = field(default_factory=frozenset)
 

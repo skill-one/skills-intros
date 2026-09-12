@@ -3,7 +3,7 @@
 import asyncio
 import logging
 import time
-from typing import Callable
+from collections.abc import Callable
 
 import typer
 
@@ -16,7 +16,7 @@ from .logging import setup_logging
 from .models import SkillRecord
 from .outputs import invalidate as invalidate_cache
 from .outputs import load_hashes
-from .prompts import load_prompt_set
+from .prompts import PromptSet, load_prompt_set
 
 logger = logging.getLogger(__name__)
 
@@ -41,11 +41,14 @@ def cover_progress(total: int) -> Callable[[SkillRecord, int | None], None]:
     return on_done
 
 
-def served_skills(settings: Settings) -> list[SkillRecord]:
-    """The snapshot narrowed to the pipeline's window (`data.portfolio`).
+def served_skills(settings: Settings) -> tuple[list[SkillRecord], list[SkillRecord]]:
+    """The whole snapshot plus its window (`data.portfolio`) over it.
 
-    Where `run` starts, so the one dataset ceiling (`SKILLS_PROFILES_TOTAL_LIMIT`)
-    bounds profiles and pictures alike; the cap is only announced when it trims.
+    The full list is returned so hash comparison can still see a skill that has
+    slipped outside the window (it exists upstream, so it is not stale); the
+    windowed list is where `run` starts, so the one dataset ceiling
+    (`SKILLS_PROFILES_TOTAL_LIMIT`) bounds profiles and pictures alike. The cap
+    is only announced when it trims.
     """
     every_skill = load_skills(settings)
     skills = portfolio(settings, every_skill)
@@ -53,7 +56,25 @@ def served_skills(settings: Settings) -> list[SkillRecord]:
         logger.info("Serving the top %d of %d installed skills (total_limit=%d); "
                     "the rest are never profiled or drawn",
                     len(skills), len(every_skill), settings.total_limit)
-    return skills
+    return every_skill, skills
+
+
+def parse_prompt_ids(prompt_set: PromptSet, raw: str | None) -> set[str] | None:
+    """The `--prompts` value as a validated set; None means "every prompt".
+
+    Shared by `run` and `invalidate` so the two agree on what a selection is,
+    and an unknown id is reported with the available ones instead of failing
+    later, mid-run.
+    """
+    if not raw:
+        return None
+    ids = {p.strip() for p in raw.split(",") if p.strip()}
+    unknown = ids - set(prompt_set.by_id)
+    if unknown:
+        raise typer.BadParameter(
+            f"unknown prompt(s) {sorted(unknown)}; available: {sorted(prompt_set.by_id)}"
+        )
+    return ids
 
 
 @app.command()
@@ -75,7 +96,7 @@ def sync(
         report = sync_data(Settings(), refresh)
     except RuntimeError as e:
         logger.error("%s", e)
-        raise typer.Exit(1)
+        raise typer.Exit(1) from e
     fetched = (f"downloaded {report.tag} in {report.seconds:.1f}s" if report.downloaded
                else f"already at {report.tag}")
     typer.echo(f"Dataset ready at {report.data_dir} ({fetched})")
@@ -104,13 +125,7 @@ def invalidate(
 
     prompt_ids: set[str] | None = None
     if prompts_opt:
-        prompt_ids = {p.strip() for p in prompts_opt.split(",") if p.strip()}
-        known = set(load_prompt_set(settings.prompts_dir).by_id)
-        unknown = prompt_ids - known
-        if unknown:
-            raise typer.BadParameter(
-                f"unknown prompt(s) {sorted(unknown)}; available: {sorted(known)}"
-            )
+        prompt_ids = parse_prompt_ids(load_prompt_set(settings.prompts_dir), prompts_opt)
 
     skill_ids = list(skill or [])
     if stale:
@@ -177,18 +192,10 @@ def run(
         settings.concurrency = concurrency
 
     prompt_set = load_prompt_set(settings.prompts_dir)
-    only = None
-    if prompts_opt:
-        ids = {p.strip() for p in prompts_opt.split(",") if p.strip()}
-        unknown = ids - set(prompt_set.by_id)
-        if unknown:
-            raise typer.BadParameter(
-                f"unknown prompt(s) {sorted(unknown)}; available: {sorted(prompt_set.by_id)}"
-            )
-        only = ids
+    only = parse_prompt_ids(prompt_set, prompts_opt)
 
     start = time.monotonic()
-    skills = served_skills(settings)
+    every_skill, skills = served_skills(settings)
     selected = select_skills(settings, prompt_set, skills, only)
     setup_seconds = time.monotonic() - start
     logger.info("Processing %d of %d skills with model=%s%s",
@@ -214,7 +221,7 @@ def run(
     llm = FakeLLM() if dry_run else make_llm(settings)
     stats = RunStats(selected=len(selected))
     generate_start = time.monotonic()
-    results = asyncio.run(
+    asyncio.run(
         run_all(llm, settings, selected, prompt_set, on_skill_done=on_done,
                 only=only, debug=debug, stats=stats)
     )
@@ -260,9 +267,10 @@ def run(
     # counters and timings stay in the log.
     write_artifact_stats(settings, cov)
     logger.info(
-        "Coverage: %d/%d skill(s) complete, %d remaining, %d stale (upstream changed; "
-        "see `invalidate --stale`) | cached prompts: %s",
-        cov["complete"], cov["skills"], cov["remaining"], len(stale_result_ids(settings)),
+        "Coverage: %d/%d skill(s) complete (%d profiled), %d remaining, %d stale "
+        "(upstream changed; see `invalidate --stale`) | cached prompts: %s",
+        cov["complete"], cov["skills"], cov["profiled"], cov["remaining"],
+        len(stale_result_ids(settings, every_skill)),
         ", ".join(f"{pid} {n}/{cov['skills']}" for pid, n in cov["prompts"].items()),
     )
     # partial failure is not an error: completed prompts are on disk and get

@@ -133,6 +133,7 @@ src/skills_profiles/
 ├── prompts.py       # frontmatter + DAG ordering + jinja2 rendering
 ├── generate.py      # async DAG execution + resume + coverage
 ├── outputs.py       # json/md outputs + assets + index + invalidation
+├── layout.py        # file/dir names shared by the snapshot and the artifacts
 ├── llm.py, images.py    # API clients + offline FakeLLM / FakeImages
 └── config.py, logging.py, cli.py
 tests/               # offline fixtures + end-to-end CLI tests
@@ -164,7 +165,8 @@ Resolution order (highest first): `SKILLS_PROFILES_*` env vars → local `.env` 
 
 ## Publishing (GitHub Actions)
 
-Two manually-triggered workflows share one publish lock (`concurrency: publish-dist`):
+[`ci`](.github/workflows/ci.yml) checks every push and pull request (tests, lint, types); the two
+manually-triggered workflows below share one publish lock (`concurrency: publish-dist`):
 
 | Workflow | Pipeline | Tag |
 |---|---|---|
@@ -207,11 +209,16 @@ junk, DAG ordering, template rendering, resume skip, invalidation, dependency pa
 rendering, the cover recipe's prompt/seed/payload construction, the endpoint's retry rules, the per-key
 rate limiter, and a full CLI dry-run of `run` — no network access (`conftest.py` replaces
 `data.download_file` with a fake serving a snapshot tarball built from the fixtures, and the upstream
-pointer plus the image endpoint are reached only through a stubbed `urlopen`).
+pointer plus the image endpoint are reached only through a stubbed `httpx` call).
 
 ```bash
-uv run pytest
+uv run pytest          # offline test suite
+uv run ruff check .    # lint
+uv run mypy            # types
 ```
+
+[`ci`](.github/workflows/ci.yml) runs the same three on every push and pull request; both must pass
+before a publish workflow is worth triggering.
 
 Docs rule: every English document has a Chinese counterpart (`README.md` / `README.zh-CN.md`,
 `DEVELOPING.md` / `DEVELOPING.zh-CN.md`) — keep both in sync, in the same pass.

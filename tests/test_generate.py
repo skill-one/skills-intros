@@ -236,7 +236,7 @@ async def test_run_trusts_existing_outputs_invalidated_by_sync(settings, prompt_
 
     # simulate an upstream update that sync has not pruned yet
     data_file = settings.data_dir / "skills.jsonl"
-    entries = [json.loads(l) for l in data_file.read_text(encoding="utf-8").splitlines()]
+    entries = [json.loads(line) for line in data_file.read_text(encoding="utf-8").splitlines()]
     for e in entries:
         if e["id"] == "owner-a/repo-a/alpha":
             e["hash"] = "new" + "a" * 61
@@ -427,17 +427,22 @@ async def test_crash_mid_run_keeps_completed_prompts(settings, prompt_set):
 
 
 async def test_coverage_counts_complete_and_remaining_skills(settings, prompt_set):
-    """coverage() applies the run's cache rules dataset-wide: complete skills,
-    how many still miss prompts, and a cached count per prompt."""
+    """coverage() applies the run's cache rules dataset-wide: profiled skills
+    (text only) and complete ones (text + cover), how many still owe work, and a
+    cached count per prompt."""
     skills = load_skills(settings)
     cov = coverage(settings, prompt_set, skills)
-    assert cov == {"skills": 4, "complete": 0, "remaining": 4,
+    assert cov == {"skills": 4, "profiled": 0, "complete": 0, "remaining": 4,
                    "prompts": {p: 0 for p in prompt_set.by_id}}
 
+    # text alone profiles a skill; only the cover makes it complete
     await run_all(FakeLLM(), settings, skills[:2], prompt_set)
     cov = coverage(settings, prompt_set, skills)
-    assert cov["complete"] == 2
-    assert cov["remaining"] == 2
+    assert (cov["profiled"], cov["complete"], cov["remaining"]) == (2, 0, 4)
+
+    await complete(settings, prompt_set, skills[:2])
+    cov = coverage(settings, prompt_set, skills)
+    assert (cov["profiled"], cov["complete"], cov["remaining"]) == (2, 2, 2)
     assert all(n == 2 for n in cov["prompts"].values())
 
     # only counts the selected prompts' closure

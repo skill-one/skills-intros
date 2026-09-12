@@ -66,16 +66,18 @@ items `{user, category, comment}`. Everything but ids, paths and field names is 
 {
   "covers": { "rendered": 999 },
   "prompts": { "blackbox": 1000, "comments": 1000, "cover": 1000, "domain": 1000, "persona": 1000, "scenario": 1000, "tagline": 1000, "whitebox": 1000 },
-  "skills": { "complete": 1000, "total": 1000 }
+  "skills": { "profiled": 1000, "complete": 999, "total": 1000 }
 }
 ```
 
 - `prompts` counts the cached outputs of each angle; `covers.rendered` counts the pictures drawn from
   the cover recipes. Treat `cover.png` (~1.7 MB) as present-or-absent per skill.
+- `skills.profiled` counts skills with every angle cached (the text half); `skills.complete` the subset
+  whose `cover.png` is drawn too — the sense `run --limit` spends budget on, so a key-less run can
+  reach `profiled == total` with `complete` still catching up.
 - `skills.total` is the pipeline's capped window — the most installed `SKILLS_PROFILES_TOTAL_LIMIT`
-  skills (default 1000), never every upstream one — and `complete` the part already profiled. The
-  counters are rewritten on every `generate` publish, so count `skills.jsonl` lines when an exact
-  number matters.
+  skills (default 1000), never every upstream one. The counters are rewritten on every `generate`
+  publish, so count `skills.jsonl` lines when an exact number matters.
 - Which upstream snapshot these came from is not here: it is the root `upstream` pointer, which any
   publish keeps current, so it cannot lag the data (see
   [Join with the mirror](#join-with-the-mirror)).

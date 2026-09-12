@@ -19,19 +19,18 @@ import shutil
 import tarfile
 import tempfile
 import time
-import urllib.error
-import urllib.request
 from dataclasses import dataclass
 from pathlib import Path
 
+import httpx
+
 from .config import DIST_BRANCH, LATEST_URL, TARBALL_URL, Settings, tarball_url
+from .layout import INDEX_NAME, SKILLS_SUBDIR
 from .models import SkillRecord
 from .outputs import load_hashes
 
 logger = logging.getLogger(__name__)
 
-INDEX_NAME = "skills.jsonl"  # the index: one json line per skill
-SKILLS_DIR = "skills"  # one directory per skill id, mirroring the upstream ids
 SKILL_MD = "SKILL.md"
 MARKER_NAME = "SNAPSHOT.json"  # which upstream ref the local snapshot holds
 # what the pointer is allowed to hold: a `<branch>-<date>` tag. Anything else
@@ -83,26 +82,28 @@ def download_file(url: str, dest: Path, timeout: float | None = None) -> bool:
     while downloading cannot afford an attempt that never finishes.
     """
     partial = dest.with_name(dest.name + ".part")
+    safe_url = url_without_query(url)
     last_error: Exception | None = None
     for attempt in range(1, MAX_DOWNLOAD_RETRIES + 1):
         try:
-            safe_url = url_without_query(url)
             logger.info("Downloading %s (attempt %d/%d)", safe_url, attempt,
                             MAX_DOWNLOAD_RETRIES)
             start = time.monotonic()
-            with urllib.request.urlopen(url, timeout=timeout) as response, \
-                    open(partial, "wb") as out:
-                shutil.copyfileobj(response, out)
+            # stream so a 100+ MB snapshot never lands in memory, and so the
+            # bytes go straight to the partial file the caller can rename
+            with httpx.stream("GET", url, timeout=timeout, follow_redirects=True) as response:
+                if response.status_code == 404:
+                    logger.warning("No content at %s", safe_url)
+                    partial.unlink(missing_ok=True)
+                    return False
+                response.raise_for_status()
+                with open(partial, "wb") as out:
+                    for chunk in response.iter_bytes():
+                        out.write(chunk)
             logger.info("Downloaded %s in %.1fs", safe_url, time.monotonic() - start)
             partial.replace(dest)
             return True
-        except urllib.error.HTTPError as e:
-            if e.code == 404:
-                logger.warning("No content at %s", safe_url)
-                partial.unlink(missing_ok=True)
-                return False
-            last_error = e
-        except (urllib.error.URLError, OSError) as e:
+        except (httpx.HTTPError, OSError) as e:
             last_error = e
         logger.warning("Download failed: %s", last_error)
         if attempt < MAX_DOWNLOAD_RETRIES:
@@ -140,7 +141,9 @@ def _snapshot_files(tar: tarfile.TarFile):
     """
     for member in tar:
         rel = member.name.split("/", 1)[-1]  # drop GitHub's <repo>-<branch>/ root
-        if rel == INDEX_NAME or rel.startswith(f"{SKILLS_DIR}/") and rel.endswith(f"/{SKILL_MD}"):
+        if rel == INDEX_NAME or (
+            rel.startswith(f"{SKILLS_SUBDIR}/") and rel.endswith(f"/{SKILL_MD}")
+        ):
             yield member
 
 
@@ -160,9 +163,9 @@ def latest_dist_tag() -> str | None:
     always downloadable, so a failure only costs the shortcut, never the sync.
     """
     try:
-        with urllib.request.urlopen(LATEST_URL, timeout=30) as response:
-            pointer = response.read().decode("utf-8", "replace").strip()
-    except OSError as e:  # URLError included: never fail a sync over this
+        response = httpx.get(LATEST_URL, timeout=30, follow_redirects=True)
+        pointer = response.text.strip()
+    except (httpx.HTTPError, OSError) as e:  # never fail a sync over this
         logger.warning("Could not read %s: %s", LATEST_URL, e)
         return None
     if not TAG_PATTERN.match(pointer):
@@ -212,12 +215,12 @@ def sync_data(settings: Settings, refresh: bool = False) -> SyncReport:
     Returns a SyncReport (tag, whether a download happened, duration).
     """
     data_dir = settings.data_dir
-    if data_dir.exists() and any(data_dir.iterdir()):
-        if not (data_dir / INDEX_NAME).exists():
-            raise RuntimeError(
-                f"{data_dir} exists and is not a dataset directory - move it away or "
-                "point SKILLS_PROFILES_DATA_DIR at a different directory"
-            )
+    if (data_dir.exists() and any(data_dir.iterdir())
+            and not (data_dir / INDEX_NAME).exists()):
+        raise RuntimeError(
+            f"{data_dir} exists and is not a dataset directory - move it away or "
+            "point SKILLS_PROFILES_DATA_DIR at a different directory"
+        )
     ref = latest_dist_tag() or DIST_BRANCH
     if not refresh and _is_current(data_dir, ref):
         logger.info("Already at %s - nothing to download", ref)
@@ -225,11 +228,9 @@ def sync_data(settings: Settings, refresh: bool = False) -> SyncReport:
 
     start = time.monotonic()
     data_dir.parent.mkdir(parents=True, exist_ok=True)
-    try:
-        downloaded = _download_snapshot(tarball_url(ref), data_dir)
-    except RuntimeError as e:
-        raise _not_published() from e
-    if not downloaded:
+    # only a 404 (the ref is gone) means "nothing published yet"; any other
+    # download failure raises with its real cause instead of being relabelled
+    if not _download_snapshot(tarball_url(ref), data_dir):
         raise _not_published()
     _write_marker(data_dir, ref)
     return SyncReport(
@@ -237,14 +238,17 @@ def sync_data(settings: Settings, refresh: bool = False) -> SyncReport:
     )
 
 
-def stale_result_ids(settings: Settings) -> list[str]:
+def stale_result_ids(settings: Settings, skills: list[SkillRecord] | None = None) -> list[str]:
     """Cached skills whose recorded content hash no longer matches the snapshot.
 
     A skill is stale when upstream changed its content (the freshly downloaded
     snapshot holds a different hash) or when it disappeared from the index.
     Nothing calls this automatically: `invalidate --stale` is the explicit path.
+    `skills` lets a caller that already read the whole index reuse it; it must be
+    the full list, not the `portfolio` window, or an out-of-window skill would be
+    mistaken for a deleted one.
     """
-    upstream = {s.id: s.hash for s in load_skills(settings)}
+    upstream = {s.id: s.hash for s in (skills if skills is not None else load_skills(settings))}
     hashes = load_hashes(settings)
     return sorted(sid for sid, h in hashes.items() if upstream.get(sid) != h)
 
@@ -306,7 +310,7 @@ def portfolio(settings: Settings, skills: list[SkillRecord]) -> list[SkillRecord
 
 def skill_md_path(settings: Settings, skill: SkillRecord) -> Path:
     """Where one skill's SKILL.md sits in the snapshot."""
-    return settings.data_dir / SKILLS_DIR / skill.id.replace(":", "_") / SKILL_MD
+    return settings.data_dir / SKILLS_SUBDIR / skill.id.replace(":", "_") / SKILL_MD
 
 
 def read_skill_md(settings: Settings, skill: SkillRecord) -> str | None:

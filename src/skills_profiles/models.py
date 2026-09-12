@@ -25,6 +25,11 @@ class Domain(StrEnum):
         obj.cover_style = cover_style
         return obj
 
+    # set by __new__ from each member's tuple; declared for the type checker
+    emoji: str
+    description: str
+    cover_style: str
+
     DEV_CODING = (
         "开发编程", "💻",
         "写代码、调试、重构、数据库、API/框架集成、爬虫与浏览器自动化",
@@ -97,21 +102,28 @@ class Domain(StrEnum):
         return "\n".join(f"- {d.emoji} {d.value}: {d.description}" for d in cls)
 
     @classmethod
+    def _lookup(cls, value: str) -> "Domain | None":
+        """The member whose value is `value`, or None.
+
+        `Domain(value)` is how a plain string maps back to a member (pydantic uses
+        it too); wrapped once because the enum's own constructor takes the 4-tuple.
+        """
+        try:
+            return cls(value)  # type: ignore[call-arg]
+        except ValueError:
+            return None
+
+    @classmethod
     def display(cls, value: str) -> str:
         """'emoji name' for known domain values; the input unchanged otherwise."""
-        try:
-            d = cls(value)
-        except ValueError:
-            return value
-        return f"{d.emoji} {d.value}"
+        d = cls._lookup(value)
+        return value if d is None else f"{d.emoji} {d.value}"
 
     @classmethod
     def style_for(cls, value: str) -> str:
         """The category's cover style; an unknown or missing value gets OTHER's."""
-        try:
-            return cls(value).cover_style
-        except ValueError:
-            return cls.OTHER.cover_style
+        d = cls._lookup(value)
+        return (d if d is not None else cls.OTHER).cover_style
 
 
 class DomainClassification(BaseModel):
@@ -147,8 +159,8 @@ class ImagePrompt(BaseModel):
             raise ValueError("不能为空")
         if not value.isascii():
             raise ValueError("必须是纯英文 (ASCII), 不要出现中文")
-        if len(value.split()) > 60:
-            raise ValueError("超过 60 个英文单词, 请精简成逗号短语")
+        if len(value.split()) > 40:
+            raise ValueError("超过 40 个英文单词, 请精简成逗号短语")
         if any(mark in value for mark in "!?\"'()"):
             raise ValueError("只要逗号分隔的短语, 不要问句/引号/括号")
         return value

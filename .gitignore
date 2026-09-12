@@ -1,18 +1,13 @@
-# Python
+# Python bytecode
 __pycache__/
 *.py[cod]
-.venv/
-.pytest_cache/
 
-# Generated profiles (output/) & upstream cache (cache/skills-sh)
+# Generated profiles (output/) & upstream dataset cache (cache/skills-sh)
 output/
 cache/
 
-# Local config
-.env
-.zcode/
-
-# Local tooling dotfiles (e.g. .vscode/)
+# Local-only dotfiles: .env, .venv, .vscode, .pytest_cache, ... — all of them.
+# Keep the workflows, and the committed .env.example template.
 .*
-# ...but keep the workflows
 !.github/
+!.env.example

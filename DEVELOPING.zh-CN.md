@@ -124,6 +124,7 @@ src/skills_profiles/
 ├── prompts.py       # frontmatter + DAG 排序 + jinja2 渲染
 ├── generate.py      # 异步 DAG 执行 + 断点续跑 + 覆盖率
 ├── outputs.py       # json/md 输出 + 附带文件 + 索引 + 失效
+├── layout.py        # 快照与产物共用的文件/目录名
 ├── llm.py, images.py    # API 客户端 + 离线 FakeLLM / FakeImages
 └── config.py, logging.py, cli.py
 tests/               # 离线 fixture + 端到端 CLI 测试
@@ -155,6 +156,7 @@ tests/               # 离线 fixture + 端到端 CLI 测试
 
 ## 发布（GitHub Actions）
 
+[`ci`](.github/workflows/ci.yml) 在每次 push 与 pull request 上做检查（测试、lint、类型）；下面
 两条手动触发的工作流共用同一个发布锁（`concurrency: publish-dist`）：
 
 | 工作流 | 流水线 | Tag |
@@ -194,11 +196,15 @@ gh workflow run sync.yml                                     # 刷新上游，�
 整条管道均离线验证：数据解析、`latest` 指针的解析与对垃圾内容的拒绝、DAG 排序、模板渲染、续跑跳过、
 失效、依赖传递、markdown 渲染、配图配方的 prompt/种子/请求体构造、端点的重试规则、按 key 的限流器，
 以及 `run` 的完整 CLI dry-run——都不需要网络（`conftest.py` 把 `data.download_file` 换成由 fixture
-构造快照 tarball 的假服务，上游指针与图像端点则都只通过一个打了桩的 `urlopen` 触达）。
+构造快照 tarball 的假服务，上游指针与图像端点则都只通过一个打了桩的 `httpx` 调用触达）。
 
 ```bash
-uv run pytest
+uv run pytest          # 离线测试套件
+uv run ruff check .    # lint
+uv run mypy            # 类型检查
 ```
+
+[`ci`](.github/workflows/ci.yml) 会在每次 push 与 pull request 上跑同样这三项。
 
 文档规范：每份英文文档都要有对应中文版（`README.md` / `README.zh-CN.md`、
 `DEVELOPING.md` / `DEVELOPING.zh-CN.md`），同一轮改动里保持同步。

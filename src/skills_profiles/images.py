@@ -24,23 +24,22 @@ nothing to render and waits for a later run.
 
 import asyncio
 import base64
-import json
 import logging
 import time
-import urllib.error
-import urllib.request
 import zlib
+from collections.abc import AsyncIterator, Callable
 from contextlib import asynccontextmanager
 from dataclasses import dataclass
 from pathlib import Path
-from typing import AsyncIterator, Callable
 
+import httpx
 from aiolimiter import AsyncLimiter
 
 from .config import Settings
 from .data import download_file
+from .layout import SKILLS_SUBDIR
 from .models import Domain, SkillRecord
-from .outputs import SKILLS_SUBDIR, prompt_asset_path, read_prompt_output
+from .outputs import prompt_asset_path, read_prompt_output
 
 logger = logging.getLogger(__name__)
 
@@ -65,6 +64,15 @@ RETRYABLE_STATUS = frozenset({429, 502, 503, 504})
 RATE_WINDOW_SECONDS = 60
 
 
+@dataclass
+class _KeyEntry:
+    """One endpoint key: its own per-minute bucket, and when it was last claimed."""
+
+    key: str
+    limiter: AsyncLimiter | None
+    claimed: float = 0.0
+
+
 class KeyPool:
     """The endpoint's keys, each paced by its own per-minute bucket.
 
@@ -81,21 +89,20 @@ class KeyPool:
             raise RuntimeError(
                 "no image endpoint key configured (SKILLS_PROFILES_IMAGE_API_KEY)")
         self._entries = [
-            {"key": key, "limiter": AsyncLimiter(rate, window) if rate else None,
-             "claimed": 0.0}
+            _KeyEntry(key=key, limiter=AsyncLimiter(rate, window) if rate else None)
             for key in keys
         ]
 
     @asynccontextmanager
     async def slot(self) -> AsyncIterator[str]:
         """Hold one key until the render leaves the context, quota-permitting."""
-        entry = min(self._entries, key=lambda e: e["claimed"])
-        entry["claimed"] = time.monotonic()
-        if entry["limiter"] is not None:
-            async with entry["limiter"]:
-                yield entry["key"]
+        entry = min(self._entries, key=lambda e: e.claimed)
+        entry.claimed = time.monotonic()
+        if entry.limiter is not None:
+            async with entry.limiter:
+                yield entry.key
         else:
-            yield entry["key"]
+            yield entry.key
 
 # a real 1x1 png, so a dry-run exercises the same layout as a real render
 FAKE_PNG = base64.b64decode(
@@ -109,8 +116,6 @@ class CoverStats:
 
     rendered: int = 0
     skills_failed: int = 0
-    seconds: float = 0.0
-    bytes_written: int = 0
 
 
 def cover_path(settings: Settings, skill_id: str) -> Path:
@@ -187,12 +192,12 @@ def request_payload(settings: Settings, prompt: str, seed: int) -> dict:
     return payload
 
 
-def _error_detail(error: urllib.error.HTTPError) -> str:
+def _error_detail(response: httpx.Response) -> str:
     """The provider's own message from an error body ({"code", "message", "data"})."""
     try:
-        body = json.loads(error.read().decode("utf-8"))
-    except (json.JSONDecodeError, UnicodeDecodeError):
-        return error.reason or str(error.code)
+        body = response.json()
+    except ValueError:  # not json: an html error page from something in front
+        return str(response.status_code)
     if isinstance(body, dict):
         return str(body.get("message") or body)
     return str(body)
@@ -205,43 +210,39 @@ def _request_image(settings: Settings, prompt: str, seed: int, key: str) -> tupl
     at once: the same request would be rejected the same way, and the message
     (bad size, bad key) is worth seeing rather than three copies of.
     """
-    request = urllib.request.Request(
-        settings.images_url,
-        data=json.dumps(request_payload(settings, prompt, seed)).encode("utf-8"),
-        headers={
-            "Authorization": f"Bearer {key}",
-            "Content-Type": "application/json",
-        },
-        method="POST",
-    )
+    headers = {"Authorization": f"Bearer {key}", "Content-Type": "application/json"}
+    payload = request_payload(settings, prompt, seed)
     attempts = settings.max_retries + 1  # one try plus the documented retries
     last_error: Exception | None = None
     for attempt in range(1, attempts + 1):
         try:
-            with urllib.request.urlopen(
-                    request, timeout=REQUEST_TIMEOUT_SECONDS) as response:
-                raw = response.read().decode("utf-8", "replace")
+            response = httpx.post(
+                settings.images_url, json=payload, headers=headers,
+                timeout=REQUEST_TIMEOUT_SECONDS, follow_redirects=True,
+            )
+            if response.status_code != 200:
+                detail = (f"image endpoint returned {response.status_code}: "
+                          f"{_error_detail(response)}")
+                if response.status_code not in RETRYABLE_STATUS:
+                    raise RuntimeError(detail)
+                last_error = RuntimeError(detail)
+            else:
                 trace = response.headers.get("x-siliconcloud-trace-id", "")
-            try:
-                body = json.loads(raw)
-            except json.JSONDecodeError as e:
-                # e.g. an html error page from something in front of the endpoint
-                raise RuntimeError(
-                    f"image endpoint replied with something that is not json "
-                    f"(trace {trace}): {raw[:200]!r}") from e
-            # the answer is `{"images": [{"url": ...}], "timings", "seed"}`:
-            # a url, not base64, and not the `data` array the OpenAI type expects
-            urls = [img.get("url") for img in body.get("images") or [] if img.get("url")]
-            if not urls:
-                raise RuntimeError(f"no image url in the response: {str(body)[:200]}")
-            logger.debug("generated an image (trace %s)", trace)
-            return str(urls[0]), trace
-        except urllib.error.HTTPError as e:
-            detail = f"image endpoint returned {e.code}: {_error_detail(e)}"
-            if e.code not in RETRYABLE_STATUS:
-                raise RuntimeError(detail) from e
-            last_error = RuntimeError(detail)
-        except (urllib.error.URLError, TimeoutError, OSError) as e:
+                try:
+                    body = response.json()
+                except ValueError as e:
+                    # e.g. an html error page from something in front of the endpoint
+                    raise RuntimeError(
+                        f"image endpoint replied with something that is not json "
+                        f"(trace {trace}): {response.text[:200]!r}") from e
+                # the answer is `{"images": [{"url": ...}], "timings", "seed"}`:
+                # a url, not base64, and not the `data` array the OpenAI type expects
+                urls = [img.get("url") for img in body.get("images") or [] if img.get("url")]
+                if not urls:
+                    raise RuntimeError(f"no image url in the response: {str(body)[:200]}")
+                logger.debug("generated an image (trace %s)", trace)
+                return str(urls[0]), trace
+        except (httpx.HTTPError, OSError) as e:
             last_error = RuntimeError(f"image endpoint unreachable: {e}")
         logger.warning("%s (attempt %d/%d)", last_error, attempt, attempts)
         if attempt < attempts:
@@ -339,8 +340,6 @@ async def run_covers(
             on_skill_done(skill, written)
         if stats is not None:
             stats.rendered += 1
-            stats.seconds += seconds
-            stats.bytes_written += written
         done += 1
         logger.debug("%s: %.1fs, %.0f KB", skill.id, seconds, written / 1024)
         return skill.id
