@@ -9,8 +9,10 @@ from pydantic_settings import BaseSettings, NoDecode, SettingsConfigDict
 REPO = "skill-one/skills-sh-mirror"
 DIST_BRANCH = "dist"
 REPO_URL = f"https://github.com/{REPO}"
-# the daily snapshot as GitHub publishes it: `sync` downloads and unpacks this
-TAGS_ATOM_URL = f"{REPO_URL}/tags.atom"
+# upstream's version pointer: one line on the dist branch holding the newest
+# tag, so `sync` answers "is there anything to do" with one tiny request
+# (raw serves it with a ~5 minute cache; the tag it names is immutable)
+LATEST_URL = f"https://raw.githubusercontent.com/{REPO}/{DIST_BRANCH}/latest"
 
 
 def tarball_url(ref: str = DIST_BRANCH) -> str:

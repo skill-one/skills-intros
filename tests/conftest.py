@@ -1,6 +1,7 @@
 """Shared fixtures: an isolated workdir with a small fake snapshot on disk, so no
 test touches the network."""
 
+import io
 import json
 import tarfile
 import tempfile
@@ -9,10 +10,13 @@ from pathlib import Path
 import pytest
 
 import skills_profiles.data as data_mod
-from skills_profiles.config import TARBALL_URL, Settings
+from skills_profiles.config import LATEST_URL, TARBALL_URL, Settings
 from skills_profiles.prompts import load_prompt_set
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
+
+# captured here, before the autouse fixture below swaps the name out
+real_latest_dist_tag = data_mod.latest_dist_tag
 
 SKILLS = [
     {"id": "owner-a/repo-a/alpha", "name": "Alpha", "description": "Alpha 的官方技能描述",
@@ -92,6 +96,30 @@ def _no_upstream_tags(monkeypatch):
     """Pretend upstream publishes no tags: a sync must not reach the network for
     anything but the snapshot itself, and tests that care set their own tag."""
     monkeypatch.setattr(data_mod, "latest_dist_tag", lambda: None)
+
+
+@pytest.fixture
+def latest_pointer(monkeypatch):
+    """Serve a fake upstream `latest` pointer through the real reader.
+
+    The autouse fixture above stubs `latest_dist_tag` itself so tests never
+    reach the network; this puts the real function back and stubs the single
+    request underneath it. `serve(body, error=None)` returns the urls fetched.
+    """
+    def serve(body: bytes, error: Exception | None = None) -> list[str]:
+        calls: list[str] = []
+        monkeypatch.setattr(data_mod, "latest_dist_tag", real_latest_dist_tag)
+
+        def urlopen(url: str, timeout: float | None = None):
+            calls.append(url)
+            if error is not None:
+                raise error
+            return io.BytesIO(body)
+
+        monkeypatch.setattr(data_mod.urllib.request, "urlopen", urlopen)
+        return calls
+
+    return serve
 
 
 @pytest.fixture

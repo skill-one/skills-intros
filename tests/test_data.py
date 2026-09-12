@@ -8,9 +8,9 @@ import pytest
 
 import skills_profiles.data as data_mod
 from conftest import fake_download, make_tarball, skill_md_text
-from skills_profiles.config import DIST_BRANCH, TARBALL_URL, Settings, tarball_url
+from skills_profiles.config import DIST_BRANCH, LATEST_URL, TARBALL_URL, Settings, tarball_url
 from skills_profiles.data import (
-    _newest_tag,
+    latest_dist_tag,
     load_skills,
     read_marker,
     read_skill_md,
@@ -19,21 +19,6 @@ from skills_profiles.data import (
     sync_data,
 )
 from skills_profiles.outputs import load_hashes, write_index
-
-TAGS_FEED = b"""<?xml version="1.0" encoding="UTF-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom">
-  <id>tag:github.com,2008:https://github.com/skill-one/skills-sh-mirror/releases</id>
-  <title>Tags from skills-sh-mirror</title>
-  <entry>
-    <id>tag:github.com,2008:Repository/1/dist-2026-09-09</id>
-    <title>dist-2026-09-09</title>
-  </entry>
-  <entry>
-    <id>tag:github.com,2008:Repository/1/dist-2026-09-08</id>
-    <title>dist-2026-09-08</title>
-  </entry>
-</feed>
-"""
 
 
 def test_loads_only_valid_skills_sorted_by_installs(settings):
@@ -148,17 +133,28 @@ def test_sync_unpacks_only_what_a_run_reads(tmp_path, monkeypatch):
     assert read_skill_md(settings, load_skills(settings)[0]) is not None
 
 
-def test_newest_tag_picks_newest_from_feed():
-    assert _newest_tag(TAGS_FEED) == "dist-2026-09-09"
+def test_latest_pointer_names_the_newest_tag(latest_pointer):
+    """Upstream's `latest` file is one line: one tiny request answers a sync."""
+    calls = latest_pointer(b"dist-2026-09-09\n")
+    assert latest_dist_tag() == "dist-2026-09-09"
+    assert calls == [LATEST_URL]
 
 
-def test_newest_tag_ignores_the_feed_title_and_unrelated_entries():
-    feed = TAGS_FEED.replace(b"dist-2026-09-09", b"released-2026-09-09")
-    assert _newest_tag(feed) == "dist-2026-09-08"
+def test_latest_pointer_tolerates_trailing_whitespace(latest_pointer):
+    latest_pointer(b"  dist-2026-09-09  \n")
+    assert latest_dist_tag() == "dist-2026-09-09"
 
 
-def test_newest_tag_returns_none_on_a_bad_feed():
-    assert _newest_tag(b"<not-xml") is None
+def test_latest_pointer_rejects_anything_but_a_tag(latest_pointer):
+    """A cached 404 page is not a ref a download could use, so it is ignored."""
+    latest_pointer(b"<!doctype html><title>404: Not Found</title>")
+    assert latest_dist_tag() is None
+
+
+def test_unreadable_pointer_is_not_fatal(latest_pointer):
+    """Only the shortcut is lost: the branch is always a valid fallback ref."""
+    latest_pointer(b"", urllib.error.URLError("no route"))
+    assert latest_dist_tag() is None
 
 
 def _seed_dataset(settings) -> None:
@@ -214,6 +210,22 @@ def _serve(seen: list[str], entry: dict):
         make_tarball(Path(dest), [entry])
         return True
     return _download
+
+
+def test_sync_downloads_the_tag_the_pointer_names(tmp_path, monkeypatch, latest_pointer):
+    """The pointer names the ref to fetch: a moved pointer is a different snapshot."""
+    settings = make_settings(tmp_path)
+    _seed_dataset(settings)
+    (settings.data_dir / "SNAPSHOT.json").write_text(json.dumps({"ref": "dist-2026-09-08"}))
+    latest_pointer(b"dist-2026-09-09\n")
+    entry = {"id": "o/r/s", "name": "s", "installs": "1", "source": "o/r", "hash": "h"}
+    seen: list[str] = []
+    monkeypatch.setattr(data_mod, "download_file", _serve(seen, entry))
+    report = sync_data(settings)
+    assert seen == [tarball_url("dist-2026-09-09")]
+    assert report.downloaded
+    assert report.tag == "dist-2026-09-09"
+    assert read_marker(settings.data_dir).get("ref") == "dist-2026-09-09"
 
 
 def test_sync_redownloads_when_the_tag_changed(tmp_path, monkeypatch):

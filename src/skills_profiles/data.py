@@ -5,25 +5,26 @@ what a run reads: skills.jsonl plus every skills/<id>/SKILL.md. One request stil
 fetches the whole branch, so index and sources can never drift apart, and every
 later read is a local file read.
 
-Upstream publishes each daily scrape as a `<branch>-<date>` tag. A sync records
-the tag it fetched in <data_dir>/SNAPSHOT.json and re-downloads only when the
-newest tag differs, so repeat syncs (locally, or in CI behind a cache) cost one
-small request instead of the whole snapshot.
+Upstream publishes each daily scrape as a `<branch>-<date>` tag and keeps a
+one-line `latest` pointer naming the newest of them. A sync reads that pointer,
+records the tag it fetched in <data_dir>/SNAPSHOT.json and re-downloads only
+when the newest tag differs, so repeat syncs (locally, or in CI behind a cache)
+cost one small request instead of the whole snapshot.
 """
 
 import json
 import logging
+import re
 import shutil
 import tarfile
 import tempfile
 import time
 import urllib.error
 import urllib.request
-import xml.etree.ElementTree as ElementTree
 from dataclasses import dataclass
 from pathlib import Path
 
-from .config import DIST_BRANCH, TAGS_ATOM_URL, TARBALL_URL, Settings, tarball_url
+from .config import DIST_BRANCH, LATEST_URL, TARBALL_URL, Settings, tarball_url
 from .models import SkillRecord
 from .outputs import load_hashes
 
@@ -33,7 +34,9 @@ INDEX_NAME = "skills.jsonl"  # the index: one json line per skill
 SKILLS_DIR = "skills"  # one directory per skill id, mirroring the upstream ids
 SKILL_MD = "SKILL.md"
 MARKER_NAME = "SNAPSHOT.json"  # which upstream ref the local snapshot holds
-ATOM_NS = "{http://www.w3.org/2005/Atom}"
+# what the pointer is allowed to hold: a `<branch>-<date>` tag. Anything else
+# (a 404 page, a half-written file) is not a ref a download could use
+TAG_PATTERN = re.compile(rf"^{DIST_BRANCH}-\d{{4}}-\d{{2}}-\d{{2}}$")
 MAX_DOWNLOAD_RETRIES = 3
 MD_MAX_CHARS = 20000  # cap on the SKILL.md text sent to the LLM
 
@@ -148,31 +151,24 @@ def _snapshot_root(unpacked: Path) -> Path:
 
 
 def latest_dist_tag() -> str | None:
-    """The newest `<branch>-<date>` tag upstream, or None when there is none.
+    """The `<branch>-<date>` tag upstream's `latest` pointer names, or None.
 
-    One small request answers "does a sync have anything to do"; failing to read
-    the feed is not fatal, it only costs the shortcut.
+    One tiny request answers "does a sync have anything to do" — the pointer is
+    the file upstream's own publisher asserts equals its newest tag. Reading it
+    can fail for reasons that are not a sync's business (no pointer yet, a
+    network blip, a cached error page), and the fallback ref — the branch — is
+    always downloadable, so a failure only costs the shortcut, never the sync.
     """
     try:
-        with urllib.request.urlopen(TAGS_ATOM_URL, timeout=30) as response:
-            feed = response.read()
+        with urllib.request.urlopen(LATEST_URL, timeout=30) as response:
+            pointer = response.read().decode("utf-8", "replace").strip()
     except OSError as e:  # URLError included: never fail a sync over this
-        logger.warning("Could not read %s: %s", TAGS_ATOM_URL, e)
+        logger.warning("Could not read %s: %s", LATEST_URL, e)
         return None
-    return _newest_tag(feed)
-
-
-def _newest_tag(feed: bytes) -> str | None:
-    """Newest `<branch>-<date>` entry title of a GitHub tags atom feed."""
-    prefix = f"{DIST_BRANCH}-"
-    try:
-        root = ElementTree.fromstring(feed)
-    except ElementTree.ParseError:
-        logger.warning("Could not parse the tags feed at %s", TAGS_ATOM_URL)
+    if not TAG_PATTERN.match(pointer):
+        logger.warning("%s holds %r, not a %s-<date> tag", LATEST_URL, pointer[:60], DIST_BRANCH)
         return None
-    titles = (t.text or "" for t in root.iter(f"{ATOM_NS}title"))
-    tags = sorted(title for title in titles if title.startswith(prefix))
-    return tags[-1] if tags else None
+    return pointer
 
 
 def read_marker(data_dir: Path) -> dict:
