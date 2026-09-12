@@ -1,7 +1,0 @@
-# wecomcli-smartsheet (`wecomteam/wecom-cli/wecomcli-smartsheet`)
-
-## tagline
-
-- 企微表格，一句话搞定
-- 读数改表标色，随口调遣
-- 表格有我，数据听话

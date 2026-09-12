@@ -1,5 +1,0 @@
-# shopify-admin (`shopify/shopify-ai-toolkit/shopify-admin`)
-
-## cover
-
-A weary programmer in a plaid shirt hunched at a cluttered desk, typing nested curly-brace query structures on a laptop, frowning at glowing online-store admin dashboard panels, blank sticky notes everywhere, one hand scratching his head, coffee mug steaming nearby

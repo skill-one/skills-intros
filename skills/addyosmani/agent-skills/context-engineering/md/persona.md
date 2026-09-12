@@ -1,9 +1,0 @@
-# context-engineering (`addyosmani/agent-skills/context-engineering`)
-
-## persona
-
-**tool**: CLAUDE.md
-
-**role**: 上下文工程师
-
-**scene**: AI 写代码开始跑偏、乱编不存在的接口时

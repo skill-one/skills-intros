@@ -1,9 +1,0 @@
-# faceless-explainer (`heygen-com/hyperframes/faceless-explainer`)
-
-## persona
-
-**tool**: hyperframes
-
-**role**: 无脸解说片导演
-
-**scene**: 一篇长文或一堆笔记递到手上, 要把它变成一条讲得明白的视频时

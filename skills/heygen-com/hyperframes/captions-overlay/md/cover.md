@@ -1,5 +1,0 @@
-# captions-overlay (`heygen-com/hyperframes/captions-overlay`)
-
-## cover
-
-A focused subtitle typesetter in a hoodie and headphones sits at a dark edit bay, hand on the mouse enlarging one caption block on a motion-graphics software timeline, surrounding subtitle strips dimmed, keyboard and coffee mug within reach

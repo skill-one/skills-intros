@@ -1,5 +1,0 @@
-# argent-metro-debugger (`software-mansion/argent/argent-metro-debugger`)
-
-## cover
-
-A hooded debugger leaning toward his desk monitor showing a connection status panel, a phone simulator beside it glowing blank white, terminal windows streaming red error lines, one hand on the keyboard, cluttered late-night workspace

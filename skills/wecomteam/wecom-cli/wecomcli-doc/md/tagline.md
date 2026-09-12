@@ -1,7 +1,0 @@
-# wecomcli-doc (`wecomteam/wecom-cli/wecomcli-doc`)
-
-## tagline
-
-- 一句话，让灵感落成企微在线文档
-- 读写导入一键达，文档管理零门槛
-- 内容不散落，协作更高效

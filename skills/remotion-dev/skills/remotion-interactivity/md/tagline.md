@@ -1,7 +1,0 @@
-# remotion-interactivity (`remotion-dev/skills/remotion-interactivity`)
-
-## tagline
-
-- 代码即画布,视频元素点选即改
-- 关键帧可拖可调,动画不再黑盒
-- 一次规范结构,全程可视化编辑

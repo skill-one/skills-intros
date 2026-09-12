@@ -1,5 +1,0 @@
-# fireworks-tech-graph (`yizhiyanhua-ai/fireworks-tech-graph/fireworks-tech-graph`)
-
-## cover
-
-A bespectacled draftsman with rolled-up sleeves stands in a meeting room, one hand resting on a laptop, the other lifting a marker toward a whiteboard of half-drawn boxes and arrows, crumpled papers and empty chairs around the conference table

@@ -1,5 +1,0 @@
-# hyperframes-registry (`heygen-com/hyperframes/hyperframes-registry`)
-
-## scenario
-
-做动画视频,字幕、图表、转场全得从零手写代码,一个片头磨掉一下午?我帮你按需搜现成特效块,一条命令装进项目,并准确接到时间线上——重复劳动我包了,你只管调内容。🎬

@@ -1,5 +1,0 @@
-# resend (`resend/resend-skills/resend`)
-
-## cover
-
-A focused email delivery engineer in a hoodie at a dim server room desk, pressing send on his laptop as a glowing paper envelope lifts toward a large monitor showing an empty inbox, blinking server racks behind him, a waiting cursor pulsing on screen

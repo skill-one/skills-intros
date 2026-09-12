@@ -1,9 +1,0 @@
-# oversized-cursor (`heygen-com/hyperframes/oversized-cursor`)
-
-## persona
-
-**tool**: 光标
-
-**role**: 动效师
-
-**scene**: 发布视频某一幕呆得像张截图、需要一次点击点燃下一段动画时

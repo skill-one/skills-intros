@@ -1,9 +1,0 @@
-# gstack (`garrytan/gstack/gstack`)
-
-## persona
-
-**tool**: 路由表
-
-**role**: 总机接线员
-
-**scene**: 用户丢来一句「gstack,这事归谁管」、还没报出具体需求的那一刻

@@ -1,5 +1,0 @@
-# gemini-api (`google/skills/gemini-api`)
-
-## cover
-
-A focused software engineer in a gray hoodie, plugging glowing data cables into a laptop beside a humming server rack, surrounded by thick printed manuals and coffee cups on a cluttered desk in a home office at night

@@ -1,7 +1,0 @@
-# cut-the-curve (`heygen-com/hyperframes/cut-the-curve`)
-
-## tagline
-
-- 在速度巅峰落刀，转场浑然天成
-- 每一帧衔接，都是电影级的隐形
-- 让每一次切换，像从未切换

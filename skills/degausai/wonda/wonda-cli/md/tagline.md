@@ -1,7 +1,0 @@
-# wonda-cli (`degausai/wonda/wonda-cli`)
-
-## tagline
-
-- 一句话,出图出片出音乐
-- 从灵感到爆款,AI 全程代劳
-- 创作、发布、运营,一条命令搞定

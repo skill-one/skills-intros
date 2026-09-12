@@ -1,7 +1,0 @@
-# argent-metro-debugger (`software-mansion/argent/argent-metro-debugger`)
-
-## domain
-
-**domain**: 💻 开发编程
-
-**reason**: 核心是调试 JS 运行时: 连接 CDP、查组件树、读日志、执行 JS, 是开发者的调试工具

@@ -1,9 +1,0 @@
-# remotion-multimedia (`remotion-dev/skills/remotion-multimedia`)
-
-## blackbox
-
-**function**: 你给我一个音频或视频文件, 我能告诉你它的时长、画面尺寸这类具体信息, 一问一答。
-
-- input: 一个音频文件 (如 song.mp3), output: 它的时长, 如「3 分 07 秒」
-- input: 一个视频文件 (如 movie.mp4), output: 它的画面宽高, 如「1920 × 1080 像素」
-- input: 一个视频文件 (如 clip.mov), output: 它的时长, 如「42.5 秒」

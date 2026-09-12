@@ -1,7 +1,0 @@
-# wecomcli-smartsheet (`wecomteam/wecom-cli/wecomcli-smartsheet`)
-
-## domain
-
-**domain**: 🗂️ 办公效率
-
-**reason**: 企业微信智能表格的内容操作——读写记录、管理字段/视图/图表、行列高亮，本质是在线表格的数据管理，服务日常办公场景。

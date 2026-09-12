@@ -1,5 +1,0 @@
-# higgsfield-generate (`higgsfield-ai/skills/higgsfield-generate`)
-
-## cover
-
-A focused digital artist in a worn hoodie, headphones around his neck, hunched at a desk typing on a laptop, twin monitors glowing with half-formed draft images, open sketchbook of rough ideas beside, dim late-night studio behind him

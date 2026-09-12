@@ -1,7 +1,0 @@
-# remotion-markup (`remotion-dev/skills/remotion-markup`)
-
-## tagline
-
-- 代码即导演, 帧帧皆精准
-- 从想法到成片, 代码驱动每一帧
-- 动画、特效、字幕, 一次渲染成片

@@ -1,7 +1,0 @@
-# dart-build-cli-app (`dart-lang/skills/dart-build-cli-app`)
-
-## domain
-
-**domain**: 💻 开发编程
-
-**reason**: 构建 Dart 命令行应用: 参数解析、错误处理、测试与编译分发, 属于编程开发

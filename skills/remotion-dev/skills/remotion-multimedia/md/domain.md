@@ -1,7 +1,0 @@
-# remotion-multimedia (`remotion-dev/skills/remotion-multimedia`)
-
-## domain
-
-**domain**: 🎨 设计多媒体
-
-**reason**: 专注浏览器内音视频处理: 获取视频尺寸、时长、音频时长等

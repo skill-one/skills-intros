@@ -1,5 +1,0 @@
-# wecomcli-todo (`wecomteam/wecom-cli/wecomcli-todo`)
-
-## scenario
-
-忙起来忘了同事托付的事，截止日期一晃就错过？我帮你管企业微信待办：一句话建任务、定截止、改名单，随手查询"还有啥没做完"，到点提醒不漏事。你只管干活，琐事交给我。 ✅

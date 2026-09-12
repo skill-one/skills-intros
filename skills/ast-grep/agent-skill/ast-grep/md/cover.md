@@ -1,5 +1,0 @@
-# ast-grep (`ast-grep/agent-skill/ast-grep`)
-
-## cover
-
-A detective in a trench coat holding a magnifying glass before a large glowing screen of branching tree diagrams, tracing connected nodes with one hand, in a dim room with more tree-patterned screens

@@ -1,5 +1,0 @@
-# media-use (`heygen-com/hyperframes/media-use`)
-
-## cover
-
-A film production assistant in a utility vest and radio headset sits at a grading console, twisting a trackball, staring at a washed-out flat footage frame on a monitor, hard drives and cables around, low-lit edit suite

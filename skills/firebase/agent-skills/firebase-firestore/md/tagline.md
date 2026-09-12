@@ -1,7 +1,0 @@
-# firebase-firestore (`firebase/agent-skills/firebase-firestore`)
-
-## tagline
-
-- 数据安家云上, 存取快人一步
-- 建库建模到查询, 全流程无忧
-- 稳如磐石的数据库, 托住每一次增长

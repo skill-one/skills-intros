@@ -1,5 +1,0 @@
-# claude-api (`anthropics/skills/claude-api`)
-
-## scenario
-
-想给产品加 AI,却卡在:模型太多不会选、代码报错没人管、跑一晚账单爆表 😵 我专精 Claude 接入:帮你选对模型、写好代码、控住成本,从跑通到上线一条龙。

@@ -1,9 +1,0 @@
-# remotion-captions (`remotion-dev/skills/remotion-captions`)
-
-## blackbox
-
-**function**: 把视频/音频转录成带时间轴的字幕, 并把它们以动画形式加进视频里 (如逐字弹出、卡拉OK式高亮当前词)。
-
-- input: 一段视频或音频文件 (如播客录音、访谈视频), output: 自动转录好的字幕: 每句话配开始/结束时间, 能和语音精确对上
-- input: 一个 .srt 字幕文件 (常见字幕格式), output: 转换后的字幕数据, 可直接放进视频项目里继续加工
-- input: 一段视频 + 已准备好的字幕, output: 带字幕动画效果的视频页面: 字幕逐字出现、当前词高亮、自动换行翻页, 可导出成片

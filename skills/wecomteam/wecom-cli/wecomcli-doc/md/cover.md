@@ -1,5 +1,0 @@
-# wecomcli-doc (`wecomteam/wecom-cli/wecomcli-doc`)
-
-## cover
-
-A young office worker with glasses and a work badge lanyard, sitting at a tidy desk, typing on a laptop, an open chat window beside an online document page on screen, stacked folders and a smartphone within reach

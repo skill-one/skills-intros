@@ -1,9 +1,0 @@
-# gemini-api (`google/skills/gemini-api`)
-
-## persona
-
-**tool**: google-genai
-
-**role**: 模型接线员
-
-**scene**: 你想在自己的应用里用上 Gemini，却对着报错和文档发愁时

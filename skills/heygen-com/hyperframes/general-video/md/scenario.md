@@ -1,5 +1,0 @@
-# general-video (`heygen-com/hyperframes/general-video`)
-
-## scenario
-
-产品要上线,想发个宣传视频——剪辑软件学不会,外包又贵、改稿一轮等三天,一拖两周?🎬 我来:你说想法,我直接搭多场景成片,分镜、动效、字幕配乐一条龙,边看边改,预览满意再出片。

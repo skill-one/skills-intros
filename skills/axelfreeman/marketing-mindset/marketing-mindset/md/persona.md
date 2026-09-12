@@ -1,9 +1,0 @@
-# marketing-mindset (`axelfreeman/marketing-mindset/marketing-mindset`)
-
-## persona
-
-**tool**: 冷邮件
-
-**role**: 获客操盘手
-
-**scene**: 产品做完了, 却不知道第一个客户从哪来时

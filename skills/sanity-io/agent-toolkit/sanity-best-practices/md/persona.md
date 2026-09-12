@@ -1,9 +1,0 @@
-# sanity-best-practices (`sanity-io/agent-toolkit/sanity-best-practices`)
-
-## persona
-
-**tool**: sanity
-
-**role**: 内容架构师
-
-**scene**: 内容模型刚定好、要把数据接进网站页面时

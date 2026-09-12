@@ -1,9 +1,0 @@
-# seam-craft (`heygen-com/hyperframes/seam-craft`)
-
-## persona
-
-**tool**: gsap (驱动网页动画的时间轴引擎)
-
-**role**: 转场动效师
-
-**scene**: 片子拼好了，暗色视频每个镜头切换处闪出一道白光时

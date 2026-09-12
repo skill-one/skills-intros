@@ -1,5 +1,0 @@
-# microsoft-foundry (`microsoft/azure-skills/microsoft-foundry`)
-
-## scenario
-
-AI 智能体好不容易写好,却卡在部署报错、日志难查、效果好坏全靠猜,改一版像开盲盒。我帮你一站式搞定:创建部署、自动评估、优化提示词、排查故障,让智能体稳稳上线 🚢

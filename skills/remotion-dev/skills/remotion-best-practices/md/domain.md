@@ -1,7 +1,0 @@
-# remotion-best-practices (`remotion-dev/skills/remotion-best-practices`)
-
-## domain
-
-**domain**: 🎨 设计多媒体
-
-**reason**: 用 React 代码制作视频/动效, 产出是音视频作品, 属于视频制作而非纯编程。

@@ -1,5 +1,0 @@
-# sanity-best-practices (`sanity-io/agent-toolkit/sanity-best-practices`)
-
-## cover
-
-A bespectacled content architect in a rolled-sleeve hoodie at a dual-monitor desk, typing on a laptop, one screen showing a tree of connected boxes, the other a webpage wireframe, a cable bridging the two screens, whiteboard of linked nodes behind

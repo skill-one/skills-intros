@@ -1,7 +1,0 @@
-# claude-api (`anthropics/skills/claude-api`)
-
-## tagline
-
-- 接入 Claude，一次写对，不靠猜
-- API 天天变，我永远最新
-- 从一行调用到智能体，一步到位

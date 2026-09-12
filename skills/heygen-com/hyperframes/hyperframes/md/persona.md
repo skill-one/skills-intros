@@ -1,9 +1,0 @@
-# hyperframes (`heygen-com/hyperframes/hyperframes`)
-
-## persona
-
-**tool**: hyperframes
-
-**role**: 动效设计师
-
-**scene**: 你说「帮我做支视频」、手里还只有文字和点子时

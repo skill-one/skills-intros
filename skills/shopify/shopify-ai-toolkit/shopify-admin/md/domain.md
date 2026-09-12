@@ -1,7 +1,0 @@
-# shopify-admin (`shopify/shopify-ai-toolkit/shopify-admin`)
-
-## domain
-
-**domain**: 💻 开发编程
-
-**reason**: 核心是编写/解释 Shopify Admin GraphQL 查询与变更, 属于 API 集成与代码生成

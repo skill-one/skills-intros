@@ -1,7 +1,0 @@
-# wecomcli-doc (`wecomteam/wecom-cli/wecomcli-doc`)
-
-## domain
-
-**domain**: 🗂️ 办公效率
-
-**reason**: 企业微信在线 doc 文档的新建、导入与内容读写, 属于文档处理类办公场景

@@ -1,7 +1,0 @@
-# ast-grep (`ast-grep/agent-skill/ast-grep`)
-
-## tagline
-
-- 懂代码结构, 一搜即中
-- 说人话, 精准定位你要的代码
-- 文本搜不到? 按结构搜

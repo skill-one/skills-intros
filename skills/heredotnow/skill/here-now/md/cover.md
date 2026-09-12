@@ -1,5 +1,0 @@
-# here-now (`heredotnow/skill/here-now`)
-
-## cover
-
-A web publisher in a rumpled hoodie, leaning over a laptop pressing the final key at a cluttered midnight desk, glowing screen with file folders, steaming coffee mug, phone ready in his other hand, impatient eager expression, night office

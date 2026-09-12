@@ -1,5 +1,0 @@
-# remotion-to-hyperframes (`heygen-com/hyperframes/remotion-to-hyperframes`)
-
-## cover
-
-A bespectacled developer in a hoodie at a dual-monitor desk, finished video timeline on the left screen, glowing animation code on the right, holding a pen, tracing and rewriting each code line by line

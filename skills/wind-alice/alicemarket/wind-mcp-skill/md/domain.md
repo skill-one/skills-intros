@@ -1,7 +1,0 @@
-# wind-mcp-skill (`wind-alice/alicemarket/wind-mcp-skill`)
-
-## domain
-
-**domain**: 💰 支付金融
-
-**reason**: 核心是金融数据调用与查询（行情、财报、估值、基金债券期货期权），属于金融理财与交易类技能。

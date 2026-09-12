@@ -1,7 +1,0 @@
-# i-have-adhd (`ayghri/i-have-adhd/i-have-adhd`)
-
-## tagline
-
-- 第一行, 就是你的下一步
-- 把「知道了」变成「做到了」
-- 小步开工, 进步看得见

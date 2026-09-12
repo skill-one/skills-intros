@@ -1,7 +1,0 @@
-# product-launch-video (`heygen-com/hyperframes/product-launch-video`)
-
-## domain
-
-**domain**: 🎨 设计多媒体
-
-**reason**: 把产品 URL/脚本制作成宣传视频, 属于音视频制作

@@ -1,7 +1,0 @@
-# resend (`resend/resend-skills/resend`)
-
-## tagline
-
-- 邮件必达收件箱，不重复不掉链
-- 验证码、回执、通知，秒发必达
-- 发信收信管域名，邮件难题一站解

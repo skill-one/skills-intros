@@ -1,5 +1,0 @@
-# faceless-explainer (`heygen-com/hyperframes/faceless-explainer`)
-
-## cover
-
-A bespectacled video director in neck-hung headphones, holding a storyboard card toward a wall of pinned frames, a monitor behind him showing a grid of animated frames, long printed pages and loose notes spread across his editing desk

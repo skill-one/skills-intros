@@ -1,7 +1,0 @@
-# impeccable (`pbakaus/impeccable/impeccable`)
-
-## domain
-
-**domain**: 🎨 设计多媒体
-
-**reason**: 专注前端界面设计: UX 审查、视觉层级、排版配色与动效, 并以代码交付打磨好的 UI

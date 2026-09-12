@@ -1,7 +1,0 @@
-# general-video (`heygen-com/hyperframes/general-video`)
-
-## domain
-
-**domain**: 🎨 设计多媒体
-
-**reason**: 专长视频剪辑与合成、动效制作、品牌片/混剪等音视频创作

@@ -1,9 +1,0 @@
-# music-to-video (`heygen-com/hyperframes/music-to-video`)
-
-## persona
-
-**tool**: analyze-beatgrid.py
-
-**role**: 卡点剪辑师
-
-**scene**: 手上有首成曲、想剪成一支踩点视频时

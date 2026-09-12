@@ -1,7 +1,0 @@
-# marketing-mindset (`axelfreeman/marketing-mindset/marketing-mindset`)
-
-## domain
-
-**domain**: 📈 商业运营
-
-**reason**: 核心是市场营销与获客: 找首批客户、写广告文案、投放与增长决策

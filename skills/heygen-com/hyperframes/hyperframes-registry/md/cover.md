@@ -1,5 +1,0 @@
-# hyperframes-registry (`heygen-com/hyperframes/hyperframes-registry`)
-
-## cover
-
-A young video editor in a hoodie at a cluttered desk, stacking translucent glowing blocks of charts and caption strips onto a large screen timeline, picking one missing block from a shelf of ready-made pieces

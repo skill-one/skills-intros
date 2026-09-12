@@ -1,7 +1,0 @@
-# claude-api (`anthropics/skills/claude-api`)
-
-## domain
-
-**domain**: 💻 开发编程
-
-**reason**: 核心是 Claude API/SDK 集成: 写代码、模型迁移、参数与流式、工具调用, 典型编程场景。

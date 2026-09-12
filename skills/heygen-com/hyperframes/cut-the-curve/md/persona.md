@@ -1,9 +1,0 @@
-# cut-the-curve (`heygen-com/hyperframes/cut-the-curve`)
-
-## persona
-
-**tool**: gsap
-
-**role**: 转场剪辑师
-
-**scene**: 两段画面各自做好、拼在一起切换发硬时
