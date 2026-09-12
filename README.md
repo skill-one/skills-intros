@@ -13,7 +13,7 @@ snapshots.
 ├── latest         the newest publish's tag, one line — read it to pin a version
 ├── upstream       the mirror tag this snapshot was built from — join on it
 ├── skills.jsonl   one row per profiled skill, sorted by id — filter / join / rank here
-├── stats.json     how far generation has got: per-prompt coverage, complete/remaining/stale
+├── stats.json     how complete the artifacts are: skills, per-prompt counts, covers
 └── skills/        one directory per skill, named after its id
     └── vercel-labs/skills/find-skills/   ({owner}/{repo}/{slug})
         ├── domain.json  scenario.json  blackbox.json  whitebox.json

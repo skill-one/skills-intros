@@ -130,11 +130,11 @@ def load_hashes(settings: Settings) -> dict[str, str]:
 def write_stats(settings: Settings, stats: Mapping) -> Path:
     """Overwrite output/stats.json: the artifact's current state, not the run's.
 
-    How many skills are complete/remaining and how many skills hold each
-    prompt's output on disk, plus the snapshot tag the artifacts were built
-    from. Run counters and timings stay in the log; one snapshot file (no
-    history) so CI and humans read the same place. Sorting dict keys keeps the
-    layout stable across runs.
+    How many skills are complete and how many hold each prompt's output on disk,
+    plus how many covers are rendered. Run counters, timings and provenance stay
+    out of it — which upstream snapshot it came from is the root `upstream`
+    pointer. One snapshot file (no history) so CI and humans read the same place;
+    sorting dict keys keeps the layout stable across runs.
     """
     path = settings.output_dir / "stats.json"
     path.parent.mkdir(parents=True, exist_ok=True)

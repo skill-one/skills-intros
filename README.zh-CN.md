@@ -12,7 +12,7 @@ English: [README.md](README.md) · 开发指南：[DEVELOPING.zh-CN.md](DEVELOPI
 ├── latest         最新一次发布的 tag，一行——读它即可钉住版本
 ├── upstream       这份快照基于镜像的哪个 tag——按它做关联
 ├── skills.jsonl   每个已生成档案的 skill 一行，按 id 排序——筛选 / 关联 / 排行都从这里开始
-├── stats.json     生成进度：每个 prompt 的覆盖数、已完成/剩余/过期
+├── stats.json     产物有多完整：skill 数、每个 prompt 的覆盖数、配图数
 └── skills/        每个 skill 一个目录，目录名就是它的 id
     └── vercel-labs/skills/find-skills/   ({owner}/{repo}/{slug})
         ├── domain.json  scenario.json  blackbox.json  whitebox.json
