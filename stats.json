@@ -1,25 +1,20 @@
 {
   "covers": {
-    "rendered": 999
+    "rendered": 945
   },
   "prompts": {
-    "blackbox": 1000,
-    "comments": 1000,
-    "cover": 1000,
-    "domain": 1000,
-    "persona": 1000,
-    "scenario": 1000,
-    "tagline": 1000,
-    "whitebox": 1000
+    "blackbox": 945,
+    "comments": 945,
+    "cover": 928,
+    "domain": 945,
+    "persona": 945,
+    "scenario": 945,
+    "tagline": 945,
+    "whitebox": 945
   },
   "skills": {
-    "complete": 1000,
-    "remaining": 0,
-    "stale": 0,
+    "complete": 927,
+    "profiled": 928,
     "total": 1000
-  },
-  "snapshot": {
-    "fetched_at": "2026-09-10T07:22:00Z",
-    "ref": "dist-2026-09-10"
   }
 }

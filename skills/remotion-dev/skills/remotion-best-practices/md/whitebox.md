@@ -1,0 +1,13 @@
+# remotion-best-practices (`remotion-dev/skills/remotion-best-practices`)
+
+## whitebox
+
+- 接收任务, 判断是否属于 Remotion 场景 (建视频、写界面标记、地图、字幕、渲染等)
+- 按任务类型查路由表, 定位并加载对应子技能的 REFERENCE.md (如创建视频 → remotion-create)
+- 若环境中还没有 Remotion 项目, 先走新建项目流程
+- 按加载到的指南动手实现: 写 React 标记代码、配置渲染或启动 Studio
+- 动手前检查代码里是否有用户在会话外的改动, 有则不覆盖
+
+- 纯路由架构: 本体 skill.md 不含实现细节, 只维护一张『任务类型 → 子技能 REFERENCE.md』的映射表, 按需加载对应文档再干活
+- 改动保护机制: 检测到会话外产生的意外代码变更时, 视为用户有意为之, 不覆盖、可确认
+- 外部依赖: Remotion (基于 React 的程序化视频框架), Node CLI (npx remotion render / studio); 地图场景会用到 Mapbox / MapLibre / MapTiler / GeoJSON

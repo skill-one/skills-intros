@@ -1,0 +1,9 @@
+# hyperframes (`heygen-com/hyperframes/hyperframes`)
+
+## blackbox
+
+**function**: 把你给的素材 (网址、一段文字、音乐、视频片段等) 做成一段能直接播放的视频或动画, 交付成片文件。
+
+- input: 你的产品官网网址, output: 一段 30~90 秒的宣传视频 (mp4), 画面是网站页面动起来的展示 + 文案点题
+- input: 一首 mp3 + 一句话主题 (如「新品发布倒计时」), output: 画面严格踩着音乐节拍切换的短视频成片
+- input: 一段真人出镜的口播视频素材, output: 加好字幕和图形信息卡片的成片, 原始画面不动

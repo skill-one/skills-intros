@@ -2,4 +2,4 @@
 
 ## cover
 
-A bespectacled coder in a hoodie, headphones around his neck, holding an open printed manual, his other hand hovering hesitantly over the keyboard, facing a monitor glowing with a branching folder tree and a dark idle terminal window, coffee mug and sticky notes on the desk
+A cautious programmer in a hooded sweater and glasses leans over a dark terminal screen, holding an open printed manual, finger hovering above the untouched keyboard, desk lamp lighting glowing folder icons branching like a map

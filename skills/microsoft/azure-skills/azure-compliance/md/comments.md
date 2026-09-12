@@ -1,0 +1,10 @@
+# azure-compliance (`microsoft/azure-skills/azure-compliance`)
+
+## comments
+
+- user: 运维老哥, category: 妙用, comment: 我把每周巡检和 Key Vault 过期检查合并跑, 提前两周扫到一张快过期的证书, 赶在业务挂之前换掉了, 相当于免费预警.
+- user: 第一次用的新手, category: 坑, comment: 没先 az login 就直接让它扫描, 报 "Please login". 先登录确认好订阅再跑, 一次过.
+- user: 安全审计员, category: 注意, comment: 我只读账号跑扫描, 一堆资源报 "Forbidden", 补上资源读取和 Key Vault 元数据的角色才正常. 上手前先确认权限, 省一轮返工.
+- user: 后端老兵, category: 妙用, comment: 我让它按 Critical/High/Medium/Low 分级输出, Critical 拆成本周工单、Medium 排进下个迭代, 扫描结果直接变 backlog.
+- user: 多云打工仔, category: 坑, comment: 名下三个订阅, 我没先圈定范围就开扫, 报 "Not found". 让它先列订阅、再选资源组, 范围明确才不出错.
+- user: 合规专员, category: 启发, comment: 我以前只修不复查, 现在每周扫一次留档对比, 上月发现某项修复被回滚了, 靠复扫才逮住. 合规扫描得常态化, 不是一次性任务.

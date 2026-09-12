@@ -1,0 +1,5 @@
+# microsoft-foundry (`microsoft/azure-skills/microsoft-foundry`)
+
+## scenario
+
+你的 AI 助手终于写好了,却卡在部署报错;上线后不知质量好坏,出了问题查无头绪,改一次试一次,反复煎熬。我能帮你:从搭建、部署、测试到评估优化、快速排错,一条龙搞定,让你专注创意本身。🚀

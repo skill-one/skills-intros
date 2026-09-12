@@ -1,0 +1,9 @@
+# hyperframes-cli (`heygen-com/hyperframes/hyperframes-cli`)
+
+## persona
+
+**tool**: hyperframes
+
+**role**: 动效渲染师
+
+**scene**: 动画改完最后一遍、等着看成品视频时

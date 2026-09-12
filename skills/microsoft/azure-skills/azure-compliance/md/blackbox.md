@@ -1,0 +1,9 @@
+# azure-compliance (`microsoft/azure-skills/azure-compliance`)
+
+## blackbox
+
+**function**: 对你的 Azure 云环境做一次"体检", 找出安全隐患和不合规的配置, 并告诉你哪些要马上修、哪些可以慢慢改。
+
+- input: 一个 Azure 订阅 ID (或订阅名), output: 一份整体安全体检报告: 列出每一条不合规项, 按紧急程度分级 (严重/高/中/低), 每条附修复建议
+- input: 一个 Key Vault (密钥保管库) 的名称, output: 一份到期清单: 里面哪些证书已过期、哪些密钥/密码快到期了, 方便提前更换
+- input: 一个资源组 (Azure 里一组相关云资源) 的名称, output: 该组资源的最佳实践评估结果: 哪些资源配置不符合微软推荐做法, 以及每条的改进方案

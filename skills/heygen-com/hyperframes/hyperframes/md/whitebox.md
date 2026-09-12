@@ -1,0 +1,13 @@
+# hyperframes (`heygen-com/hyperframes/hyperframes`)
+
+## whitebox
+
+- 读项目状态取第一条命中: 有 BRIEF.md 则直接按其中 workflow/flow 执行; 全新创建则跑意图访谈 (references/intent-interview.md), 以写出 BRIEF.md 收尾
+- 按交付物 (而非字面词) 在 10 级优先级路由表匹配唯一工作流, 定路由前先读 references/routes/<workflow>.md 核对输入/输出/触发契约, 不匹配就继续往下路由
+- 执行 npx hyperframes skills update <workflow-name> 拉取/刷新该工作流及核心域技能
+- 按需加载领域技能, 把合成写成 HTML: DOM 用 data-* 属性声明时序, 动画运行时可 seek
+- 用 /hyperframes-cli 做 check 校验, 再 render 出片 (有版本 pin 的旧项目先跑 upgrade --check 探测)
+
+- 状态机入口: 项目状态表只取第一条命中行、不看更低行; 意图访谈是唯一对话层, 其唯一产物 BRIEF.md 是后续工作流读取的唯一路由依据——之后不再回到本技能或访谈
+- 路由单次性: 匹配的是'交付物'本身; 模糊场景有消歧规则 (如 10 秒内无旁白的动效单元 → /motion-graphics, 配乐做节拍骨架 → /music-to-video, 口播加设计卡片 → /talking-head-recut); 路由后不回退
+- 渲染模型: 合成 = 单个 HTML 文件, 时序由 data-start / data-duration / data-media-start 等 data-* 属性 + 轨道布局声明, 媒体播放由框架接管, 动画运行时可 seek 保证逐帧确定; 动画可用 GSAP / CSS / Anime.js / WAAPI / FLIP 但必须 seek-safe (由 /hyperframes-keyframes 规则约束), 校验与渲染统一走 npx hyperframes CLI

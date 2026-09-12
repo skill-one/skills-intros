@@ -1,0 +1,5 @@
+# hyperframes-registry (`heygen-com/hyperframes/hyperframes-registry`)
+
+## cover
+
+A hoodie-clad effects installer in a dim studio, typing at a keyboard before a glowing terminal, monitors behind him flickering with CRT scanlines, glitch distortion and film grain, cables scattered on the desk

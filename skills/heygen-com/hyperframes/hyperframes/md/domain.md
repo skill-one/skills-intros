@@ -1,0 +1,7 @@
+# hyperframes (`heygen-com/hyperframes/hyperframes`)
+
+## domain
+
+**domain**: 🎨 设计多媒体
+
+**reason**: 核心能力是用 HTML 渲染视频/动画/动效, 属于音视频制作

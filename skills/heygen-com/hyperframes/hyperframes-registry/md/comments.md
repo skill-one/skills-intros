@@ -1,0 +1,10 @@
+# hyperframes-registry (`heygen-com/hyperframes/hyperframes-registry`)
+
+## comments
+
+- user: 第一次用的新手, category: 坑, comment: add 完只给个片段, 我直接跑没反应——data-composition-id 必须对上块内部 ID, start/duration 也得自己填好才有画面。
+- user: 中文短视频博主, category: 坑, comment: 我用中文搜 catalog 颗粒无收, 才知是查询语言问题; 换英文描述动作立刻命中, 画面文案照写中文, 互不影响。
+- user: 后端老兵, category: 妙用, comment: 流水线里 add 记得加 --no-clipboard 免得卡剪贴板; --json 返回的 report_gap 是拼好的 feedback 命令, 直接复制就能上报。
+- user: 经常断网的剪辑师, category: 注意, comment: add 每次安装都要联网拉文件, 本地只缓存目录——断网时能搜能看详情, 一到安装必失败, 出差前先确认有网。
+- user: 前端实习生, category: 坑, comment: component 得拆三处贴: HTML 进合成 div、style 进样式、script 要放在时间线代码前面, 我贴到后面动效死活不动。
+- user: 工作室主理人, category: 启发, comment: 以前 CRT 扫描线这类效果我闭眼手写, 现在先按意图搜库; 真搜不到就 feedback 描述想要的效果, 比默默手搓有回报。
