@@ -1,0 +1,13 @@
+# gemini-api (`google/skills/gemini-api`)
+
+## whitebox
+
+- 触发识别: 用户询问企业环境下的 Gemini 使用, 或提到 Vertex AI / Google Cloud / Agent Platform → 按 SKILL.md 执行
+- 鉴权配置: 初始化 Gen AI SDK 客户端时不传参数, 自动读取环境变量 (GOOGLE_CLOUD_PROJECT / GOOGLE_CLOUD_LOCATION, 默认 global; Express Mode 则用 GOOGLE_API_KEY)
+- 模型选择: 按任务映射模型 — gemini-3.1-pro-preview (复杂推理/代码) / gemini-3.6-flash (快速多模态) / 图像生成用 gemini-3-pro-image 等
+- 调用生成: 通过 client.models.generate_content(...) 发起请求; 特定场景 (多模态/结构化输出/Live API/缓存等) 查阅对应 reference 参考文件取代码范式
+- 校验兜底: 生成实现或排障时, 以官方 Agent Platform 文档为唯一事实来源; 有 MCP 工具 (search_documents/get_document) 则优先用它查文档
+
+- 统一 SDK 强制: 五语言各用唯一指定 SDK — Python `google-genai`、JS/TS `@google/genai`、Go `google.golang.org/genai`、Java `com.google.genai:google-genai`、C# `Google.GenAI`; 旧版 `google-cloud-aiplatform` / `@google-cloud/vertexai` / `google-generativeai` 一律禁用并引导迁移
+- 环境变量优先的鉴权: 企业模式走 ADC (项目+区域+`GOOGLE_GENAI_USE_ENTERPRISE=true`, 区域默认 global 自动路由), 快速模式走 API key; 底层 REST 端点为 `https://{LOCATION}-aiplatform.googleapis.com/v1beta1(/v1)/projects/{PROJECT}/locations/{LOCATION}/publishers/google/models/{MODEL}:generateContent` (Agent Platform 前身为 Vertex AI)
+- 参考文件 + 模型版本防御: 按需求领域 (文本多模态/嵌入/工具与结构化/媒体生成/边界框/Live API/缓存与批处理/安全/微调) 引用内置 reference 文档; 弃用旧模型名 (gemini-2.0-* 及更早), 仅在用户显式点名时才用列出的旧版本

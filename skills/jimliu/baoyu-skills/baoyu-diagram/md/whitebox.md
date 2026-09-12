@@ -1,0 +1,13 @@
+# baoyu-diagram (`jimliu/baoyu-skills/baoyu-diagram`)
+
+## whitebox
+
+- 从用户请求判断图类型: 架构/流程图/时序/结构/状态机等 9 类之一
+- 读取该类型的参考文件 references/{type}.md, 获取对应的布局算法
+- 规划布局: 列出全部组件, 确定分组与数据流向, 计算坐标位置
+- 按固定分层顺序手写 SVG 代码, 逐条核对间距规则后保存 .svg 文件
+- 用 Bun 运行内置脚本 scripts/main.ts 转出 @2x PNG, 一并交付两个文件
+
+- 无第三方绘图库 (不依赖 mermaid 等) — SVG 由模型按设计系统直接手写: 暗色底 #0f172a + 网格 pattern、8 色语义调色板 (如青色=前端、紫色=数据库)、JetBrains Mono 字体经 Google Fonts @import 加载, 中文回退 Noto Sans SC 并加宽方框
+- 遮罩矩形 (masking rect) 解决遮挡问题: 在半透明组件下方先垫一块与背景同色的不透明矩形, 避免箭头透出来; viewBox 自适应内容并统一留 30px 边距
+- 外部依赖仅两处: Bun 运行时 (未安装则回退 npx -y bun) 执行内置脚本完成 SVG→PNG 缩放转换; 字体为在线加载的 Google Fonts — 校验靠人工核对间距规则 (组件间距≥40px、图例在边界外、文字不溢出), 无自动化验证

@@ -1,0 +1,10 @@
+# tavily-cli (`tavily-ai/skills/tavily-cli`)
+
+## comments
+
+- user: 第一次用的新手, category: 坑, comment: 以为不登录啥都能用,直接跑 crawl 报权限错。实际免登录只够 search 和 extract,map/crawl/research 必须先 `tvly login`。
+- user: 远程服务器运维, category: 坑, comment: 在 SSH 里跑 `tvly login`,回调打到远程机的 localhost,我本机收不到就卡死。改 `--no-browser` 加端口转发,或直接用 TAVILY_API_KEY。
+- user: CI 脚本维护者, category: 注意, comment: 免登录有额度上限,无人值守跑到一半被限流就歇菜。CI 里别指望现场弹登录,提前把 TAVILY_API_KEY 写进环境变量才稳。
+- user: 写自动化脚本的后端, category: 妙用, comment: 我把退出码用上了:返回 3(认证错)就先 `tvly login` 再重试一次原命令,批处理基本不用人工盯着。
+- user: 资料收集党, category: 启发, comment: 以前总想一口气 crawl 整站,又慢又占额度。改成先 search 锁定页面、再 extract 精准拉取,多数需求轻武器就够了。
+- user: 常抽网页的译者, category: 坑, comment: extract 带 `?`、`&` 的链接老失败,查半天发现是没加引号,shell 把参数当特殊字符拆了。URL 必须用引号包住。

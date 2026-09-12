@@ -1,0 +1,7 @@
+# stop-slop (`hardikpandya/stop-slop/stop-slop`)
+
+## domain
+
+**domain**: ✍️ 内容创作
+
+**reason**: 给文字去 AI 腔, 服务于写作与改稿场景

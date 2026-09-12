@@ -1,0 +1,9 @@
+# dart-build-cli-app (`dart-lang/skills/dart-build-cli-app`)
+
+## persona
+
+**tool**: dart
+
+**role**: 命令行工具匠
+
+**scene**: 脚本写完了、想让它在任何机器上一条命令就能跑时

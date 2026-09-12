@@ -1,0 +1,7 @@
+# tavily-cli (`tavily-ai/skills/tavily-cli`)
+
+## tagline
+
+- 一条命令,全网答案到手
+- 搜索、抓取、深研,一键搞定
+- 你提问,我跑遍整个互联网

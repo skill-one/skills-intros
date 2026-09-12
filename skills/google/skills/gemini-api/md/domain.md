@@ -1,0 +1,7 @@
+# gemini-api (`google/skills/gemini-api`)
+
+## domain
+
+**domain**: 💻 开发编程
+
+**reason**: 核心是 AI API/SDK 集成: 用 Gen AI SDK 在代码中调用 Gemini 模型(多模态、函数调用、结构化输出等)
